@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-29",
+  "desktop": {
+    "width": 1500,
+    "height": 900,
+    "restVisible": true,
+    "pauseResume": true,
+    "overflow": false
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "mobilePaused": true,
+    "refreshRestoredObserve": true,
+    "reducedMotion": true,
+    "final": {
+      "actors": 0,
+      "canvases": 0,
+      "overflow": false
+    }
+  },
+  "animationSamples": [
+    {
+      "activity": "walk",
+      "frameChanged": true,
+      "width": 360,
+      "height": 270
+    },
+    {
+      "activity": "observe",
+      "frameChanged": true,
+      "width": 360,
+      "height": 270
+    }
+  ],
+  "modelCalls": 0,
+  "temporarySessionRevoked": true
+}

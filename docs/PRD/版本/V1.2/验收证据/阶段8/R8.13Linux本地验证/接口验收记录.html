@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>R8.13 Linux接口实测记录</title>
+<style>body{margin:0;background:#f1f6f5;color:#153d38;font:17px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:880px;margin:40px auto;padding:34px;background:white;border-radius:18px}h1{font-size:30px;margin:0 0 8px}h2{font-size:21px}p{color:#46655f}table{border-collapse:collapse;width:100%;font-size:16px}td{padding:9px 12px;border-bottom:1px solid #e4efec}td:last-child{color:#08765f;font-weight:600}.tag{display:inline-block;padding:3px 13px;border-radius:20px;background:#d8f5ed;color:#086750}aside{background:#f8f1dd;padding:14px 18px;margin-top:25px;border-radius:9px}@media(max-width:640px){main{margin:12px;padding:20px}h1{font-size:24px}td{padding:7px 4px;font-size:14px}}</style>
+<main><h1>Linux 接口实测记录</h1><p>R8.13 · 2026-10-01 · 实际生产进程，合成账号与数据</p>
+<div class="tag">13 / 13 项通过</div>
+<p>Ubuntu 24.04.4 LTS · ARM64 · Python 3.12.3 · Node 24.21.0<br>SQLAlchemy 2.0.54 · zlib-ng 2.3.3</p>
+<table>
+<tr><td>匿名访问拒绝</td><td>通过</td></tr>
+<tr><td>开发令牌拒绝</td><td>通过</td></tr>
+<tr><td>未签发验证码拒绝</td><td>通过</td></tr>
+<tr><td>所有者可见自己的数据</td><td>通过</td></tr>
+<tr><td>第二账号看不到所有者数据</td><td>通过</td></tr>
+<tr><td>生产首页真实启动</td><td>通过</td></tr>
+<tr><td>生产静态资源加载</td><td>通过</td></tr>
+<tr><td>同源代理读取所有者数据</td><td>通过</td></tr>
+<tr><td>同源代理拒绝匿名访问</td><td>通过</td></tr>
+<tr><td>实际服务重启后恢复读取</td><td>通过</td></tr>
+<tr><td>备份恢复到全新目录</td><td>通过</td></tr>
+<tr><td>恢复数据后进程再启动与读取</td><td>通过</td></tr>
+<tr><td>上传标记文件恢复</td><td>通过</td></tr>
+</table>
+<p>备份与恢复：58 张表 + 1 个合成文件。模型调用 0，真实短信 0，云部署 0。</p>
+<aside>完整覆盖1938个用例：1913首轮通过，25补齐公开资料后原样复验通过，无跳过。临时虚拟机已清理。真实短信、语音设备及云端上线仍待验。</aside>
+</main></html>

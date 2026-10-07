@@ -1,0 +1,12 @@
+{
+  "status": "pending",
+  "date": "2026-10-02",
+  "characters": [6, 8],
+  "visual_acceptance": null,
+  "specific_adjustment": "两次创作的造型差异更明显",
+  "required_shape_axes": ["主体轮廓与身体组成", "叶片与藤蔓布局", "重心与肢体姿态"],
+  "previous_rejected_candidates": [6, 7],
+  "original_candidates_retained": true,
+  "new_model_requests": 2,
+  "new_paid_motion_requests": 0
+}

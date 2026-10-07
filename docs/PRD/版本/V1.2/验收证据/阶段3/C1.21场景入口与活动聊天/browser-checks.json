@@ -1,0 +1,66 @@
+{
+  "navigation": [
+    {
+      "scene": "home",
+      "width": 1440,
+      "活动设置": true,
+      "back": true,
+      "生活记录": true,
+      "四季": true,
+      "overflow": false
+    },
+    {
+      "scene": "forest",
+      "width": 1440,
+      "活动设置": true,
+      "back": true,
+      "生活记录": true,
+      "四季": true,
+      "overflow": false
+    },
+    {
+      "scene": "desert",
+      "width": 1440,
+      "活动设置": true,
+      "back": true,
+      "生活记录": true,
+      "四季": true,
+      "overflow": false
+    },
+    {
+      "scene": "home",
+      "width": 390,
+      "活动设置": true,
+      "back": true,
+      "生活记录": true,
+      "四季": true,
+      "overflow": false
+    },
+    {
+      "scene": "forest",
+      "width": 390,
+      "活动设置": true,
+      "back": true,
+      "生活记录": true,
+      "四季": true,
+      "overflow": false
+    },
+    {
+      "scene": "desert",
+      "width": 390,
+      "活动设置": true,
+      "back": true,
+      "生活记录": true,
+      "四季": true,
+      "overflow": false
+    }
+  ],
+  "current_activity_settings_focus": true,
+  "cancel_kept_original_draft": true,
+  "edited_draft_to_chat": true,
+  "reload_kept_draft": true,
+  "test_draft_restored": true,
+  "desert_permission_restored_paused": true,
+  "message_send_clicked": false,
+  "night_observe_walk_failure_retained": true
+}

@@ -1,0 +1,17 @@
+{
+  "verified_on": "2026-10-02",
+  "browser": "Chrome",
+  "source": "https://console.aihubmix.com/token",
+  "authorization_ref": "c175-manan-motion-20261002-3calls-0.30usd",
+  "continuation_ref": "c175-manan-motion-20261002-manual-1",
+  "platform_key_display_sha256": "ee5116d95a9e9e0d7b21c3c6ad22134eda37442c6a8e2f3838958988ae478ac0",
+  "remaining_before_reopening_usd": "0.08",
+  "remaining_after_reopening_usd": "0.30",
+  "unlimited": false,
+  "model_allowlist": ["gpt-image-2.5-sunburst"],
+  "fallback_models": 0,
+  "restore_remaining_usd": "0.08",
+  "related_tests_passed": 83,
+  "related_tests_total": 83,
+  "actual_bill_verified": false
+}

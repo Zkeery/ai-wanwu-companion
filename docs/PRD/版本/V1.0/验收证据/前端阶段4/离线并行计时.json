@@ -1,0 +1,52 @@
+{
+  "mock": true,
+  "provider_calls": 0,
+  "fixed_delays_seconds": {
+    "persona": 0.2,
+    "opening": 0.3,
+    "image": 0.4
+  },
+  "samples": [
+    {
+      "serial": {
+        "seconds": 0.9129,
+        "overlap_seconds": 0,
+        "persona_precedes_both": true
+      },
+      "parallel": {
+        "seconds": 0.6105,
+        "overlap_seconds": 0.3069,
+        "persona_precedes_both": true
+      },
+      "passed": true
+    },
+    {
+      "serial": {
+        "seconds": 0.9095,
+        "overlap_seconds": 0,
+        "persona_precedes_both": true
+      },
+      "parallel": {
+        "seconds": 0.6066,
+        "overlap_seconds": 0.3046,
+        "persona_precedes_both": true
+      },
+      "passed": true
+    },
+    {
+      "serial": {
+        "seconds": 0.9126,
+        "overlap_seconds": 0,
+        "persona_precedes_both": true
+      },
+      "parallel": {
+        "seconds": 0.6098,
+        "overlap_seconds": 0.3045,
+        "persona_precedes_both": true
+      },
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "limitation": "Only verifies orchestration overlap; not evidence of real-provider latency."
+}

@@ -1,0 +1,14 @@
+{
+  "approvedAt": "2026-09-18T15:17:22.775Z",
+  "authorization": "用户明确允许本轮最多1识别、2文本、1绘图，总费用不超过0.05元；合成杯子、隔离数据库、无自动重试。",
+  "budgetCny": 0.05,
+  "sourceHashes": {
+    "backend/scripts/run_creation_smoke.py": "059c2d1231900b9c2d24f0385e38dd0f884f70ff4ef2eaa6b6fec16320974d0b",
+    "backend/app/services/model_client.py": "fd9e6d5dca2f0f5b4d7f91214648313d7420dfe39012bb63427740b5abb33cc5",
+    "backend/app/services/prompts.py": "026cad7df2e51f1b809850b6eab1383bfc0b23687ddcf66cb0d19a3e6729f124",
+    "backend/app/api/photos.py": "c75f94b35f1a5436d8285ed252828a0a92a6b98d238e3fbe7a251c128fa1e569",
+    "backend/app/api/characters.py": "c677779f9149852e0ae8fe4f23656ad31f1c7355a6be9b7069b00aaa01f84652",
+    "frontend/components/create-companion.tsx": "55aa03b274b4dd4cb531f2fee8a6ac1588a0a8ba2b34e0e676c70e3a7a7aee81",
+    "frontend/lib/creation.ts": "157c153c48c9e6d4d7b37a26171a6076d2870764dbd9ab2a0e889ab583f4b0ba"
+  }
+}

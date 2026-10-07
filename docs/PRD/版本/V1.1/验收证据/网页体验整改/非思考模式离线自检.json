@@ -1,0 +1,250 @@
+{
+  "mock": true,
+  "manifest": {
+    "scope": "One synthetic object; isolated database and uploads; real localhost TCP/SSE timing",
+    "label": "一只米白色陶瓷杯，带圆形把手",
+    "calls": {
+      "vision": 0,
+      "text": 5,
+      "image": 1
+    },
+    "models": {
+      "chat": "qwen3.8-flash",
+      "image": "wan2.6-t2i"
+    },
+    "budget_cny": 0.1,
+    "preflight_ceiling_cny": 0.092824,
+    "max_retries": 0,
+    "max_input_text_bytes": 6000,
+    "max_tokens_per_text_call": 1024,
+    "image_count": 1,
+    "image_size": "1024x1024",
+    "threshold_seconds": 30,
+    "enable_thinking": false,
+    "chat_cases": [
+      "今天工作有点累，只想找你聊聊。",
+      "种一簇花",
+      "不要加水池，陪我聊会儿。"
+    ],
+    "prices": {
+      "chat_input_conservative_cny_per_million": 2.1,
+      "chat_output_cny_per_million": 2.7,
+      "image_cny_each": 0.016
+    },
+    "price_evidence": "价格核对.json",
+    "approval_required": true,
+    "source_sha256": {
+      "backend/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/api/characters.py": "dd81c4e1c74b9f435ed2a232a1b0276d756cbd2260120cc62984ab2615656e8b",
+      "backend/app/api/chat.py": "8b540382b7a9b0bb4a07bda1bf4de514c50dffc81b2b59e1a57688170b9b5b33",
+      "backend/app/api/photos.py": "1a60413871133b803b4159774d55678e47a14d13c611d2962077902e22b915b9",
+      "backend/app/api/scene.py": "b1036bc94ea2b38956d116635aef6261d805af7231f9f4fec8db84d9015477d9",
+      "backend/app/core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/core/config.py": "25bfd673b1fb16a106775aaf60e0c449c6ce11047af50edcf1e71eea59c77434",
+      "backend/app/core/database.py": "64a11ccf11fbb2de4b6c8f2572ea661fc8ebe9b406b025f5aa799357b8377921",
+      "backend/app/core/errors.py": "63533be0dbb51a9a957bcc8140cf22e4cd7ddf3279cb8cd89f552670e7c96fa2",
+      "backend/app/main.py": "973ac8a1b6f6816e65fcffe9504ee70c9616dcc6821b5ce3a6dfc986213be28d",
+      "backend/app/models/__init__.py": "38fb106f4198b53cac1c49372c9b2e3bca571dd23b0111042ee977efb95f59ac",
+      "backend/app/models/models.py": "7c478935fe5c7ae72514f6b858dddee8925551597634be1e9d7aeedf24c662ea",
+      "backend/app/schemas/__init__.py": "567c65ce16be0a4f6e64695d1191cd43288414ada6412ec7a041276d8eb0b531",
+      "backend/app/schemas/schemas.py": "cfa86b0b4f4cad59efe269283153143c99a5f234fc84373a12a0d27f7a4f6af8",
+      "backend/app/services/__init__.py": "bfcda7833d77b16115308bf6c56a89653efc44c5e1b0dff09fad8b3ffb262c24",
+      "backend/app/services/character_generation.py": "7c04029fc3c74ca5ab6aaf2baea834632da68138cdb346c6329edbc851750e3f",
+      "backend/app/services/character_images.py": "d4267f6a3276d1dcc43c9d9d2a3e583896792fb3c56e095f2b7e1d9c96499099",
+      "backend/app/services/chat.py": "6a45df04ec90c95dd396a3e22f496d9027603cf47448d55fb48186121488539b",
+      "backend/app/services/generation_stream.py": "b92af8cc27862e0177df3d8f146f035895bab096df4cc1cf38404a14c6afd3e5",
+      "backend/app/services/model_client.py": "14069151a07c962bb539308a843a59bbb4686860bbb056d4255c1a3941c3946c",
+      "backend/app/services/parsers.py": "00f1a2d4ba57484153b39b13a8e206ca92cccaf28a090d22e21ab635a0680af9",
+      "backend/app/services/photo_input.py": "194697d8a87a32016cffa8bf5cd3651e364786ba2c7e8638bc2d1b2e653566db",
+      "backend/app/services/prompts.py": "026cad7df2e51f1b809850b6eab1383bfc0b23687ddcf66cb0d19a3e6729f124",
+      "backend/app/services/scene.py": "36c2ceabe1527f024328b58efb9f3b5d9354b41b970b456ca726a13d7ab7290c",
+      "backend/scripts/run_experience_smoke.py": "e9dce02f5fd5f93e40dc5cbb888434015ec4cb252e5c032ee1150e13d57abca9"
+    },
+    "limitation": "One sample is not a P95 or a causal serial/parallel provider comparison."
+  },
+  "calls": [
+    {
+      "kind": "persona",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 0.4182446670001809,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 30
+      },
+      "end_seconds": 0.5244026250002207,
+      "seconds": 0.1061579580000398
+    },
+    {
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "reserved_cny": 0.016,
+      "start_seconds": 0.5356075420004345,
+      "http_status": 200,
+      "usage": null,
+      "end_seconds": 0.6844630000014149,
+      "seconds": 0.14885545800098043
+    },
+    {
+      "kind": "opening",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 0.5361340830004337,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 30
+      },
+      "end_seconds": 0.6401519999999437,
+      "seconds": 0.10401791699950991
+    },
+    {
+      "kind": "chat_1",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 0.7206295000014507,
+      "reasoning_chunks": 0,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 30
+      },
+      "end_seconds": 0.7231563750010537,
+      "seconds": 0.0025268749996030238
+    },
+    {
+      "kind": "chat_2",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 0.7385187080017204,
+      "reasoning_chunks": 0,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 30
+      },
+      "end_seconds": 0.7409923330014863,
+      "seconds": 0.002473624999765889
+    },
+    {
+      "kind": "chat_3",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 0.7602144170014071,
+      "reasoning_chunks": 0,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 30
+      },
+      "end_seconds": 0.7627213750001829,
+      "seconds": 0.0025069579987757606
+    }
+  ],
+  "checks": {
+    "ready_and_persisted": true,
+    "image_saved": true,
+    "within_30_seconds": true,
+    "parallel_calls_overlap": true,
+    "chat_finished_and_confirmation_preserved": true,
+    "no_streamed_reasoning": true,
+    "exact_call_counts": true
+  },
+  "passed": true,
+  "generation_seconds": 0.3044988750007178,
+  "events": [
+    {
+      "event": "started",
+      "data": {
+        "character_id": 1
+      },
+      "seconds": 0.025039916999958223
+    },
+    {
+      "event": "chunk",
+      "data": {
+        "stage": "正在生成人设…"
+      },
+      "seconds": 0.025367292000737507
+    },
+    {
+      "event": "chunk",
+      "data": {
+        "stage": "正在准备开场白和角色图…"
+      },
+      "seconds": 0.14118425000015122
+    },
+    {
+      "event": "done",
+      "data": {
+        "id": 1,
+        "name": "合成小杯",
+        "persona": "一只温柔的杯子",
+        "opening_line": "嗨，我是合成小杯。",
+        "image_path": "characters/acbf3784a6b249caac9b3aa4ae1abe9e.png",
+        "status": "ready",
+        "created_at": "2026-09-18T17:36:15.159737"
+      },
+      "seconds": 0.3044972500010772
+    }
+  ],
+  "provider_overlap_seconds": 0.10401791699950991,
+  "chat_cases": [
+    {
+      "message": "今天工作有点累，只想找你聊聊。",
+      "reply": "我在这儿陪你，我们慢慢聊。",
+      "first_chunk_seconds": 0.015482832999623497,
+      "total_seconds": 0.02206599999954051,
+      "done": {
+        "message": {
+          "id": 2,
+          "role": "assistant",
+          "content": "我在这儿陪你，我们慢慢聊。",
+          "created_at": "2026-09-18T17:36:15.476663"
+        },
+        "action": null,
+        "proposal": null
+      }
+    },
+    {
+      "message": "种一簇花",
+      "reply": "我在这儿陪你，我们慢慢聊。",
+      "first_chunk_seconds": 0.008766208000452025,
+      "total_seconds": 0.014257790999181452,
+      "done": {
+        "message": {
+          "id": 4,
+          "role": "assistant",
+          "content": "我在这儿陪你，我们慢慢聊。",
+          "created_at": "2026-09-18T17:36:15.492826"
+        },
+        "action": "plant_flower",
+        "proposal": {
+          "id": "591efc7b-493b-4a79-a41b-59d984fa38b1",
+          "action": "plant_flower"
+        }
+      }
+    },
+    {
+      "message": "不要加水池，陪我聊会儿。",
+      "reply": "我在这儿陪你，我们慢慢聊。",
+      "first_chunk_seconds": 0.010014832998422207,
+      "total_seconds": 0.015148916998441564,
+      "done": {
+        "message": {
+          "id": 6,
+          "role": "assistant",
+          "content": "我在这儿陪你，我们慢慢聊。",
+          "created_at": "2026-09-18T17:36:15.515147"
+        },
+        "action": null,
+        "proposal": null
+      }
+    }
+  ],
+  "quality_review": "pending human review of persona, image and three replies; timing alone is not acceptance",
+  "reserved_cny": 0.092824,
+  "provider_calls": 0
+}

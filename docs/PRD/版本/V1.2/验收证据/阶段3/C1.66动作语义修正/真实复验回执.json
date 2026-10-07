@@ -1,0 +1,80 @@
+[
+  {
+    "activity": "rest",
+    "job_id": "964db7f87eff7a8643958819332813faf30e3e06e39d1243029c8ba81650214a",
+    "state": "needs_review",
+    "duration_ms": 50312,
+    "generation_requests": 1,
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "prompt_sha256": "e3dea15e7129bf930c7eb76d3b05d66677cd9349a2aeb4c9d6138c10750f3a72",
+    "candidate_sha256": "c3d21e4ee1ce5c705243753f99cc2dbaa04ff25c9d05e637b266c107ba1285c0",
+    "usage": {},
+    "quality_check": {
+      "cells": [
+        {
+          "clear_fraction": 0.572971,
+          "native_alpha": true,
+          "visible_fraction": 0.427029
+        },
+        {
+          "clear_fraction": 0.572147,
+          "native_alpha": true,
+          "visible_fraction": 0.427853
+        },
+        {
+          "clear_fraction": 0.574062,
+          "native_alpha": true,
+          "visible_fraction": 0.425938
+        },
+        {
+          "clear_fraction": 0.575603,
+          "native_alpha": true,
+          "visible_fraction": 0.424397
+        }
+      ],
+      "human_review_required": true,
+      "issues": [],
+      "state": "needs_review"
+    },
+    "actual_bill_verified": false
+  },
+  {
+    "activity": "observe",
+    "job_id": "a9641db1bafd18320d5b718b5e7dd40f13d2eae26e6bea9a9989c20015c05beb",
+    "state": "needs_review",
+    "duration_ms": 49077,
+    "generation_requests": 1,
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "prompt_sha256": "872123c4d3a28476c691a9403b4096364dbbd7ec530434b28a67245273db95d8",
+    "candidate_sha256": "97ca889ae9b67f000f4e6b52846f7506c84be8904c6f7988c585b47401fe5285",
+    "usage": {},
+    "quality_check": {
+      "cells": [
+        {
+          "clear_fraction": 0.587086,
+          "native_alpha": true,
+          "visible_fraction": 0.412914
+        },
+        {
+          "clear_fraction": 0.602245,
+          "native_alpha": true,
+          "visible_fraction": 0.397755
+        },
+        {
+          "clear_fraction": 0.583553,
+          "native_alpha": true,
+          "visible_fraction": 0.416447
+        },
+        {
+          "clear_fraction": 0.589806,
+          "native_alpha": true,
+          "visible_fraction": 0.410194
+        }
+      ],
+      "human_review_required": true,
+      "issues": [],
+      "state": "needs_review"
+    },
+    "actual_bill_verified": false
+  }
+]

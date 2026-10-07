@@ -1,0 +1,137 @@
+{
+  "status": "paused_unknown",
+  "origin": "real_provider",
+  "cases": [
+    {
+      "case_id": "object_mug",
+      "status": "needs_review",
+      "source_sha256": "202cbb1f5fdd350c2971f8aae9a7fd8910646005f062a0489286d9b3e8be3d64",
+      "label": "陶瓷杯",
+      "visual_features": "通体呈奶白色，表面光滑且有明显的釉面反光，器型为上宽下窄的圆台状。杯身中下部环绕着两圈淡蓝色的水平条纹，右侧连接着一个半环形的白色把手。杯口敞开，内壁洁白，底部边缘有轻微的波浪起伏。",
+      "name": "泡芙小杯",
+      "persona": "表面装作高冷，实则内心渴望被温暖拥抱的傲娇小家伙。",
+      "opening_line": "哼，你盯着我看多久了，才、才没有想被夸奖呢。",
+      "appearance_description": "通体奶白色的陶瓷小怪灵，身体呈上宽下窄的倒梯形，质感光滑温润。中部环绕着一圈天蓝色的条纹围巾，右侧把手像是一只总是背在身后的短手。头顶有一抹亮亮的高光，眼神微微斜视，嘴角紧抿，站立在木桌上，姿态倔强又可爱。",
+      "normalized_source_sha256": "585585c9e1a47680c869ce90b5fe51941a0e0bb994ec616442159964fd2a0eb6",
+      "image_file": ".runtime/c174-real-quality-life/static/uploads/characters/8b9645cffc204acfb0e58de4f6542406.png",
+      "image_sha256": "5c1f7d00c8464852122f90476b7018ef76bede4d1e793f5ff35598e71030a096",
+      "elapsed_ms": 14881.287,
+      "image_call_id": "f0b74e24-5e39-4338-8538-759b6b39a421",
+      "provider_request_id": "ad008b07-babb-9279-8075-a9c79f15a875",
+      "request_id_source": "upstream",
+      "calls": [
+        "fc689219-62db-40d7-8b21-94085ecfa132",
+        "f0b74e24-5e39-4338-8538-759b6b39a421"
+      ]
+    },
+    {
+      "case_id": "object_clock",
+      "status": "needs_review",
+      "source_sha256": "b16373c47889823bb23e06388861e0c954f2d50a9afbe8a2a8a934610e7467bb",
+      "label": "闹钟",
+      "visual_features": "主体为黑色圆形金属外壳，顶部有两个银色金属铃铛和拱形提手。表盘呈米白色，印有黑色阿拉伯数字1至12及刻度线，中心有时针、分针和秒针。底部有两只银色金属支脚，表面有光泽反射。",
+      "name": "滴答小黑",
+      "persona": "是个守时的小家伙，最怕别人赖床，脾气有点急但心肠很热。",
+      "opening_line": "快看！现在可是上午十点四十六分，再不起床我就要敲铃啦！",
+      "appearance_description": "身体是圆润的黑色金属球体，表面光滑且有反光。头顶戴着两个银色半球形铃铛，中间连着拱形金属提手，像一对灵敏的耳朵。脸上是米白色表盘，印有黑色阿拉伯数字刻度，配有黑色的时针、分针和细长的秒针。底部伸出两只细小的银色金属脚丫支撑身体。",
+      "normalized_source_sha256": "ad5ab80b79fb3926f99f3c4f8b29246e5e4d8d3da8b60f13f5a618b1634f23e3",
+      "image_file": ".runtime/c174-real-quality-life/static/uploads/characters/22b4cb4b1403459aa6cc61c28c7bf332.png",
+      "image_sha256": "1963b22dc1e3555d32f0ea28966244b46bbb21d627b72fb4e1e0b7692ecd0856",
+      "elapsed_ms": 13848.367,
+      "image_call_id": "7322eaa8-f8d7-48dd-9847-529e52aacede",
+      "provider_request_id": "0feaaf3a-bf18-9b15-af2e-4b3b6a7480cf",
+      "request_id_source": "upstream",
+      "calls": [
+        "c08faa5e-3dc8-4362-8f4d-4eafe1c18705",
+        "7322eaa8-f8d7-48dd-9847-529e52aacede"
+      ]
+    },
+    {
+      "case_id": "object_apple",
+      "status": "needs_review",
+      "source_sha256": "60baaee8cff7502bc7cde3cefaf940247a8a9ee5bff7522efc515710b54f36ce",
+      "label": "苹果",
+      "visual_features": "近球形鲜红果实，表面密布淡黄色皮孔和纵向条纹。顶部凹陷处带有一根短小的绿色果柄，凹陷周围呈现黄绿色渐变。表皮光滑且有自然光泽，受光面有明亮高光反射。底部圆润，整体色泽鲜艳，红黄相间。",
+      "name": "圆圆",
+      "persona": "性格开朗热情，总是充满活力地迎接每一天。",
+      "opening_line": "嘿！我是最甜的苹果，快来尝尝我的滋味吧！",
+      "appearance_description": "圆润饱满的红色果实身体，表面光滑泛着自然光泽，带有黄色条纹和细密浅色斑点。头顶一根翠绿短茎像小帽子，凹陷处形成独特的面部轮廓。短小四肢紧贴身体，圆溜溜的大眼睛闪烁着喜悦光芒，嘴角上扬露出温暖笑容，整体呈现精致立体收藏玩具质感。",
+      "normalized_source_sha256": "1360d158c1a24cfe4f7056849295e6d69b2e669411271409dbc37cb9a97acd71",
+      "image_file": ".runtime/c174-real-quality-life/static/uploads/characters/9b2ec58a3d96497bb7bb58412d519f6a.png",
+      "image_sha256": "bbc6de339fa574f1067aa0058a6bfba73597e0a395611a3732471b10656db898",
+      "elapsed_ms": 12599.062,
+      "image_call_id": "234e837e-433c-42e7-bfa2-4d983623164a",
+      "provider_request_id": "5a614355-7dc2-99c2-a5aa-e2555598dc71",
+      "request_id_source": "upstream",
+      "calls": [
+        "2bc879d7-bcb1-4386-9bf7-44855a629158",
+        "234e837e-433c-42e7-bfa2-4d983623164a"
+      ]
+    },
+    {
+      "case_id": "plant_pothos",
+      "status": "needs_review",
+      "source_sha256": "75faa3c9f23412300fbe91b0f546927819e085cbbc6c9a2bb1951a53eeb4faec",
+      "label": "花叶绿萝盆栽",
+      "visual_features": "心形叶片，奶白色底色带有不规则翠绿色斑块和细碎斑点，叶面光滑有自然光泽。红褐色圆形塑料花盆，盆口略宽。短小茎蔓从盆土中向四周伸展，叶片层叠错落。",
+      "name": "斑斑",
+      "persona": "慢悠悠的治愈系小透明，总爱在午后偷喝一点点露水。",
+      "opening_line": "呼……别踩到我的叶子呀，我好不容易才长出这片白斑。",
+      "appearance_description": "圆润的陶土色小盆身体，短小四肢稳稳踩在地板上。头顶簇拥着心形叶片，主色为奶白色与奶油色，间杂不规则的翠绿色斑块与细碎斑点。叶片表面光滑带自然微光泽，边缘柔和。短小嫩绿的茎蔓从盆中向两侧伸展，姿态舒展。圆溜溜的黑豆眼里透着慵懒，嘴角微微上扬，脸颊带有淡淡的绿色晕染，整体质感如精致搪胶与磨砂陶土结合。",
+      "normalized_source_sha256": "8842cb441a88cb7f783a5f8feac837a3e410a69330db4568928efea06b539173",
+      "image_file": ".runtime/c174-real-quality-life/static/uploads/characters/4fa07ecfd8f842558676ddceaee20931.png",
+      "image_sha256": "e1b7940a5181ced5e878275ef89fa55f7004f0ff1279637959b6fd814204bb7d",
+      "elapsed_ms": 13139.019,
+      "image_call_id": "8106a98f-4392-4a33-8b02-6d958665254c",
+      "provider_request_id": "0222e409-7f4f-9814-a0a0-8c57c593fd31",
+      "request_id_source": "upstream",
+      "calls": [
+        "30ffc771-6e43-4b14-836a-2480bf4d5be9",
+        "8106a98f-4392-4a33-8b02-6d958665254c"
+      ]
+    },
+    {
+      "case_id": "plant_succulent",
+      "status": "needs_review",
+      "source_sha256": "2f0fc7d23c48511bdabc80d0573adb91963d1faa9d0ec2ce744fbb77059b9a77",
+      "label": "多肉植物",
+      "visual_features": "灰绿色肉质叶片呈莲座状排列，叶尖微尖，表面覆盖薄薄白粉，质感光滑；底部为红色圆形塑料花盆，整体造型圆润紧凑。",
+      "name": "小团子",
+      "persona": "是个安静又温暖的治愈系小家伙，喜欢静静地陪伴在主人身边。",
+      "opening_line": "呼……只要你看着我，我就觉得浑身充满了阳光的味道。",
+      "appearance_description": "它拥有圆滚滚的灰绿色肉质叶片，层层叠叠地包裹成一个小莲座，像穿了一件厚实的绿色棉袄。叶片表面带着淡淡的白粉质感，边缘有着极浅的波浪纹。它安坐在一个红色的小圆盆里，短小的根茎隐藏在盆土下，整体造型圆润紧凑，眼神温和而呆萌。",
+      "normalized_source_sha256": "818017bcb9ce1ea0efca1d9010b4188e89e0b38810ec539e87595659760d35d9",
+      "image_file": ".runtime/c174-real-quality-life/static/uploads/characters/4c3a317505d849e5a5438c6ca252a13e.png",
+      "image_sha256": "98b550093cfdf69fcabc3886e29ea696019728de46fafd50f74321846cc681b7",
+      "elapsed_ms": 13048.461,
+      "image_call_id": "8af2fc57-896b-4184-9525-1cd554862c9a",
+      "provider_request_id": "71b12872-c61c-9e10-952e-62dbe025de4d",
+      "request_id_source": "upstream",
+      "calls": [
+        "6bd1a625-0582-4697-a8b3-a81868bdcd20",
+        "8af2fc57-896b-4184-9525-1cd554862c9a"
+      ]
+    },
+    {
+      "case_id": "repeat_pothos",
+      "status": "failed",
+      "source_sha256": "75faa3c9f23412300fbe91b0f546927819e085cbbc6c9a2bb1951a53eeb4faec",
+      "error_type": "ExecutorInterrupted",
+      "calls": [
+        "53f29bb1-b0af-4b7e-82db-2cb43027fff5"
+      ]
+    }
+  ],
+  "plan_sha256": "fdf02e0a016e020f2a9ce1e13e886dd9f055fffdb518f07c3c735f1d3a85363a",
+  "retained_failures": [
+    {
+      "case_id": "repeat_pothos",
+      "status": "failed",
+      "source_sha256": "75faa3c9f23412300fbe91b0f546927819e085cbbc6c9a2bb1951a53eeb4faec",
+      "error_type": "ParseError",
+      "calls": [
+        "7b0b38f1-5073-44f1-a8c0-3cd387305a44"
+      ]
+    }
+  ]
+}

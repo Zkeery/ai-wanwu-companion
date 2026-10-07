@@ -1,0 +1,29 @@
+{
+  "resultPage": [
+    {
+      "overflow": false,
+      "width": 375
+    },
+    {
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "overflow": false,
+      "width": 768
+    },
+    {
+      "overflow": false,
+      "width": 1280
+    },
+    {
+      "overflow": false,
+      "width": 1440
+    }
+  ],
+  "uploadPage": {
+    "width": 390,
+    "overflow": false
+  },
+  "environment": "Chrome, real FastAPI with isolated SQLite and mock models"
+}

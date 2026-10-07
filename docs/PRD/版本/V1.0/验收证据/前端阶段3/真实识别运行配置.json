@@ -1,0 +1,21 @@
+{
+  "fixture": "合成杯子.heic",
+  "fixture_sha256": "3b9463f4cd78338bf2581a3b7b05ef8bf80b276d152733876a5009bd2b3b92c1",
+  "normalized_sha256": "d034e80d0a566a760c7d7c6f034d75267d3f24e4ae8fff526e996bab6e2b7258",
+  "provider": "https://maas-api.antdigital.com/v1",
+  "model": "ling-3.0-flash-vl",
+  "max_calls": 1,
+  "max_retries": 0,
+  "max_output_tokens": 512,
+  "budget_cny": 0,
+  "expected_cny_if_currently_free": 0,
+  "price_condition": "Only run after confirming the official temporary-free price is still active; otherwise stop.",
+  "scope": "Isolated synthetic HEIC -> JPEG -> recognition; no text/image generation, no existing companion data",
+  "files_sha256": {
+    "backend/app/services/photo_input.py": "194697d8a87a32016cffa8bf5cd3651e364786ba2c7e8638bc2d1b2e653566db",
+    "backend/app/api/photos.py": "1a60413871133b803b4159774d55678e47a14d13c611d2962077902e22b915b9",
+    "backend/app/services/model_client.py": "fd9e6d5dca2f0f5b4d7f91214648313d7420dfe39012bb63427740b5abb33cc5",
+    "backend/app/services/prompts.py": "026cad7df2e51f1b809850b6eab1383bfc0b23687ddcf66cb0d19a3e6729f124",
+    "backend/scripts/run_photo_input_smoke.py": "65eee93bb8318b9e2a5d09d2ab8030893c7ea8e790ba686e8a8b723a77ffcaa8"
+  }
+}

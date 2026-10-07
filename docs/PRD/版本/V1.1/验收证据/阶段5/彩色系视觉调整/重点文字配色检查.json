@@ -1,0 +1,44 @@
+[
+  {
+    "role": "正文",
+    "text": "#594a40",
+    "background": "#fcf7ed",
+    "ratio": 7.94
+  },
+  {
+    "role": "主操作",
+    "text": "#512f2a",
+    "background": "#ee8c87",
+    "ratio": 4.88
+  },
+  {
+    "role": "辅助正文",
+    "text": "#705e50",
+    "background": "#fcf7ed",
+    "ratio": 5.77
+  },
+  {
+    "role": "紫色卡片辅助字",
+    "text": "#705e50",
+    "background": "#e6dcf0",
+    "ratio": 4.66
+  },
+  {
+    "role": "黄色卡片辅助字",
+    "text": "#705e50",
+    "background": "#f9e5b0",
+    "ratio": 4.95
+  },
+  {
+    "role": "绿色入口",
+    "text": "#3d5b49",
+    "background": "#cee3cf",
+    "ratio": 5.56
+  },
+  {
+    "role": "欢迎区正文",
+    "text": "#715449",
+    "background": "#f7d4cc",
+    "ratio": 4.97
+  }
+]

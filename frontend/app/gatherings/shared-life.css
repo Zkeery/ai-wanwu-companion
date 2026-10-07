@@ -1,0 +1,39 @@
+.hub-page { padding-bottom: 140px; }
+.hub-actions, .hub-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 14px 0; }
+.hub-row { justify-content: space-between; border-bottom: 1px solid #dbcdbb; padding: 10px 0; }
+.hub-columns { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }
+.hub-page .team-panel { margin: 20px 0; min-width: 0; overflow-wrap: anywhere; }
+.hub-page .button { min-height: 44px; white-space: normal; }
+.hub-page .field { display: grid; gap: 8px; margin: 16px 0; }
+.hub-page input:not([type=checkbox]), .hub-page select { min-height: 44px; width: 100%; max-width: 100%; }
+.hub-fields { display: grid; gap: 8px; }
+.hub-item { padding: 16px 0; border-top: 1px solid #dbcdbb; display: grid; gap: 8px; }
+.hub-space-button { text-align: left; cursor: pointer; color: inherit; font: inherit; }
+.hub-world { position: relative; isolation: isolate; min-height: 320px; border-radius: 28px; overflow: hidden; background: linear-gradient(#bce4e0 0 38%, #dce8af 38%); margin: 24px 0; border: 2px solid #e7d4b4; }
+.hub-world-desert { background: linear-gradient(#c0e8ee 0 38%, #efdc9f 38%); }
+.hub-world-forest { background: linear-gradient(#b3d3c5 0 38%, #b9cba3 38%); }
+.hub-world > p { position: relative; z-index: 1; padding: 12px 20px; margin: 28px auto; width: fit-content; max-width: 85%; border-radius: 16px; background: #fffaf0e6; text-align: center; }
+.hub-world-item { position: absolute; z-index: 1; font-size: 38px; transform: translate(-50%,-50%); }
+.hub-world-companion { position: absolute; z-index: 1; display: grid; gap: 3px; padding: 6px; background: #fff9e9ed; border-radius: 16px; border: 1px solid #cfbfa4; width: min(15%, 96px); box-sizing: border-box; overflow-wrap: anywhere; font: inherit; font-size: 12px; color: inherit; text-align: center; cursor: pointer; }
+.hub-world-companion[data-focused=true], .hub-world-companion:focus-within { outline: 3px solid #bd606b; outline-offset: 2px; z-index: 2; }
+.hub-companion-portrait { position: relative; aspect-ratio: 1; width: 100%; min-height: 0; }
+.hub-companion-select { display: grid; gap: 3px; padding: 0; border: 0; background: transparent; font: inherit; color: inherit; cursor: pointer; overflow-wrap: anywhere; }
+.hub-companion-select::after { content: ''; position: absolute; inset: 0; border-radius: 16px; }
+.hub-companion-select:focus-visible { outline: none; }
+.hub-world-companion span { font-size: 28px; }
+.hub-world-companion img { width: 100%; aspect-ratio: 1; height: auto; object-fit: contain; border-radius: 12px; }
+.hub-activity-rest { background: #fff5e4; }
+.hub-activity-talk { border-color: #c45a66; }
+.hub-invitation { border-top: 1px solid #dbcdbb; margin-top: 16px; padding-top: 12px; }
+.activity-layout { position: relative; height: 180px; background: #deebca; border-radius: 18px; margin: 15px 0; }
+.activity-layout span { position: absolute; transform: translate(-50%,-50%); font-size: 28px; }
+.activity-reward { padding: 16px; background: #f7e2a4; border-radius: 16px; }
+.hub-page audio { max-width: 100%; display: block; margin: 16px 0; }
+.hub-companion-detail { margin-top: -8px !important; }
+@media(max-width:760px) { .hub-columns { grid-template-columns: 1fr; gap: 0; } .hub-page .team-panel { padding: 22px 18px; } .hub-world { min-height: 280px; } .hub-world-companion { max-width: 90px; font-size: 11px; } }
+
+.hub-world-home.season-winter { background: linear-gradient(#bed9e7 0 38%, #edf1e2 38%); }
+.hub-world-desert.season-winter { background: linear-gradient(#c4dae4 0 38%, #dcd1ae 38%); }
+.hub-world-forest.season-winter { background: linear-gradient(#b5cad0 0 38%, #cdd8ca 38%); }
+.hub-world.season-autumn { background: linear-gradient(#d4ddce 0 38%, #e1c384 38%); }
+.hub-world.season-summer { background: linear-gradient(#9edfe2 0 38%, #acd187 38%); }

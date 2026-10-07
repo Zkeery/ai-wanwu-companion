@@ -1,0 +1,79 @@
+{
+  "backend": {
+    "exit": 0,
+    "summary": [
+      "96 passed, 2 warnings in 11.12s"
+    ]
+  },
+  "frontend": {
+    "tests": {
+      "exit": 0,
+      "summary": [
+        " Test Files  4 passed (4)",
+        "      Tests  35 passed (35)"
+      ]
+    },
+    "typecheck": {
+      "exit": 0,
+      "summary": []
+    },
+    "lint": {
+      "exit": 0,
+      "summary": []
+    }
+  },
+  "build": {
+    "exit": 0,
+    "summary": [
+      "✓ Compiled successfully in 1114ms"
+    ]
+  },
+  "http_after_restart": {
+    "restarted": true,
+    "new_model_requests": 2,
+    "activities": {
+      "rest": {
+        "list_status": 200,
+        "state": "needs_review",
+        "image_status": 200,
+        "sha256_match": true,
+        "anonymous_status": 401
+      },
+      "observe": {
+        "list_status": 200,
+        "state": "needs_review",
+        "image_status": 200,
+        "sha256_match": true,
+        "anonymous_status": 401
+      }
+    },
+    "walk": {
+      "status": 200,
+      "state": "ready",
+      "pack_id": "90af4205888d48af924422f7c096b068"
+    }
+  },
+  "browser": {
+    "qa_character": 2,
+    "user_character": 4,
+    "real_candidates_loaded": true,
+    "checkboxes_unchecked": true,
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "documentWidth": 390,
+      "imageWidth": 288
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 900,
+      "documentWidth": 1440,
+      "imageWidth": 440
+    },
+    "final_screenshots_available": false,
+    "reason": "CDP Page.captureScreenshot timed out",
+    "window_returned": true
+  },
+  "review_state": "awaiting_user",
+  "phase_complete": false
+}

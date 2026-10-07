@@ -1,0 +1,33 @@
+{
+  "url": "http://127.0.0.1:3046/",
+  "desktop": {
+    "width": 1440,
+    "height": 1000,
+    "hoverPlaying": true,
+    "muted": true,
+    "leaveStops": true,
+    "singleActive": true,
+    "videoMotionRequests": 2,
+    "overflow": false,
+    "nestedLinkButtons": 0
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844,
+    "buttonKeepsHome": true,
+    "muted": true,
+    "scrollOutStops": true,
+    "initialVisibleCardOnly": true,
+    "videoRequestsAfterReenter": 2,
+    "overflow": false,
+    "realDevice": false
+  },
+  "missingStatic": true,
+  "portraitLinkNavigates": true,
+  "detailPlaybackRegression": true,
+  "testsPassed": 416,
+  "typecheck": true,
+  "lint": true,
+  "productionBuild": true,
+  "newModelCalls": 0
+}

@@ -1,0 +1,71 @@
+{
+  "character_id": 4,
+  "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+  "model": "qwen3.8-flash",
+  "max_requests": 1,
+  "budget_yuan": "1.20",
+  "image_requests": 0,
+  "activities": [
+    "rest",
+    "walk"
+  ],
+  "automatic": false,
+  "reason": "现有空间无可观察物件；只在休息与散步中选择",
+  "state": "finished",
+  "new_model_requests": 1,
+  "task_id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+  "authorization_ref": "c169-user-approved-one-plan-cny120-20260929",
+  "elapsed_seconds": 12.48,
+  "snapshot": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "companion_id": "4",
+    "permission": {
+      "enabled": true,
+      "activities": [
+        "rest",
+        "walk"
+      ],
+      "revision": 1
+    },
+    "present": true,
+    "observed_at": 1790674752,
+    "next_allowed_at": 1790675340,
+    "tasks": [
+      {
+        "id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+        "state": "done",
+        "created_at": 1790674740,
+        "retry_at": 0,
+        "activity": "walk",
+        "target_id": null,
+        "error_code": null,
+        "dispatch_requested": false,
+        "reason": "当前时间不在22:00至07:00强制休息时段，且允许活动包含walk，故选择步行。"
+      }
+    ],
+    "automatic": {
+      "enabled": false,
+      "revision": 0,
+      "next_at": 0,
+      "today_count": 0,
+      "daily_limit": 2,
+      "viewing_until": 0,
+      "budget_available": false
+    },
+    "current_activity": {
+      "task_id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+      "activity": "walk",
+      "target_id": null,
+      "started_at": 1790674752,
+      "expires_at": 1790675352,
+      "source": "viewing"
+    }
+  },
+  "budget": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "cap": 1145600,
+    "committed": 1145600
+  }
+}

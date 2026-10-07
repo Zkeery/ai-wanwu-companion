@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-09-28T15:08:51.006Z",
+  "endpoint": "https://api.openai.com/v1/models",
+  "generationRequests": 0,
+  "status": 200,
+  "modelCount": 126,
+  "imageModels": [
+    "gpt-image-1",
+    "gpt-image-2.5-flare",
+    "gpt-image-2-2026-04-21",
+    "gpt-image-1-mini",
+    "gpt-image-2.5-sunburst-2026-09-08",
+    "chatgpt-image-latest",
+    "gpt-image-2",
+    "gpt-image-1.5",
+    "gpt-image-2.5-flare-2026-09-08",
+    "gpt-image-2.5-sunburst"
+  ],
+  "targetVisible": true,
+  "envMode": "600",
+  "gitIgnored": true
+}

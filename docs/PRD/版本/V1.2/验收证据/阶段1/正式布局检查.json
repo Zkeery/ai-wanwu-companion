@@ -1,0 +1,266 @@
+[
+  {
+    "width": 390,
+    "path": "/",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 390,
+    "path": "/companions/3?tab=chat",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 390,
+    "path": "/companions/3?tab=life",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 390,
+    "path": "/companions/3?tab=profile",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 390,
+    "path": "/discover",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "发现"
+  },
+  {
+    "width": 390,
+    "path": "/companions/new",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "创作"
+  },
+  {
+    "width": 768,
+    "path": "/",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 768,
+    "path": "/companions/3?tab=chat",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 768,
+    "path": "/companions/3?tab=life",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 768,
+    "path": "/companions/3?tab=profile",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 768,
+    "path": "/discover",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "发现"
+  },
+  {
+    "width": 768,
+    "path": "/companions/new",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "创作"
+  },
+  {
+    "width": 1280,
+    "path": "/",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1280,
+    "path": "/companions/3?tab=chat",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1280,
+    "path": "/companions/3?tab=life",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1280,
+    "path": "/companions/3?tab=profile",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1280,
+    "path": "/discover",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "发现"
+  },
+  {
+    "width": 1280,
+    "path": "/companions/new",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "创作"
+  },
+  {
+    "width": 1440,
+    "path": "/",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1440,
+    "path": "/companions/3?tab=chat",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1440,
+    "path": "/companions/3?tab=life",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1440,
+    "path": "/companions/3?tab=profile",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "伙伴"
+  },
+  {
+    "width": 1440,
+    "path": "/discover",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "发现"
+  },
+  {
+    "width": 1440,
+    "path": "/companions/new",
+    "overflow": false,
+    "nav": [
+      "伙伴",
+      "创作",
+      "发现"
+    ],
+    "active": "创作"
+  }
+]

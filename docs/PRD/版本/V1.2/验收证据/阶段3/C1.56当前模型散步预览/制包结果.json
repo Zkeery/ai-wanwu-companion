@@ -1,0 +1,7 @@
+{
+  "exit": 1,
+  "elapsed_ms": 408,
+  "output": "{\"error\": {\"code\": \"sheet_pack_invalid\", \"message\": \"分帧动作或输出目录无法核对\"}}",
+  "error": "",
+  "new_generation_requests": 0
+}

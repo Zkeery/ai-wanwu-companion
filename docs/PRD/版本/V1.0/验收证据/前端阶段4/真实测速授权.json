@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-19",
+  "user_instruction": "完成一次真实模型测速，确认生成耗时 ≤30 秒",
+  "scope": "接受已准备且待确认的本轮真实测速方案",
+  "budget_cny": 0.05,
+  "calls": {
+    "text": 2,
+    "image": 1,
+    "vision": 0
+  },
+  "automatic_retries": 0,
+  "price_review": "同日00:34官方价格核对记录仍在；00:46执行前复核配置、预留金额及源代码哈希一致",
+  "isolated": true
+}

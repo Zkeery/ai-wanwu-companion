@@ -1,0 +1,15 @@
+Edit the provided apple character into a 2 by 2 animation contact sheet.
+Preserve exactly the same apple identity, face, leaf, colors, material and limbs.
+Four equally sized 512 by 512 cells, reading top-left, top-right, bottom-left,
+bottom-right. One complete character centered in each cell, same scale, fixed
+camera, same front three-quarter direction and ground baseline, walking in place.
+Frame 1: screen-left foot forward touching ground, screen-right foot back.
+Frame 2: screen-left foot supports the body, screen-right foot passes forward lifted.
+Frame 3: screen-right foot forward touching ground, screen-left foot back.
+Frame 4: screen-right foot supports the body, screen-left foot passes forward lifted.
+Use a small natural alternating arm swing and subtle body bob. Make the four
+poses form a forward walk cycle, including the transition from frame 4 to frame 1.
+Keep each body, leaf, hand and foot inside its own cell with clear empty margins.
+Output actual transparent alpha around every character. Remove the reference
+background. No ground plane, cast shadow, grid, dividers, text, frame numbers,
+watermark or painted checkerboard. Do not draw new objects or extra limbs.

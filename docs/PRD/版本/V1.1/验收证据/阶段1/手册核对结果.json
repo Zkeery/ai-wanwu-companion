@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-21",
+  "scope": "R1 第1阶段技术开发文档核对与补齐",
+  "baseline_commit": "7135f9c",
+  "before_fix": {
+    "new_reproduction_cases": 9,
+    "failed": 9
+  },
+  "after_fix": {
+    "backend_passed": 281,
+    "backend_total": 281,
+    "living_cases": 55,
+    "added_cases": 11,
+    "cross_process_checks_passed": 6,
+    "cross_process_checks_total": 6
+  },
+  "fixed": [
+    "拒绝缺失字段的持久化状态和回执，保留损坏记录",
+    "SQLite 连接池和重连均启用外键及级联清理",
+    "初始化异常统一转换且不暴露 SQL 或路径"
+  ],
+  "existing_data_files_unchanged": 7,
+  "model_calls": 0,
+  "formal_http_or_ui_added": false,
+  "business_database_migrated": false
+}

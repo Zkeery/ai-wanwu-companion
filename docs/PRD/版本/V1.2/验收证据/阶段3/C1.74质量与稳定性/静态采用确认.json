@@ -1,0 +1,15 @@
+{
+  "review_ref": "c174-20261001-five-static-user-adopted",
+  "reviewer": "product_owner",
+  "user_reply": "五类都采用，继续动作",
+  "reviewed_artifact": "真实静态候选桌面.png",
+  "formal_two_rater_calibration": false,
+  "binding_requires_motion_review": true,
+  "candidates": {
+    "object_mug": "5c1f7d00c8464852122f90476b7018ef76bede4d1e793f5ff35598e71030a096",
+    "object_clock": "1963b22dc1e3555d32f0ea28966244b46bbb21d627b72fb4e1e0b7692ecd0856",
+    "object_apple": "bbc6de339fa574f1067aa0058a6bfba73597e0a395611a3732471b10656db898",
+    "plant_pothos": "e1b7940a5181ced5e878275ef89fa55f7004f0ff1279637959b6fd814204bb7d",
+    "plant_succulent": "98b550093cfdf69fcabc3886e29ea696019728de46fafd50f74321846cc681b7"
+  }
+}

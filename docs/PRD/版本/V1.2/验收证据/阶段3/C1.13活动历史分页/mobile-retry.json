@@ -1,0 +1,9 @@
+{
+  "offlineRetainedRows": 25,
+  "online": {
+    "rows": 25,
+    "error": false,
+    "overflow": false,
+    "width": 390
+  }
+}

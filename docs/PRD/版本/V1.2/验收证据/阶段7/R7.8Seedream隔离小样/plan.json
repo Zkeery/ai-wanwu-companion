@@ -1,0 +1,22 @@
+{
+  "protocol_id": "r78-seedream-flash-i2i-offline-v1",
+  "model": "doubao-seedream-5-0-flash-260915",
+  "endpoint": "https://ark.cn-beijing.volces.com/api/v3/images/generations",
+  "order": ["cup", "apple", "plant", "multi", "cup", "apple", "plant", "multi"],
+  "source_manifest_sha256": "6156206ddedb2d84d94090e5e502654428e6807f51b0933ac3197ab23c4d5451",
+  "prompt_sha256": {
+    "cup": "2244ef8201fff1a790db353b8776ecb418e6db0e583d8d444c87e96fac7be964",
+    "apple": "4dea511079a0bfda8882cde20f74838052bbbd126b7d1bda7bf201c6043efbce",
+    "plant": "a55766c141d8f892c7136cb946fcbbef6c6a948898ee11688023eb2333fe990f",
+    "multi": "c5b35bc08ed0e6fedd7ef34c332acbe23789798f037c402c06b49afb0acffa16"
+  },
+  "size": "1024x1024",
+  "response_format": "b64_json",
+  "quoted_output_price_cny": "0.12",
+  "quoted_input_price_cny": "0.00",
+  "price_checked_on": "2026-09-25",
+  "estimated_max_cny": "0.96",
+  "proposed_ceiling_cny": "1.20",
+  "approved_budget_cny": null,
+  "default_real_requests_enabled": false
+}

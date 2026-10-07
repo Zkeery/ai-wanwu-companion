@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-26",
+  "mock": true,
+  "asset_kind": "hand_drawn_fixture",
+  "url": "http://127.0.0.1:3045/motion-preview",
+  "foreground_emulation": "Emulation.setFocusEmulationEnabled",
+  "foreground_emulation_restored": true,
+  "desktop": {
+    "different_body_frames": true,
+    "background_corner_stable": true,
+    "portrait_box_stable": true,
+    "playing_status": "正在跳舞",
+    "leave_status": "动作已就绪，移入形象或点按钮"
+  },
+  "layout_widths": [1440, 768, 390],
+  "horizontal_overflow": false,
+  "button_start": "正在跳舞",
+  "button_stop": "动作已就绪，移入形象或点按钮",
+  "reduced_motion": "已按系统偏好保持静态",
+  "paid_model_calls": 0,
+  "real_photo_animation": "pending",
+  "real_generation_8s": "pending",
+  "real_motion_ready_10s": "pending"
+}

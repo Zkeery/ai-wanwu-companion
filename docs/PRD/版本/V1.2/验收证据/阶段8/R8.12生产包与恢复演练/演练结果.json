@@ -1,0 +1,32 @@
+{
+  "checked_date": "2026-10-01",
+  "phase": "finished",
+  "scope": "local production-shaped configuration and package recovery rehearsal",
+  "backend_tests": {"passed": 73, "total": 73},
+  "frontend_configuration_cases": {"passed": 5, "total": 5},
+  "process_http_checks": {"passed": 13, "total": 13},
+  "frontend_build": true,
+  "frontend_typecheck": true,
+  "frontend_zero_warning_lint": true,
+  "backup": {"tables": 58, "synthetic_files": 1, "verified": true},
+  "restore": {"tables": 58, "synthetic_files": 1, "verified": true, "process_started": true},
+  "post_start_changed_tables": ["sessions"],
+  "post_start_unchanged_tables": 57,
+  "artifacts": [
+    {"name": "backend-source.zip", "members": 319, "bytes": 918055, "sha256": "c5ecc2802fa6403022bc1b04424986208364e6fc0cf4c0267ae61d6f29aabbc5", "credential_matches": 0},
+    {"name": "frontend-source.zip", "members": 247, "bytes": 31751277, "sha256": "7bde4dde09bb7bb18356c919ff26bb41aa6069ac839a145dd51d3b8831e14ecf", "credential_matches": 0},
+    {"name": "frontend-standalone-local.zip", "members": 1503, "bytes": 44112090, "sha256": "e0915825f291decabc7867fcde5d152cc9a2c06a9b74933a6458aa3e3f7d46d7", "credential_matches": 0}
+  ],
+  "original_configuration_hashes_unchanged": true,
+  "original_services_restarted": false,
+  "temporary_sessions_deleted": true,
+  "temporary_workspaces_deleted": true,
+  "temporary_tool_install_deleted": true,
+  "real_sms_sends": 0,
+  "model_calls": 0,
+  "cloud_deployments": 0,
+  "official_cli_packaging_verified": false,
+  "linux_runtime_acceptance": "pending",
+  "real_sms_acceptance": "deferred",
+  "ready_for_cloud_release": false
+}

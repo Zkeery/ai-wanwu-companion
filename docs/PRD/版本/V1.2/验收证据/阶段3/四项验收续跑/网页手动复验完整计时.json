@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "origin": "real_provider",
+  "overflowed": false,
+  "threshold_ms": 8000,
+  "samples": [
+    {
+      "sample_id": "892dbce6-df32-4e1d-a86a-2e2a529db360",
+      "status": "failed",
+      "marks": {
+        "click": 0,
+        "upload_started": 25.700000002980232,
+        "ended": 2030.3999999985099
+      },
+      "final_image_displayed": false,
+      "passes_8000ms": false
+    },
+    {
+      "sample_id": "e3bd63b6-4f88-4c2a-a801-56e7ea060043",
+      "status": "succeeded",
+      "marks": {
+        "click": 0,
+        "upload_started": 87.5,
+        "recognized": 2412.2000000029802,
+        "generation_started": 2426.5,
+        "ready": 14933.70000000298,
+        "ended": 16268.89999999851,
+        "displayed": 16268.89999999851
+      },
+      "upload_to_display_ms": 16181.39999999851,
+      "click_to_display_ms": 16268.89999999851,
+      "passes_8000ms": false
+    }
+  ],
+  "provider_image_ms": 11802.42371559143,
+  "previous_slow_samples_retained": true,
+  "scope": "只有首次拍照完整显示计时；再创作仅保留模型调用分段，不用后台时长代替浏览器完整计时"
+}

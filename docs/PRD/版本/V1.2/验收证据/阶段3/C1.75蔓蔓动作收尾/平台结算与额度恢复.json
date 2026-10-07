@@ -1,0 +1,27 @@
+{
+  "checked_on": "2026-10-02",
+  "source": "https://console.aihubmix.com/async-tasks",
+  "browser": "Chrome",
+  "platform_key_name": "AI万物伙伴-Sunburst",
+  "authorization_ref": "c175-manan-motion-20261002-3calls-0.30usd",
+  "continuation_ref": "c175-manan-motion-20261002-manual-1",
+  "actual_bill_verified": true,
+  "requests": [
+    {"activity": "rest", "task_id": "t_399cd2f46a2d0c5effa40b7c", "requested_at_shanghai": "2026-10-02 15:57:16", "status": "completed", "cost_usd": "0.023030"},
+    {"activity": "walk", "task_id": "t_af76057fe2443e46cb9be3a2", "requested_at_shanghai": "2026-10-02 15:58:11", "status": "completed", "cost_usd": "0.022700"},
+    {"activity": "observe", "task_id": "t_4efa3379a26c2bc5028a29a3", "requested_at_shanghai": "2026-10-02 15:58:56", "status": "completed", "cost_usd": "0.023220"}
+  ],
+  "real_provider_requests": 3,
+  "automatic_retries": 0,
+  "total_platform_cost_usd": "0.068950",
+  "original_budget_cap_usd": "0.30",
+  "reservation_retained_usd": "0.30",
+  "usage_from_provider_response": "empty_usage_not_treated_as_free",
+  "quota_restoration_source": "https://console.aihubmix.com/token",
+  "platform_remaining_quota_after_restore_usd": "0.08",
+  "quota_restoration_verified_in_ui": true,
+  "model_allowlist": ["gpt-image-2.5-sunburst"],
+  "fallback_models": 0,
+  "motion_adopted": false,
+  "motion_bound": false
+}

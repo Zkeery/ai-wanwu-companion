@@ -1,0 +1,17 @@
+{
+  "recorded_on": "2026-10-02",
+  "related_checks": {
+    "passed": 111,
+    "total": 111,
+    "process_exit_code": 0
+  },
+  "evidence_origin": "offline_fixture",
+  "models": 0,
+  "sms": 0,
+  "cloud_requests": 0,
+  "external_notifications": 0,
+  "timers_installed": false,
+  "real_services_restarted": false,
+  "production_activation": "pending",
+  "independent_drill": "独立进程演练结果.json"
+}

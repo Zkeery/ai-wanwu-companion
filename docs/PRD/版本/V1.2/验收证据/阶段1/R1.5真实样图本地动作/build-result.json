@@ -1,0 +1,13 @@
+{
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "frame_count": 24,
+  "fps": 12,
+  "frame_size": [
+    512,
+    384
+  ],
+  "elapsed_ms": 4281,
+  "annotation": "manual",
+  "model_calls": 0,
+  "automatic_pipeline_verified": false
+}

@@ -1,0 +1,40 @@
+{
+  "job_id": "f6cd27c12170ba724e9877b88ad4b1cd35f5bcbfb98ec1d9183e9a4ec04a832f",
+  "character_id": 2,
+  "state": "needs_review",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "prompt_sha256": "c8c33e28630f852bd3804b70dbc957e4ffb1718a6d45f827559334680ca679eb",
+  "candidate_sha256": "39dd60a2bd3b5fb75621cb38ddb2a09bdebc6d808eb79173df21c947135ac5e4",
+  "provider_task_id": "t_c4e3bb863dae1d9b0865511b",
+  "generation_requests": 1,
+  "price_verified_on": "2026-09-29",
+  "usage": {},
+  "quality_check": {
+    "cells": [
+      {
+        "clear_fraction": 0.629902,
+        "native_alpha": true,
+        "visible_fraction": 0.370098
+      },
+      {
+        "clear_fraction": 0.630684,
+        "native_alpha": true,
+        "visible_fraction": 0.369316
+      },
+      {
+        "clear_fraction": 0.631897,
+        "native_alpha": true,
+        "visible_fraction": 0.368103
+      },
+      {
+        "clear_fraction": 0.632828,
+        "native_alpha": true,
+        "visible_fraction": 0.367172
+      }
+    ],
+    "human_review_required": true,
+    "issues": [],
+    "state": "needs_review"
+  },
+  "actual_bill_verified": false
+}

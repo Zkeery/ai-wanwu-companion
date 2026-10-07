@@ -1,0 +1,27 @@
+[
+  {
+    "route": "/scene-preview",
+    "status": 200,
+    "bytes": 9614,
+    "hasPreviewTitle": true,
+    "hasSceneChoices": true,
+    "hasSpringImage": true
+  },
+  {
+    "route": "/seasons/home-four-seasons-v1.png",
+    "status": 200,
+    "bytes": 3983273,
+    "validPng": true
+  },
+  {
+    "route": "/seasons/forest-four-seasons-v1.png",
+    "status": 200,
+    "bytes": 3995541,
+    "validPng": true
+  },
+  {
+    "route": "/api/v1/characters/6/location",
+    "status": 401,
+    "bytes": 58
+  }
+]

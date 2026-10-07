@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-02",
+  "project": "AI万物伙伴",
+  "scope": "static_character_motion_preview_pending_user_scope",
+  "package": "deploy/vercel-preview",
+  "allowed_file_count": 10,
+  "total_bytes": 6597201,
+  "adopted_asset_checks": {
+    "static_sha256_matches": true,
+    "rest_sha256_matches": true,
+    "walk_sha256_matches": true,
+    "observe_sha256_matches": true
+  },
+  "javascript_syntax_exit_code": 0,
+  "config_json_valid": true,
+  "project_secret_value_matches": 0,
+  "private_database_or_chat_included": false,
+  "external_api_requests_in_page": 0,
+  "actual_model_calls": 0,
+  "actual_sms_calls": 0,
+  "paid_resources_created": 0,
+  "github_repository_created": false,
+  "vercel_project_created": false,
+  "public_url": null,
+  "chrome_visual_and_playback_check": "pending_user_browser_control",
+  "vercel_login": "pending_user_phone_verification",
+  "personal_or_full_or_commercial_scope": "pending_user_reply",
+  "existing_live_backend_or_frontend_restarted": false,
+  "full_application_deployed": false
+}

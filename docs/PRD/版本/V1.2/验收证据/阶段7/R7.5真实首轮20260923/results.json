@@ -1,0 +1,422 @@
+{
+  "protocol_id": "r75-candidate-pilot-v1",
+  "mock": false,
+  "started_at": "2026-09-23T10:49:13.768942+08:00",
+  "price_verified_on": "2026-09-23",
+  "status": "completed",
+  "budget_cny": 2,
+  "reserved_cny": 0.768,
+  "source_sha256": "333264751a4df43fd5565ce405d990696e5730686a64572fe867e342298fbd94",
+  "source_kind": "synthetic_illustration_not_photo",
+  "source_files": {
+    "backend/scripts/compare_generation_candidates.py": "7c279de85ae2d04858f76585c8e3a21e7494984caa8ebd5f35e5d2304fe168d7",
+    "backend/app/services/prompts.py": "6f411a3c8bc52d12a0ffb589ec93b30ceac4c0dfc6c0e8e270cbd0a0c8e77390",
+    "backend/app/services/appearance.py": "ce787e7672b87bf6ed26c5f0c564012ebe9e68b3273b6363fd1a80238f47616a",
+    "backend/app/services/parsers.py": "51ff85fe0155e93eb02e12a69cacdffd6dbf01ead76a9c517ee6bb0a5d957606"
+  },
+  "schedule": [
+    [
+      "ling-3.0-flash-vl",
+      "wan2.6-t2i",
+      1
+    ],
+    [
+      "ling-3.0-flash-vl",
+      "wan2.6-t2i",
+      2
+    ],
+    [
+      "ling-3.0-flash-vl",
+      "qwen-image-plus",
+      1
+    ],
+    [
+      "ling-3.0-flash-vl",
+      "qwen-image-plus",
+      2
+    ],
+    [
+      "qwen3.8-flash",
+      "wan2.6-t2i",
+      1
+    ],
+    [
+      "qwen3.8-flash",
+      "wan2.6-t2i",
+      2
+    ],
+    [
+      "qwen3.8-flash",
+      "qwen-image-plus",
+      1
+    ],
+    [
+      "qwen3.8-flash",
+      "qwen-image-plus",
+      2
+    ]
+  ],
+  "calls": [
+    {
+      "sample_id": "pilot-01",
+      "model": "ling-3.0-flash-vl",
+      "status": "responded",
+      "reserved_cny": 0.0,
+      "http_status": 200,
+      "response_model": "Ling-3.0-flash-VL-DTMaaS:free",
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 194,
+        "total_tokens": 619
+      },
+      "elapsed_ms": 6900.475957999788
+    },
+    {
+      "sample_id": "pilot-01",
+      "model": "wan2.6-t2i",
+      "status": "responded",
+      "reserved_cny": 0.016,
+      "http_status": 200,
+      "response_model": null,
+      "usage": {
+        "total_tokens": 0
+      },
+      "elapsed_ms": 11698.59812499999
+    },
+    {
+      "sample_id": "pilot-02",
+      "model": "ling-3.0-flash-vl",
+      "status": "responded",
+      "reserved_cny": 0.0,
+      "http_status": 200,
+      "response_model": "Ling-3.0-flash-VL-DTMaaS:free",
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 164,
+        "total_tokens": 589
+      },
+      "elapsed_ms": 3039.656708000166
+    },
+    {
+      "sample_id": "pilot-02",
+      "model": "wan2.6-t2i",
+      "status": "responded",
+      "reserved_cny": 0.016,
+      "http_status": 200,
+      "response_model": null,
+      "usage": {
+        "total_tokens": 0
+      },
+      "elapsed_ms": 9260.808250000082
+    },
+    {
+      "sample_id": "pilot-03",
+      "model": "ling-3.0-flash-vl",
+      "status": "failed",
+      "reserved_cny": 0.0,
+      "error_type": "ConnectError",
+      "elapsed_ms": 7386.492582999836
+    },
+    {
+      "sample_id": "pilot-04",
+      "model": "ling-3.0-flash-vl",
+      "status": "responded",
+      "reserved_cny": 0.0,
+      "http_status": 200,
+      "response_model": "Ling-3.0-flash-VL-DTMaaS:free",
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 175,
+        "total_tokens": 600
+      },
+      "elapsed_ms": 4467.381957999805
+    },
+    {
+      "sample_id": "pilot-04",
+      "model": "qwen-image-plus",
+      "status": "responded",
+      "reserved_cny": 0.2,
+      "http_status": 200,
+      "response_model": null,
+      "usage": {},
+      "elapsed_ms": 8820.596291000129
+    },
+    {
+      "sample_id": "pilot-05",
+      "model": "qwen3.8-flash",
+      "status": "failed",
+      "reserved_cny": 0.08,
+      "error_type": "ReadTimeout",
+      "elapsed_ms": 66891.54620799991
+    },
+    {
+      "sample_id": "pilot-06",
+      "model": "qwen3.8-flash",
+      "status": "responded",
+      "reserved_cny": 0.08,
+      "http_status": 200,
+      "response_model": "qwen3.8-flash",
+      "usage": {
+        "prompt_tokens": 472,
+        "completion_tokens": 649,
+        "total_tokens": 1121
+      },
+      "elapsed_ms": 12285.451374999866
+    },
+    {
+      "sample_id": "pilot-06",
+      "model": "wan2.6-t2i",
+      "status": "responded",
+      "reserved_cny": 0.016,
+      "http_status": 200,
+      "response_model": null,
+      "usage": {
+        "total_tokens": 0
+      },
+      "elapsed_ms": 10234.610125000017
+    },
+    {
+      "sample_id": "pilot-07",
+      "model": "qwen3.8-flash",
+      "status": "responded",
+      "reserved_cny": 0.08,
+      "http_status": 200,
+      "response_model": "qwen3.8-flash",
+      "usage": {
+        "prompt_tokens": 472,
+        "completion_tokens": 444,
+        "total_tokens": 916
+      },
+      "elapsed_ms": 14709.485709000091
+    },
+    {
+      "sample_id": "pilot-07",
+      "model": "qwen-image-plus",
+      "status": "responded",
+      "reserved_cny": 0.2,
+      "http_status": 200,
+      "response_model": null,
+      "usage": {},
+      "elapsed_ms": 7149.368417000005
+    },
+    {
+      "sample_id": "pilot-08",
+      "model": "qwen3.8-flash",
+      "status": "failed",
+      "reserved_cny": 0.08,
+      "error_type": "RemoteProtocolError",
+      "elapsed_ms": 38439.65970900035
+    }
+  ],
+  "samples": [
+    {
+      "sample_id": "pilot-01",
+      "vision": "ling-3.0-flash-vl",
+      "image": "wan2.6-t2i",
+      "repeat": 1,
+      "connection": "cold",
+      "status": "succeeded",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 4.29604200007816,
+        "vision": 6902.3084579998795,
+        "image_post": 11699.887166999815,
+        "download": 2054.4444170000133,
+        "decode": 18.530750000081753
+      },
+      "recognized": {
+        "label": "杯子",
+        "visual_features": "浅蓝色圆柱形杯身，深蓝色轮廓线，右侧半圆把手。杯口深棕色液体，底部浅灰色阴影。",
+        "concept": {
+          "name": "小蓝",
+          "persona": "总是慢悠悠地散发热气，性格温吞又治愈。",
+          "opening_line": "早上好呀，要尝尝我刚煮好的温暖吗？",
+          "appearance_description": "圆滚滚的浅蓝色杯身，右侧带着半圆把手。杯口有一圈深蓝边，里面盛着深棕色液体。表面光滑，像个软萌的小胖子。"
+        },
+        "category": "object"
+      },
+      "image_prompt_sha256": "828a89cc5ede1b6e31310784827cb11ebe64985ebeed7cd98c428acca24b83f2",
+      "artifact": "pilot-01.png",
+      "image_sha256": "9629f7c0ac4990ff9b59266d17793653ba827755ca40ae69e5ffe4344b3f263c",
+      "local_total_ms": 20681.069208999816,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-02",
+      "vision": "ling-3.0-flash-vl",
+      "image": "wan2.6-t2i",
+      "repeat": 2,
+      "connection": "warm",
+      "status": "succeeded",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 0.795625000137079,
+        "vision": 3041.259708000325,
+        "image_post": 9263.047832999746,
+        "download": 2010.7368339999994,
+        "decode": 17.452999999932217
+      },
+      "recognized": {
+        "label": "杯子",
+        "visual_features": "浅蓝色圆柱形杯身，右侧有半圆把手，杯口深棕色液体，深蓝轮廓线，光滑质感。",
+        "concept": {
+          "name": "小蓝",
+          "persona": "总是慢悠悠地散发温暖，安静陪伴每一个清晨与深夜。",
+          "opening_line": "嘿，今天想喝点热的还是冷的呢？",
+          "appearance_description": "浅蓝色圆柱形身体，右侧带半圆把手，杯口有一圈深蓝边。表面光滑，像软胶或陶瓷。里面装着深棕色液体。表情温和，姿态稳稳地坐在地上。"
+        },
+        "category": "object"
+      },
+      "image_prompt_sha256": "9d8c767f95951e022337baeac97a01ba462f70c4b6337ea0af7f81e70cac4cb4",
+      "artifact": "pilot-02.png",
+      "image_sha256": "4b2ba6a260a30bc68ebdbb88e1749789f063eebae1c845d307ab035e4faf88c7",
+      "local_total_ms": 14334.70487500017,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-03",
+      "vision": "ling-3.0-flash-vl",
+      "image": "qwen-image-plus",
+      "repeat": 1,
+      "connection": "cold",
+      "status": "failed",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 0.8493750001434819
+      },
+      "error_type": "ConnectError",
+      "local_total_ms": 7389.5189999998365,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-04",
+      "vision": "ling-3.0-flash-vl",
+      "image": "qwen-image-plus",
+      "repeat": 2,
+      "connection": "warm",
+      "status": "succeeded",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 1.0472499998286366,
+        "vision": 4469.001458000093,
+        "image_post": 8822.15479200022,
+        "download": 3936.0024579996207,
+        "decode": 19.50408399989101
+      },
+      "recognized": {
+        "label": "杯子",
+        "visual_features": "浅青蓝色圆柱形杯身，右侧带半圆环形把手，杯口深棕色液体，边缘深蓝轮廓线，光滑质感。",
+        "concept": {
+          "name": "小蓝",
+          "persona": "总是慢悠悠地散发热气，性格温吞又治愈的小家伙。",
+          "opening_line": "呼……趁热喝一口吧，今天也要暖暖的哦。",
+          "appearance_description": "浅青蓝色圆柱形陶瓷身体，右侧带着半圆把手，杯口有一圈深蓝边。里面盛着深棕色液体，头顶常飘着白色热气。表情温和眯眼，材质光滑有光泽。"
+        },
+        "category": "object"
+      },
+      "image_prompt_sha256": "adb93fbf86a033f68d835716c3403ec87ce56b27a47d75c537d44bcf1f57db59",
+      "artifact": "pilot-04.png",
+      "image_sha256": "367941676650b0bc2fc950ea0bb0fc835f0aae4521b219b32372430ecdcf81c8",
+      "local_total_ms": 17249.143667000226,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-05",
+      "vision": "qwen3.8-flash",
+      "image": "wan2.6-t2i",
+      "repeat": 1,
+      "connection": "cold",
+      "status": "failed",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 0.8475829999952111
+      },
+      "error_type": "ReadTimeout",
+      "local_total_ms": 66894.99308299992,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-06",
+      "vision": "qwen3.8-flash",
+      "image": "wan2.6-t2i",
+      "repeat": 2,
+      "connection": "warm",
+      "status": "succeeded",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 2.154666000024008,
+        "vision": 12288.152125000124,
+        "image_post": 10236.113625000144,
+        "download": 1426.8103750000591,
+        "decode": 17.891207999582548
+      },
+      "recognized": {
+        "label": "杯子",
+        "visual_features": "薄荷绿/青绿色杯身，圆柱形带圆角，表面光滑呈陶瓷质感；右侧有一个同色环形把手；杯口有一圈白色边缘，内盛深棕色液体；杯底下方有浅灰色椭圆形投影。",
+        "concept": {
+          "name": "薄荷暖暖杯",
+          "persona": "温柔又有点黏人，最爱用香气静静陪伴疲惫的人。",
+          "opening_line": "累了吧？捧着我，让这口温热慢慢暖到你心里。",
+          "appearance_description": "保留薄荷绿的圆润杯身与右侧环形把手，把手化作一只短胖手臂；杯口白边像一圈软绒领，深棕液面是头顶的咖啡色小贝雷帽；光滑陶瓷材质，脸颊两团淡粉腮红，弯弯笑眼，身体微微前倾，做出递出拥抱的姿态。"
+        },
+        "category": "object"
+      },
+      "image_prompt_sha256": "c5357f1ef1905907a6d019ec4f6b8afc64a6bdaeede1094ef5a4570f3ab39755",
+      "artifact": "pilot-06.png",
+      "image_sha256": "d76bb74bf58875b9e5294a0b923a7cd1d00e3401c537f8b7e3ef069edaceac95",
+      "local_total_ms": 23972.921625000254,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-07",
+      "vision": "qwen3.8-flash",
+      "image": "qwen-image-plus",
+      "repeat": 1,
+      "connection": "cold",
+      "status": "succeeded",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 0.7185410004240111,
+        "vision": 14711.116749999746,
+        "image_post": 7151.523624999754,
+        "download": 2772.2346660002586,
+        "decode": 19.512791999659385
+      },
+      "recognized": {
+        "label": "杯子",
+        "visual_features": "青绿色像素风格杯身，整体呈圆角矩形，杯口为椭圆形开口，内盛深褐色液体，右侧带半圆形把手，杯底下方有一块浅灰色投影。",
+        "concept": {
+          "name": "小绿杯",
+          "persona": "温和又治愈，最爱用一杯热饮悄悄陪伴疲惫的人。",
+          "opening_line": "嘿，今天有点凉，让我捧一杯热热的给你暖暖手吧。",
+          "appearance_description": "保留青绿色像素方块质感与圆角矩形轮廓，杯口深褐色液体化作一顶软帽，右侧把手变成短短的手臂，底部投影成两只小脚。眯眼微笑，脸颊带一点暖色，姿态端正而放松，整体像一团会呼吸的温热。"
+        },
+        "category": "object"
+      },
+      "image_prompt_sha256": "268890c06cc62a4c9b02635abe355cc9ab41c39e44aa7f5b58842d98dbd21a70",
+      "artifact": "pilot-07.png",
+      "image_sha256": "ab67951359ddbe4d9e16c7974e38d8d51cf01d4b2d6b792653d9576fe8a936b9",
+      "local_total_ms": 24656.697291,
+      "local_within_8s": false
+    },
+    {
+      "sample_id": "pilot-08",
+      "vision": "qwen3.8-flash",
+      "image": "qwen-image-plus",
+      "repeat": 2,
+      "connection": "warm",
+      "status": "failed",
+      "quality": "NEED_REVIEW",
+      "timings_ms": {
+        "preprocess": 0.7128749998628336
+      },
+      "error_type": "RemoteProtocolError",
+      "local_total_ms": 38549.296457999844,
+      "local_within_8s": false
+    }
+  ],
+  "selection_passed": false,
+  "release_passed": false,
+  "timing_scope": "local preprocessing -> actual image download and decode; excludes browser",
+  "limitation": "8 pilot runs and one illustration cannot establish broad quality or stability."
+}

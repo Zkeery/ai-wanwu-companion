@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "overflowed": false,
+  "samples": [
+    {
+      "sample_id": "87ffb456-7dba-457e-b51b-71f180baf4ca",
+      "status": "succeeded",
+      "marks": {
+        "click": 0,
+        "upload_started": 57.29999999701977,
+        "recognized": 85.29999999701977,
+        "generation_started": 92.20000000298023,
+        "ready": 131.40000000596046,
+        "ended": 1013.9000000059605,
+        "displayed": 1013.9000000059605
+      }
+    },
+    {
+      "sample_id": "826dd9cb-8cdd-41a2-b438-ef27329fc355",
+      "status": "failed",
+      "marks": {
+        "click": 0,
+        "upload_started": 59.400000005960464,
+        "ended": 70.40000000596046
+      }
+    },
+    {
+      "sample_id": "556bcdea-57f6-4cb5-bb21-dc555bcecbac",
+      "status": "succeeded",
+      "marks": {
+        "click": 0,
+        "upload_started": 63.20000000298023,
+        "recognized": 121.5,
+        "generation_started": 137.40000000596046,
+        "ready": 177.70000000298023,
+        "ended": 7025.100000008941,
+        "displayed": 7025.100000008941
+      }
+    }
+  ]
+}

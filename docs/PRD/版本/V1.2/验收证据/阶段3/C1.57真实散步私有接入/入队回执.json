@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "output": "{\"character_id\": 18, \"space_id\": \"b86c86b3-1fd0-49d8-86a4-a44b420ecb87\", \"source_sha256\": \"7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c\", \"queue\": {\"activity\": \"walk\", \"state\": \"queued\", \"written\": true}, \"preparation\": {\"character_id\": 18, \"activities\": [{\"activity\": \"rest\", \"state\": \"waiting_source\", \"attempts\": 0, \"error_code\": null}, {\"activity\": \"walk\", \"state\": \"queued\", \"attempts\": 0, \"error_code\": null}, {\"activity\": \"observe\", \"state\": \"waiting_source\", \"attempts\": 0, \"error_code\": null}]}, \"new_model_requests\": 0, \"url\": \"http://127.0.0.1:3049/companions/18/scenes/desert/b86c86b3-1fd0-49d8-86a4-a44b420ecb87\"}",
+  "error": ""
+}

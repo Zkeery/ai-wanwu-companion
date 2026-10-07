@@ -1,0 +1,7 @@
+{
+  "exit": 1,
+  "summary": [
+    "FAILED tests/test_character_walk_workflow.py::test_review_rejects_changed_identity_or_bytes[owner]",
+    "1 failed, 19 passed in 3.70s"
+  ]
+}

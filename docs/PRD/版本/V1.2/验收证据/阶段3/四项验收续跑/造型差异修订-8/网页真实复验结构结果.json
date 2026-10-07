@@ -1,0 +1,161 @@
+{
+  "checks": {
+    "same_photo_and_features": true,
+    "independent_character_and_object": true,
+    "original_chat_preserved": true,
+    "no_mock_reply": true,
+    "two_business_charges": true,
+    "six_unapproved_motion_requests": true,
+    "new_image_bytes": true
+  },
+  "characters": [
+    {
+      "id": 6,
+      "name": "斑斑",
+      "persona": "温柔腼腆的小治愈者，总是不自觉地舒展叶片想靠近你。",
+      "opening_line": "嗨……我努力长出了更多白色斑纹，想和你一起发光呢。",
+      "image_path": "characters/08694a9f824b44dd8f945ac77acc1498.png",
+      "status": "ready",
+      "object_id": 7,
+      "photo_id": 6,
+      "visual_features": "红棕色圆形塑料花盆，盆内土壤深褐；叶片心形，奶白色底布有不规则翠绿斑块与细碎绿点，叶面光滑带自然蜡质光泽；叶柄浅绿偏白，藤蔓向四周自然伸展。",
+      "image_sha256": "772a3e6fa4e9c4afdca35f7b1e28cdafaa3569a4fe9a2c3377b74d9849ca6737"
+    },
+    {
+      "id": 8,
+      "name": "蔓蔓跳跳",
+      "persona": "活泼好动的小探险家，喜欢把藤蔓当跳绳甩来甩去，眼神灵动好奇，充满对世界的新鲜感。",
+      "opening_line": "嘿！你看我的新发型怎么样？刚才我试着用叶子编了个绳结，虽然有点乱糟糟的，但我觉得超酷！",
+      "image_path": "characters/f2602752060a441e9288601de1679d42.png",
+      "status": "ready",
+      "object_id": 10,
+      "photo_id": 6,
+      "visual_features": "红棕色圆形塑料花盆，盆内土壤深褐；叶片心形，奶白色底布有不规则翠绿斑块与细碎绿点，叶面光滑带自然蜡质光泽；叶柄浅绿偏白，藤蔓向四周自然伸展。",
+      "image_sha256": "71f696a59e82f0e549ac2fc0326edc84861b179636b6bd97f9497f74c84b7863"
+    }
+  ],
+  "source_photo_sha256": "75faa3c9f23412300fbe91b0f546927819e085cbbc6c9a2bb1951a53eeb4faec",
+  "chat_message_count": 2,
+  "chat_sha256": "e9343dba543840899e38d8f5f734931fc7b9524fdfc11af3177d33ce004f92e5",
+  "motions": [
+    {
+      "character_id": 6,
+      "activity": "observe",
+      "state": "waiting_authorization",
+      "approval_ref": null
+    },
+    {
+      "character_id": 6,
+      "activity": "rest",
+      "state": "waiting_authorization",
+      "approval_ref": null
+    },
+    {
+      "character_id": 6,
+      "activity": "walk",
+      "state": "waiting_authorization",
+      "approval_ref": null
+    },
+    {
+      "character_id": 8,
+      "activity": "observe",
+      "state": "waiting_authorization",
+      "approval_ref": null
+    },
+    {
+      "character_id": 8,
+      "activity": "rest",
+      "state": "waiting_authorization",
+      "approval_ref": null
+    },
+    {
+      "character_id": 8,
+      "activity": "walk",
+      "state": "waiting_authorization",
+      "approval_ref": null
+    }
+  ],
+  "charges": [
+    {
+      "character_id": 6,
+      "status": "spent"
+    },
+    {
+      "character_id": 8,
+      "status": "spent"
+    }
+  ],
+  "human_visual_acceptance": "pending",
+  "source_photo_storage": "原照片不保存；通过请求摘要、photo_id与特征文字核对同图",
+  "model_calls": [
+    {
+      "kind": "vision",
+      "model": "ling-3.0-flash-vl",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 1873.9619255065918
+    },
+    {
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 11802.42371559143
+    },
+    {
+      "kind": "text",
+      "model": "qwen3.8-flash",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 1342.6108360290527
+    },
+    {
+      "kind": "text",
+      "model": "qwen3.8-flash",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 11384.95397567749
+    },
+    {
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 11558.59398841858
+    },
+    {
+      "kind": "text",
+      "model": "qwen3.8-flash",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 9667.831182479858
+    },
+    {
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "outcome": "succeeded",
+      "http_status": 200,
+      "elapsed_ms": 13103.640079498291
+    }
+  ],
+  "budgets": {
+    "original": {
+      "authorized": true,
+      "requests": 1,
+      "reserved_cny": 0.2,
+      "budget_cny": 5.0,
+      "requests_max": 12,
+      "paused": true,
+      "automatic_retries": 0
+    },
+    "recovery": {
+      "authorized": true,
+      "requests": 7,
+      "reserved_cny": 3.6848,
+      "budget_cny": 4.8,
+      "requests_max": 11,
+      "paused": false,
+      "automatic_retries": 0
+    }
+  }
+}

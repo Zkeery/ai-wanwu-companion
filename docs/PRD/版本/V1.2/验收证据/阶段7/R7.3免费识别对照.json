@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-22",
+  "mode": "real",
+  "model": "ling-3.0-flash-vl",
+  "price_cny": 0,
+  "free_until": "2026-09-24T10:00:00+08:00",
+  "price_source": "https://maas.antdigital.com/models/modelservice-1788265478122001738",
+  "sample_sha256": "9770eec84ef1004f6d70e0f888b35dcdb7783a1cc767307f57fed74d2d68ec50",
+  "prompt_sha256": "d74fcbce4566613654feba72f86311104878c28667ab6326120867875252e954",
+  "max_calls": 4,
+  "retries": 0,
+  "max_tokens": 4096,
+  "image_calls": 0,
+  "database_writes": 0,
+  "calls": [
+    {
+      "variant": "default",
+      "status": "failed",
+      "started_at": "2026-09-22T14:49:44.548514+08:00",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "reasoning_chars": 1117,
+      "content_chars": 2,
+      "usage": {
+        "prompt_tokens": 376,
+        "completion_tokens": 274,
+        "total_tokens": 650
+      },
+      "error_type": "ParseError",
+      "elapsed_ms": 5917.3
+    },
+    {
+      "variant": "disabled",
+      "status": "failed",
+      "started_at": "2026-09-22T14:49:50.468323+08:00",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "reasoning_chars": 0,
+      "content_chars": 312,
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 144,
+        "total_tokens": 521
+      },
+      "error_type": "ParseError",
+      "elapsed_ms": 2838.4
+    },
+    {
+      "variant": "disabled",
+      "status": "succeeded",
+      "started_at": "2026-09-22T14:49:53.310054+08:00",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "reasoning_chars": 0,
+      "content_chars": 419,
+      "usage": {
+        "prompt_tokens": 377,
+        "completion_tokens": 180,
+        "total_tokens": 557
+      },
+      "structured_valid": true,
+      "primary_has_concept": true,
+      "recognized_cup": false,
+      "elapsed_ms": 6159.0
+    },
+    {
+      "variant": "default",
+      "status": "failed",
+      "started_at": "2026-09-22T14:49:59.478174+08:00",
+      "error_type": "ReadTimeout",
+      "elapsed_ms": 62010.1
+    }
+  ],
+  "release_passed": false
+}

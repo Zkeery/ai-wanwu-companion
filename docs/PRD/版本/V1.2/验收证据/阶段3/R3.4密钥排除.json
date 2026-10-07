@@ -1,0 +1,7 @@
+{
+  "scope": "project tracked/untracked source and isolated R3.4 production build",
+  "source_files": 1382,
+  "build_files": 1739,
+  "known_secret_matches": 0,
+  "tracked_env_files": 0
+}

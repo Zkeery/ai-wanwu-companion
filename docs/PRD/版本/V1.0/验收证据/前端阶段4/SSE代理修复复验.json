@@ -1,0 +1,42 @@
+{
+  "diagnostic": {
+    "headers": {
+      "cache-control": "no-cache, no-transform",
+      "connection": "keep-alive",
+      "content-type": "text/event-stream; charset=utf-8",
+      "date": "Fri, 18 Sep 2026 16:34:13 GMT",
+      "server": "uvicorn",
+      "transfer-encoding": "chunked",
+      "x-accel-buffering": "no"
+    },
+    "chunks": [
+      {
+        "ms": 22051,
+        "events": [
+          "event: started"
+        ]
+      },
+      {
+        "ms": 22051,
+        "events": [
+          "event: chunk"
+        ]
+      },
+      {
+        "ms": 22051,
+        "events": [
+          "event: chunk"
+        ]
+      },
+      {
+        "ms": 22051,
+        "events": [
+          "event: done"
+        ]
+      }
+    ],
+    "passed": false
+  },
+  "timing_valid": false,
+  "reason": "context-mode 的 fetch 返回前缓冲完整响应，直连也显示22秒才收到首块；不能用于流式首块计时。保留原始失败记录。有效结论见 SSE代理真实流复验.json 及 Chrome 截图。"
+}

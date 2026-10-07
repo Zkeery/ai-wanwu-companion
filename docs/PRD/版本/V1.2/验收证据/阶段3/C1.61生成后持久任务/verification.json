@@ -1,0 +1,21 @@
+{
+  "backend": {
+    "passed": 1581,
+    "total": 1581,
+    "warnings": 2
+  },
+  "frontend_related": {
+    "passed": 99,
+    "total": 99
+  },
+  "typecheck": true,
+  "lint": true,
+  "production_build": true,
+  "browser": {
+    "desktop": true,
+    "mobile_viewport": "390x844",
+    "same_request_after_backend_restart": true
+  },
+  "new_provider_requests": 0,
+  "new_cost": 0
+}

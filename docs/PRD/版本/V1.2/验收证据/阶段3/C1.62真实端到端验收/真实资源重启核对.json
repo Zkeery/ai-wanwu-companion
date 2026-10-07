@@ -1,0 +1,21 @@
+{
+  "before": {
+    "metadata_status": 200,
+    "resource_status": 200,
+    "pack_id": "30acec38704a430891f6b9186134c462",
+    "sprite_sha256": "a2d1ac2c186dd357ae570441016b98c66b3357090488dc675a9678ce910c0c58",
+    "frames": 16,
+    "fps": 8
+  },
+  "after": {
+    "metadata_status": 200,
+    "resource_status": 200,
+    "pack_id": "30acec38704a430891f6b9186134c462",
+    "sprite_sha256": "a2d1ac2c186dd357ae570441016b98c66b3357090488dc675a9678ce910c0c58",
+    "frames": 16,
+    "fps": 8
+  },
+  "same_asset": true,
+  "anonymous_status": 401,
+  "restarted_backend_port": 8048
+}

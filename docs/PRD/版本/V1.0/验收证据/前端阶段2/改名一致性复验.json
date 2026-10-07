@@ -1,0 +1,9 @@
+{
+  "issue": "真实冒烟中改名后opening_line仍自称米圆",
+  "fix": "同步开场白中明确自称的名字，保留人设与历史消息",
+  "test": "test_rename_updates_real_smoke_self_introduction_without_rewriting_history",
+  "result": "PASS",
+  "backendTests": 130,
+  "additionalModelCalls": 0,
+  "originalEvidenceUnchanged": true
+}

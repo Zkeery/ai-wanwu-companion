@@ -1,0 +1,10 @@
+{
+  "mode": "built-in image_gen",
+  "edit_target": "frontend/public/oasis/terrain.png",
+  "base": "Use case: lighting-weather. Edit target: attached existing 1536x1024 landscape desert game background. Produce ONE full landscape image with same 3:2 aspect ratio, same fixed slightly elevated camera, EXACT same terrain geometry, framing, rock placement and huge empty sandy central play area. Keep original charming high-detail miniature 3D game art, consistent texture scale and lighting direction. Change ONLY seasonal lighting and tiny natural edge vegetation. No furniture, trees in play area, pond, buildings, people, creatures, signs, text, overlays, UI, watermark, collage or panels. Preserve the broad central empty sand so separately rendered game props remain legible.",
+  "variants": {
+    "spring": "EARLY SPRING: gentle clear morning light, a slightly cooler pale sky, sparse fresh green shoots and a few tiny cream/pink desert flowers ONLY tucked into existing edge shrubs and rocky margins. Sand remains warm cream. Desert remains arid, never a grassland.",
+    "autumn": "AUTUMN: mellow amber late-afternoon light, subtly copper and ochre dry edge shrubs, a few tiny dry leaves restricted to rocky edges. Keep warm natural sandstone, slightly deeper soft shadows. A tranquil desert autumn, no new trees and no carpet of leaves.",
+    "winter": "WINTER: crisp pale winter daylight, softly desaturated beige sand, cool blue-gray shade on the same rocks and distant ridges, sparse muted sage edge shrubs. Dry desert winter, NO snow, frost, ice or rain. Bright and welcoming, not gloomy."
+  }
+}

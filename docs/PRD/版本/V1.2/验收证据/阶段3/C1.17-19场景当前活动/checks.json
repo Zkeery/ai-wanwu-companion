@@ -1,0 +1,12 @@
+{
+  "backend": 0,
+  "frontend": 0,
+  "lint": 0,
+  "typecheck": 0,
+  "build": 0,
+  "backendTests": 1351,
+  "frontendTests": 613,
+  "secretMatches": 0,
+  "scannedFiles": 63,
+  "generatedConfigRestored": true
+}

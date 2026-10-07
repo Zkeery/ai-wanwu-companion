@@ -1,0 +1,38 @@
+{
+  "status": "verified",
+  "new_model_requests": 0,
+  "checks": {
+    "tables": true,
+    "files": true,
+    "original_budget": true,
+    "active_budget": true,
+    "sqlite_integrity": true,
+    "loaded_direction": true,
+    "real_provider": true
+  },
+  "tables": 71,
+  "files": 84,
+  "appearance_style_id": "whimsical-object-spirit-v2",
+  "excluded_session_fields": [
+    "last_seen_at",
+    "expires_at"
+  ],
+  "budget_before": {
+    "authorized": true,
+    "requests": 9,
+    "reserved_cny": 4.8464,
+    "budget_cny": 4.85,
+    "requests_max": 11,
+    "paused": true,
+    "automatic_retries": 0
+  },
+  "budget_after": {
+    "authorized": true,
+    "requests": 9,
+    "reserved_cny": 4.8464,
+    "budget_cny": 4.85,
+    "requests_max": 11,
+    "paused": true,
+    "automatic_retries": 0
+  }
+}

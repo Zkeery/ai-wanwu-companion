@@ -1,0 +1,29 @@
+{
+  "mock": true,
+  "ports": [
+    3022,
+    8022
+  ],
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "parallel_stage_visible": true,
+  "reload_during_generation": true,
+  "recovered_ready_after_manual_query": true,
+  "generation_posts_before_api_probes": 1,
+  "no_repeat_generation": true,
+  "original_user_qa_preserved": "3021/8021",
+  "screenshots": [
+    "并行等待-1440.png",
+    "并行等待-390.png",
+    "刷新恢复-生成中.png",
+    "刷新恢复-完成.png"
+  ]
+}

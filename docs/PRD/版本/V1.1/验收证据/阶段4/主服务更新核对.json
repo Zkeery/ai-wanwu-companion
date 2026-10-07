@@ -1,0 +1,9 @@
+{
+  "original_data_unchanged": true,
+  "changed_tables": [],
+  "characters": 8,
+  "spaces": 8,
+  "agent_enabled": false,
+  "quota_enabled": false,
+  "backup": ".runtime/backups/before-r4-20260921.db"
+}

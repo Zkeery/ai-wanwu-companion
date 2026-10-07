@@ -1,0 +1,111 @@
+{
+  "mock": true,
+  "provider_calls": 0,
+  "passed": true,
+  "transport": "real TCP via Next proxy; mock response delayed 80ms per character",
+  "headers": {
+    "date": "Fri, 18 Sep 2026 17:19:18 GMT",
+    "server": "uvicorn",
+    "cache-control": "no-cache, no-transform",
+    "x-accel-buffering": "no",
+    "content-type": "text/event-stream; charset=utf-8",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive"
+  },
+  "events": [
+    {
+      "event": "chunk",
+      "seconds": 0.121
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.201
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.286
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.371
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.457
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.54
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.626
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.712
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.796
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.878
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.96
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.044
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.127
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.212
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.293
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.378
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.46
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.543
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.629
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.711
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.793
+    },
+    {
+      "event": "chunk",
+      "seconds": 1.878
+    },
+    {
+      "event": "done",
+      "seconds": 1.888
+    }
+  ],
+  "first_chunk_seconds": 0.121,
+  "total_seconds": 1.888
+}

@@ -1,0 +1,577 @@
+{
+  "status": "ready",
+  "origin": "real_provider",
+  "candidates": [
+    {
+      "case_id": "object_mug",
+      "character_id": 1,
+      "image_sha256": "5c1f7d00c8464852122f90476b7018ef76bede4d1e793f5ff35598e71030a096",
+      "name": "泡芙小杯",
+      "activities": {
+        "rest": {
+          "state": "ready",
+          "request_id": "9ab2b7ca-47a6-47c7-9d0b-dbfde7b900a8",
+          "candidate_sha256": "7474bc0630bf462b5777daa421a7d2d3700dfd49ea7509400565d16782441c62",
+          "provider_request_id": "t_1f5f000a8f5f0b77fd79ac5b",
+          "candidate_file": "object_mug-rest.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.616032,
+                "native_alpha": true,
+                "visible_fraction": 0.383968
+              },
+              {
+                "clear_fraction": 0.616272,
+                "native_alpha": true,
+                "visible_fraction": 0.383728
+              },
+              {
+                "clear_fraction": 0.615788,
+                "native_alpha": true,
+                "visible_fraction": 0.384212
+              },
+              {
+                "clear_fraction": 0.615723,
+                "native_alpha": true,
+                "visible_fraction": 0.384277
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "5fa5c9a3397ce997ab74aca4550771f3655ad7888f1cd28ea4b5ac8322149041"
+        },
+        "walk": {
+          "state": "ready",
+          "request_id": "a5d14d2a-69b5-4a6e-bd14-411a057920db",
+          "candidate_sha256": "fed4efbdcc53f39354c5b62cb1dd3d8cd92e62c4b90ddd698d517f63ce9bdd0d",
+          "provider_request_id": "t_63674406974ecd10416a1313",
+          "candidate_file": "object_mug-walk.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.628471,
+                "native_alpha": true,
+                "visible_fraction": 0.371529
+              },
+              {
+                "clear_fraction": 0.618107,
+                "native_alpha": true,
+                "visible_fraction": 0.381893
+              },
+              {
+                "clear_fraction": 0.626282,
+                "native_alpha": true,
+                "visible_fraction": 0.373718
+              },
+              {
+                "clear_fraction": 0.626328,
+                "native_alpha": true,
+                "visible_fraction": 0.373672
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "5b219f0b5d46a56e7fe613f5923972f4392003540e56489aec31591d9e889f70"
+        },
+        "observe": {
+          "state": "ready",
+          "request_id": "f421a7da-677f-460c-8ce0-d9f7a7f573a1",
+          "candidate_sha256": "c6cd3a1a4a567c79247d4ff07ee8e8bcc616f3ce5e32464afa86502e0addd101",
+          "provider_request_id": "t_4ab2c254772f12f34b149660",
+          "candidate_file": "object_mug-observe.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.589142,
+                "native_alpha": true,
+                "visible_fraction": 0.410858
+              },
+              {
+                "clear_fraction": 0.586369,
+                "native_alpha": true,
+                "visible_fraction": 0.413631
+              },
+              {
+                "clear_fraction": 0.580917,
+                "native_alpha": true,
+                "visible_fraction": 0.419083
+              },
+              {
+                "clear_fraction": 0.579605,
+                "native_alpha": true,
+                "visible_fraction": 0.420395
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "01c87ed4dd97a65b6ad31eced5edeed85d87fbd4d347eea5e19c9fbca689f815"
+        }
+      }
+    },
+    {
+      "case_id": "object_clock",
+      "character_id": 2,
+      "image_sha256": "1963b22dc1e3555d32f0ea28966244b46bbb21d627b72fb4e1e0b7692ecd0856",
+      "name": "滴答小黑",
+      "activities": {
+        "rest": {
+          "state": "ready",
+          "request_id": "8f365e7f-d916-4e88-9f4e-ee5e3f407a14",
+          "candidate_sha256": "646a5db192c75a779117e7899e0e65bf1b5b963fcd3f7af39ae29b4bb53185ae",
+          "provider_request_id": "t_b074dce796eecca5c0784716",
+          "candidate_file": "object_clock-rest.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.599022,
+                "native_alpha": true,
+                "visible_fraction": 0.400978
+              },
+              {
+                "clear_fraction": 0.600346,
+                "native_alpha": true,
+                "visible_fraction": 0.399654
+              },
+              {
+                "clear_fraction": 0.599186,
+                "native_alpha": true,
+                "visible_fraction": 0.400814
+              },
+              {
+                "clear_fraction": 0.601784,
+                "native_alpha": true,
+                "visible_fraction": 0.398216
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "f6119a9013ad01549bf20515b46ea442e8d07499b89d103944996fcee1c610ab"
+        },
+        "walk": {
+          "state": "ready",
+          "request_id": "415eb04a-c759-4acd-b867-43176a891650",
+          "candidate_sha256": "beb5cfd81890e0c62a4a0eb5c76c4b065fbfc958eaeb036783165a3d33c1c9ef",
+          "provider_request_id": "t_26341842bb011281efb8d670",
+          "candidate_file": "object_clock-walk.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.625717,
+                "native_alpha": true,
+                "visible_fraction": 0.374283
+              },
+              {
+                "clear_fraction": 0.623222,
+                "native_alpha": true,
+                "visible_fraction": 0.376778
+              },
+              {
+                "clear_fraction": 0.625385,
+                "native_alpha": true,
+                "visible_fraction": 0.374615
+              },
+              {
+                "clear_fraction": 0.621277,
+                "native_alpha": true,
+                "visible_fraction": 0.378723
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "91231d8556d167e541fe5e9897ddabcde1af66d18fa88b3417d86da22da43505"
+        },
+        "observe": {
+          "state": "ready",
+          "request_id": "4028a1a4-bf96-4f3d-80e2-5533d5e27dc2",
+          "candidate_sha256": "bddabfbe2fc48cfdac8c5d0d405949c222f05730426fc245d547371deacd53fc",
+          "provider_request_id": "t_82892524da3c6bde81aa54c8",
+          "candidate_file": "object_clock-observe.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.559441,
+                "native_alpha": true,
+                "visible_fraction": 0.440559
+              },
+              {
+                "clear_fraction": 0.546165,
+                "native_alpha": true,
+                "visible_fraction": 0.453835
+              },
+              {
+                "clear_fraction": 0.546265,
+                "native_alpha": true,
+                "visible_fraction": 0.453735
+              },
+              {
+                "clear_fraction": 0.553658,
+                "native_alpha": true,
+                "visible_fraction": 0.446342
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "a9be89fcf23946cb5740f67a7d4c8f939037f4cde9b321ebdb35f7bfa05cf313"
+        }
+      }
+    },
+    {
+      "case_id": "object_apple",
+      "character_id": 3,
+      "image_sha256": "bbc6de339fa574f1067aa0058a6bfba73597e0a395611a3732471b10656db898",
+      "name": "圆圆",
+      "activities": {
+        "rest": {
+          "state": "ready",
+          "request_id": "c13a9da6-b87c-49c1-b0b9-e66c0a86499f",
+          "candidate_sha256": "a8d376d778c7f92894a183419f285f8bd29009e2e10c02d1be92ebf3a8611c19",
+          "provider_request_id": "t_e90c8f0771d89bc5efbfdf65",
+          "candidate_file": "object_apple-rest.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.466579,
+                "native_alpha": true,
+                "visible_fraction": 0.533421
+              },
+              {
+                "clear_fraction": 0.460915,
+                "native_alpha": true,
+                "visible_fraction": 0.539085
+              },
+              {
+                "clear_fraction": 0.472523,
+                "native_alpha": true,
+                "visible_fraction": 0.527477
+              },
+              {
+                "clear_fraction": 0.470474,
+                "native_alpha": true,
+                "visible_fraction": 0.529526
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "01b2a8663ef09226e3ce24a86cb4ff8a29180c145c138b8db85e96e0d58b8a89"
+        },
+        "walk": {
+          "state": "ready",
+          "request_id": "f2fa7c50-5287-4ef6-985f-6c60d68ffe09",
+          "candidate_sha256": "8be500d7820aaf9cd686d86818de3ac8f78f7a9afac0839483c515eb06bc3016",
+          "provider_request_id": "t_6d2d41070c53c917e3998760",
+          "candidate_file": "object_apple-walk.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.541698,
+                "native_alpha": true,
+                "visible_fraction": 0.458302
+              },
+              {
+                "clear_fraction": 0.533596,
+                "native_alpha": true,
+                "visible_fraction": 0.466404
+              },
+              {
+                "clear_fraction": 0.537098,
+                "native_alpha": true,
+                "visible_fraction": 0.462902
+              },
+              {
+                "clear_fraction": 0.537735,
+                "native_alpha": true,
+                "visible_fraction": 0.462265
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "581154327b6b0ba39c2cc24ed33c8214fa3fc957d67a7367142b64b9e00027bb"
+        },
+        "observe": {
+          "state": "ready",
+          "request_id": "1cc6b31c-b2bb-4194-8adb-cb070583197a",
+          "candidate_sha256": "8bc5d9632c4e4642a077f075a6e27a2b938f6c7250e75d4b57c231346949c978",
+          "provider_request_id": "t_3b0e0c8ba506a4c68d16ca87",
+          "candidate_file": "object_apple-observe.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.465702,
+                "native_alpha": true,
+                "visible_fraction": 0.534298
+              },
+              {
+                "clear_fraction": 0.459736,
+                "native_alpha": true,
+                "visible_fraction": 0.540264
+              },
+              {
+                "clear_fraction": 0.456245,
+                "native_alpha": true,
+                "visible_fraction": 0.543755
+              },
+              {
+                "clear_fraction": 0.449974,
+                "native_alpha": true,
+                "visible_fraction": 0.550026
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "19d9716fa019f809126d61adeab55d92e69ad91335362d43c65518a0ed53bab6"
+        }
+      }
+    },
+    {
+      "case_id": "plant_pothos",
+      "character_id": 4,
+      "image_sha256": "e1b7940a5181ced5e878275ef89fa55f7004f0ff1279637959b6fd814204bb7d",
+      "name": "斑斑",
+      "activities": {
+        "rest": {
+          "state": "ready",
+          "request_id": "4af19f16-8291-49f4-bb1e-dbfcd809fbad",
+          "candidate_sha256": "67743cf853531a37b97c1224e9e1907ee503b7d921b50aa79625a6502cef8adb",
+          "provider_request_id": "t_a1ec8e59e05046b443be4d7c",
+          "candidate_file": "plant_pothos-rest.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.595322,
+                "native_alpha": true,
+                "visible_fraction": 0.404678
+              },
+              {
+                "clear_fraction": 0.593559,
+                "native_alpha": true,
+                "visible_fraction": 0.406441
+              },
+              {
+                "clear_fraction": 0.577965,
+                "native_alpha": true,
+                "visible_fraction": 0.422035
+              },
+              {
+                "clear_fraction": 0.582512,
+                "native_alpha": true,
+                "visible_fraction": 0.417488
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "6c3472fa504ef42ec8bc1026ad02fff7ba0b8a07276b21122b65c648303aaeeb"
+        },
+        "walk": {
+          "state": "ready",
+          "request_id": "83d7c144-f8bc-4e67-9e37-12a15ee69d36",
+          "candidate_sha256": "5a0d5f1dbb513332285078a1464ba9a0e22bbb56e1d459884fb12de6e11c1dcd",
+          "provider_request_id": "t_8b9cff4efaef1985e73a35d3",
+          "candidate_file": "plant_pothos-walk.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.573395,
+                "native_alpha": true,
+                "visible_fraction": 0.426605
+              },
+              {
+                "clear_fraction": 0.574116,
+                "native_alpha": true,
+                "visible_fraction": 0.425884
+              },
+              {
+                "clear_fraction": 0.570667,
+                "native_alpha": true,
+                "visible_fraction": 0.429333
+              },
+              {
+                "clear_fraction": 0.566601,
+                "native_alpha": true,
+                "visible_fraction": 0.433399
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "0190fcd6657d30805b0e08f81251e74474ed52960e1061b664717636a0183ca1"
+        },
+        "observe": {
+          "state": "ready",
+          "request_id": "f7182d8a-b4f1-439c-b942-2ff1dde5a636",
+          "candidate_sha256": "4f263b38b6d46db898345416c056f392894fe04ff1c93450487349b8e1b15ca3",
+          "provider_request_id": "t_dc6668930aac4c2367776aff",
+          "candidate_file": "plant_pothos-observe.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.547333,
+                "native_alpha": true,
+                "visible_fraction": 0.452667
+              },
+              {
+                "clear_fraction": 0.541283,
+                "native_alpha": true,
+                "visible_fraction": 0.458717
+              },
+              {
+                "clear_fraction": 0.540096,
+                "native_alpha": true,
+                "visible_fraction": 0.459904
+              },
+              {
+                "clear_fraction": 0.516109,
+                "native_alpha": true,
+                "visible_fraction": 0.483891
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "a9652ad0fab2d732fc6a52dcfd1ba6aa10a4423600cfc605e63ffe5dedc2a671"
+        }
+      }
+    },
+    {
+      "case_id": "plant_succulent",
+      "character_id": 5,
+      "image_sha256": "98b550093cfdf69fcabc3886e29ea696019728de46fafd50f74321846cc681b7",
+      "name": "小团子",
+      "activities": {
+        "rest": {
+          "state": "ready",
+          "request_id": "cd64d752-b761-4600-88f2-d0bfbd747479",
+          "candidate_sha256": "974627d61ad6e3278ba1afc7a38280dd80fce4571b9518bce59fb1e4d5da1b33",
+          "provider_request_id": "t_1f13257eb1c8a0fedd562e72",
+          "candidate_file": "plant_succulent-rest.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.488503,
+                "native_alpha": true,
+                "visible_fraction": 0.511497
+              },
+              {
+                "clear_fraction": 0.487198,
+                "native_alpha": true,
+                "visible_fraction": 0.512802
+              },
+              {
+                "clear_fraction": 0.486473,
+                "native_alpha": true,
+                "visible_fraction": 0.513527
+              },
+              {
+                "clear_fraction": 0.485508,
+                "native_alpha": true,
+                "visible_fraction": 0.514492
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "183e1a3cf7b384d0e206ce2a94144e6a915267bdbf9ca018506c34a3dd1f6627"
+        },
+        "walk": {
+          "state": "ready",
+          "request_id": "6f73c740-2332-48c2-a648-407a7d474c68",
+          "candidate_sha256": "907d7cd85c03e7d3ec676f9dc7e97c380c6354f6fe8a75e8a17f96c36442cb0d",
+          "provider_request_id": "t_0448f8a1d09ced9ec314013b",
+          "candidate_file": "plant_succulent-walk.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.56871,
+                "native_alpha": true,
+                "visible_fraction": 0.43129
+              },
+              {
+                "clear_fraction": 0.574833,
+                "native_alpha": true,
+                "visible_fraction": 0.425167
+              },
+              {
+                "clear_fraction": 0.578072,
+                "native_alpha": true,
+                "visible_fraction": 0.421928
+              },
+              {
+                "clear_fraction": 0.583344,
+                "native_alpha": true,
+                "visible_fraction": 0.416656
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "76f75f63893d1dfc0c4bbd1a660efa405af0a89a4a9c95ad30848ed94586690b"
+        },
+        "observe": {
+          "state": "ready",
+          "request_id": "4ad21748-1fd1-4376-8695-17701d9cf578",
+          "candidate_sha256": "f69e2063fc05fccb29627a932231bc99f1656297e6f250ba1bc6d3b3eafb5393",
+          "provider_request_id": "t_a9f6f079bb68803d31cef8d7",
+          "candidate_file": "plant_succulent-observe.png",
+          "quality_check": {
+            "cells": [
+              {
+                "clear_fraction": 0.487907,
+                "native_alpha": true,
+                "visible_fraction": 0.512093
+              },
+              {
+                "clear_fraction": 0.465275,
+                "native_alpha": true,
+                "visible_fraction": 0.534725
+              },
+              {
+                "clear_fraction": 0.491627,
+                "native_alpha": true,
+                "visible_fraction": 0.508373
+              },
+              {
+                "clear_fraction": 0.460552,
+                "native_alpha": true,
+                "visible_fraction": 0.539448
+              }
+            ],
+            "human_review_required": true,
+            "issues": [],
+            "state": "needs_review"
+          },
+          "workflow_job_id": "8eb8a686f5999fd514343eba9f06812fd40e9cf970fd20c32e4a19feb4f3a061"
+        }
+      }
+    }
+  ],
+  "max_requests": 15,
+  "source_review_sha256": "38fd7eefad3dbfb95d735503e84696af6659f5642a422f17a2197862f8e1f140",
+  "review_ref": "c174-20261001-fifteen-motion-user-adopted",
+  "binding_network_forbidden": true,
+  "paid_motion_requests_before_binding": 15,
+  "paid_motion_requests_after_binding": 15
+}

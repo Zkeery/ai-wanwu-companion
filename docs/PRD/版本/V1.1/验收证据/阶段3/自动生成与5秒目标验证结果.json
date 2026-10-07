@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-21",
+  "target_ms": 5000,
+  "target_met": false,
+  "backend_tests": 382,
+  "frontend_tests": 105,
+  "lint": "passed",
+  "build": "passed",
+  "browser": {
+    "adapters": "mock",
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "automatic_creation": true,
+    "correction_refresh": true,
+    "original_preserved": true,
+    "image_load_timing": true
+  },
+  "real_model_test_by_agent": false,
+  "observed_user_retry": {
+    "profile_ms": 46180,
+    "image_with_download_ms": 15413,
+    "creation_ms": 61630
+  },
+  "main_restart_existing_character_data_equal": true,
+  "secrets_scan": {
+    "files": 1527,
+    "matches": 0
+  }
+}

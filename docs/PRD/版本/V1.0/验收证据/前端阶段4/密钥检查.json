@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "scanned_files": 1956,
+  "secret_matches": 0,
+  "backend_env_ignored": true,
+  "scope": "project tracked/untracked deliverables and frontend .next production output; values never printed",
+  "real_evidence_rescan": {
+    "files": 22,
+    "matches": 0,
+    "passed": true
+  }
+}

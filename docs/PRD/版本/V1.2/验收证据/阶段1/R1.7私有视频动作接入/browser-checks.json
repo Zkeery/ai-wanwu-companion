@@ -1,0 +1,30 @@
+{
+  "url": "http://127.0.0.1:3046/companions/6",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "playing": true,
+      "muted": true,
+      "blob": true,
+      "videoWidth": 960,
+      "videoHeight": 720,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "playing": true,
+      "muted": true,
+      "overflow": false,
+      "dialogWithinViewport": true
+    }
+  ],
+  "stopReset": true,
+  "hoverLeaveReset": true,
+  "reopen": true,
+  "reducedMotionPausedAndReset": true,
+  "simulatedMediaErrorStaticFallback": true,
+  "manualRecovery": true,
+  "realMobileDevice": false
+}

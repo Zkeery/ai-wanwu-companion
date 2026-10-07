@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "accepted_on": "2026-10-02",
+  "status": "accepted",
+  "user_reply": "可以没问题",
+  "review_ref": "c175-manan-three-motions-user-accepted-20261002",
+  "character_id": 9,
+  "accepted_activities": ["rest", "walk", "observe"],
+  "accepted_motion_count": 3,
+  "source_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+  "reviewed_summary_sha256": "37a4ab39be8a7d7a068d514034dc0e58aa2942d79c2815b91ab759600a6e54cb",
+  "binding_authorized": true,
+  "new_provider_requests_authorized": 0
+}

@@ -1,0 +1,6 @@
+{
+  "checked_at": "2026-09-28T16:02:16.093Z",
+  "purpose": "invalid request: required prompt omitted, no source image; not a generation retry",
+  "status": 403,
+  "body": "{\"error\":{\"code\":\"async_not_enabled\",\"message\":\"Asynchronous tasks are not enabled. Please go to https://console.aihubmix.com/async-tasks to activate.\",\"tid\":\"2026092816021594902782736574327\",\"type\":\"invalid_request_error\"}}"
+}

@@ -1,0 +1,1 @@
+{"scene_name":"小花园","elements":{"rain":1,"tree":1,"cloud":1,"sound":1},"can_undo":true,"action_labels":{"light_rain":"小雨","quiet":"安静","plant_tree":"种树"},"feedback":null}

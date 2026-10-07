@@ -1,0 +1,101 @@
+{
+  "plan": {
+    "schema_version": 1,
+    "rule_version": "c174-v1",
+    "cases": [
+      {
+        "case_id": "object_mug",
+        "filename": "object_mug.jpg",
+        "sha256": "202cbb1f5fdd350c2971f8aae9a7fd8910646005f062a0489286d9b3e8be3d64",
+        "evidence_origin": "public_photograph"
+      },
+      {
+        "case_id": "object_clock",
+        "filename": "object_clock.jpg",
+        "sha256": "b16373c47889823bb23e06388861e0c954f2d50a9afbe8a2a8a934610e7467bb",
+        "evidence_origin": "public_photograph"
+      },
+      {
+        "case_id": "object_apple",
+        "filename": "object_apple.jpg",
+        "sha256": "60baaee8cff7502bc7cde3cefaf940247a8a9ee5bff7522efc515710b54f36ce",
+        "evidence_origin": "public_photograph"
+      },
+      {
+        "case_id": "plant_pothos",
+        "filename": "plant_pothos.jpg",
+        "sha256": "75faa3c9f23412300fbe91b0f546927819e085cbbc6c9a2bb1951a53eeb4faec",
+        "evidence_origin": "public_photograph"
+      },
+      {
+        "case_id": "plant_succulent",
+        "filename": "plant_succulent.jpg",
+        "sha256": "2f0fc7d23c48511bdabc80d0573adb91963d1faa9d0ec2ce744fbb77059b9a77",
+        "evidence_origin": "public_photograph"
+      },
+      {
+        "case_id": "repeat_pothos",
+        "filename": "plant_pothos.jpg",
+        "sha256": "75faa3c9f23412300fbe91b0f546927819e085cbbc6c9a2bb1951a53eeb4faec",
+        "evidence_origin": "public_photograph"
+      }
+    ],
+    "criteria": {
+      "static": [
+        "category",
+        "source_features",
+        "identity",
+        "no_extra_parts_or_watermark"
+      ],
+      "rest": [
+        "identity",
+        "eyes_closed",
+        "natural_loop",
+        "scene_fit"
+      ],
+      "walk": [
+        "identity",
+        "alternating_steps",
+        "natural_loop",
+        "scene_fit"
+      ],
+      "observe": [
+        "identity",
+        "looking_both_sides",
+        "natural_loop",
+        "scene_fit"
+      ]
+    },
+    "performance_decision": "deferred_by_user",
+    "source_hashes": {
+      "app/services/prompts.py": "d51a616b6e597fc40c7a372ad096a7d80c11f64be2ae9919e361e73dac431389",
+      "app/services/appearance.py": "547bd4111ded7329fc40143b7d4a6eafc35ea272c39c91f5db2f7180432645cf",
+      "app/services/model_client.py": "6425263136cf8aa5db8bab75752b522df3a86d7fde67681a41e6cc0705e47ce5",
+      "app/services/character_generation.py": "6d012cd7fb8a59e8e22fa424013099f4bbde7d96287ecf6f31f0370ac754fbf6",
+      "app/services/motion_walk_aihubmix.py": "42798b784a0f07b3a48d85275f7ddbd94805430735d6f6506978f488d8600280",
+      "app/services/motion_activity_prompts.py": "a733ec9406ac2892ba5f73c635cc8c49550baf7e58f316ccce3f00376946eaff",
+      "app/living/life_runtime.py": "aadf70c0d866001997c58ae2999d2406bb496f29a721817f67cab41d22ff7650",
+      "app/living/gathering_automatic.py": "14d1ce1541fd3909749ea5bfa880c898e2add64d5034c1f7a5edfb19059732b1"
+    },
+    "current_models": {
+      "vision_model": "ling-3.0-flash-vl",
+      "chat_model": "qwen3.8-flash",
+      "image_model": "wan2.6-t2i",
+      "character_bundle_enabled": true,
+      "model_enable_thinking": null,
+      "vision_enable_thinking": false
+    },
+    "planned_batch": {
+      "client_retries": 0,
+      "static_generations": 6,
+      "motion_requests": 18,
+      "life_requests": 8,
+      "budget_cny": 20,
+      "budget_usd": 2,
+      "real_duration_seconds": 86400
+    },
+    "real_provider_required": true,
+    "automated_visual_scoring": false
+  },
+  "plan_sha256": "fdf02e0a016e020f2a9ce1e13e886dd9f055fffdb518f07c3c735f1d3a85363a"
+}

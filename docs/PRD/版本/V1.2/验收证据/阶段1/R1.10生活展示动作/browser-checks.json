@@ -1,0 +1,29 @@
+{
+  "desktop": {
+    "width": 1440,
+    "overflow": false,
+    "playing": true,
+    "muted": true,
+    "staticLoaded": true,
+    "closeReleasesVideo": true
+  },
+  "mobile": {
+    "width": 390,
+    "overflow": false,
+    "playing": true,
+    "muted": true,
+    "url": "/companions/6?tab=life",
+    "dialogWithinViewport": true
+  },
+  "lifeTab": {
+    "beforeOpenMotionReads": 0,
+    "changeToChatClosesAndReleases": true
+  },
+  "fixture": {
+    "characterId": 6,
+    "spaceId": "8a011d2a-d1cd-4d47-8fd5-d95279835561",
+    "type": "desert",
+    "createdViaUI": true
+  },
+  "modelCalls": 0
+}

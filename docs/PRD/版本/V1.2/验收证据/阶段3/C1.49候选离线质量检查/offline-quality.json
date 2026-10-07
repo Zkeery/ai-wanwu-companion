@@ -1,0 +1,174 @@
+{
+  "atlas_sha256": "d39a6af8f3545a74aff833d434b9be54703a8615a50d807951ee115640679f68",
+  "cells": [
+    {
+      "activity": "rest",
+      "background": "opaque",
+      "column": 1,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "rest",
+      "background": "opaque",
+      "column": 2,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "rest",
+      "background": "opaque",
+      "column": 3,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "rest",
+      "background": "opaque",
+      "column": 4,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "walk",
+      "background": "opaque",
+      "column": 1,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "walk",
+      "background": "opaque",
+      "column": 2,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "walk",
+      "background": "opaque",
+      "column": 3,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "walk",
+      "background": "opaque",
+      "column": 4,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "observe",
+      "background": "opaque",
+      "column": 1,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "observe",
+      "background": "opaque",
+      "column": 2,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "observe",
+      "background": "opaque",
+      "column": 3,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    },
+    {
+      "activity": "observe",
+      "background": "opaque",
+      "column": 4,
+      "issues": [
+        "background_not_uniform_gray"
+      ]
+    }
+  ],
+  "human_review_required": true,
+  "issues": [
+    {
+      "activity": "rest",
+      "code": "background_not_uniform_gray",
+      "column": 1
+    },
+    {
+      "activity": "rest",
+      "code": "background_not_uniform_gray",
+      "column": 2
+    },
+    {
+      "activity": "rest",
+      "code": "background_not_uniform_gray",
+      "column": 3
+    },
+    {
+      "activity": "rest",
+      "code": "background_not_uniform_gray",
+      "column": 4
+    },
+    {
+      "activity": "walk",
+      "code": "background_not_uniform_gray",
+      "column": 1
+    },
+    {
+      "activity": "walk",
+      "code": "background_not_uniform_gray",
+      "column": 2
+    },
+    {
+      "activity": "walk",
+      "code": "background_not_uniform_gray",
+      "column": 3
+    },
+    {
+      "activity": "walk",
+      "code": "background_not_uniform_gray",
+      "column": 4
+    },
+    {
+      "activity": "observe",
+      "code": "background_not_uniform_gray",
+      "column": 1
+    },
+    {
+      "activity": "observe",
+      "code": "background_not_uniform_gray",
+      "column": 2
+    },
+    {
+      "activity": "observe",
+      "code": "background_not_uniform_gray",
+      "column": 3
+    },
+    {
+      "activity": "observe",
+      "code": "background_not_uniform_gray",
+      "column": 4
+    }
+  ],
+  "manual_checks": [
+    "character_identity",
+    "watermark_or_text",
+    "anatomy",
+    "walk_steps",
+    "observe_front_view",
+    "natural_loop"
+  ],
+  "state": "rejected",
+  "version": 1
+}

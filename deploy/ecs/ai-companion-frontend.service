@@ -1,0 +1,33 @@
+[Unit]
+Description=AI Companion standalone frontend
+After=network-online.target ai-companion-backend.service
+Wants=network-online.target ai-companion-backend.service
+RequiresMountsFor=/srv/ai-companion/data
+BindsTo=srv-ai\x2dcompanion-data.mount
+After=srv-ai\x2dcompanion-data.mount
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=aicompanion
+Group=aicompanion
+WorkingDirectory=/srv/ai-companion/current/frontend/standalone
+EnvironmentFile=/etc/ai-companion/frontend.env
+Environment=PYTHONPATH=/srv/ai-companion/current/backend
+ExecStartPre=/srv/ai-companion/current/backend/.venv/bin/python -m scripts.ecs_runtime check frontend
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

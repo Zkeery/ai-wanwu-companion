@@ -1,0 +1,32 @@
+{
+  "mock": true,
+  "transport": "httpx real TCP streaming",
+  "headers": {
+    "date": "Fri, 18 Sep 2026 16:35:22 GMT",
+    "server": "uvicorn",
+    "cache-control": "no-cache, no-transform",
+    "x-accel-buffering": "no",
+    "content-type": "text/event-stream; charset=utf-8",
+    "transfer-encoding": "chunked",
+    "connection": "keep-alive"
+  },
+  "events": [
+    {
+      "event": "started",
+      "seconds": 0.02
+    },
+    {
+      "event": "chunk",
+      "seconds": 0.02
+    },
+    {
+      "event": "chunk",
+      "seconds": 2.027
+    },
+    {
+      "event": "done",
+      "seconds": 22.044
+    }
+  ],
+  "passed": true
+}

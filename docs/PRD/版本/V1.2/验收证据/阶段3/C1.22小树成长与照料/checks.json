@@ -1,0 +1,19 @@
+{
+  "test": 0,
+  "lint": 0,
+  "typecheck": 0,
+  "build": 0,
+  "backend": 0,
+  "layout_checks": {
+    "lint": 0,
+    "typecheck": 0,
+    "build": 0
+  },
+  "frontend_tests": 657,
+  "backend_tests": 72,
+  "secret_scan_files": 50,
+  "secret_scan_hits": 0,
+  "broken_links": [],
+  "config_restored": true,
+  "diff_check": 0
+}

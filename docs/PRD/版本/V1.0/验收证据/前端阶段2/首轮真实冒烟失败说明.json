@@ -1,0 +1,17 @@
+{
+  "batch": "initial",
+  "passed": false,
+  "attempted": {
+    "vision": 1,
+    "text": 0,
+    "image": 0
+  },
+  "upstreamHttpStatus": null,
+  "errorType": "AssertionError",
+  "diagnosis": "未完成识别，脚本未记录底层异常类型，不能据此确认超时或服务商根因。",
+  "readOnlyProbe": "随后GET /v1/models返回200，识别模型仍在列表；不表示生成接口已恢复。",
+  "budgetCny": 0.05,
+  "reservedCny": 0,
+  "reserveExplanation": "仅尝试官方限时免费的视觉模型；无文本或绘图调用。非实际账单。",
+  "retry": "额外一次识别需明确授权；dry-run已通过，原失败结果保留，复测另写-retry1文件。"
+}

@@ -1,0 +1,99 @@
+{
+  "checkedAt": "2026-09-18T14:42:35.196Z",
+  "checks": [
+    {
+      "id": "Q01",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q02",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q03",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q04",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q05",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q06",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q07",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q08",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q06-r2",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    },
+    {
+      "id": "Q06-r3",
+      "complete": true,
+      "upstream": true,
+      "saved": true,
+      "usageWithinReserve": true
+    }
+  ],
+  "hashes": [
+    {
+      "file": "app/services/prompts.py",
+      "match": true
+    },
+    {
+      "file": "app/services/chat.py",
+      "match": true
+    },
+    {
+      "file": "app/services/model_client.py",
+      "match": true
+    },
+    {
+      "file": "app/api/chat.py",
+      "match": true
+    }
+  ],
+  "fullOutputReview": {
+    "reviewer": "AI逐条全文初核，非人工评分",
+    "pass": 10,
+    "needReview": 0
+  },
+  "withinBudget": true
+}

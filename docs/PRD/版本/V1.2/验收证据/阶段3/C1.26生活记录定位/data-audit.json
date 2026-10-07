@@ -1,0 +1,73 @@
+{
+  "differences": [
+    {
+      "table": "living_activity_events",
+      "deleted": 0,
+      "changed": 0,
+      "added": 6
+    },
+    {
+      "table": "living_receipts",
+      "deleted": 0,
+      "changed": 0,
+      "added": 6
+    },
+    {
+      "table": "living_spaces",
+      "deleted": 0,
+      "changed": 3,
+      "added": 0
+    },
+    {
+      "table": "sessions",
+      "deleted": 0,
+      "changed": 1,
+      "added": 0
+    }
+  ],
+  "oldEventRowsUnchanged": true,
+  "oldEventRows": 19,
+  "newEventRows": 25,
+  "providerCallRows": 0,
+  "newTargetVerification": {
+    "newEvents": [
+      {
+        "space_id": "2b29bf53-f26b-4a45-8e95-7e54178aa7ac",
+        "revision": 6,
+        "action": "move",
+        "targetMatches": true
+      },
+      {
+        "space_id": "2b29bf53-f26b-4a45-8e95-7e54178aa7ac",
+        "revision": 7,
+        "action": "undo",
+        "targetMatches": true
+      },
+      {
+        "space_id": "28a9935f-a95a-41a8-81cf-616490822909",
+        "revision": 4,
+        "action": "move",
+        "targetMatches": true
+      },
+      {
+        "space_id": "28a9935f-a95a-41a8-81cf-616490822909",
+        "revision": 5,
+        "action": "undo",
+        "targetMatches": true
+      },
+      {
+        "space_id": "f7796d05-80f5-496b-823c-cfb5afdc18bd",
+        "revision": 8,
+        "action": "move",
+        "targetMatches": true
+      },
+      {
+        "space_id": "f7796d05-80f5-496b-823c-cfb5afdc18bd",
+        "revision": 9,
+        "action": "undo",
+        "targetMatches": true
+      }
+    ],
+    "allTargetsMatch": true
+  }
+}

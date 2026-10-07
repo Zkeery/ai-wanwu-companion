@@ -1,0 +1,11 @@
+[Unit]
+Description=AI Companion daily local verified backup
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+RandomizedDelaySec=5m
+Persistent=true
+Unit=ai-companion-backup.service
+
+[Install]
+WantedBy=timers.target

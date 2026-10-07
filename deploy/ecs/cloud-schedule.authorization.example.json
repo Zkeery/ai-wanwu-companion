@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "project": "AI万物伙伴",
+  "approved": false,
+  "approval_ref": "",
+  "bucket": "",
+  "region": "cn-beijing",
+  "issued_at": 0,
+  "expires_at": 0,
+  "max_uploads": 0,
+  "max_archive_bytes": 0,
+  "max_total_archive_bytes": 0,
+  "unit_reserved_cny": "0",
+  "budget_cny": "0",
+  "cost_basis_ref": "",
+  "retention_review_ref": ""
+}

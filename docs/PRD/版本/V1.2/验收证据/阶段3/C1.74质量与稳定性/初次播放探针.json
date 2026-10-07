@@ -1,0 +1,134 @@
+{
+  "results": [
+    {
+      "character_id": 1,
+      "activity": "rest",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 1,
+      "activity": "walk",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 1,
+      "activity": "observe",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 2,
+      "activity": "rest",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 2,
+      "activity": "walk",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 2,
+      "activity": "observe",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 3,
+      "activity": "rest",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 3,
+      "activity": "walk",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 3,
+      "activity": "observe",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 4,
+      "activity": "rest",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 4,
+      "activity": "walk",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 4,
+      "activity": "observe",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 5,
+      "activity": "rest",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 5,
+      "activity": "walk",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    },
+    {
+      "character_id": 5,
+      "activity": "observe",
+      "unique_frame_hashes": 1,
+      "frame_changed": false,
+      "images_loaded": true,
+      "overflow": false
+    }
+  ],
+  "mobile": {
+    "overflow": false,
+    "images_loaded": true
+  },
+  "refresh_kept_ready": true,
+  "origin": "real_bound_assets",
+  "paid_motion_requests_before": 15,
+  "paid_motion_requests_after": 15,
+  "additional_model_requests": 0,
+  "passed": false
+}

@@ -1,0 +1,97 @@
+{
+  "date": "2026-09-21",
+  "status": "completed",
+  "mock": false,
+  "budget_cny": 1,
+  "calls": [
+    {
+      "group": 1,
+      "kind": "vision",
+      "model": "ling-3.0-flash-vl",
+      "reserved_cny": 0.0,
+      "started_at": "2026-09-21 18:01:54",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 1633,
+        "prompt_tokens": 369,
+        "total_tokens": 2002
+      },
+      "finish_reason": "stop",
+      "seconds": 27.914
+    },
+    {
+      "group": 1,
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "reserved_cny": 0.016,
+      "started_at": "2026-09-21 18:02:22",
+      "http_status": 200,
+      "usage": {
+        "image_count": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "size": "1024*1024",
+        "total_tokens": 0
+      },
+      "seconds": 11.933
+    },
+    {
+      "group": 2,
+      "kind": "vision",
+      "model": "ling-3.0-flash-vl",
+      "reserved_cny": 0.0,
+      "started_at": "2026-09-21 18:02:57",
+      "http_status": 429,
+      "seconds": 1.676
+    },
+    {
+      "group": 3,
+      "kind": "vision",
+      "model": "ling-3.0-flash-vl",
+      "reserved_cny": 0.0,
+      "started_at": "2026-09-21 18:03:54",
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 1471,
+        "prompt_tokens": 369,
+        "total_tokens": 1840
+      },
+      "finish_reason": "stop",
+      "seconds": 36.423
+    },
+    {
+      "group": 3,
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "reserved_cny": 0.016,
+      "started_at": "2026-09-21 18:04:31",
+      "http_status": 200,
+      "usage": {
+        "image_count": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "size": "1024*1024",
+        "total_tokens": 0
+      },
+      "seconds": 13.266
+    }
+  ],
+  "downloads": [
+    {
+      "group": 1,
+      "http_status": 200,
+      "bytes": 1183858,
+      "seconds": 1.535
+    },
+    {
+      "group": 3,
+      "http_status": 200,
+      "bytes": 1256645,
+      "seconds": 0.906
+    }
+  ],
+  "reserved_cny": 0.032,
+  "closed_by": "orchestrator_after_verifying_isolated_ports_stopped",
+  "groups_executed": 3,
+  "additional_calls_authorized": false
+}

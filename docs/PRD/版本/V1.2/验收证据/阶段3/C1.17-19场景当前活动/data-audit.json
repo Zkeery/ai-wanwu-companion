@@ -1,0 +1,30 @@
+{
+  "original_tables": 52,
+  "original_rows": 157,
+  "changed": {
+    "sessions": {
+      "changed_or_removed_original_rows": 2,
+      "current_rows": 2
+    },
+    "living_spaces": {
+      "changed_or_removed_original_rows": 1,
+      "current_rows": 10
+    }
+  },
+  "supplier_calls": 0,
+  "sample_permissions": {
+    "home": {
+      "enabled": true,
+      "revision": 1
+    },
+    "forest": {
+      "enabled": true,
+      "revision": 1
+    },
+    "desert": {
+      "enabled": false,
+      "revision": 2
+    }
+  },
+  "interpretation": "154条原记录逐行一致；2条会话正常续期；1个原空间revision从4到6，保留期间新增营火与移动结果，未覆盖或回滚。不能声称全部原业务行未变。"
+}

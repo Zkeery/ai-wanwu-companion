@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-22",
+  "mode": "real",
+  "model": "ling-3.0-flash-vl",
+  "price_cny": 0,
+  "free_until": "2026-09-24T10:00:00+08:00",
+  "price_source": "https://maas.antdigital.com/models/modelservice-1788265478122001738",
+  "sample_sha256": "333264751a4df43fd5565ce405d990696e5730686a64572fe867e342298fbd94",
+  "prompt_sha256": "d74fcbce4566613654feba72f86311104878c28667ab6326120867875252e954",
+  "max_calls": 4,
+  "retries": 0,
+  "max_tokens": 4096,
+  "image_calls": 0,
+  "database_writes": 0,
+  "calls": [
+    {
+      "variant": "default",
+      "status": "succeeded",
+      "started_at": "2026-09-22T14:53:56.949578+08:00",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "reasoning_chars": 1583,
+      "content_chars": 424,
+      "usage": {
+        "prompt_tokens": 424,
+        "completion_tokens": 723,
+        "total_tokens": 1147
+      },
+      "structured_valid": true,
+      "primary_has_concept": true,
+      "recognized_cup": true,
+      "elapsed_ms": 8707.9
+    },
+    {
+      "variant": "disabled",
+      "status": "succeeded",
+      "started_at": "2026-09-22T14:54:05.659882+08:00",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "reasoning_chars": 0,
+      "content_chars": 365,
+      "usage": {
+        "prompt_tokens": 425,
+        "completion_tokens": 161,
+        "total_tokens": 586
+      },
+      "structured_valid": true,
+      "primary_has_concept": true,
+      "recognized_cup": true,
+      "elapsed_ms": 15499.8
+    },
+    {
+      "variant": "disabled",
+      "status": "failed",
+      "started_at": "2026-09-22T14:54:21.161589+08:00",
+      "error_type": "ConnectError",
+      "elapsed_ms": 7398.2
+    },
+    {
+      "variant": "default",
+      "status": "failed",
+      "started_at": "2026-09-22T14:54:28.561927+08:00",
+      "error_type": "ConnectTimeout",
+      "elapsed_ms": 10017.7
+    }
+  ],
+  "release_passed": false
+}

@@ -1,0 +1,56 @@
+{
+  "restart": {
+    "leaseExpirationsUnchanged": true,
+    "tasksUnchanged": true,
+    "beforeAt": 1790508689,
+    "afterAt": 1790508689
+  },
+  "offlineExpiry": {
+    "at": 1790508814,
+    "leaseExpiresAt": 1790508797,
+    "activeLeases": 0,
+    "tasks": [
+      [
+        "1740e223-2f7d-42e2-9c29-90302de79e92",
+        "offline",
+        "done"
+      ],
+      [
+        "6b71ab5c-a8c8-49a0-8dc2-40eb780b3cae",
+        "offline",
+        "done"
+      ],
+      [
+        "a6db5d4b-11b7-4f90-8eee-2158337dab64",
+        "viewing",
+        "done"
+      ]
+    ],
+    "calls": 0,
+    "automaticStillEnabled": true
+  },
+  "data": {
+    "unchanged_original_rows": 142,
+    "changed_tables": [
+      {
+        "table": "sessions",
+        "replaced_rows": 2
+      },
+      {
+        "table": "life_runtime_automatic",
+        "replaced_rows": 1
+      }
+    ],
+    "provider_calls": 0
+  },
+  "checks": {
+    "backend": 0,
+    "frontend": 0,
+    "lint": 0,
+    "typecheck": 0,
+    "build": 0
+  },
+  "backendTests": 1342,
+  "frontendTests": 597,
+  "providerCalls": 0
+}

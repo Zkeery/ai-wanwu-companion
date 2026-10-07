@@ -1,0 +1,35 @@
+{
+  "date": "2026-09-27",
+  "frontend_tests": [
+    431,
+    431
+  ],
+  "backend_related_tests": [
+    21,
+    21
+  ],
+  "lint": "passed",
+  "typecheck_in_build": "passed",
+  "build": ".next-motion-r113",
+  "journal_enabled_on": "3046 only",
+  "browser": {
+    "desktop": 1440,
+    "mobile": 390,
+    "initial_records": 3,
+    "expanded_records": 20,
+    "paginated_records": 34,
+    "outside_settings": true,
+    "overflow": false,
+    "hide_tab_unmounts_journal": true,
+    "return_tab_reads_latest": true,
+    "homepage_link_scroll_top_px": 24,
+    "refresh_restores_records": true
+  },
+  "database_unchanged": {
+    "living_spaces": true,
+    "living_activity_events": true,
+    "characters": true
+  },
+  "new_model_calls": 0,
+  "new_fees": 0
+}

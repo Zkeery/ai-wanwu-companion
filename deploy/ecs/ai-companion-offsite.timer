@@ -1,0 +1,11 @@
+[Unit]
+Description=AI Companion daily explicitly authorized offsite backup
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+RandomizedDelaySec=2m
+Persistent=true
+Unit=ai-companion-offsite.service
+
+[Install]
+WantedBy=timers.target

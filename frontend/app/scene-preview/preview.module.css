@@ -1,0 +1,9 @@
+.main{max-width:760px;margin:24px auto;padding:24px;background:#fffaf3;border:1px solid #e5d4bd;border-radius:24px;color:#4e4e3f}
+.main h1{font-size:clamp(24px,4vw,36px);margin:0 0 12px}
+.main p{line-height:1.7}
+.options{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.options button{padding:10px 16px;min-height:44px}
+.options button[aria-pressed=true]{background:#e0ead4;border-color:#8ba072;color:#384c2a}
+.main figure{max-width:none}
+.note{font-size:14px;color:#69705b;margin-top:20px}
+@media(max-width:600px){.main{padding:16px;margin:16px 0 100px;border-radius:18px}.options{gap:8px}.options button{padding:10px 12px}}

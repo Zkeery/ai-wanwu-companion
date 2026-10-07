@@ -1,0 +1,18 @@
+{
+  "build": {
+    "exit": 0,
+    "summary": [
+      "✓ Compiled successfully in 3.6s",
+      "  Generating static pages using 9 workers (0/11) ...",
+      "  Generating static pages using 9 workers (2/11) \r",
+      "  Generating static pages using 9 workers (5/11) \r",
+      "  Generating static pages using 9 workers (8/11) \r",
+      "✓ Generating static pages using 9 workers (11/11) in 124ms",
+      "Route (app)"
+    ]
+  },
+  "lint": {
+    "exit": 0,
+    "summary": []
+  }
+}

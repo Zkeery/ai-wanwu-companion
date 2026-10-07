@@ -1,0 +1,37 @@
+{
+  "checks": {
+    "tests": {
+      "exit": 0,
+      "summary": [
+        " Test Files  4 passed (4)",
+        "      Tests  33 passed (33)",
+        "   Duration  1.49s (environment 60%, transform 13%, tests 11%, setup 9%, import 6%)"
+      ]
+    },
+    "typecheck": {
+      "exit": 0,
+      "summary": []
+    },
+    "lint": {
+      "exit": 0,
+      "summary": []
+    }
+  },
+  "build": {
+    "exit": 0,
+    "summary": [
+      "✓ Compiled successfully in 2.5s",
+      "  Running TypeScript ...",
+      "  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.",
+      "  Finished TypeScript in 2.7s ...",
+      "  Generating static pages using 9 workers (0/11) ...",
+      "  Generating static pages using 9 workers (2/11) \r",
+      "  Generating static pages using 9 workers (5/11) \r",
+      "  Generating static pages using 9 workers (8/11) \r",
+      "✓ Generating static pages using 9 workers (11/11) in 108ms"
+    ]
+  },
+  "new_model_requests": 0,
+  "browser_playback_verified": false,
+  "mobile_verified": false
+}

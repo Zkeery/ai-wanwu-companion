@@ -1,0 +1,15 @@
+{
+  "retrieved_at": "2026-09-28T16:07:21.422Z",
+  "source": "https://aihubmix.com/model/gpt-image-2.5-sunburst/llms.txt",
+  "status": 200,
+  "pricing_lines": [
+    "- Pricing: per-generation — see https://aihubmix.com/model/gpt-image-2.5-sunburst",
+    "- `POST /ai/v1/images/generations` — image generation (`Authorization: Bearer $AIHUBMIX_API_KEY`)",
+    "- `POST /v1/images/edits` — image generation (`Authorization: Bearer $AIHUBMIX_API_KEY`)",
+    "- `POST /v1/images/generations` — image generation (`Authorization: Bearer $AIHUBMIX_API_KEY`)",
+    "  -H \"Authorization: Bearer $AIHUBMIX_API_KEY\" \\",
+    "The response carries the output URL(s) directly. Full parameter list: see the schema link below. Generation costs real money — check the price on the model page first.",
+    "- Compare with another model (human-facing, side-by-side specs and pricing): https://aihubmix.com/compare — pick this model and a peer there; published pairs are listed in https://aihubmix.com/sitemap-compare.xml, unpublished pairs 404 so do not compose the path by hand"
+  ],
+  "authorization": "One new apple request, dedicated key total quota USD0.20, metered, no recharge or retry."
+}

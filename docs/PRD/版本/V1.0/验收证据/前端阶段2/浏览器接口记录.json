@@ -1,0 +1,20 @@
+{
+  "type": "isolated real FastAPI + mock models",
+  "requests": [
+    "POST /api/v1/photos 503 Service Unavailable",
+    "GET /api/v1/photos/requests/57141dc0-6c60-4a95-8a8b-fc7d2dd935a4 200 OK",
+    "POST /api/v1/characters 200 OK",
+    "GET /api/v1/photos/2 200 OK",
+    "GET /api/v1/characters/by-object/3 200 OK",
+    "POST /api/v1/characters 503 Service Unavailable",
+    "GET /api/v1/photos/2 200 OK",
+    "GET /api/v1/characters/by-object/3 200 OK",
+    "PATCH /api/v1/characters/3 200 OK",
+    "GET /api/v1/characters/3 200 OK",
+    "GET /api/v1/characters/3/messages 200 OK",
+    "GET /api/v1/characters/3/scene 200 OK",
+    "POST /api/v1/characters/3/chat 200 OK",
+    "GET /api/v1/characters/3/messages 200 OK",
+    "GET /api/v1/characters/3/scene 200 OK"
+  ]
+}

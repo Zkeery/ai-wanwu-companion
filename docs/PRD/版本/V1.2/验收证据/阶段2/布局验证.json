@@ -1,0 +1,30 @@
+[
+  {
+    "width": 1440,
+    "pageOverflow": false,
+    "dialogOverflow": false,
+    "withinViewport": true,
+    "scrollable": true
+  },
+  {
+    "width": 768,
+    "pageOverflow": false,
+    "dialogOverflow": false,
+    "withinViewport": true,
+    "scrollable": true
+  },
+  {
+    "width": 390,
+    "pageOverflow": false,
+    "dialogOverflow": false,
+    "withinViewport": true,
+    "scrollable": true
+  },
+  {
+    "width": 360,
+    "pageOverflow": false,
+    "dialogOverflow": false,
+    "withinViewport": true,
+    "scrollable": true
+  }
+]

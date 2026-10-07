@@ -1,0 +1,284 @@
+{
+  "date": "2026-09-21",
+  "overall": "not_passed",
+  "tests": {
+    "backend": 382,
+    "frontend": 125
+  },
+  "checks": {
+    "typecheck": true,
+    "lint": true,
+    "build": true
+  },
+  "probes": {
+    "isolation": {
+      "anonymous": 401,
+      "foreign_space": 404,
+      "foreign_character": 404
+    },
+    "split_scene": {
+      "location": "desert",
+      "old_tree_before": 0,
+      "old_tree_after": 1,
+      "living_before": 1,
+      "living_after": 1,
+      "gap_confirmed": true
+    }
+  },
+  "browser": {
+    "login": true,
+    "mockCreation": true,
+    "rename": true,
+    "chat": true,
+    "exactProposal": true,
+    "complexUtteranceNoProposal": true,
+    "keyboardNavHidden": true,
+    "legacyHomeGap": {
+      "oldTrees": 1,
+      "newSceneItemCount": 0
+    },
+    "care": true,
+    "storage": true,
+    "restore": true,
+    "refresh": true,
+    "layout": [
+      {
+        "width": 360,
+        "overflow": false,
+        "navVisible": true,
+        "navTargets": [
+          {
+            "width": 81,
+            "height": 52
+          },
+          {
+            "width": 81,
+            "height": 52
+          },
+          {
+            "width": 81,
+            "height": 52
+          },
+          {
+            "width": 81,
+            "height": 52
+          }
+        ],
+        "spacer": 80
+      },
+      {
+        "width": 390,
+        "overflow": false,
+        "navVisible": true,
+        "navTargets": [
+          {
+            "width": 88.5,
+            "height": 52
+          },
+          {
+            "width": 88.5,
+            "height": 52
+          },
+          {
+            "width": 88.5,
+            "height": 52
+          },
+          {
+            "width": 88.5,
+            "height": 52
+          }
+        ],
+        "spacer": 80
+      },
+      {
+        "width": 430,
+        "overflow": false,
+        "navVisible": true,
+        "navTargets": [
+          {
+            "width": 98.5,
+            "height": 52
+          },
+          {
+            "width": 98.5,
+            "height": 52
+          },
+          {
+            "width": 98.5,
+            "height": 52
+          },
+          {
+            "width": 98.5,
+            "height": 52
+          }
+        ],
+        "spacer": 80
+      },
+      {
+        "width": 768,
+        "overflow": false,
+        "navVisible": false,
+        "navTargets": [
+          {
+            "width": 0,
+            "height": 0
+          },
+          {
+            "width": 0,
+            "height": 0
+          },
+          {
+            "width": 0,
+            "height": 0
+          },
+          {
+            "width": 0,
+            "height": 0
+          }
+        ],
+        "spacer": 0
+      },
+      {
+        "width": 1440,
+        "overflow": false,
+        "navVisible": false,
+        "navTargets": [
+          {
+            "width": 0,
+            "height": 0
+          },
+          {
+            "width": 0,
+            "height": 0
+          },
+          {
+            "width": 0,
+            "height": 0
+          },
+          {
+            "width": 0,
+            "height": 0
+          }
+        ],
+        "spacer": 0
+      }
+    ],
+    "reducedMotion": true,
+    "pageLayouts": [
+      {
+        "route": "/",
+        "width": 360,
+        "overflow": false
+      },
+      {
+        "route": "/",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/",
+        "width": 430,
+        "overflow": false
+      },
+      {
+        "route": "/",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/",
+        "width": 1440,
+        "overflow": false
+      },
+      {
+        "route": "/companions/new",
+        "width": 360,
+        "overflow": false
+      },
+      {
+        "route": "/companions/new",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/companions/new",
+        "width": 430,
+        "overflow": false
+      },
+      {
+        "route": "/companions/new",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/companions/new",
+        "width": 1440,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3",
+        "width": 360,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3",
+        "width": 430,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3",
+        "width": 1440,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3/scenes",
+        "width": 360,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3/scenes",
+        "width": 390,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3/scenes",
+        "width": 430,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3/scenes",
+        "width": 768,
+        "overflow": false
+      },
+      {
+        "route": "/companions/3/scenes",
+        "width": 1440,
+        "overflow": false
+      }
+    ],
+    "logoutNavHidden": true
+  },
+  "restart": {
+    "characters": true,
+    "messages": true,
+    "spaces": true
+  },
+  "real_model_calls": 0,
+  "limitations": [
+    "mock generation and chat only",
+    "real image full-chain 5s not achieved",
+    "legacy scene and living not unified",
+    "home rain/sound missing in living",
+    "real mobile and visual acceptance pending"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "original_tables_unchanged": true,
+  "original_table_count": 15,
+  "added_tables": [
+    "generation_charges",
+    "generation_credits",
+    "recreations",
+    "scene_agent_chats",
+    "scene_agent_runs"
+  ],
+  "original_characters": 8,
+  "original_spaces": 8,
+  "runs": 2
+}

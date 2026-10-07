@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-09-24T19:27:44+08:00",
+  "source": "https://maas.antdigital.com/api/v1/model-service/public/page-list",
+  "http_status": 200,
+  "catalog_success": true,
+  "model": "qwen3.8-flash",
+  "model_status": "RELEASED",
+  "catalog_updated_at": "2026-09-24 17:35:59",
+  "currency": "CNY",
+  "price_unit": "M_TOKENS",
+  "input_yuan_per_million_tokens": "0.800000",
+  "output_yuan_per_million_tokens": "2.700000",
+  "project_verifier": "verify_catalog passed",
+  "max_reservation_micro_yuan_per_request": 1145600,
+  "paid_model_requests": 0
+}

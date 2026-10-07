@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "declared_mode": "mock",
+  "provider_calls_by_auditor": 0,
+  "sample_count": 3,
+  "displayed_count": 2,
+  "display_success_rate": 0.6666666666666666,
+  "within_budget_count": 1,
+  "batch_timing_met": false,
+  "displayed_only_statistics_ms": {
+    "p50": 1013.9000000059605,
+    "p95": 7025.100000008941,
+    "max": 7025.100000008941
+  },
+  "samples": [
+    {
+      "sample_id": "87ffb456-7dba-457e-b51b-71f180baf4ca",
+      "status": "succeeded",
+      "total_ms": 1013.9000000059605,
+      "segments_ms": {
+        "preflight": 57.29999999701977,
+        "upload_recognition": 28.0,
+        "handoff": 6.9000000059604645,
+        "generation": 39.20000000298023,
+        "image_delivery": 882.5
+      },
+      "within_budget": true,
+      "reason": null
+    },
+    {
+      "sample_id": "826dd9cb-8cdd-41a2-b438-ef27329fc355",
+      "status": "failed",
+      "total_ms": 70.40000000596046,
+      "segments_ms": {
+        "preflight": 59.400000005960464,
+        "upload_recognition": null,
+        "handoff": null,
+        "generation": null,
+        "image_delivery": null
+      },
+      "within_budget": false,
+      "reason": "failed"
+    },
+    {
+      "sample_id": "556bcdea-57f6-4cb5-bb21-dc555bcecbac",
+      "status": "succeeded",
+      "total_ms": 7025.100000008941,
+      "segments_ms": {
+        "preflight": 63.20000000298023,
+        "upload_recognition": 58.29999999701977,
+        "handoff": 15.900000005960464,
+        "generation": 40.29999999701977,
+        "image_delivery": 6847.4000000059605
+      },
+      "within_budget": false,
+      "reason": "over_5000ms"
+    }
+  ],
+  "blockers": [
+    "nonpassing_samples",
+    "real_provider_not_verified"
+  ],
+  "release_passed": false,
+  "limitation": "Timing only. Mode is operator-declared, not provider verification. Quality, uniqueness, cost and coverage require separate acceptance."
+}

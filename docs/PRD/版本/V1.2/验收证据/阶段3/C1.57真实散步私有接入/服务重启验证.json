@@ -1,0 +1,29 @@
+{
+  "restarted_pid": 46459,
+  "preparation": {
+    "character_id": 18,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      }
+    ]
+  },
+  "ready": true,
+  "same_sprite": true,
+  "sprite_status": 200
+}

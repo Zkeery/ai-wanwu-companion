@@ -1,0 +1,16 @@
+{
+  "probe": "unauthenticated GET /v1/models; no generation",
+  "proxy_environment_present": false,
+  "results": [
+    {
+      "trust_env": false,
+      "http_status": 401,
+      "elapsed_ms": 1449
+    },
+    {
+      "trust_env": true,
+      "http_status": 401,
+      "elapsed_ms": 882
+    }
+  ]
+}

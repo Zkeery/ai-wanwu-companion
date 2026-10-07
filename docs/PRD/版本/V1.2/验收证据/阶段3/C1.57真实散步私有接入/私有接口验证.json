@@ -1,0 +1,60 @@
+{
+  "preparation": {
+    "character_id": 18,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      }
+    ]
+  },
+  "metadata": {
+    "state": "ready",
+    "pack_id": "33209fbbe8c34b74a9dfbbae5da7819c",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "slot": "activity",
+    "activity": "walk",
+    "frame_width": 360,
+    "frame_height": 270,
+    "frame_count": 16,
+    "fps": 8,
+    "sprite_sha256": "76ec715c831fdfcb52ba45c69b7197fd1b9cfbe1370647cdd877c1236ac8a8fa",
+    "background_sha256": "4e809dc409de6ba23b6bd534995194b763cb8cbf66089476895438b1446a5111",
+    "sprite_url": "/api/v1/characters/18/motion/activity/walk/33209fbbe8c34b74a9dfbbae5da7819c/sprite",
+    "background_url": "/api/v1/characters/18/motion/activity/walk/33209fbbe8c34b74a9dfbbae5da7819c/background"
+  },
+  "sprite": {
+    "status": 200,
+    "sha256": "76ec715c831fdfcb52ba45c69b7197fd1b9cfbe1370647cdd877c1236ac8a8fa",
+    "match": true,
+    "cacheControl": "private, no-store"
+  },
+  "access": [
+    {
+      "label": "anonymous",
+      "metadata": 401,
+      "sprite": 401,
+      "preparation": 401
+    },
+    {
+      "label": "other",
+      "metadata": 404,
+      "sprite": 404,
+      "preparation": 404
+    }
+  ]
+}

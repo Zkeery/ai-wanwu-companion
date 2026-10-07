@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>苹果伙伴 · 散步预览</title>
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#f5f4ef;color:#283b33;font:16px system-ui}
+  main{max-width:920px;margin:auto;padding:28px 20px}h1{font-size:28px;margin:0 0 10px}
+  p{line-height:1.7}.muted{color:#65736b}.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+  section{background:#fff;border-radius:20px;padding:20px}h2{font-size:18px;margin:0 0 16px}
+  .stage{background:#dfebdd;border-radius:14px;overflow:hidden;aspect-ratio:4/3;display:grid;place-items:center}
+  canvas{width:100%;height:auto;display:block}.original{width:100%;border-radius:12px}
+  button{background:#2e5944;color:white;border:0;border-radius:10px;padding:12px 20px;font:inherit;cursor:pointer}
+  button:disabled{opacity:.5;cursor:default}button:focus-visible{outline:3px solid #d4932b;outline-offset:3px}
+  .controls{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
+  a{color:#315c48}.note{font-size:14px}.mobile-frame{display:block;width:390px;max-width:100%;height:880px;border:1px solid #d5dcd4;border-radius:16px;background:white;margin:20px auto}
+  @media(max-width:650px){main{padding:18px 14px}.grid{grid-template-columns:1fr}section{padding:16px}h1{font-size:24px}}
+</style>
+<main>
+  <h1>苹果伙伴，走两步</h1>
+  <p class="muted">用刚刚生成的真实四姿态，看看连续播放的效果。</p>
+  <div class="grid">
+    <section>
+      <h2>散步动作</h2>
+      <div class="stage"><canvas id="scene" width="360" height="270" aria-label="苹果伙伴散步动作"></canvas></div>
+      <div class="controls"><button id="toggle" disabled>加载中</button><span id="status" role="status">正在读取已保存的动作</span></div>
+      <p class="muted note">每轮 2 秒。暂停后保留当前姿态，继续播放不会重新生成图片。</p>
+    </section>
+    <section>
+      <h2>原来的苹果伙伴</h2>
+      <img class="original" src="source.jpg" alt="原始苹果伙伴">
+      <p class="muted note">这份预览使用现有图片，没有新增模型调用或费用。动作仍为待审候选。</p>
+    </section>
+  </div>
+  <p class="muted note">当前沿用 Sunburst。首次四姿态生成耗时 45.097 秒；按最新决定，性能优化留待后续。本次仅在本地制成动作包，没有绑定到正式伙伴。</p>
+  <details id="mobile"><summary>查看手机宽度预览</summary><iframe class="mobile-frame" title="390宽度手机预览" loading="lazy"></iframe></details>
+</main>
+<script>
+  const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),button=document.querySelector('#toggle'),status=document.querySelector('#status');
+  const sheet=new Image();let frame=0,ready=false,playing=false,clock=0,raf=null;
+  const manifest={width:360,height:270,count:16,fps:8};
+  function draw(){ctx.clearRect(0,0,360,270);ctx.drawImage(sheet,frame*360,0,360,270,0,0,360,270);canvas.dataset.frame=String(frame);}
+  function labels(){button.textContent=playing?'暂停':'继续播放';status.textContent=playing?'正在散步':'已暂停';}
+  function tick(now){if(!playing)return;frame=Math.floor((now-clock)/1000*manifest.fps)%manifest.count;draw();raf=requestAnimationFrame(tick);}
+  function setPlaying(next){playing=next;if(raf!==null)cancelAnimationFrame(raf);raf=null;if(playing){clock=performance.now()-frame*1000/manifest.fps;raf=requestAnimationFrame(tick);}labels();}
+  sheet.onload=()=>{if(sheet.naturalWidth!==5760||sheet.naturalHeight!==270){status.textContent='动作尺寸不匹配';return;}ready=true;button.disabled=false;draw();setPlaying(!matchMedia('(prefers-reduced-motion: reduce)').matches);};
+  sheet.onerror=()=>{status.textContent='动作暂时无法读取，请刷新重试';};
+  sheet.src='walk/sprite.png';button.addEventListener('click',()=>{if(ready)setPlaying(!playing);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)setPlaying(false);});
+  const mobile=document.querySelector('#mobile');
+  if(new URLSearchParams(location.search).has('mobile'))mobile.remove();
+  else mobile.addEventListener('toggle',()=>{const iframe=mobile.querySelector('iframe');if(mobile.open&&!iframe.getAttribute('src'))iframe.src='./?mobile';});
+</script>
+</html>

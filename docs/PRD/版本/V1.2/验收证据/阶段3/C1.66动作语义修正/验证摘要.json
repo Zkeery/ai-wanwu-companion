@@ -1,0 +1,82 @@
+{
+  "tests": {
+    "backend": {
+      "exit": 0,
+      "summary": [
+        "58 passed, 2 warnings in 6.50s"
+      ]
+    },
+    "frontend": {
+      "exit": 0,
+      "summary": [
+        " Test Files  2 passed (2)",
+        "      Tests  16 passed (16)"
+      ]
+    },
+    "typecheck": {
+      "exit": 0,
+      "summary": []
+    },
+    "lint": {
+      "exit": 0,
+      "summary": []
+    },
+    "build": {
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 3.3s"
+      ]
+    }
+  },
+  "plans": [
+    {
+      "model": "gpt-image-2.5-sunburst",
+      "endpoint": "https://aihubmix.com/ai/v1/images/generations",
+      "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+      "prompt_sha256": "e3dea15e7129bf930c7eb76d3b05d66677cd9349a2aeb4c9d6138c10750f3a72",
+      "size": "1024x1024",
+      "quality": "medium",
+      "background": "transparent",
+      "output_format": "png",
+      "n": 1,
+      "layout": "2x2",
+      "activity": "rest",
+      "billing": "aihubmix_metered",
+      "api_cost_cap_supported": false,
+      "model_snapshot_pinned": false,
+      "character_id": 4,
+      "state": "dry-run",
+      "generation_requests": 0,
+      "written": false,
+      "human_review_required": true
+    },
+    {
+      "model": "gpt-image-2.5-sunburst",
+      "endpoint": "https://aihubmix.com/ai/v1/images/generations",
+      "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+      "prompt_sha256": "872123c4d3a28476c691a9403b4096364dbbd7ec530434b28a67245273db95d8",
+      "size": "1024x1024",
+      "quality": "medium",
+      "background": "transparent",
+      "output_format": "png",
+      "n": 1,
+      "layout": "2x2",
+      "activity": "observe",
+      "billing": "aihubmix_metered",
+      "api_cost_cap_supported": false,
+      "model_snapshot_pinned": false,
+      "character_id": 4,
+      "state": "dry-run",
+      "generation_requests": 0,
+      "written": false,
+      "human_review_required": true
+    }
+  ],
+  "user_requirements": {
+    "rest": "持续闭眼休息、闭目养神",
+    "observe": "左顾右盼、到处观察"
+  },
+  "new_model_requests": 0,
+  "real_effect": "pending_new_generation",
+  "existing_candidates": "preserved_not_accepted"
+}

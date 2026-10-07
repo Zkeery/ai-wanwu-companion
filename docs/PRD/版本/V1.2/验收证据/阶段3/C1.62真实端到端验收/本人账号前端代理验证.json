@@ -1,0 +1,19 @@
+{
+  "through_frontend_port": 3050,
+  "owner_anchor_character": 3,
+  "acceptance_character": 4,
+  "statuses": {
+    "/characters/2": 404,
+    "/characters/3": 200,
+    "/characters/4": 200,
+    "/characters/4/messages": 200,
+    "/characters/4/scene": 200,
+    "/characters/4/motion-preparation": 200
+  },
+  "walk_state": "ready",
+  "resource_status": 200,
+  "same_real_sprite": true,
+  "anonymous_status": 401,
+  "portrait_status": 200,
+  "portrait_matches_real_source": true
+}

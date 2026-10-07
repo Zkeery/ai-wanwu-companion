@@ -1,0 +1,11 @@
+{
+  "status": "rejected",
+  "user_reply": "形象或差异需要调整",
+  "date": "2026-10-02",
+  "characters": [6, 7],
+  "visual_acceptance": false,
+  "specific_adjustment": "两次创作的造型差异更明显",
+  "original_candidates_retained": true,
+  "new_model_requests_after_review": 0,
+  "request_count_scope": "本拒绝记录保存时点；后续造型差异修订独立归档"
+}

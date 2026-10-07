@@ -1,0 +1,4 @@
+{
+  "exit": 2,
+  "output": "{\"error\": {\"code\": \"provider_access_denied\", \"message\": \"provider_access_denied\"}}\n"
+}

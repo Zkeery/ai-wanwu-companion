@@ -1,0 +1,14 @@
+{
+  "approval_ref": "c162-user-confirmed-20260929-one-apple",
+  "character_id": 2,
+  "request_id": "9fef26a9-8407-45c7-be3e-78b9eabf5ccf",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "prompt_sha256": "c8c33e28630f852bd3804b70dbc957e4ffb1718a6d45f827559334680ca679eb",
+  "price_verified_on": "2026-09-29",
+  "maximum_generations": 1,
+  "dedicated_key_total_limit_usd": 0.2,
+  "recharge": false,
+  "retry": false,
+  "user_confirmation": "确认",
+  "confirmed_at": "2026-09-29T04:16:06.680Z"
+}

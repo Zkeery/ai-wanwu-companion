@@ -1,0 +1,13 @@
+{
+  "checked_at_utc": "2026-09-24T05:47:23Z",
+  "source": "https://maas.antdigital.com/api/v1/model-service/public/page-list",
+  "model_id": "modelservice-1788174495570001431",
+  "model": "qwen3.8-flash",
+  "catalog_status": "RELEASED",
+  "catalog_updated_time": "2026-09-24 11:10:16",
+  "currency": "CNY",
+  "unit": "million_tokens",
+  "input_cny_per_million": 0.8,
+  "output_cny_per_million": 2.7,
+  "billing_note": "公开目录标价；实际费用以供应商账单为准。复测执行当天仍须重新核对。"
+}

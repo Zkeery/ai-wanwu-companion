@@ -1,0 +1,191 @@
+[
+  {
+    "phase": "import",
+    "new_model_requests": 0,
+    "review_scope": "isolated_workflow_replay",
+    "job_id": "879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa",
+    "character_id": 1,
+    "state": "needs_review",
+    "origin": "archived_receipt",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "candidate_sha256": "e2b1dae76783440aef7343d1054b4d7939c5dc6c0dda86d673088043a58301b1",
+    "provider_task_id": "t_4f78cb1fb590d3f617186c74",
+    "generation_requests": 0,
+    "candidate": "/Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/.runtime/c159-walk-workflow/ledger/jobs/879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa/candidate.png",
+    "preparation": {
+      "character_id": 1,
+      "activities": [
+        {
+          "activity": "rest",
+          "state": "not_requested",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "walk",
+          "state": "not_requested",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "observe",
+          "state": "not_requested",
+          "attempts": 0,
+          "error_code": null
+        }
+      ]
+    }
+  },
+  {
+    "phase": "review",
+    "new_model_requests": 0,
+    "review_scope": "isolated_workflow_replay",
+    "job_id": "879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa",
+    "character_id": 1,
+    "state": "queued",
+    "origin": "archived_receipt",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "candidate_sha256": "e2b1dae76783440aef7343d1054b4d7939c5dc6c0dda86d673088043a58301b1",
+    "provider_task_id": "t_4f78cb1fb590d3f617186c74",
+    "queue_state": "queued",
+    "generation_requests": 0,
+    "candidate": "/Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/.runtime/c159-walk-workflow/ledger/jobs/879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa/candidate.png",
+    "preparation": {
+      "character_id": 1,
+      "activities": [
+        {
+          "activity": "rest",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "walk",
+          "state": "queued",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "observe",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        }
+      ]
+    }
+  },
+  {
+    "phase": "consume",
+    "new_model_requests": 0,
+    "review_scope": "isolated_workflow_replay",
+    "job_id": "879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa",
+    "character_id": 1,
+    "state": "ready",
+    "origin": "archived_receipt",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "candidate_sha256": "e2b1dae76783440aef7343d1054b4d7939c5dc6c0dda86d673088043a58301b1",
+    "provider_task_id": "t_4f78cb1fb590d3f617186c74",
+    "queue_state": "ready",
+    "generation_requests": 0,
+    "candidate": "/Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/.runtime/c159-walk-workflow/ledger/jobs/879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa/candidate.png",
+    "preparation": {
+      "character_id": 1,
+      "activities": [
+        {
+          "activity": "rest",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "walk",
+          "state": "ready",
+          "attempts": 1,
+          "error_code": null
+        },
+        {
+          "activity": "observe",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        }
+      ]
+    }
+  },
+  {
+    "phase": "status",
+    "new_model_requests": 0,
+    "review_scope": "isolated_workflow_replay",
+    "job_id": "879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa",
+    "character_id": 1,
+    "state": "ready",
+    "origin": "archived_receipt",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "candidate_sha256": "e2b1dae76783440aef7343d1054b4d7939c5dc6c0dda86d673088043a58301b1",
+    "provider_task_id": "t_4f78cb1fb590d3f617186c74",
+    "queue_state": "ready",
+    "generation_requests": 0,
+    "candidate": "/Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/.runtime/c159-walk-workflow/ledger/jobs/879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa/candidate.png",
+    "preparation": {
+      "character_id": 1,
+      "activities": [
+        {
+          "activity": "rest",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "walk",
+          "state": "ready",
+          "attempts": 1,
+          "error_code": null
+        },
+        {
+          "activity": "observe",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        }
+      ]
+    }
+  },
+  {
+    "phase": "review",
+    "new_model_requests": 0,
+    "review_scope": "isolated_workflow_replay",
+    "job_id": "879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa",
+    "character_id": 1,
+    "state": "ready",
+    "origin": "archived_receipt",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "candidate_sha256": "e2b1dae76783440aef7343d1054b4d7939c5dc6c0dda86d673088043a58301b1",
+    "provider_task_id": "t_4f78cb1fb590d3f617186c74",
+    "queue_state": "ready",
+    "generation_requests": 0,
+    "candidate": "/Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/.runtime/c159-walk-workflow/ledger/jobs/879fef6d9d56415bb48c31d8e6649048fb4f1b725d5920adcaff6f29fdbdcbfa/candidate.png",
+    "preparation": {
+      "character_id": 1,
+      "activities": [
+        {
+          "activity": "rest",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        },
+        {
+          "activity": "walk",
+          "state": "ready",
+          "attempts": 1,
+          "error_code": null
+        },
+        {
+          "activity": "observe",
+          "state": "waiting_source",
+          "attempts": 0,
+          "error_code": null
+        }
+      ]
+    }
+  }
+]

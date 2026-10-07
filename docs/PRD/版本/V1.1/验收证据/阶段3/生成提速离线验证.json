@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-21",
+  "backendTests": 335,
+  "frontendTests": 82,
+  "normalProviderCalls": {
+    "before": 4,
+    "after": 3,
+    "measuredWith": "httpx.MockTransport"
+  },
+  "photo": {
+    "source_pixels": [
+      4096,
+      3072
+    ],
+    "recognition_pixels": [
+      2048,
+      1536
+    ],
+    "source_bytes": 9104184,
+    "recognition_bytes": 1699846,
+    "reduction_percent": 81.3,
+    "synthetic": true
+  },
+  "live": {
+    "backendPid": 14105,
+    "unauthenticatedStatus": 401,
+    "databaseUnchanged": true
+  },
+  "realModelBenchmark": "pending; paid calls remain paused",
+  "scope": "No change to provider/model, avatar size, account rules or completed data"
+}

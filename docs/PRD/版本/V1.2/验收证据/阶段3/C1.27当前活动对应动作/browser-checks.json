@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-28",
+  "desktop": [
+    1440,
+    1000
+  ],
+  "mobile": [
+    390,
+    844
+  ],
+  "sceneChecks": [
+    {
+      "scene": "home",
+      "activity": "rest",
+      "missingCorrespondingPack": true,
+      "noDanceButton": true,
+      "horizontalOverflow": false,
+      "realOfflineTaskExplicitlyScheduled": true
+    },
+    {
+      "scene": "forest",
+      "activity": "rest",
+      "missingCorrespondingPack": true,
+      "noDanceButton": true,
+      "horizontalOverflow": false,
+      "realOfflineTaskExplicitlyScheduled": true
+    },
+    {
+      "scene": "desert",
+      "activity": "rest",
+      "missingCorrespondingPack": true,
+      "noDanceButton": true,
+      "horizontalOverflow": false,
+      "realOfflineTaskExplicitlyScheduled": true
+    }
+  ],
+  "matchingAssetPlayback": "synthetic automated tests only; no real activity-specific art in these UI samples",
+  "actualMetadataRequest": "/api/v1/characters/13/motion?activity=rest",
+  "actualMediaRequests": 0,
+  "offlineReleasesPlayer": true,
+  "restartRetainsCurrentRest": true,
+  "startupReadFailedBeforeReady": true,
+  "reloadButtonRecovers": true,
+  "taskSpaceFinished": true
+}

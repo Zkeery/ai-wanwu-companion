@@ -1,0 +1,25 @@
+{
+  "status": "verified",
+  "checks": {
+    "tables": true,
+    "files": true,
+    "original_budget": true,
+    "active_budget": true
+  },
+  "tables": 71,
+  "files": 83,
+  "sqlite_integrity": "ok",
+  "excluded_session_fields": [
+    "last_seen_at",
+    "expires_at"
+  ],
+  "active_budget": {
+    "authorized": true,
+    "requests": 7,
+    "reserved_cny": 3.6848,
+    "budget_cny": 4.85,
+    "requests_max": 11,
+    "paused": false,
+    "automatic_retries": 0
+  }
+}

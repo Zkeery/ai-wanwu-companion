@@ -1,0 +1,205 @@
+{
+  "plan_sha256": "fdf02e0a016e020f2a9ce1e13e886dd9f055fffdb518f07c3c735f1d3a85363a",
+  "overall": "NEED_REVIEW",
+  "counts": {
+    "PASS": 0,
+    "FAIL": 0,
+    "NEED_REVIEW": 24
+  },
+  "outcomes": [
+    {
+      "case_id": "object_mug",
+      "stage": "static",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_mug",
+      "stage": "rest",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_mug",
+      "stage": "walk",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_mug",
+      "stage": "observe",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_clock",
+      "stage": "static",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_clock",
+      "stage": "rest",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_clock",
+      "stage": "walk",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_clock",
+      "stage": "observe",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_apple",
+      "stage": "static",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_apple",
+      "stage": "rest",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_apple",
+      "stage": "walk",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "object_apple",
+      "stage": "observe",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_pothos",
+      "stage": "static",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_pothos",
+      "stage": "rest",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_pothos",
+      "stage": "walk",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_pothos",
+      "stage": "observe",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_succulent",
+      "stage": "static",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_succulent",
+      "stage": "rest",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_succulent",
+      "stage": "walk",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "plant_succulent",
+      "stage": "observe",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "repeat_pothos",
+      "stage": "static",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "repeat_pothos",
+      "stage": "rest",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "repeat_pothos",
+      "stage": "walk",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    },
+    {
+      "case_id": "repeat_pothos",
+      "stage": "observe",
+      "status": "NEED_REVIEW",
+      "issues": [
+        "real_output_missing"
+      ]
+    }
+  ],
+  "formal_two_reviewer_calibration": "not_run",
+  "performance": "deferred_by_user"
+}

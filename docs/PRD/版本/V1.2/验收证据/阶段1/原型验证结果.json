@@ -1,0 +1,356 @@
+{
+  "scope": "静态交互原型，非业务或真实AI验收",
+  "checks": [
+    {
+      "name": "布置工具按需展开",
+      "passed": true
+    },
+    {
+      "name": "身体动作与背景分离",
+      "passed": true
+    },
+    {
+      "name": "改名同步伙伴抬头",
+      "passed": true
+    },
+    {
+      "name": "切换分区保留未发送草稿",
+      "passed": true
+    },
+    {
+      "name": "演示发送与固定回复标识",
+      "passed": true
+    },
+    {
+      "name": "方向键可切换伙伴分区",
+      "passed": true
+    },
+    {
+      "name": "发现入口与高亮",
+      "passed": true
+    },
+    {
+      "name": "小队说明区分未来共同生活",
+      "passed": true
+    },
+    {
+      "name": "浏览器返回恢复发现",
+      "passed": true
+    },
+    {
+      "name": "本地照片预览使用Blob不上传",
+      "passed": true
+    },
+    {
+      "name": "结果明确固定示例而非生成",
+      "passed": true
+    },
+    {
+      "name": "空列表引导首次创作",
+      "passed": true
+    },
+    {
+      "name": "查询失败不冒充无伙伴",
+      "passed": true
+    },
+    {
+      "name": "失败可手动重试",
+      "passed": true
+    },
+    {
+      "name": "加载中不展示空列表",
+      "passed": true
+    },
+    {
+      "name": "未登录仅一个账号入口",
+      "passed": true
+    },
+    {
+      "name": "登录示意弹窗可打开",
+      "passed": true
+    },
+    {
+      "name": "Escape关闭弹窗",
+      "passed": true
+    },
+    {
+      "name": "未捕获脚本错误为零",
+      "passed": true
+    },
+    {
+      "name": "没有API或外部资源请求",
+      "passed": true
+    },
+    {
+      "name": "减少动态偏好不自动或强制跳舞",
+      "passed": true
+    }
+  ],
+  "responsive": [
+    {
+      "width": 390,
+      "page": "home",
+      "scrollWidth": 390,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 390,
+      "page": "companion/cup/chat",
+      "scrollWidth": 390,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 390,
+      "page": "companion/cup/life",
+      "scrollWidth": 390,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 390,
+      "page": "companion/cup/profile",
+      "scrollWidth": 390,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 390,
+      "page": "create",
+      "scrollWidth": 390,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 390,
+      "page": "discover",
+      "scrollWidth": 390,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 768,
+      "page": "home",
+      "scrollWidth": 753,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 768,
+      "page": "companion/cup/chat",
+      "scrollWidth": 753,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 768,
+      "page": "companion/cup/life",
+      "scrollWidth": 753,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 768,
+      "page": "companion/cup/profile",
+      "scrollWidth": 753,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 768,
+      "page": "create",
+      "scrollWidth": 753,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 768,
+      "page": "discover",
+      "scrollWidth": 753,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "page": "home",
+      "scrollWidth": 1265,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "page": "companion/cup/chat",
+      "scrollWidth": 1265,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "page": "companion/cup/life",
+      "scrollWidth": 1265,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "page": "companion/cup/profile",
+      "scrollWidth": 1265,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "page": "create",
+      "scrollWidth": 1265,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1280,
+      "page": "discover",
+      "scrollWidth": 1265,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "page": "home",
+      "scrollWidth": 1425,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "page": "companion/cup/chat",
+      "scrollWidth": 1425,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "page": "companion/cup/life",
+      "scrollWidth": 1425,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "page": "companion/cup/profile",
+      "scrollWidth": 1425,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "page": "create",
+      "scrollWidth": 1425,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    },
+    {
+      "width": 1440,
+      "page": "discover",
+      "scrollWidth": 1425,
+      "nav": [
+        "伙伴",
+        "创作",
+        "发现"
+      ],
+      "passed": true
+    }
+  ],
+  "errors": []
+}

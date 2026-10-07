@@ -1,0 +1,13 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>R1 场景与养成验证</title>
+<style>body{margin:0;background:#f7f2fc;color:#352a45;font:16px/1.8 system-ui,sans-serif}
+main{max-width:840px;margin:40px auto;padding:32px;background:#fff;border-radius:24px}
+h1{font-size:28px}h2{font-size:20px}p{color:#655971}ul{padding-left:24px}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:12px;border-bottom:1px solid #eee}
+.note{background:#fceef4;border-radius:16px;padding:18px}@media(max-width:600px){main{margin:12px;padding:18px}th,td{padding:8px}}</style>
+<main><p>AI万物伙伴 · 技术开发第一阶段</p><h1>场景能保存，植物按规则慢慢长大</h1>
+<p>此页由实际隔离验证脚本生成。结果：通过。模型调用 0 次。</p>
+<div class="note">R1 隔离内核验证；合成伙伴、可控服务端时钟；不是实际等待数天或产品界面。真实登录、居住成员管理、旧花园迁移及正式页面尚未接入。</div>
+<h2>成长与收纳的实际结果</h2><table><thead><tr><th>场景</th><th>有效成长</th><th>物件状态</th></tr></thead>
+<tbody><tr><td>照料后离线 36 小时</td><td>24 小时</td><td>已摆出</td></tr><tr><td>补充照料，成长 6 小时后收纳</td><td>30 小时</td><td>已收纳</td></tr><tr><td>收纳 24 小时后</td><td>30 小时</td><td>已收纳</td></tr><tr><td>重新摆出，等待照料</td><td>30 小时</td><td>已摆出</td></tr><tr><td>继续照料，累计成熟</td><td>72 小时</td><td>已摆出</td></tr></tbody></table><h2>持久化与规则检查</h2><ul><li>✓ 跨进程恢复空间、物件与进度</li><li>✓ 跨进程重复请求返回原回执</li><li>✓ 36 小时离线仅累计 24 小时成长</li><li>✓ 收纳 24 小时不增加成长</li><li>✓ 摆出保留身份且过期需照料</li><li>✓ 累计 72 小时有效成长后成熟</li></ul>
+<p>完整规则与边界见同目录的《开发与验证报告》。本页不代表完整首版已完成。</p></main></html>

@@ -1,0 +1,11 @@
+{
+  "metadataStatus": 200,
+  "kind": "video",
+  "videoStatus": 200,
+  "mime": "video/mp4",
+  "privateCache": "private, no-store",
+  "bytes": 756712,
+  "hashMatches": true,
+  "oldSpriteState": "ready",
+  "serviceRestartRestoredBinding": true
+}

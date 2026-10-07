@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f0fa"><title>万物伙伴 · 日常里的小小魔法</title>
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/warm-theme.css"><link rel="stylesheet" href="/dream.css"><script src="/account-session.js" defer></script><script src="/app.js" defer></script><script src="/access.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="万物伙伴 demo 首页"><span class="brand-mark">✳</span><span>万物伙伴<small>A LITTLE WORLD, TOGETHER</small></span></a>
+    <button class="account-pill" id="account-button" type="button">注册 / 登录 <span aria-hidden="true">✧</span></button>
+  </header>
+  <main>
+    <section class="dream-hero" aria-labelledby="product-title">
+      <div class="dream-copy">
+        <p class="dream-eyebrow"><span aria-hidden="true">✦</span> 日常里，藏着一点小小的魔法</p>
+        <h1 id="product-title">拍下喜欢的日常，<br>遇见<span>独一无二的伙伴。</span></h1>
+        <p class="dream-description">一颗苹果、一只杯子、一株小植物，<br>都能变成有自己模样与性格的小伙伴。<br>即使拍下同一种东西，每次相遇也各不相同。</p>
+        <p class="dream-invitation">给它起个名字，和它聊聊天。<br>一起住进，属于你们的小世界。</p>
+        <div class="little-journey" aria-label="玩法：拍下日常，遇见伙伴，一起生活"><span>拍下日常</span><i aria-hidden="true">✧</i><span>遇见伙伴</span><i aria-hidden="true">✧</i><span>一起生活</span></div>
+      </div>
+      <div class="dream-illustration" aria-label="玩法示意：一颗苹果可能成为伙伴果果，同类物品也会产生不同伙伴">
+        <div class="dream-halo" aria-hidden="true"></div><div class="dream-orbit orbit-a" aria-hidden="true"></div><div class="dream-orbit orbit-b" aria-hidden="true"></div>
+        <span class="dream-star star-a" aria-hidden="true">✧</span><span class="dream-star star-b" aria-hidden="true">✦</span><span class="dream-star star-c" aria-hidden="true">✧</span><span class="dream-star star-d" aria-hidden="true">✧</span>
+        <span class="tiny-heart heart-a" aria-hidden="true">♡</span><span class="tiny-heart heart-b" aria-hidden="true">♡</span>
+        <div class="dream-moon" aria-hidden="true"></div>
+        <div class="companion-bubble"><span>你好呀，等你好久了。</span><i aria-hidden="true">♡</i></div>
+        <div class="dream-cloud" aria-hidden="true"></div>
+        <img class="dream-companion" src="/apple.svg" alt="果果，戴着叶子小帽的苹果伙伴">
+        <div class="origin-charm"><span class="charm-apple" aria-hidden="true">🍏</span><span>从一颗苹果<br><strong>到一个小伙伴</strong></span><span class="charm-arrow" aria-hidden="true">↗</span></div>
+        <p class="dream-example">一种可能，叫「果果」<small>玩法示意 · 每个伙伴都有自己的样子</small></p>
+      </div>
+    </section>
+    <p class="dream-footnote">陪伴从一次相遇开始 <span aria-hidden="true">✦</span> 此处可体验果果的花园，拍照生成与多场景尚未开放</p>
+    <section class="demo-entry" id="demo-introduction" aria-labelledby="demo-title" hidden>
+      <div><h2 id="demo-title">你和果果的小日常</h2><p>说个愿望，等你确认后，花园就会有一点新变化。</p></div>
+    </section>
+    <div class="workspace" id="demo-workspace" hidden>
+      <section class="world-panel" aria-label="你的花园">
+        <div class="world-head"><div><span class="eyebrow">YOUR LITTLE WORLD</span><h2>果果的星光花园</h2></div><span id="garden-status" class="status-pill"><i></i> 正在读取</span></div>
+        <div class="garden-stage" id="garden-stage">
+          <div class="stars" aria-hidden="true"></div><div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
+          <div class="moon" aria-hidden="true"></div><span class="star s1" aria-hidden="true">✧</span><span class="star s2" aria-hidden="true">✦</span><span class="star s3" aria-hidden="true">✧</span>
+          <svg class="garden" viewBox="0 0 640 480" role="img" aria-label="花园岛屿，布置后会实时变化">
+            <defs>
+              <linearGradient id="island" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d4c5df"/><stop offset=".24" stop-color="#b5a3cb"/><stop offset="1" stop-color="#9684af"/></linearGradient>
+              <radialGradient id="grass"><stop stop-color="#d4e4bb"/><stop offset=".55" stop-color="#b1cdae"/><stop offset="1" stop-color="#8daf9f"/></radialGradient>
+              <linearGradient id="tree" x1="0" x2="1"><stop stop-color="#83c3ad"/><stop offset="1" stop-color="#287168"/></linearGradient>
+              <linearGradient id="water" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#91e9e3"/><stop offset="1" stop-color="#256596"/></linearGradient>
+              <radialGradient id="groundGlow"><stop stop-color="#b69bd6" stop-opacity=".23"/><stop offset="1" stop-color="#b69bd6" stop-opacity="0"/></radialGradient>
+              <filter id="soft"><feGaussianBlur stdDeviation="9"/></filter>
+              <symbol id="tree-sprite" viewBox="0 0 80 110"><ellipse cx="41" cy="104" rx="30" ry="6" fill="#102d3d" opacity=".4"/><path d="M40 48v53" stroke="#b28d77" stroke-width="9" stroke-linecap="round"/><path d="m41 75 14-17M40 87 29 67" stroke="#b28d77" stroke-width="5"/><ellipse cx="39" cy="42" rx="30" ry="38" fill="url(#tree)"/><ellipse cx="29" cy="30" rx="12" ry="18" fill="#b3dec0" opacity=".3"/><circle cx="54" cy="54" r="7" fill="#8cf2d0" opacity=".35"/></symbol>
+              <symbol id="flower-sprite" viewBox="0 0 48 45"><path d="M24 40V19M24 35 12 27M24 31 35 24" stroke="#64a783" stroke-width="3"/><g fill="#ccabff"><circle cx="23" cy="10" r="7"/><circle cx="13" cy="18" r="7"/><circle cx="33" cy="18" r="7"/><circle cx="18" cy="27" r="7"/><circle cx="28" cy="27" r="7"/></g><circle cx="23" cy="19" r="5" fill="#ffe3a8"/></symbol>
+              <symbol id="mushroom-sprite" viewBox="0 0 48 48"><path d="M19 24h12l4 21H16Z" fill="#eadbc8"/><path d="M3 25C3-4 45-4 45 25Z" fill="#c396d5"/><circle cx="16" cy="14" r="4" fill="#fce9e8"/><circle cx="33" cy="19" r="3" fill="#fce9e8"/></symbol>
+            </defs>
+            <ellipse cx="325" cy="405" rx="244" ry="62" fill="url(#groundGlow)"/>
+            <path d="M91 289Q314 190 552 290L508 359 414 399 300 416 182 386 125 350Z" fill="url(#island)"/>
+            <path d="m175 352 21 26m24-10 20 26m186-46-17 29m53-40-9 24" stroke="#77a8ae" stroke-opacity=".18" stroke-width="3"/>
+            <ellipse cx="322" cy="289" rx="231" ry="100" fill="url(#grass)" stroke="#91d7c5" stroke-opacity=".24" stroke-width="2"/>
+            <path d="M106 293c53-60 97-23 174-20s135 33 213 51" fill="none" stroke="#f7e5d7" stroke-width="22" stroke-linecap="round" opacity=".2"/>
+            <g opacity=".65" fill="#e7e4cf"><ellipse cx="146" cy="310" rx="13" ry="6"/><ellipse cx="166" cy="327" rx="10" ry="5"/><ellipse cx="459" cy="323" rx="13" ry="5"/></g>
+            <g id="garden-objects"></g>
+            <g id="rain" hidden stroke="#8b93be" stroke-opacity=".6" stroke-width="2"></g>
+          </svg>
+          <img class="apple-companion" src="/apple.svg" alt="果果，一只有叶子小帽、圆眼睛的青苹果小生物">
+          <div class="companion-name"><span class="name-spark">✦</span> 果果 <span>你的苹果伙伴</span></div>
+          <div id="world-caption" class="world-caption">一座小小的岛，等着我们的第一个愿望。</div>
+        </div>
+        <div class="world-bottom"><div id="inventory" class="inventory" aria-live="polite"><span>花园正在苏醒…</span></div><button id="undo" class="text-button" disabled><span aria-hidden="true">↶</span> 撤销上一步</button></div>
+      </section>
+      <section class="chat-panel" id="chat-experience" tabindex="-1" aria-label="和果果聊天">
+        <div class="chat-heading"><img src="/apple.svg" alt="" class="avatar"><div><h2>和果果一起布置</h2><p><i></i> 说一个愿望，一起改变花园</p></div><span class="chat-flower" aria-hidden="true">✳</span></div>
+        <div class="conversation" id="conversation" aria-live="polite" aria-relevant="additions text">
+          <div class="welcome"><span class="tiny-label">果果</span><p>你好呀，我是果果，你的苹果伙伴。<br>试着说“这里缺一个能坐的地方”。<br>我会提出建议，等你确认再布置。</p><span class="welcome-star" aria-hidden="true">✧</span></div>
+          <div id="messages"></div>
+        </div>
+        <div id="error" class="error-message" role="alert" hidden></div>
+        <div class="composer-area">
+          <p class="suggestion-label">不知道从哪开始？试着说一句</p>
+          <div class="suggestions"><button data-prompt="这里缺一个能坐下来的地方">添个能坐的地方 <span>↗</span></button><button data-prompt="给花园添一点暖意">添一点暖意 <span>↗</span></button><button data-prompt="我想看会发光的小东西">找一些小星光 <span>↗</span></button></div>
+          <form id="chat-form"><label for="message" class="sr-only">告诉果果你的花园愿望</label><textarea id="message" rows="1" maxlength="4000" placeholder="告诉果果，你想让花园变成什么样…"></textarea><button type="submit" id="send" aria-label="发送愿望"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 12 6-6 6 6M12 6v13"/></svg></button></form>
+          <p id="composer-hint" class="composer-hint">它会先提出建议，等你确认才改变花园。</p>
+        </div>
+      </section>
+    </div>
+    <section class="underbar" id="demo-underbar" hidden><div><span>✧</span><p><strong>每一个小变化，都由你决定</strong><br>模型回复为模拟，花园操作与保存真实执行。</p></div><button id="reset" class="text-button" hidden>重新开始体验 <span aria-hidden="true">↺</span></button></section>
+    <details class="how-it-works" id="demo-help" hidden><summary>这次 demo 可以体验什么？<span>＋</span></summary><p>试着说一个愿望 → 果果查询花园 → 你选择确认或暂时不改 → 花园保存变化。刷新页面可以继续，确认不会重复执行，最近一次变化可以撤销。你也可以试试“种一棵树”“种一簇花”“添个水池”“下点小雨”“安静一会”。本页只操作独立 demo 数据。</p></details>
+  </main>
+  <footer class="dream-footer">万物伙伴 <span>♡</span> 每一份日常，都值得被温柔以待</footer>
+  <dialog id="access-dialog" aria-labelledby="access-title" aria-describedby="access-note">
+    <button type="button" class="dialog-close" id="access-close" aria-label="关闭登录弹窗">×</button>
+    <img class="access-apple" src="/apple.svg" alt="">
+    <p class="dream-eyebrow">A LITTLE WORLD, JUST FOR YOU</p>
+    <h2 id="access-title">欢迎来到你的小世界</h2>
+    <p id="access-note">先用体验身份，和果果一起待一会儿。</p>
+    <button type="button" class="primary access-enter" id="access-enter">进入我的小世界 <span aria-hidden="true">✧</span></button>
+    <p class="access-caption">离线 Demo · 无需手机号，不创建真实账号</p>
+    <p id="access-error" role="alert" hidden></p>
+    <button type="button" id="access-logout" class="access-logout" hidden>退出体验</button>
+  </dialog>
+  <dialog id="reset-dialog"><form method="dialog"><span class="eyebrow">A FRESH LITTLE START</span><h2>让花园重新开始？</h2><p>只重置这个 demo 的花园，未确认的提议会取消。正式项目和伙伴数据不会改变。</p><div class="dialog-actions"><button value="cancel" class="secondary">先留着</button><button value="confirm" class="primary">重新开始</button></div></form></dialog>
+</body>
+</html>

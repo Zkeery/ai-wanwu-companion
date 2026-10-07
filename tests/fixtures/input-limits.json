@@ -1,0 +1,14 @@
+[
+  {"name":"plain","input":"你好 hello","normalized":"你好 hello","count":8,"validUnicode":true},
+  {"name":"internal whitespace","input":"  中 文\nhello\t  ","normalized":"中 文\nhello","count":9,"validUnicode":true},
+  {"name":"ECMAScript whitespace","input":"\t\n\u000b\f\r \u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff花\ufeff\u3000","normalized":"花","count":1,"validUnicode":true},
+  {"name":"empty","input":" \ufeff\u3000\n","normalized":"","count":0,"validUnicode":true},
+  {"name":"NEL is content","input":"\u0085好\u0085","normalized":"\u0085好\u0085","count":3,"validUnicode":true},
+  {"name":"control is content","input":"\u001c好\u001c","normalized":"\u001c好\u001c","count":3,"validUnicode":true},
+  {"name":"emoji","input":" 🌱😀 ","normalized":"🌱😀","count":2,"validUnicode":true},
+  {"name":"ZWJ","input":"👩‍👩‍👧‍👦","normalized":"👩‍👩‍👧‍👦","count":7,"validUnicode":true},
+  {"name":"combining","input":"é","normalized":"é","count":2,"validUnicode":true},
+  {"name":"high surrogate","input":"\ud800","normalized":"\ud800","count":1,"validUnicode":false},
+  {"name":"low surrogate","input":"x\udfff","normalized":"x\udfff","count":2,"validUnicode":false},
+  {"name":"separated surrogates","input":"\ud800x\udfff","normalized":"\ud800x\udfff","count":3,"validUnicode":false}
+]

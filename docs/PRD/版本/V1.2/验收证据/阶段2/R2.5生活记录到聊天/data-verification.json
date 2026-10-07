@@ -1,0 +1,170 @@
+{
+  "users": {
+    "rows": 1,
+    "unchanged": true
+  },
+  "verification_codes": {
+    "rows": 3,
+    "unchanged": true
+  },
+  "living_memberships": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "photos": {
+    "rows": 6,
+    "unchanged": true
+  },
+  "generation_credits": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "sessions": {
+    "rows": 2,
+    "unchanged": false
+  },
+  "teams": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "objects": {
+    "rows": 7,
+    "unchanged": true
+  },
+  "photo_requests": {
+    "rows": 1,
+    "unchanged": true
+  },
+  "team_members": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "characters": {
+    "rows": 6,
+    "unchanged": true
+  },
+  "character_motion_assets": {
+    "rows": 4,
+    "unchanged": true
+  },
+  "character_personalities": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "messages": {
+    "rows": 2,
+    "unchanged": true
+  },
+  "memories": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "scene_states": {
+    "rows": 6,
+    "unchanged": true
+  },
+  "scene_imports": {
+    "rows": 1,
+    "unchanged": true
+  },
+  "generation_charges": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "theme_publications": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "team_submissions": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "scene_proposals": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "scene_agent_chats": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "recreations": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "living_spaces": {
+    "rows": 4,
+    "unchanged": true
+  },
+  "life_gatherings": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_gathering_receipts": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_visits": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_inventory": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_notifications": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_shared_memories": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_competitions": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "life_resource_wallets": {
+    "rows": 1,
+    "unchanged": true
+  },
+  "life_decorations": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "companion_voice_preferences": {
+    "rows": 2,
+    "unchanged": true
+  },
+  "companion_voice_rounds": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "companion_audio": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "living_receipts": {
+    "rows": 35,
+    "unchanged": true
+  },
+  "living_activity_events": {
+    "rows": 35,
+    "unchanged": true
+  },
+  "living_seasons": {
+    "rows": 2,
+    "unchanged": true
+  },
+  "living_season_receipts": {
+    "rows": 5,
+    "unchanged": true
+  },
+  "scene_agent_runs": {
+    "rows": 0,
+    "unchanged": true
+  },
+  "motion_cleanup_tasks": {
+    "rows": 0,
+    "unchanged": true
+  }
+}

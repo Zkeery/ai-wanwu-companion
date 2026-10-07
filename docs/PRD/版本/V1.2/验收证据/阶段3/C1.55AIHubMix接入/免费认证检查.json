@@ -1,0 +1,8 @@
+{
+  "http_status": 200,
+  "target_models": [],
+  "checked_at": "2026-09-28T15:52:07.179Z",
+  "generation_requests": 0,
+  "authentication_proven": false,
+  "note": "The model catalog also returns HTTP200 without credentials; this response alone does not prove image-generation access."
+}

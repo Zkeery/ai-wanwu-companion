@@ -1,0 +1,32 @@
+{
+  "login": true,
+  "homeToCompanionToLifeToScene": true,
+  "initialUnchecked": true,
+  "postpone": true,
+  "previewDidNotApply": true,
+  "virtualSaveAndReload": true,
+  "cancelPreservedWinter": true,
+  "summary": "这里的四季 · 冬天虚拟四季 · 每季 1 周调整四季",
+  "width": 1512,
+  "overflow": false,
+  "mobileWidth": 390,
+  "mobileOverflow": false,
+  "mobilePreviewUnchanged": true,
+  "realNorthSaveAndReload": true,
+  "restartRestored": true,
+  "restartFromPid": 52232,
+  "restartToPid": 53293,
+  "state": {
+    "season": "autumn",
+    "summary": "这里的四季 · 秋天跟随现实 · 北半球调整四季",
+    "requests": [
+      {
+        "path": "/api/v1/living/spaces/904585b5-aba8-4e75-99f2-85f33d83f5dd/season",
+        "ms": 5
+      }
+    ]
+  },
+  "desktopScreenshotReviewed": true,
+  "mobileScreenshotReviewed": true,
+  "realModelCalls": 0
+}

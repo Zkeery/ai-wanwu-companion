@@ -1,0 +1,169 @@
+{
+  "desktop": {
+    "position": [
+      0.5,
+      0.5
+    ],
+    "revision": 3,
+    "passed": true
+  },
+  "undo": {
+    "passed": true,
+    "position": [
+      0.3,
+      0.4
+    ]
+  },
+  "mobile": {
+    "width": 390,
+    "touch": true,
+    "position": [
+      0.5,
+      0.5
+    ],
+    "passed": true,
+    "horizontalOverflow": false
+  },
+  "outsideDrop": {
+    "passed": true,
+    "unchangedRevision": 7
+  },
+  "afterInvalidDrop": {
+    "passed": true,
+    "position": [
+      0.25,
+      0.3
+    ]
+  },
+  "reload": {
+    "passed": true,
+    "position": [
+      0.25,
+      0.3
+    ]
+  },
+  "desert": {
+    "passed": true,
+    "mode": "private",
+    "position": [
+      0.35,
+      0.4
+    ]
+  },
+  "forest": {
+    "passed": true,
+    "mode": "shared",
+    "position": [
+      0.35,
+      0.4
+    ]
+  },
+  "widths": [
+    {
+      "width": 360,
+      "horizontalOverflow": false,
+      "buttons": [
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "horizontalOverflow": false,
+      "buttons": [
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "horizontalOverflow": false,
+      "buttons": [
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "horizontalOverflow": false,
+      "buttons": [
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        },
+        {
+          "w": 44,
+          "h": 44
+        }
+      ]
+    }
+  ],
+  "restart": {
+    "passed": true,
+    "scenes": {
+      "home": true,
+      "desert": true,
+      "forest": true
+    }
+  },
+  "tests": {
+    "frontend": 120,
+    "backendLiving": 70
+  },
+  "checks": {
+    "typecheck": true,
+    "lint": true,
+    "productionBuild": true
+  },
+  "modelCalls": 0
+}

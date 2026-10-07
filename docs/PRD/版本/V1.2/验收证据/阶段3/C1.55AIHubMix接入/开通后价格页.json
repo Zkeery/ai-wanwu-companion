@@ -1,0 +1,18 @@
+{
+  "source": "https://aihubmix.com/model/gpt-image-2.5-sunburst",
+  "http_status": 200,
+  "retrieved_at": "2026-09-28T16:07:29.336Z",
+  "pricing": [
+    " GPT Image 2.5 Sunburst API - $5/M In, $30/M Out | AIHubMix Models Playground Apps Enterprise Docs Dashboard Sign in Models Compare GPT Image 2.5 Sunburst Compare Docs GPT Image 2.5 Sunburst g",
+    " precision. The model supports quality settings: low, medium, high, xhigh, max, and auto. Pricing Specifications Providers Performance FAQ More Models Pricing Token-based pricing: Text input $5 / 1M tokens ｜ Image input $8 / 1M tokens ｜ Image outp",
+    "ut $30 / 1M tokens Image Generation Quality 1024x1024 1024x1536 1536x1024 low $ 0.006 $ 0.005 $ 0.005 medium $ 0.053 $ 0.041 $ 0.041 high $ 0.211 $ 0.165 $ 0.165 auto $ 0.211 $ 0.165 $ 0.165 Input Modalities Text Vision Output Modalities Image",
+    " Providers Azure gpt-image-2.5-sunburst Pricing $5 $10 Input Image $8/M tokens Cache Read $1.25/M tokens Output Image $30/M tokens Context 0 Max output 0 Latency - Throughput - Uptime 100.00% uptime 2 days ago 99.00% uptime yesterday 95.88% upti",
+    "me today OpenAI gpt-image-2.5-sunburst Pricing $5 $10 Input Image $8/M tokens Cache Read $1.25/M tokens Output Image $30/M tokens Context 0 Max output 0 Latency - Throughput - Uptime 0.00% uptime 2 days ago 0.00% uptime yesterday 100.00% uptime",
+    "Sunburst released? More models from OpenAI See all OpenAI models → GPT 6 Luna New Input : $ 0.1 /M Output : $ 0.5 /M Web Search : $0.01/request GPT-6 Luna is OpenAI&#x27;s latest and most efficient model, designed for focused, high-throughput ta",
+    "sks. GPT 6 Sol New Input : $ 2 /M Output : $ 10 /M Web Search : $0.01/request GPT-6 Sol is OpenAI&#x27;s latest model in the GPT-6 series, specifically designed for complex programming and agent workflows. GPT 6 Astra N",
+    "ew Input : $ 10 /M Output : $ 50 /M Web Search : $0.01/request GPT-6 Astra is OpenAI&#x27;s newest and most intelligent model, with industry-leading performance in computer operations, web browsing, softw",
+    "ewer output tokens, making its estimated API cost per task lower. GPT Live Transcribe New $0.017 per minute (same as OpenAI&#x27;s official rate, no markup), charged by the audio duration transcribed in real time. Usage is settled to the second, ",
+    " tunable latency-vs-accuracy tradeoff. GPT Realtime 2.1 New Billed per token: audio input $32 / 1M, audio output $64 / 1M, text input $4 / 1M, text output $24 / 1M, cached input $0.4 / 1M GPT-Realtime-2.1 is a reasoning speech-to-speech model ",
+    "dling, and interruption behavior. GPT Image 2.5 Flare New Token-based pricing: Text input $5 / 1M tokens ｜ Image input $8 / 1M tokens ｜ Image output $30 / 1M tokens GPT-Image-2.5 Flare is OpenAI&#x27;s latest image model, the fastest and suit"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "character_id": 9,
+  "adopted": false,
+  "candidates": [
+    {
+      "activity": "rest",
+      "workflow_job_id": "30661fcfc0dc0580b7d5c62e116c700ed40b8a3639cf2f5755ba00fe6630cfd8",
+      "candidate_sha256": "8855ed8193ef1a9d9b93ef5556f47da517727f451f3170d1336039b1f58be03c",
+      "source_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+      "state": "needs_review",
+      "quality_check": {
+        "cells": [
+          {
+            "clear_fraction": 0.682526,
+            "native_alpha": true,
+            "visible_fraction": 0.317474
+          },
+          {
+            "clear_fraction": 0.678516,
+            "native_alpha": true,
+            "visible_fraction": 0.321484
+          },
+          {
+            "clear_fraction": 0.677677,
+            "native_alpha": true,
+            "visible_fraction": 0.322323
+          },
+          {
+            "clear_fraction": 0.677277,
+            "native_alpha": true,
+            "visible_fraction": 0.322723
+          }
+        ],
+        "human_review_required": true,
+        "issues": [],
+        "state": "needs_review"
+      },
+      "candidate_file": "蔓蔓-rest.png"
+    },
+    {
+      "activity": "walk",
+      "workflow_job_id": "23ceccbfca7dca9c1472e93827b906f100b4b7c83e79c86255584ce66c2c7dc0",
+      "candidate_sha256": "f39bf3e49544cc6259cfbe7c2df127bb97a60c7a54f7fcb2a0e3b48c56733184",
+      "source_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+      "state": "needs_review",
+      "quality_check": {
+        "cells": [
+          {
+            "clear_fraction": 0.687508,
+            "native_alpha": true,
+            "visible_fraction": 0.312492
+          },
+          {
+            "clear_fraction": 0.689804,
+            "native_alpha": true,
+            "visible_fraction": 0.310196
+          },
+          {
+            "clear_fraction": 0.688988,
+            "native_alpha": true,
+            "visible_fraction": 0.311012
+          },
+          {
+            "clear_fraction": 0.688961,
+            "native_alpha": true,
+            "visible_fraction": 0.311039
+          }
+        ],
+        "human_review_required": true,
+        "issues": [],
+        "state": "needs_review"
+      },
+      "candidate_file": "蔓蔓-walk.png"
+    },
+    {
+      "activity": "observe",
+      "workflow_job_id": "b61efe9fdda374b6fd2358d78fffa4baf922623b34c73eeb8f6991b5c9f902ff",
+      "candidate_sha256": "1a3fc7d434ad668a0c75c9b52a9f889ed8b0f2a94cb7d34f59df9624cf0d1629",
+      "source_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+      "state": "needs_review",
+      "quality_check": {
+        "cells": [
+          {
+            "clear_fraction": 0.639572,
+            "native_alpha": true,
+            "visible_fraction": 0.360428
+          },
+          {
+            "clear_fraction": 0.63163,
+            "native_alpha": true,
+            "visible_fraction": 0.36837
+          },
+          {
+            "clear_fraction": 0.632671,
+            "native_alpha": true,
+            "visible_fraction": 0.367329
+          },
+          {
+            "clear_fraction": 0.619427,
+            "native_alpha": true,
+            "visible_fraction": 0.380573
+          }
+        ],
+        "human_review_required": true,
+        "issues": [],
+        "state": "needs_review"
+      },
+      "candidate_file": "蔓蔓-observe.png"
+    }
+  ]
+}

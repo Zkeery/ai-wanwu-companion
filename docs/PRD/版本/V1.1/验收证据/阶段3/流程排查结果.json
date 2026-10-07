@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-21",
+  "scope": "R3流程衔接修复",
+  "before": {
+    "new_regressions_failed": 5
+  },
+  "after": {
+    "frontend_passed": 70,
+    "backend_passed": 299,
+    "typecheck": true,
+    "lint": true,
+    "build": true
+  },
+  "browser": {
+    "environment": "isolated mock 3022/8022",
+    "login_upload_generate_rename_chat": true,
+    "private_home_desert_forest": true,
+    "care_store_restore_move_undo": true,
+    "server_restart_and_retry": true,
+    "widths": [
+      390,
+      1440
+    ],
+    "horizontal_overflow": false,
+    "screenshots": "unavailable: Page.captureScreenshot timeout"
+  },
+  "real_model_calls": 0,
+  "real_sms_sent": 0,
+  "stage_complete": false
+}

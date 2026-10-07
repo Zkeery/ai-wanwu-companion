@@ -1,0 +1,78 @@
+{
+  "character_id": 4,
+  "backend_restart": {
+    "previous_pid": 29564,
+    "current_pid": 40288
+  },
+  "before": {
+    "rest": {
+      "metadata": 200,
+      "pack_id": "3819dc6447a0427391efd5495f0df732",
+      "sprite": 200,
+      "sha256": "378f64e67470ee7543da0823d77975e78ff38e52ae04a83923415a43d4eb4e51",
+      "anonymous": 401
+    },
+    "walk": {
+      "metadata": 200,
+      "pack_id": "90af4205888d48af924422f7c096b068",
+      "sprite": 200,
+      "sha256": "a2d1ac2c186dd357ae570441016b98c66b3357090488dc675a9678ce910c0c58",
+      "anonymous": 401
+    },
+    "observe": {
+      "metadata": 200,
+      "pack_id": "285198a69d2f40018b7d4599032f9f6a",
+      "sprite": 200,
+      "sha256": "213264d798068c52ce58c37a47b0c50ee4d6e6369ebf8f984d4a2a5d456d60ff",
+      "anonymous": 401
+    }
+  },
+  "after": {
+    "rest": {
+      "metadata": 200,
+      "pack_id": "3819dc6447a0427391efd5495f0df732",
+      "sprite": 200,
+      "sha256": "378f64e67470ee7543da0823d77975e78ff38e52ae04a83923415a43d4eb4e51",
+      "anonymous": 401
+    },
+    "walk": {
+      "metadata": 200,
+      "pack_id": "90af4205888d48af924422f7c096b068",
+      "sprite": 200,
+      "sha256": "a2d1ac2c186dd357ae570441016b98c66b3357090488dc675a9678ce910c0c58",
+      "anonymous": 401
+    },
+    "observe": {
+      "metadata": 200,
+      "pack_id": "285198a69d2f40018b7d4599032f9f6a",
+      "sprite": 200,
+      "sha256": "213264d798068c52ce58c37a47b0c50ee4d6e6369ebf8f984d4a2a5d456d60ff",
+      "anonymous": 401
+    }
+  },
+  "unchanged": true,
+  "preparation": {
+    "character_id": 4,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      }
+    ]
+  },
+  "new_model_requests": 0
+}

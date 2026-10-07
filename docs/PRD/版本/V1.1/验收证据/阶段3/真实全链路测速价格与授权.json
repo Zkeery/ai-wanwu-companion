@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-21",
+  "authorized": true,
+  "max_groups": 3,
+  "budget_cny": 1,
+  "source": "用户回复“需要”，确认上一条最多3组、上限1元的提问",
+  "prices": {
+    "vision": {
+      "model": "ling-3.0-flash-vl",
+      "input_cny_per_million": 0,
+      "output_cny_per_million": 0,
+      "free_until": "2026-09-24 10:00 Asia/Shanghai"
+    },
+    "text": {
+      "model": "qwen3.8-flash",
+      "input_cny_per_million": 0.8,
+      "output_cny_per_million": 2.7
+    },
+    "image": {
+      "model": "wan2.6-t2i",
+      "cny_each": 0.016
+    }
+  },
+  "sources": [
+    "https://maas.antdigital.com/docs/updates/ling-3-0-flash-vl-free-period-ending",
+    "https://maas.antdigital.com/models/modelservice-1788174495570001431",
+    "https://maas.antdigital.com/models/modelservice-1779365948338001295"
+  ],
+  "method": "ego-browser 当天读取官方公告及模型价格表",
+  "limits": {
+    "vision_calls": 3,
+    "fallback_text_calls": 3,
+    "image_calls": 3,
+    "max_output_tokens": 4096,
+    "max_text_bytes": 20000,
+    "max_retries": 0
+  },
+  "conservative_reservation_cny": 0.348,
+  "reservation_formula": "免费视觉 + 3次文本每次保守预留0.10元（20000字节输入、4096输出token上界估算0.0270592元）+ 3张图片每张0.016元"
+}

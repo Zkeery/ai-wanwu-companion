@@ -1,0 +1,22 @@
+{
+  "living_spaces": {
+    "unchanged": true,
+    "rows": 4
+  },
+  "living_seasons": {
+    "unchanged": true,
+    "rows": 2
+  },
+  "living_season_receipts": {
+    "unchanged": true,
+    "rows": 5
+  },
+  "characters": {
+    "unchanged": true,
+    "rows": 6
+  },
+  "living_activity_events": {
+    "unchanged": true,
+    "rows": 35
+  }
+}

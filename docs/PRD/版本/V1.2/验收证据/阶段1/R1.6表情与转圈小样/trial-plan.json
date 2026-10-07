@@ -1,0 +1,63 @@
+{
+  "schema": "companion-animation-pilot-v1",
+  "state": "awaiting_separate_cost_approval",
+  "model": "doubao-seedance-2-0-mini-260615",
+  "source": "docs/PRD/版本/V1.2/验收证据/阶段7/R7.14古灵精怪免费体验/apple-9b.jpg",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "request": {
+    "model": "doubao-seedance-2-0-mini-260615",
+    "content": [
+      {
+        "type": "text",
+        "text": "固定镜头、固定构图，保持参考图的简洁灰蓝背景、地面和光照稳定。唯一主角是参考图中同一只古灵精怪的红黄斑驳苹果小精灵，保留果皮纹理、圆润身体、果梗、眼睛、眉毛、小门牙和原有两只手两只脚。0到1.5秒：自然眨眼，眉毛微抬，嘴角扬起一个调皮得意的笑；1.5到4.8秒：先轻微屈膝蓄力，再用短脚自然小步原地转完整一圈，依次看到侧面、背面、另一侧，最后回到正面；手臂自然跟随，脚有明确落地支撑，身体有柔和重心转移；4.8到6秒：站稳、眨眼，恢复首帧的正面姿态与表情。连续流畅的立体动画，动作清楚有弹性。镜头不环绕不移动不缩放，背景不跟着转，不把平面贴图翻转，不漂浮不机械摇摆，不更换角色，不增加肢体、不复制眼睛或人脸，不增加字幕或道具。"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": "LOCAL_SOURCE_TO_DATA_URI_AFTER_APPROVAL"
+        },
+        "role": "first_frame"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": "LOCAL_SOURCE_TO_DATA_URI_AFTER_APPROVAL"
+        },
+        "role": "last_frame"
+      }
+    ],
+    "resolution": "720p",
+    "ratio": "4:3",
+    "duration": 6,
+    "generate_audio": false,
+    "watermark": false,
+    "seed": 27
+  },
+  "billing": {
+    "price_cny_per_million_tokens": 23,
+    "width": 1112,
+    "height": 834,
+    "fps": 24,
+    "estimated_tokens": 130416.75,
+    "estimated_cny": 2.99958525,
+    "proposed_cap_cny": 4,
+    "max_generation_posts": 1,
+    "retries": 0,
+    "discount_assumed": false,
+    "free_quota_confirmed": false,
+    "approved": false
+  },
+  "execution": {
+    "automatic_submission": false,
+    "persist_task_id": true,
+    "on_unknown_post_outcome": "record unknown and stop; never resubmit",
+    "quality_gate": "identity + expression + complete turn + foot contact + static camera/background",
+    "production_binding": false,
+    "ten_second_gate": "not validated"
+  },
+  "sources": [
+    "https://www.volcengine.com/docs/82379/1544106",
+    "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+    "https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh&redirect=1"
+  ]
+}

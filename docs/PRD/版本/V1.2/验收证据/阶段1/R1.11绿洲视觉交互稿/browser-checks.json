@@ -1,0 +1,31 @@
+{
+  "desktop": {
+    "width": 1440,
+    "noOverflow": true
+  },
+  "mobile": {
+    "width": 390,
+    "noOverflow": true,
+    "placed": true,
+    "restoredFromStorage": true
+  },
+  "checks": {
+    "initialTenObjects": true,
+    "catalogTwelve": true,
+    "plantFilterThree": true,
+    "ghostPreview": true,
+    "place": true,
+    "mirrorTurn": true,
+    "store": true,
+    "undo": true,
+    "templateCancelRestores": true,
+    "templateApplyAndReloadPersists": true,
+    "dragNative": true,
+    "keyboardMove": true,
+    "externalRequests": 0
+  },
+  "notes": [
+    "Initial raw CDP drag lost pointer capture; kept DOM stable on pointerdown and verified with native dragAndDrop while focus emulation enabled.",
+    "Only prototype localStorage is written; no business APIs or storage."
+  ]
+}

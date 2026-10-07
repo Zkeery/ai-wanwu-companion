@@ -1,0 +1,14 @@
+{
+  "manifest": "真实冒烟运行配置.json",
+  "calls": [
+    {
+      "model": "ling-3.0-flash-vl",
+      "started_at": 1789744618.1869671,
+      "reserved_cny": 0
+    }
+  ],
+  "checks": {},
+  "passed": false,
+  "error_type": "AssertionError",
+  "reserved_cny": 0
+}

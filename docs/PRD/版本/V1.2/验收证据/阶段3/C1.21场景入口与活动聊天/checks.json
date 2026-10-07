@@ -1,0 +1,16 @@
+{
+  "test": 0,
+  "lint": 0,
+  "typecheck": 0,
+  "build": 0,
+  "tests_passed": 640,
+  "tests_total": 640,
+  "test_files": 61,
+  "new_tests": 14,
+  "config_restored": true,
+  "secret_scan_files": 60,
+  "secret_scan_hits": 0,
+  "broken_links": [],
+  "diff_check": 0,
+  "provider_calls": 0
+}

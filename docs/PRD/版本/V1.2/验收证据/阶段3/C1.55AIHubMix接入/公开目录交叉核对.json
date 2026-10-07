@@ -1,0 +1,7 @@
+{
+  "http_status": 200,
+  "public_model_count": 416,
+  "sunburst_listed": false,
+  "related_models": [],
+  "note": "Unauthenticated model catalog is public; HTTP200 alone is not authentication proof."
+}

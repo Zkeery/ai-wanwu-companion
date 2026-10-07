@@ -1,0 +1,1 @@
+[{"id":1,"name":"瓷暖","persona":"她总是安静地盛住温度，在你说渴之前递来一口安心。","opening_line":"来，先喝一口，我替你温着呢。","image_path":"characters/瓷暖.png","status":"ready","created_at":"2026-09-18T09:29:46.881904"}]

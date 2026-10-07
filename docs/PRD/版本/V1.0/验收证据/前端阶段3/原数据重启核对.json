@@ -1,0 +1,22 @@
+{
+  "same": true,
+  "before": {
+    "/characters": "1714c184cbeb64f608596b92c6ae34d181098c8a78c09ae4911078bf3210f842",
+    "/characters/1/messages": "06162bb461c197a34f5b796555860b49f7b7751963c99150c0630b87c1cbd459",
+    "/characters/1/memories": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "/characters/1/scene": "5dd1cdff46323a7baca0edca703fabfa5a1cc7f2a64ac2fed819683285e2388b",
+    "/characters/2/messages": "eaa05ac4738d156e4f406c5e329347498b21dfff3e0d012d226614f3954c779c",
+    "/characters/2/memories": "e0d5feeb33ff3d17df6fa45ad2bd31ad3f999d4f0d0c6495a201ca274c15233e",
+    "/characters/2/scene": "7a67229f294de64b5bcec7cdf579fa4710fd8fb6cac0202a701c7322515ea19b"
+  },
+  "after": {
+    "/characters": "1714c184cbeb64f608596b92c6ae34d181098c8a78c09ae4911078bf3210f842",
+    "/characters/1/messages": "06162bb461c197a34f5b796555860b49f7b7751963c99150c0630b87c1cbd459",
+    "/characters/1/memories": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "/characters/1/scene": "5dd1cdff46323a7baca0edca703fabfa5a1cc7f2a64ac2fed819683285e2388b",
+    "/characters/2/messages": "eaa05ac4738d156e4f406c5e329347498b21dfff3e0d012d226614f3954c779c",
+    "/characters/2/memories": "e0d5feeb33ff3d17df6fa45ad2bd31ad3f999d4f0d0c6495a201ca274c15233e",
+    "/characters/2/scene": "7a67229f294de64b5bcec7cdf579fa4710fd8fb6cac0202a701c7322515ea19b"
+  },
+  "pid": 10004
+}

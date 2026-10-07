@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-02",
+  "user_request": "我想要真实版本",
+  "user_reply": "先看网页，暂不开收费调用",
+  "paid_calls_authorized": false,
+  "new_model_requests": 0,
+  "url": "http://127.0.0.1:3059",
+  "sms": "local_test",
+  "real_model_smoke": "pending",
+  "reuse_c174_authorization": false,
+  "same_photo_manual_retry_authorized": false
+}

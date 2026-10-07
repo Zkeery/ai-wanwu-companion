@@ -1,0 +1,6 @@
+{
+  "exit": 2,
+  "result": "{\"error\": {\"code\": \"approval_already_used\", \"message\": \"approval_already_used\"}}",
+  "expected": "approval_already_used",
+  "additional_generation_requests": 0
+}

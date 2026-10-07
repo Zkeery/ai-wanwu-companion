@@ -1,0 +1,10 @@
+{
+  "group": 2,
+  "status": "failed",
+  "message": "识别失败，请重试",
+  "photo_request": [
+    {
+      "duration_ms": 1722.5999999940395
+    }
+  ]
+}

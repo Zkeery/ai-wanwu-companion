@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI万物伙伴 · 验收界面</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 720px; margin: 0 auto; padding: 20px; color: #111; }
+  h1 { font-size: 22px; }
+  .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px; margin: 12px 0; }
+  button { padding: 8px 14px; margin: 4px 4px 4px 0; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  .obj { display: inline-block; }
+  img.char { max-width: 160px; display: block; border-radius: 8px; }
+  .muted { color: #6b7280; font-size: 13px; }
+  #log { white-space: pre-wrap; background: #f8fafc; border-radius: 8px; padding: 10px; }
+  #chatHistory { max-height: 320px; overflow-y: auto; background: #f8fafc; border-radius: 8px; padding: 10px; margin: 8px 0; }
+  .msg { margin: 6px 0; }
+  .msg.user { text-align: right; }
+  .msg.user span { background: #dbeafe; }
+  .msg.assistant span { background: #fff; }
+  .msg span { display: inline-block; padding: 6px 10px; border-radius: 10px; max-width: 80%; text-align: left; white-space: pre-wrap; }
+  .memory-item { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+  .memory-item input { flex: 1; min-width: 0; padding: 6px; border: 1px solid #e5e7eb; border-radius: 6px; }
+  input[type=text] { flex: 1; min-width: 0; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; }
+  .memory-item button { flex-shrink: 0; }
+  .msg span { overflow-wrap: anywhere; }
+  .row { display: flex; gap: 8px; align-items: center; }
+</style>
+</head>
+<body>
+<h1>AI万物伙伴 · 最小验收界面</h1>
+
+<div class="card">
+  <b>1. 上传照片</b>
+  <p><input type="file" id="file" accept="image/*"></p>
+  <p class="muted">识别出的对象会显示在下方，点其中一个生成角色。</p>
+</div>
+
+<div class="card" id="objectsCard" style="display:none">
+  <b>2. 选择一个对象生成角色</b>
+  <p id="objects"></p>
+</div>
+
+<div class="card" id="progressCard" style="display:none">
+  <b>生成进度</b>
+  <div id="log" role="status" aria-live="polite"></div>
+</div>
+
+<div class="card" id="collectionCard">
+  <b>3. 我的收藏</b>
+  <div id="collection"></div>
+</div>
+
+<div class="card" id="chatPanel" style="display:none">
+  <div class="row">
+    <b>聊天 · <span id="chatTitle"></span></b>
+    <button id="chatBack">返回收藏</button>
+    <button id="chatClear">清空历史</button>
+  </div>
+  <div id="chatHistory"></div>
+  <div class="row">
+    <input type="text" id="chatInput" placeholder="说点什么…">
+    <button id="chatSend">发送</button>
+  </div>
+  <div class="muted" id="chatStatus" role="status" aria-live="polite"></div>
+  <hr>
+  <b>记忆（角色会记得这些）</b>
+  <div id="memoryList"></div>
+  <div class="row">
+    <input type="text" id="memoryInput" placeholder="标记一条记忆，如：我喜欢下雨天">
+    <button id="memoryAdd">添加</button>
+  </div>
+  <hr>
+  <b>场景（<span id="sceneName">小花园</span>）</b>
+  <div class="muted" id="sceneElements"></div>
+  <div class="row">
+    <button id="sceneRain">小雨</button>
+    <button id="sceneQuiet">安静</button>
+    <button id="sceneTree">种树</button>
+    <button id="sceneUndo">撤销</button>
+  </div>
+  <div class="muted" id="sceneFeedback" role="status"></div>
+  <div class="row">
+    <span class="muted" id="audioStatus" role="status" aria-live="polite">点击场景按钮开启声音</span>
+    <button id="audioEnable">开启声音</button>
+  </div>
+  <div id="sceneProposal" style="display:none" class="row">
+    <span class="muted" id="sceneProposalText"></span>
+    <button id="sceneConfirm">确认</button>
+    <button id="sceneReject">拒绝</button>
+  </div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+
+let currentCharacter = null;
+let chatViewVersion = 0;
+let activeChat = null;
+let clearingHistory = false;
+let workBusy = false;
+
+// ---- 上传与生成（沿用第 1 阶段） ----
+
+async function upload() {
+  const f = $('#file').files[0];
+  if (!f) return;
+  const fd = new FormData();
+  fd.append('file', f);
+  setBusy(true);
+  showStatus('正在识别照片…');
+  $('#objectsCard').style.display = 'none';
+  try {
+    const res = await fetch('/api/v1/photos', { method: 'POST', body: fd });
+    const data = await readJson(res);
+    renderObjects(data);
+    showStatus('识别完成，请选择对象生成角色。');
+  } catch (error) {
+    showStatus('识别失败：' + error.message);
+    $('#file').value = '';
+  } finally { setBusy(false); }
+}
+
+function showStatus(message) {
+  $('#progressCard').style.display = 'block';
+  $('#log').textContent = message;
+}
+
+function setBusy(busy) {
+  workBusy = busy;
+  updateControls();
+}
+
+function updateControls() {
+  const busy = workBusy || Boolean(activeChat) || clearingHistory;
+  $('#file').disabled = busy;
+  $('#objects').querySelectorAll('button').forEach(b => b.disabled = busy);
+  $('#chatSend').disabled = busy;
+  $('#memoryAdd').disabled = busy;
+  $('#chatInput').disabled = busy;
+  $('#chatClear').disabled = clearingHistory || workBusy;
+  $('#chatBack').disabled = clearingHistory;
+  updateSceneControls();
+}
+
+async function readJson(res) {
+  const data = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(data?.error?.message || `请求失败（${res.status}），请重试`);
+  if (data === null) throw new Error('服务返回格式异常，请重试');
+  return data;
+}
+
+function renderObjects(photo) {
+  $('#objectsCard').style.display = 'block';
+  $('#objects').replaceChildren();
+  photo.objects.forEach(o => {
+    const button = document.createElement('button');
+    button.className = 'obj';
+    button.textContent = o.label;
+    button.onclick = () => generate(o.id);
+    $('#objects').append(button);
+  });
+}
+
+async function generate(objectId) {
+  setBusy(true);
+  showStatus('正在连接生成服务…\n');
+  let reader;
+  let terminalEvent = false;
+  try {
+  const res = await fetch('/api/v1/characters', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ object_id: Number(objectId) })
+  });
+  if (!res.ok) await readJson(res);
+  if (!res.body || !res.headers.get('content-type')?.includes('text/event-stream')) {
+    throw new Error('服务未返回生成进度，请重试');
+  }
+  reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const parts = buf.split('\n\n');
+    buf = parts.pop();
+    for (const part of parts) {
+      if (!part.trim()) continue;
+      const eventLine = part.split('\n').find(l => l.startsWith('event:'));
+      const dataLine = part.split('\n').find(l => l.startsWith('data:'));
+      if (!eventLine || !dataLine) continue;
+      const ev = eventLine.replace('event:', '').trim();
+      const data = JSON.parse(dataLine.replace('data:', '').trim());
+      if (ev === 'chunk') $('#log').textContent += data.stage + '\n';
+      if (ev === 'done') {
+        terminalEvent = true;
+        $('#log').textContent += '完成 ✅\n';
+        await loadCollection();
+      }
+      if (ev === 'error') {
+        terminalEvent = true;
+        throw new Error(data.error?.message || '生成失败，请重试');
+      }
+    }
+  }
+  if (!terminalEvent) throw new Error('连接已中断。请先查看收藏是否生成成功，再重试。');
+  } catch (error) {
+    $('#log').textContent += '\n' + error.message;
+  } finally {
+    if (reader) await reader.cancel().catch(() => {});
+    setBusy(false);
+  }
+}
+
+// ---- 收藏列表 ----
+
+async function loadCollection() {
+  try {
+  const res = await fetch('/api/v1/characters');
+  const list = await readJson(res);
+  $('#collection').replaceChildren();
+  if (!list.length) $('#collection').textContent = '还没有收藏';
+  list.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    if (c.image_path) {
+      const img = document.createElement('img');
+      img.className = 'char';
+      img.alt = c.name;
+      img.src = '/uploads/' + c.image_path.split('/').map(encodeURIComponent).join('/');
+      card.append(img);
+    }
+    for (const [tag, text] of [['b', c.name], ['div', c.persona], ['div', c.opening_line]]) {
+      const el = document.createElement(tag);
+      el.textContent = text;
+      card.append(el);
+    }
+    const chatBtn = document.createElement('button');
+    chatBtn.textContent = '聊天';
+    chatBtn.onclick = () => openChat(c);
+    card.append(chatBtn);
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '删除';
+    delBtn.onclick = () => del(c.id);
+    card.append(delBtn);
+    $('#collection').append(card);
+  });
+  } catch (error) { $('#collection').textContent = '收藏加载失败：' + error.message; }
+}
+
+async function del(id) {
+  try {
+    const res = await fetch(`/api/v1/characters/${id}`, { method: 'DELETE' });
+    if (!res.ok) await readJson(res);
+    await loadCollection();
+  } catch (error) { showStatus('删除失败：' + error.message); }
+}
+
+// ---- 聊天 ----
+
+async function openChat(character) {
+  cancelChat();
+  setRainSound(false);
+  resetSceneView();
+  const view = ++chatViewVersion;
+  currentCharacter = character;
+  $('#chatStatus').textContent = '';
+  $('#chatInput').value = '';
+  $('#chatTitle').textContent = character.name;
+  $('#chatPanel').style.display = 'block';
+  $('#collectionCard').style.display = 'none';
+  await Promise.all([loadHistory(character.id, view), loadMemories(character.id, view), loadScene(character.id, view)]);
+}
+
+$('#chatBack').onclick = () => {
+  cancelChat();
+  setRainSound(false);
+  resetSceneView();
+  chatViewVersion++;
+  $('#chatPanel').style.display = 'none';
+  $('#collectionCard').style.display = 'block';
+  currentCharacter = null;
+  loadCollection();
+};
+
+function cancelChat() {
+  if (activeChat) {
+    activeChat.cancelled = true;
+    activeChat.controller.abort();
+    activeChat = null;
+  }
+  updateControls();
+}
+
+function sameChat(cid, view) {
+  return currentCharacter?.id === cid && chatViewVersion === view;
+}
+
+let historyLoadVersion = 0;
+
+async function clearHistory() {
+  if (!currentCharacter || clearingHistory) return;
+  const cid = currentCharacter.id;
+  const view = chatViewVersion;
+  historyLoadVersion++;
+  hideSceneProposal();
+  cancelChat();
+  clearingHistory = true;
+  updateControls();
+  $('#chatStatus').textContent = '正在清空历史…';
+  try {
+    const res = await fetch(`/api/v1/characters/${cid}/messages`, {method: 'DELETE'});
+    if (!res.ok) await readJson(res);
+    if (sameChat(cid, view)) {
+      $('#chatHistory').replaceChildren();
+      $('#chatStatus').textContent = '历史已清空，手动记忆仍保留。';
+    }
+  } catch (error) {
+    if (sameChat(cid, view)) $('#chatStatus').textContent = '清空失败：' + error.message;
+  } finally {
+    clearingHistory = false;
+    updateControls();
+  }
+}
+
+$('#chatClear').onclick = clearHistory;
+
+function appendMessage(role, content) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  const span = document.createElement('span');
+  span.textContent = content;
+  div.append(span);
+  $('#chatHistory').append(div);
+  $('#chatHistory').scrollTop = $('#chatHistory').scrollHeight;
+}
+
+async function loadHistory(cid = currentCharacter?.id, view = chatViewVersion) {
+  if (!cid) return;
+  const requestVersion = ++historyLoadVersion;
+  $('#chatHistory').replaceChildren();
+  try {
+    const list = await readJson(await fetch(`/api/v1/characters/${cid}/messages`));
+    if (!sameChat(cid, view) || requestVersion !== historyLoadVersion) return;
+    list.forEach(m => appendMessage(m.role, m.content));
+  } catch (error) {
+    if (sameChat(cid, view) && requestVersion === historyLoadVersion) $('#chatHistory').textContent = '历史加载失败：' + error.message;
+  }
+}
+
+async function sendMessage() {
+  const input = $('#chatInput');
+  const text = input.value.trim();
+  if (!text || !currentCharacter || activeChat || clearingHistory || workBusy) return;
+  const operation = {
+    cid: currentCharacter.id, view: chatViewVersion,
+    controller: new AbortController(), cancelled: false,
+  };
+  activeChat = operation;
+  hideSceneProposal();
+  input.value = '';
+  appendMessage('user', text);
+  updateControls();
+  $('#chatStatus').textContent = '正在输入…';
+
+  let reader;
+  let terminalEvent = false;
+  const replySpan = (() => {
+    const div = document.createElement('div');
+    div.className = 'msg assistant';
+    const span = document.createElement('span');
+    span.textContent = '';
+    div.append(span);
+    $('#chatHistory').append(div);
+    return span;
+  })();
+
+  try {
+    const res = await fetch(`/api/v1/characters/${operation.cid}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text }),
+      signal: operation.controller.signal,
+    });
+    if (!res.ok) await readJson(res);
+    if (!res.body || !res.headers.get('content-type')?.includes('text/event-stream')) {
+      throw new Error('服务未返回聊天流，请重试');
+    }
+    reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (operation.cancelled || !sameChat(operation.cid, operation.view)) return;
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const parts = buf.split('\n\n');
+      buf = parts.pop();
+      for (const part of parts) {
+        if (!part.trim()) continue;
+        const eventLine = part.split('\n').find(l => l.startsWith('event:'));
+        const dataLine = part.split('\n').find(l => l.startsWith('data:'));
+        if (!eventLine || !dataLine) continue;
+        const ev = eventLine.replace('event:', '').trim();
+        const data = JSON.parse(dataLine.replace('data:', '').trim());
+        if (ev === 'chunk') replySpan.textContent += data.delta;
+        if (ev === 'done') {
+          terminalEvent = true;
+          if (data.message?.content) replySpan.textContent = data.message.content;
+          if (data.proposal) showSceneProposal(data.proposal);
+        }
+        if (ev === 'error') {
+          terminalEvent = true;
+          throw new Error(data.error?.message || '聊天失败，请重试');
+        }
+      }
+    }
+    if (!terminalEvent) throw new Error('连接已中断，请重试。');
+    $('#chatStatus').textContent = '';
+  } catch (error) {
+    if (operation.cancelled || !sameChat(operation.cid, operation.view)) return;
+    $('#chatStatus').textContent = '发送失败：' + error.message;
+    replySpan.textContent = replySpan.textContent || '（未收到回复）';
+  } finally {
+    if (reader) await reader.cancel().catch(() => {});
+    if (activeChat === operation) {
+      activeChat = null;
+      updateControls();
+      $('#chatHistory').scrollTop = $('#chatHistory').scrollHeight;
+    }
+  }
+}
+
+$('#chatSend').onclick = sendMessage;
+$('#chatInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.isComposing) sendMessage();
+});
+
+// ---- 记忆 ----
+
+async function loadMemories(cid = currentCharacter?.id, view = chatViewVersion) {
+  if (!cid) return;
+  $('#memoryList').replaceChildren();
+  try {
+    const memories = await readJson(await fetch(`/api/v1/characters/${cid}/memories`));
+    if (!sameChat(cid, view)) return;
+    memories.forEach(m => {
+      const item = document.createElement('div');
+      item.className = 'memory-item';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = m.content;
+      const saveBtn = document.createElement('button');
+      saveBtn.textContent = '保存';
+      saveBtn.onclick = () => updateMemory(m.id, input.value);
+      const delBtn = document.createElement('button');
+      delBtn.textContent = '删除';
+      delBtn.onclick = () => removeMemory(m.id);
+      item.append(input, saveBtn, delBtn);
+      $('#memoryList').append(item);
+    });
+  } catch (error) {
+    if (sameChat(cid, view)) $('#memoryList').textContent = '记忆加载失败：' + error.message;
+  }
+}
+
+async function updateMemory(id, content) {
+  try {
+    const res = await fetch(`/api/v1/memories/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content })
+    });
+    if (!res.ok) await readJson(res);
+    await loadMemories();
+  } catch (error) { showStatus('记忆更新失败：' + error.message); }
+}
+
+async function removeMemory(id) {
+  try {
+    const res = await fetch(`/api/v1/memories/${id}`, { method: 'DELETE' });
+    if (!res.ok) await readJson(res);
+    await loadMemories();
+  } catch (error) { showStatus('记忆删除失败：' + error.message); }
+}
+
+async function addMemory() {
+  const input = $('#memoryInput');
+  const content = input.value.trim();
+  if (!content || !currentCharacter) return;
+  try {
+    const res = await fetch(`/api/v1/characters/${currentCharacter.id}/memories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content })
+    });
+    if (!res.ok) await readJson(res);
+    input.value = '';
+    await loadMemories();
+  } catch (error) { showStatus('记忆添加失败：' + error.message); }
+}
+
+$('#memoryAdd').onclick = addMemory;
+
+// ---- 场景 ----
+
+let pendingSceneAction = null;
+let audioContext = null;
+let rainSource = null;
+let sceneSoundMuted = false;
+let audioError = '';
+let sceneRequestVersion = 0;
+let sceneOperation = null;
+let sceneLoaded = false;
+let sceneCanUndo = false;
+
+function updateSceneControls() {
+  const busy = !currentCharacter || !sceneLoaded || Boolean(sceneOperation) || Boolean(activeChat) || workBusy || clearingHistory;
+  ['#sceneRain', '#sceneQuiet', '#sceneTree', '#sceneConfirm', '#sceneReject'].forEach(id => $(id).disabled = busy);
+  $('#sceneUndo').disabled = busy || !sceneCanUndo;
+}
+
+function resetSceneView() {
+  sceneRequestVersion++;
+  sceneOperation = null;
+  sceneLoaded = false;
+  sceneCanUndo = false;
+  hideSceneProposal();
+  $('#sceneElements').textContent = '正在加载场景…';
+  $('#sceneFeedback').textContent = '';
+  updateSceneControls();
+}
+
+function updateAudioStatus() {
+  const running = audioContext?.state === 'running';
+  $('#audioEnable').style.display = running ? 'none' : '';
+  $('#audioStatus').textContent = audioError || (sceneSoundMuted
+    ? '场景已静音，点击“小雨”恢复雨声。'
+    : running ? (rainSource ? '雨声播放中' : '声音已开启')
+    : '声音尚未开启，点击“开启声音”或场景按钮。');
+}
+
+function getAudioContext() {
+  if (!audioContext || audioContext.state === 'closed') {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) {
+      audioContext = new AC();
+      audioContext.onstatechange = updateAudioStatus;
+    }
+  }
+  return audioContext;
+}
+
+async function enableAudio() {
+  try {
+    audioError = '';
+    const ctx = getAudioContext();
+    if (!ctx) throw new Error('当前浏览器不支持音效');
+    // 必须在点击事件的同步部分调用 resume，不能等网络响应后才调用。
+    if (ctx.state !== 'running') await ctx.resume();
+  } catch (error) {
+    audioError = '声音未能开启，请再次点击“开启声音”。';
+  }
+  updateAudioStatus();
+}
+
+function setRainSound(on) {
+  if (on) {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    if (rainSource) return;
+    const size = 2 * ctx.sampleRate;
+    const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < size; i++) data[i] = Math.random() * 2 - 1;
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 1000;
+    const gain = ctx.createGain();
+    gain.gain.value = 0.12;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    source.start();
+    rainSource = { source, gain };
+  } else {
+    if (rainSource) {
+      try { rainSource.source.stop(); } catch (e) {}
+      rainSource = null;
+    }
+  }
+  updateAudioStatus();
+}
+
+function playTreeSound() {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.value = 180;
+  gain.gain.setValueAtTime(0.25, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.4);
+}
+
+function syncSound(elements) {
+  sceneSoundMuted = elements.sound === 0;
+  setRainSound(!!elements.rain && elements.sound !== 0);
+  updateAudioStatus();
+}
+
+function renderScene(data) {
+  const el = data.elements;
+  $('#sceneName').textContent = data.scene_name;
+  $('#sceneElements').textContent =
+    `🌧 雨：${el.rain ? '有' : '无'}  ·  🌳 树：${el.tree}  ·  ☁️ 云：${el.cloud ? '有' : '无'}  ·  🔇 安静：${el.sound === 0 ? '是' : '否'}`;
+  sceneLoaded = true;
+  sceneCanUndo = data.can_undo;
+  hideSceneProposal();
+  if (data.proposal) showSceneProposal(data.proposal);
+  updateSceneControls();
+  $('#sceneFeedback').textContent = data.feedback || '';
+  syncSound(el);
+}
+
+async function loadScene(cid = currentCharacter?.id, view = chatViewVersion) {
+  if (!cid) return;
+  const version = ++sceneRequestVersion;
+  try {
+    const data = await readJson(await fetch(`/api/v1/characters/${cid}/scene`));
+    if (!sameChat(cid, view) || version !== sceneRequestVersion) return;
+    renderScene(data);
+  } catch (error) {
+    if (sameChat(cid, view) && version === sceneRequestVersion) $('#sceneElements').textContent = '场景加载失败：' + error.message;
+  }
+}
+
+async function doSceneAction(action) {
+  return changeScene(action);
+}
+
+async function changeScene(action, proposal = null, decision = null) {
+  if (!currentCharacter || !sceneLoaded || workBusy || activeChat || clearingHistory || sceneOperation) return;
+  if (proposal && !sameChat(proposal.cid, proposal.view)) return;
+  // 在用户手势的同步调用栈里激活 AudioContext，避免自动播放策略拦截。
+  const audioReady = enableAudio();
+  const cid = currentCharacter.id;
+  const view = chatViewVersion;
+  const operation = {cid, view};
+  sceneOperation = operation;
+  sceneRequestVersion++;
+  updateSceneControls();
+  try {
+    const suffix = proposal ? `proposals/${proposal.id}/${decision}` : action ? `actions/${action}` : 'undo';
+    const res = await fetch(`/api/v1/characters/${cid}/scene/${suffix}`, { method: 'POST' });
+    const data = await readJson(res);
+    if (!sameChat(cid, view)) return;
+    renderScene(data);
+    await audioReady;
+    if (sameChat(cid, view) && action === 'plant_tree' && decision !== 'reject' && audioContext?.state === 'running') playTreeSound();
+  } catch (error) {
+    if (sameChat(cid, view)) {
+      await loadScene(cid, view);
+      if (sameChat(cid, view)) $('#sceneFeedback').textContent = '操作失败：' + error.message;
+    }
+  } finally {
+    if (sceneOperation === operation) { sceneOperation = null; updateSceneControls(); }
+  }
+}
+
+async function undoScene() {
+  return changeScene(null);
+}
+
+function showSceneProposal(proposal) {
+  const action = proposal.action;
+  const label = { light_rain: '小雨', quiet: '安静', plant_tree: '种树' }[action];
+  if (!label || !proposal.id || !currentCharacter) return;
+  pendingSceneAction = {...proposal, cid: currentCharacter.id, view: chatViewVersion};
+  $('#sceneProposalText').textContent = `要不要「${label}」？`;
+  $('#sceneProposal').style.display = 'flex';
+}
+
+function hideSceneProposal() {
+  pendingSceneAction = null;
+  $('#sceneProposal').style.display = 'none';
+}
+
+async function confirmSceneAction() {
+  if (!pendingSceneAction) return;
+  const proposal = pendingSceneAction;
+  await changeScene(proposal.action, proposal, 'confirm');
+}
+
+async function rejectSceneAction() {
+  if (!pendingSceneAction) return;
+  const proposal = pendingSceneAction;
+  await changeScene(null, proposal, 'reject');
+}
+
+$('#sceneRain').onclick = () => doSceneAction('light_rain');
+$('#sceneQuiet').onclick = () => doSceneAction('quiet');
+$('#sceneTree').onclick = () => doSceneAction('plant_tree');
+$('#sceneUndo').onclick = undoScene;
+$('#sceneConfirm').onclick = confirmSceneAction;
+$('#sceneReject').onclick = rejectSceneAction;
+$('#audioEnable').onclick = enableAudio;
+
+$('#file').onchange = upload;
+loadCollection();
+</script>
+</body>
+</html>

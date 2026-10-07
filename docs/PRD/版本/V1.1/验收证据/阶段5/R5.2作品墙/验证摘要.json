@@ -1,0 +1,51 @@
+{
+  "backend": {
+    "passed": 533,
+    "total": 533,
+    "new": 22
+  },
+  "frontend": {
+    "passed": 180,
+    "total": 180,
+    "new": 9
+  },
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "mainDatabase": {
+    "old_tables": 20,
+    "changed_tables": [],
+    "characters": 9,
+    "publications": 0
+  },
+  "widths": [
+    {
+      "width": 360,
+      "content": 360,
+      "columns": "154px 154px"
+    },
+    {
+      "width": 390,
+      "content": 390,
+      "columns": "169px 169px"
+    },
+    {
+      "width": 430,
+      "content": 430,
+      "columns": "189px 189px"
+    },
+    {
+      "width": 768,
+      "content": 753,
+      "columns": "215px 215px 215px"
+    },
+    {
+      "width": 1440,
+      "content": 1425,
+      "columns": "305.328px 305.336px 305.336px"
+    }
+  ],
+  "realModelCalls": 0,
+  "previousCommit": "ce00a36",
+  "currentWorkCommitted": false
+}

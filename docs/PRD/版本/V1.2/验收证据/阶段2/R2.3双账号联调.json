@@ -1,0 +1,50 @@
+{
+  "mode": "real HTTP/SQLite isolated8036 and browser3036; mock model and SMS; no main data writes",
+  "beforeTeamConfirmation": {
+    "members": 2,
+    "submissions": 0,
+    "credits": 4,
+    "publicWorks": 0
+  },
+  "afterTeamConfirmation": {
+    "members": 2,
+    "submissions": 1,
+    "otherMemberWork": true,
+    "publicWorks": 0
+  },
+  "freeThenTheme": {
+    "before": {
+      "companions": 2,
+      "freeCount": 1,
+      "themeCount": 1,
+      "credits": 3,
+      "publicWorks": 0
+    },
+    "after": {
+      "publicWorks": 1
+    },
+    "explicitNewEntry": true
+  },
+  "chat": {
+    "messages": 4,
+    "draftCleared": true,
+    "horizontalOverflow": false
+  },
+  "isolation": {
+    "otherAccountPrivateCompanionStatus": 404
+  },
+  "restart": {
+    "accountB": {
+      "companions": 1,
+      "credits": 4,
+      "members": 2,
+      "submissions": 1,
+      "messages": 4,
+      "publicWorks": 1
+    },
+    "accountA": {
+      "companions": 2,
+      "credits": 3
+    }
+  }
+}

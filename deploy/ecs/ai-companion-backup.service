@@ -1,0 +1,22 @@
+[Unit]
+Description=AI Companion local maintenance
+After=network-online.target
+RequiresMountsFor=/srv/ai-companion/data
+
+[Service]
+Type=oneshot
+User=aicompanion
+Group=aicompanion
+WorkingDirectory=/srv/ai-companion/current/backend
+EnvironmentFile=/etc/ai-companion/maintenance.env
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/ai-companion/backups /srv/ai-companion/monitor
+StandardOutput=journal
+StandardError=journal
+ExecStart=/srv/ai-companion/current/backend/.venv/bin/python -m scripts.ecs_maintenance backup
+TimeoutStartSec=180
+RestrictAddressFamilies=AF_UNIX

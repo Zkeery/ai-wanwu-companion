@@ -1,0 +1,19 @@
+{
+  "processTermination": "SIGKILL of isolated mock server",
+  "sameDatabase": true,
+  "before": {
+    "hash": "168d2c3dc585346def45c1db69ce128c4666c0d43c4a1c45dcd2d5b6ee967976",
+    "object_count": 6
+  },
+  "after": {
+    "hash": "168d2c3dc585346def45c1db69ce128c4666c0d43c4a1c45dcd2d5b6ee967976",
+    "object_count": 6
+  },
+  "apiResponsesUnchanged": true,
+  "paths": [
+    "/photos/1",
+    "/characters/1/messages",
+    "/characters/1/memories",
+    "/characters/2/scene"
+  ]
+}

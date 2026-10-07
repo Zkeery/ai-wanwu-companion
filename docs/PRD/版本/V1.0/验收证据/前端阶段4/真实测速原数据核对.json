@@ -1,0 +1,77 @@
+{
+  "same": true,
+  "before": [
+    {
+      "path": "/characters",
+      "status": 200,
+      "sha256": "1714c184cbeb64f608596b92c6ae34d181098c8a78c09ae4911078bf3210f842"
+    },
+    {
+      "path": "/characters/1/messages",
+      "status": 200,
+      "sha256": "06162bb461c197a34f5b796555860b49f7b7751963c99150c0630b87c1cbd459"
+    },
+    {
+      "path": "/characters/1/memories",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "/characters/1/scene",
+      "status": 200,
+      "sha256": "5dd1cdff46323a7baca0edca703fabfa5a1cc7f2a64ac2fed819683285e2388b"
+    },
+    {
+      "path": "/characters/2/messages",
+      "status": 200,
+      "sha256": "eaa05ac4738d156e4f406c5e329347498b21dfff3e0d012d226614f3954c779c"
+    },
+    {
+      "path": "/characters/2/memories",
+      "status": 200,
+      "sha256": "e0d5feeb33ff3d17df6fa45ad2bd31ad3f999d4f0d0c6495a201ca274c15233e"
+    },
+    {
+      "path": "/characters/2/scene",
+      "status": 200,
+      "sha256": "7a67229f294de64b5bcec7cdf579fa4710fd8fb6cac0202a701c7322515ea19b"
+    }
+  ],
+  "after": [
+    {
+      "path": "/characters",
+      "status": 200,
+      "sha256": "1714c184cbeb64f608596b92c6ae34d181098c8a78c09ae4911078bf3210f842"
+    },
+    {
+      "path": "/characters/1/messages",
+      "status": 200,
+      "sha256": "06162bb461c197a34f5b796555860b49f7b7751963c99150c0630b87c1cbd459"
+    },
+    {
+      "path": "/characters/1/memories",
+      "status": 200,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "/characters/1/scene",
+      "status": 200,
+      "sha256": "5dd1cdff46323a7baca0edca703fabfa5a1cc7f2a64ac2fed819683285e2388b"
+    },
+    {
+      "path": "/characters/2/messages",
+      "status": 200,
+      "sha256": "eaa05ac4738d156e4f406c5e329347498b21dfff3e0d012d226614f3954c779c"
+    },
+    {
+      "path": "/characters/2/memories",
+      "status": 200,
+      "sha256": "e0d5feeb33ff3d17df6fa45ad2bd31ad3f999d4f0d0c6495a201ca274c15233e"
+    },
+    {
+      "path": "/characters/2/scene",
+      "status": 200,
+      "sha256": "7a67229f294de64b5bcec7cdf579fa4710fd8fb6cac0202a701c7322515ea19b"
+    }
+  ]
+}

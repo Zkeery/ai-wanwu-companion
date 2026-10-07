@@ -1,0 +1,111 @@
+{
+  "state": "candidate",
+  "written": true,
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "atlas_sha256": "48ff50f039d9591b6fea261fb719d0d7db225d72e8dda47841ffe38521e40926",
+  "activities": [
+    "rest",
+    "walk",
+    "observe"
+  ],
+  "layout": {
+    "columns": 4,
+    "rows": 3
+  },
+  "quality": "requires_review",
+  "quality_check": {
+    "version": 1,
+    "state": "needs_review",
+    "expected_background": null,
+    "human_review_required": true,
+    "cells": [
+      {
+        "activity": "rest",
+        "column": 1,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "rest",
+        "column": 2,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "rest",
+        "column": 3,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "rest",
+        "column": 4,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "walk",
+        "column": 1,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "walk",
+        "column": 2,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "walk",
+        "column": 3,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "walk",
+        "column": 4,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "observe",
+        "column": 1,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "observe",
+        "column": 2,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "observe",
+        "column": 3,
+        "background": "alpha",
+        "issues": []
+      },
+      {
+        "activity": "observe",
+        "column": 4,
+        "background": "alpha",
+        "issues": []
+      }
+    ],
+    "issues": [],
+    "manual_checks": [
+      "character_identity",
+      "watermark_or_text",
+      "anatomy",
+      "walk_steps",
+      "observe_front_view",
+      "natural_loop"
+    ]
+  },
+  "packs": {
+    "rest": "ae8ef98d6b94d4d1b8fad7f5609deef4eed5b14a6044f43f5ebe9fc1555b4527",
+    "walk": "43e9f1de03f7fcbcb517881a9d8ff1466ca452821495a3456015a3afd9550cc8",
+    "observe": "da1d87f42856ef78d558fe63c5d4f8e1aea61017d21347105276dae97500893d"
+  },
+  "local_pack_ms": 669
+}

@@ -1,0 +1,54 @@
+{
+  "recorded_at": "2026-09-18T10:32:22.696Z",
+  "base_commit": "4a026d4558720dbb65036e1498ca174627cd2da0",
+  "working_tree_uncommitted": true,
+  "files": [
+    {
+      "path": "backend/app/api/chat.py",
+      "sha256": "f407875a2202a11c2e8606cc5e4bc3f2fdb100f722d98c146ba8ed991e4aee66"
+    },
+    {
+      "path": "backend/app/main.py",
+      "sha256": "f68a9cd74bc3568000a9c8baae252b32e59398e0f9306cfb9065808c63d12f8b"
+    },
+    {
+      "path": "backend/app/services/model_client.py",
+      "sha256": "32d1caf627b8c329db810c48b3a1695bb2e2f50e45abb82abe2ea019e779fca1"
+    },
+    {
+      "path": "backend/app/services/chat.py",
+      "sha256": "d60a7bc1138bfbf469fb585a41937e28d5d2f44246c6dfca5667978b8775c172"
+    },
+    {
+      "path": "backend/app/services/prompts.py",
+      "sha256": "9d279f123dbfa6b956c745f6ebe32d3aff4d990f215e6d2716b3c3b02c9b108f"
+    },
+    {
+      "path": "backend/app/static/index.html",
+      "sha256": "cd35baf88576e385dc9db8e2161c12155dfead192d06b8e80d7c134f0074b12c"
+    },
+    {
+      "path": "backend/tests/test_chat_api.py",
+      "sha256": "d6794062e291fda4732a5078e44ce86a4f1274d09164daacc388f73cda54426d"
+    },
+    {
+      "path": "backend/tests/test_chat_stream.py",
+      "sha256": "9c9248dc24f5cd4377dee902145fb60842f5748452da1f97217ccba4be7904a3"
+    },
+    {
+      "path": "backend/tests/test_ui.cjs",
+      "sha256": "b422de65d20d16df9e71003e5b4b73104916f18416a273e178d32ee484936e5b"
+    },
+    {
+      "path": "docs/PRD/版本/V1.0/验收证据/阶段2-2/真实样例评测方案.md",
+      "sha256": "a8645105ec7d8f6ac4629a81f3e7e16fe77f18cc45ce3f521999bb9973d9bfb9"
+    }
+  ],
+  "verification": {
+    "backend_pass": 68,
+    "page_pass": 7,
+    "independent_probe_pass": 9,
+    "real_samples_run": 0,
+    "human_scored": 0
+  }
+}

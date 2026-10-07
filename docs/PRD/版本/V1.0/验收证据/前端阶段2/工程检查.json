@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-09-18T15:08:58.974Z",
+  "checks": [
+    {
+      "command": "npm run test",
+      "exit": 0,
+      "output": "\n> aiwanwu-companion-web@0.1.0 test\n> vitest run\n\n\n RUN  v5.0.1 /Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/frontend\n\n ✓ tests/stream.test.ts (8 tests) 35ms\n ✓ tests/rain-audio.test.ts (1 test) 4ms\n ✓ tests/creation.test.ts (5 tests) 16ms\n ✓ tests/modal.test.tsx (1 test) 100ms\n ✓ tests/memories.test.tsx (6 tests) 230ms\n ✓ tests/companion.test.tsx (5 tests) 239ms\n ✓ tests/create-companion.test.tsx (7 tests) 298ms\n\n Test Files  7 passed (7)\n      Tests  33 passed (33)\n   Start at  23:08:59\n   Duration  1.72s (environment 68%, tests 11%, setup 10%, import 6%, transform 5%)\n\n"
+    },
+    {
+      "command": "npm run lint",
+      "exit": 0,
+      "output": "\n> aiwanwu-companion-web@0.1.0 lint\n> eslint .\n\n"
+    },
+    {
+      "command": "npm run typecheck",
+      "exit": 0,
+      "output": "\n> aiwanwu-companion-web@0.1.0 typecheck\n> tsc --noEmit\n\n"
+    },
+    {
+      "command": "npm run build",
+      "exit": 0,
+      "output": "\n> aiwanwu-companion-web@0.1.0 build\n> next build\n\n▲ Next.js 16.3.5 (Turbopack)\n✓ Running next.config.ts took 32ms\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 552ms\n  Running TypeScript ...\n  Finished TypeScript in 1333ms ...\n  Collecting page data using 6 workers ...\n  Generating static pages using 6 workers (0/4) ...\n  Generating static pages using 6 workers (1/4) \r\n  Generating static pages using 6 workers (2/4) \r\n  Generating static pages using 6 workers (3/4) \r\n✓ Generating static pages using 6 workers (4/4) in 315ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /\n├ ○ /_not-found\n├ ƒ /companions/[id]\n└ ○ /companions/new\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n"
+    },
+    {
+      "command": "node --test tests/test_ui.cjs",
+      "exit": 0,
+      "output": "✔ HTTP 409 is visible and controls can be used again (18.643292ms)\n✔ a proposal cannot survive switching characters (1.470292ms)\n✔ double confirming posts once with the character-bound proposal token (1.610125ms)\n✔ refreshing scene restores a pending proposal and rejection persists (1.113833ms)\n✔ scene click resumes audio before fetching; quiet and leaving stop rain (1.642042ms)\n✔ blocked audio resume is visible and can be retried (0.664583ms)\n✔ late scene response cannot restart rain after leaving chat (0.727125ms)\n✔ Enter cannot submit twice while a reply is pending (0.997625ms)\n✔ clearing history invalidates an older history query (0.704291ms)\n✔ clearing an active reply aborts it and ignores its late result (0.704709ms)\n✔ stream ending without done/error is not mistaken for success (0.738709ms)\n✔ network failure restores controls (0.712542ms)\n✔ model labels are rendered as plain text (0.570208ms)\nℹ tests 13\nℹ suites 0\nℹ pass 13\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 87.803833\n"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q",
+      "exit": 0,
+      "output": "........................................................................ [ 55%]\n.........................................................                [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.12/site-packages/fastapi/testclient.py:1\n  /Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/backend/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n.venv/lib/python3.12/site-packages/starlette/testclient.py:53\n  /Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n129 passed, 2 warnings in 3.14s\n"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q (rename consistency regression)",
+      "exit": 0,
+      "output": "........................................................................ [ 55%]\n..........................................................               [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.12/site-packages/fastapi/testclient.py:1\n  /Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/backend/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n.venv/lib/python3.12/site-packages/starlette/testclient.py:53\n  /Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.\n    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n130 passed, 2 warnings in 3.22s\n"
+    }
+  ]
+}

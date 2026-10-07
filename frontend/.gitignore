@@ -1,0 +1,5 @@
+.next-test/
+.next-qa-*/
+.next-r32/
+.next-r32-build/
+*.tsbuildinfo

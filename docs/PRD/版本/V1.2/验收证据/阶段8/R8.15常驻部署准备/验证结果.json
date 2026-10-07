@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-10-02T07:10:05.174042+00:00",
+  "evidence_origin": "synthetic_offline_rehearsal",
+  "capture": {
+    "backup_verified": true,
+    "table_count": 1,
+    "file_count": 1,
+    "ledger_file_count": 1,
+    "state_file_count": 1,
+    "offsite_backup": "pending"
+  },
+  "restore": {
+    "restored_verified": true,
+    "table_count": 1,
+    "file_count": 1,
+    "ledger_file_count": 1,
+    "state_file_count": 1,
+    "production_activation": "pending"
+  },
+  "reopened_sqlite": true,
+  "full_data_equal": true,
+  "tampered_ledger_rejected": true,
+  "unmounted_directory_not_created": true,
+  "local_configs_and_process_record_unchanged": true,
+  "service_restarts": 0,
+  "model_requests": 0,
+  "sms_requests": 0,
+  "cloud_requests": 0,
+  "linux_systemd_nginx": "pending",
+  "x86_cloud_build": "pending",
+  "offsite_backup": "pending",
+  "temporary_synthetic_data_cleaned": true
+}

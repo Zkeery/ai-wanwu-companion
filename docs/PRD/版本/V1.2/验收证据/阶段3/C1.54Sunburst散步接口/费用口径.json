@@ -1,0 +1,17 @@
+{
+  "verifiedOn": "2026-09-28",
+  "model": "gpt-image-2.5-sunburst-2026-09-08",
+  "quality": "medium",
+  "size": "1024x1024",
+  "n": 1,
+  "estimatedOutputTokens": 439,
+  "estimatedOutputCostUsd": 0.01317,
+  "inputCostExcluded": true,
+  "apiHardCostCap": false,
+  "minimumPrepaidPurchaseUsd": 5,
+  "sources": [
+    "https://developers.openai.com/api/docs/guides/image-generation",
+    "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+    "https://help.openai.com/en/articles/8264644-how-can-i-set-up-prepaid-billing"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "tests": {
+    "exit": 0,
+    "summary": [
+      " Test Files  6 passed (6)",
+      "      Tests  126 passed (126)"
+    ],
+    "stderr_lines": 0
+  },
+  "typecheck": {
+    "exit": 0,
+    "summary": [],
+    "stderr_lines": 0
+  },
+  "lint": {
+    "exit": 0,
+    "summary": [],
+    "stderr_lines": 0
+  },
+  "build": {
+    "exit": 0,
+    "summary": [
+      "✓ Compiled successfully in 845ms",
+      "  Generating static pages using 9 workers (0/11) ...",
+      "  Generating static pages using 9 workers (2/11) \r",
+      "  Generating static pages using 9 workers (5/11) \r",
+      "  Generating static pages using 9 workers (8/11) \r",
+      "✓ Generating static pages using 9 workers (11/11) in 112ms"
+    ],
+    "stderr_lines": 0
+  }
+}

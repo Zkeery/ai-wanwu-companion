@@ -1,0 +1,10 @@
+{
+  "version": "companion-motion-video-v1",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "video_file": "motion.mp4",
+  "video_sha256": "345d4f4ab1bd2449e271ed1d73cb2ad84879f375b9253eb6cbcd66709c86af3f",
+  "width": 960,
+  "height": 720,
+  "fps": 24,
+  "duration_ms": 6042
+}

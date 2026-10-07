@@ -1,0 +1,190 @@
+{
+  "character_id": 1,
+  "owner_id": "c148-owner",
+  "source_image_path": "apple-source.jpg",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "prompt_sha256": "8adfb9a6fc3994c6eabd48dff1ef7d2003b46eab49301b8ffe2951e951675ee1",
+  "provider": "ark",
+  "model": "doubao-seedream-5-0-flash-260915",
+  "budget_ceiling_cny": "0.12",
+  "price_verified_on": "2026-09-28",
+  "state": "rejected",
+  "candidate_file": "character-1-7195f21cd80cefe8-dfe047b9ee06a3e4.png",
+  "atlas_sha256": "ef9b4911e43408e2426dc5ae78f57a80b67c6ed970db255bacc2b744fa132d77",
+  "quality_check": {
+    "atlas_sha256": "ef9b4911e43408e2426dc5ae78f57a80b67c6ed970db255bacc2b744fa132d77",
+    "cells": [
+      {
+        "activity": "rest",
+        "background": "opaque",
+        "column": 1,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "rest",
+        "background": "opaque",
+        "column": 2,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "rest",
+        "background": "opaque",
+        "column": 3,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "rest",
+        "background": "opaque",
+        "column": 4,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "walk",
+        "background": "opaque",
+        "column": 1,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "walk",
+        "background": "opaque",
+        "column": 2,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "walk",
+        "background": "opaque",
+        "column": 3,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "walk",
+        "background": "opaque",
+        "column": 4,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "observe",
+        "background": "opaque",
+        "column": 1,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "observe",
+        "background": "opaque",
+        "column": 2,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "observe",
+        "background": "opaque",
+        "column": 3,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      },
+      {
+        "activity": "observe",
+        "background": "opaque",
+        "column": 4,
+        "issues": [
+          "background_not_uniform_gray"
+        ]
+      }
+    ],
+    "human_review_required": true,
+    "issues": [
+      {
+        "activity": "rest",
+        "code": "background_not_uniform_gray",
+        "column": 1
+      },
+      {
+        "activity": "rest",
+        "code": "background_not_uniform_gray",
+        "column": 2
+      },
+      {
+        "activity": "rest",
+        "code": "background_not_uniform_gray",
+        "column": 3
+      },
+      {
+        "activity": "rest",
+        "code": "background_not_uniform_gray",
+        "column": 4
+      },
+      {
+        "activity": "walk",
+        "code": "background_not_uniform_gray",
+        "column": 1
+      },
+      {
+        "activity": "walk",
+        "code": "background_not_uniform_gray",
+        "column": 2
+      },
+      {
+        "activity": "walk",
+        "code": "background_not_uniform_gray",
+        "column": 3
+      },
+      {
+        "activity": "walk",
+        "code": "background_not_uniform_gray",
+        "column": 4
+      },
+      {
+        "activity": "observe",
+        "code": "background_not_uniform_gray",
+        "column": 1
+      },
+      {
+        "activity": "observe",
+        "code": "background_not_uniform_gray",
+        "column": 2
+      },
+      {
+        "activity": "observe",
+        "code": "background_not_uniform_gray",
+        "column": 3
+      },
+      {
+        "activity": "observe",
+        "code": "background_not_uniform_gray",
+        "column": 4
+      }
+    ],
+    "manual_checks": [
+      "character_identity",
+      "watermark_or_text",
+      "anatomy",
+      "walk_steps",
+      "observe_front_view",
+      "natural_loop"
+    ],
+    "state": "rejected",
+    "version": 1
+  },
+  "elapsed_command_ms": 10709,
+  "visible_watermark_requested": false
+}

@@ -1,0 +1,64 @@
+{
+  "phase": "needs_review",
+  "character_id": 5,
+  "activities": [
+    {
+      "activity": "rest",
+      "state": "needs_review",
+      "request_id": "9c112b39-0db0-4051-ac0e-5e5e605b84a9"
+    },
+    {
+      "activity": "walk",
+      "state": "needs_review",
+      "request_id": "fe378ef6-fc86-4106-bd34-e87d9ea9329e"
+    },
+    {
+      "activity": "observe",
+      "state": "needs_review",
+      "request_id": "0bbd34a2-be11-47d1-9cea-8c0358d23ccc"
+    }
+  ],
+  "actual_model_calls": 3,
+  "attempted_activities": [
+    "rest",
+    "walk",
+    "observe"
+  ],
+  "max_requests": 3,
+  "human_review_required": true,
+  "results": [
+    {
+      "state": "needs_review",
+      "activity": "rest",
+      "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+      "prompt_sha256": "e3dea15e7129bf930c7eb76d3b05d66677cd9349a2aeb4c9d6138c10750f3a72",
+      "candidate_sha256": "cca91cae41763794c1ebf7585891759bced239c8e0b7c8b0f2455eae085401cc",
+      "generation_requests": 1,
+      "provider_task_id": "t_4ddb46188b145a4c7e3fdcba",
+      "usage": {},
+      "actual_bill_verified": false
+    },
+    {
+      "state": "needs_review",
+      "activity": "walk",
+      "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+      "prompt_sha256": "c8c33e28630f852bd3804b70dbc957e4ffb1718a6d45f827559334680ca679eb",
+      "candidate_sha256": "f76fe47a3bd6c448f9b2c7705eccf3ad76a6be2d8c57e8bdc9cba991c4da4817",
+      "generation_requests": 1,
+      "provider_task_id": "t_bbe619cb663e0a96ee0fe832",
+      "usage": {},
+      "actual_bill_verified": false
+    },
+    {
+      "state": "needs_review",
+      "activity": "observe",
+      "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+      "prompt_sha256": "872123c4d3a28476c691a9403b4096364dbbd7ec530434b28a67245273db95d8",
+      "candidate_sha256": "fc3e690aab13a6368d8005c0fadaefdbd4f7b05498cf15cc907d6331fe51c76b",
+      "generation_requests": 1,
+      "provider_task_id": "t_a0f92dcb802ceb1e87de5e48",
+      "usage": {},
+      "actual_bill_verified": false
+    }
+  ]
+}

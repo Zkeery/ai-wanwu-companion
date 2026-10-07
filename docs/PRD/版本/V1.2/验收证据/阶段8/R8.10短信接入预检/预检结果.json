@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "checked_date": "2026-10-01",
+  "scope": "local configuration and synthetic SDK signing; no network or database access",
+  "ready_for_release": false,
+  "release_summary": {"pass": 11, "blocked": 14, "pending": 10},
+  "sms_checks": [
+    {"id": "sms_provider_selection", "status": "blocked", "message": "仍使用模拟短信"},
+    {"id": "sms_live_switch", "status": "blocked", "message": "真实发送开关关闭"},
+    {"id": "sms_access_key", "status": "blocked", "message": "独立短信访问密钥未填写"},
+    {"id": "sms_secret_key", "status": "blocked", "message": "独立短信秘密密钥未填写"},
+    {"id": "sms_account", "status": "blocked", "message": "短信消息组未填写"},
+    {"id": "sms_sign", "status": "blocked", "message": "短信签名未填写"},
+    {"id": "sms_template", "status": "blocked", "message": "短信模板未填写"},
+    {"id": "sms_daily_limit", "status": "blocked", "message": "每日发送次数未开放或超出保护范围"},
+    {"id": "sms_timeout", "status": "pass", "message": "发送超时在保护范围内"},
+    {"id": "sms_local_signer", "status": "pass", "message": "本地虚构凭证签名通过；未联网"},
+    {"id": "sms_provider", "status": "blocked", "message": "真实短信存在本地阻塞，请逐项查看sms检查"}
+  ],
+  "real_sms_sends": 0,
+  "new_model_calls": 0,
+  "environment_unchanged": true,
+  "user_database_unchanged": true,
+  "runtime_process_record_unchanged": true
+}

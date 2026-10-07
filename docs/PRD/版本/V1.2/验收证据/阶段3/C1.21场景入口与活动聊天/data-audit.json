@@ -1,0 +1,73 @@
+{
+  "tables": 52,
+  "totals": {
+    "before": 208,
+    "after": 215,
+    "removed": 0,
+    "modified": 2,
+    "added": 7,
+    "unchanged": 206
+  },
+  "changed_tables": [
+    {
+      "table": "sessions",
+      "before": 2,
+      "after": 2,
+      "removed": 0,
+      "added": 0,
+      "modified": 1,
+      "unchanged": 1
+    },
+    {
+      "table": "life_runtime_permissions",
+      "before": 9,
+      "after": 9,
+      "removed": 0,
+      "added": 0,
+      "modified": 1,
+      "unchanged": 8
+    },
+    {
+      "table": "life_runtime_setting_receipts",
+      "before": 25,
+      "after": 27,
+      "removed": 0,
+      "added": 2,
+      "modified": 0,
+      "unchanged": 25
+    },
+    {
+      "table": "life_runtime_tasks",
+      "before": 37,
+      "after": 40,
+      "removed": 0,
+      "added": 3,
+      "modified": 0,
+      "unchanged": 37
+    },
+    {
+      "table": "life_runtime_events",
+      "before": 31,
+      "after": 32,
+      "removed": 0,
+      "added": 1,
+      "modified": 0,
+      "unchanged": 31
+    },
+    {
+      "table": "life_runtime_dispatches",
+      "before": 7,
+      "after": 8,
+      "removed": 0,
+      "added": 1,
+      "modified": 0,
+      "unchanged": 7
+    }
+  ],
+  "provider_call_tables": [
+    {
+      "table": "life_runtime_calls",
+      "rows": 0
+    }
+  ]
+}

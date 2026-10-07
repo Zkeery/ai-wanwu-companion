@@ -1,0 +1,48 @@
+{
+  "original_jpeg": {
+    "model": "doubao-seedream-5-0-flash-260915",
+    "size": "1536x864",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+    "background": "opaque",
+    "output_format": "png",
+    "prompt_sha256": "11edf654460c3700bee1e828c998a5d32c6c2963b2b6ba4c3477a7e66d1bc457"
+  },
+  "archived_alpha_atlas": {
+    "model": "doubao-seedream-5-0-flash-260915",
+    "size": "1536x864",
+    "source_sha256": "48ff50f039d9591b6fea261fb719d0d7db225d72e8dda47841ffe38521e40926",
+    "background": "transparent",
+    "output_format": "png",
+    "prompt_sha256": "d4d3dc8f45b9c834609072c249ad65dcbfc2992c7514775f448dd46e2d41706a"
+  },
+  "walk_sequence": [
+    0,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3,
+    0,
+    0,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3,
+    0
+  ],
+  "packComparison": {
+    "rest": {
+      "sameBytes": true
+    },
+    "walk": {
+      "sameBytes": false
+    },
+    "observe": {
+      "sameBytes": true
+    }
+  },
+  "note": "Archived atlas preflight only demonstrates format capability; it was not substituted for the owned original or sent to a provider."
+}

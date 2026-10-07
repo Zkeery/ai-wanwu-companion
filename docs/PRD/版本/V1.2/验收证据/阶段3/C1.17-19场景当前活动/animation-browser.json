@@ -1,0 +1,14 @@
+{
+  "walkDistanceIn60Frames": 16.90020751953125,
+  "hoverDistanceIn600ms": 0,
+  "hoverPlayStates": [
+    "paused"
+  ],
+  "manualPausePlayStates": [
+    "paused"
+  ],
+  "reducedMotion": {
+    "state": "paused",
+    "animationCount": 0
+  }
+}

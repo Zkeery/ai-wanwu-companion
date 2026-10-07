@@ -1,0 +1,21 @@
+{
+  "mobile": {
+    "width": 390,
+    "overflow": false,
+    "playing": true,
+    "muted": true,
+    "url": "/companions/new",
+    "reads": 2
+  },
+  "desktop": {
+    "width": 1440,
+    "overflow": false,
+    "muted": true,
+    "playing": true,
+    "stoppedAndReset": true,
+    "imageLoaded": true,
+    "recoveryHasNoGenerationTime": true,
+    "motionReads": 2
+  },
+  "sample": "Existing character 6 recovered read-only; no generation"
+}

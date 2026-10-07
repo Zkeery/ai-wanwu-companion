@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-29",
+  "browser": "Chrome",
+  "character_id": 2,
+  "user_character_id": 4,
+  "source": "C1.62 real bound asset",
+  "desktop_play": true,
+  "desktop_stop": true,
+  "mobile_emulated_viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "mobile_play": true,
+  "auto_selected_walk": true,
+  "new_model_calls": 0,
+  "human_naturalness_rating": null
+}

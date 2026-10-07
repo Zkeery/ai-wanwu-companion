@@ -1,0 +1,21 @@
+{
+  "origin": "api_fixture_archived_media",
+  "desktop": {
+    "started": 1790590039,
+    "mode": "ready",
+    "checks": 3,
+    "metadata": 5,
+    "media": 6,
+    "writes": 0,
+    "overflow": false
+  },
+  "mobile": {
+    "started": 1790590101,
+    "mode": "ready",
+    "checks": 3,
+    "metadata": 4,
+    "media": 2,
+    "writes": 0,
+    "overflow": false
+  }
+}

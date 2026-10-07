@@ -1,0 +1,70 @@
+{
+  "date": "2026-09-21",
+  "scope": "R4.1–R4.3 工程与离线验证；R4.4 真实模型待验",
+  "backend": {
+    "passed": 484,
+    "total": 484,
+    "runtime": 44,
+    "chat_adapter": 28,
+    "recreation_quota": 15,
+    "warnings": 2,
+    "warning_kind": "已有测试依赖弃用提示"
+  },
+  "frontend": {
+    "passed": 149,
+    "total": 149,
+    "test_files": 19,
+    "typecheck": "passed",
+    "lint": "passed",
+    "production_build": "passed",
+    "next_version": "16.3.5"
+  },
+  "browser": {
+    "mode": "独立数据库与脚本适配器，无真实模型",
+    "flow": [
+      "登录隔离账号",
+      "聊天生成待确认种树建议",
+      "确认后写入场景",
+      "刷新后小树与聊天保留",
+      "主动再创作确认",
+      "进入新伙伴",
+      "额度5变4",
+      "原伙伴、聊天和小树保留"
+    ],
+    "viewport_widths": [
+      360,
+      390,
+      430,
+      768,
+      1440
+    ],
+    "horizontal_overflow": false,
+    "screenshots_inspected": [
+      "R4再创作确认-390.png",
+      "R4再创作确认-1440.png",
+      "R4原伙伴保留-1440.png"
+    ],
+    "isolated_services": "验证后已关闭"
+  },
+  "recovery": {
+    "independent_process_tests": "passed",
+    "quota_failure_refund_once": "passed",
+    "last_credit_concurrency": "passed",
+    "old_database_double_initialization": "passed",
+    "main_database_preserved": "passed"
+  },
+  "security": {
+    "candidate_files_scanned": 622,
+    "sensitive_values_checked": 2,
+    "matching_files": [],
+    "passed": true
+  },
+  "paid_model_calls": 0,
+  "real_acceptance": "pending",
+  "main_feature_flags": {
+    "SCENE_AGENT_ENABLED": false,
+    "GENERATION_QUOTA_ENABLED": false
+  },
+  "stage_accepted": false,
+  "git_commit": false
+}

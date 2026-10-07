@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-21",
+  "scope": "照片分析构思→文字设定→文生图",
+  "checks": [
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "379 passed, 2 warnings in 9.94s"
+      ]
+    },
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  14 passed (14)",
+        "      Tests  101 passed (101)"
+      ]
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 1599ms"
+      ]
+    }
+  ],
+  "migration": {
+    "backup": "data/backups/before-photo-concept-20260921-173443.db",
+    "oldTableCount": 14,
+    "changedOldTables": [],
+    "newConceptColumn": true
+  },
+  "browser": {
+    "mode": "isolated mock adapters with real application/database",
+    "calls": [
+      "vision-concept",
+      "image"
+    ],
+    "confirmed": [
+      "登录",
+      "上传与分析构思",
+      "选择对象后刷新",
+      "特征与构思恢复",
+      "直接绘图成功收藏"
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "scrollWidth": 1440
+      },
+      {
+        "width": 390,
+        "scrollWidth": 390
+      }
+    ],
+    "screenshots": [
+      "分析构思链路-桌面.png",
+      "分析构思链路-手机.png"
+    ]
+  },
+  "realModel": "本轮 agent 未调用付费模型；实际质量及耗时待验",
+  "stage": "R3 未整体验收",
+  "secretScan": {
+    "configuredValues": 2,
+    "scannedFiles": 1415,
+    "matchedFiles": 0
+  },
+  "serviceChecks": [
+    {
+      "url": "http://127.0.0.1:3020/companions/new",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "url": "http://127.0.0.1:8020/api/v1/auth/me",
+      "status": 401,
+      "passed": true
+    }
+  ]
+}

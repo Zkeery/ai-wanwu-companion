@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-18",
+  "decision": "前端第一阶段工程验收与真实聊天小样本检查，不等同公开上线",
+  "object": "正式前端+现有后端聊天Prompt/模型组合",
+  "baseline": "8d5444fc6e464194aae4de355594efe0ec3d48e8 + 当前未提交前端",
+  "cases": [
+    "Q01",
+    "Q02",
+    "Q03",
+    "Q04",
+    "Q05",
+    "Q06",
+    "Q07",
+    "Q08"
+  ],
+  "pricing": {
+    "source": "https://maas.antdigital.com/models/modelservice-1788174495570001431",
+    "input_per_million_cny": 0.8,
+    "output_per_million_cny": 2.7,
+    "cache_write_per_million_cny": 1.25,
+    "cache_read_per_million_cny": 0.1
+  },
+  "authorization": {
+    "calls": 8,
+    "budget_cny": 0.1,
+    "approved": true,
+    "note": "8条case含失败复测与Prompt修复后的回归，总20次请求；发送前总预留0.0998454元。用户授权费用不超过0.10元。"
+  },
+  "scoring": "客观条件逐条通过/失败；四维AI初评单独标未校准，不冒充产品评分",
+  "stability": "每例单次，不评价稳定性",
+  "source_hashes": {
+    "backend/app/services/prompts.py": "3eeeb6ef132ccd907af3170403a25dce038c1f5916361efc19739f9a3c1fd5a4",
+    "backend/app/services/chat.py": "f625b7f17d09cd381635e37005ae3c982412e8b8a0d5f3979927ec2267f61ce3",
+    "backend/app/services/model_client.py": "32d1caf627b8c329db810c48b3a1695bb2e2f50e45abb82abe2ea019e779fca1",
+    "frontend/components/companion.tsx": "1307bc12d9bea4e01bc8c8af9803fb3f63e710485c757c8c1abe2eb57c6f5906",
+    "frontend/components/memories.tsx": "7253aae491bac7331b771d790ade267a3fb2e0ae44ad06017cb0868ba08ad488"
+  },
+  "final_source_hashes": {
+    "backend/app/services/prompts.py": "ba3963d18c811371b3f54f5f8ef12906cc0d72c07e251f2ac286ee23198b70d3",
+    "frontend/components/memories.tsx": "7253aae491bac7331b771d790ade267a3fb2e0ae44ad06017cb0868ba08ad488",
+    "frontend/components/common.tsx": "f098d03882cadad3d3f7fda00298d98a50852df5b70ffcfae4d49e4d4519f24a"
+  },
+  "final_content_check": {
+    "mainTaskPass": 8,
+    "fullOutputPass": 7,
+    "needReview": 1,
+    "humanScores": null
+  }
+}

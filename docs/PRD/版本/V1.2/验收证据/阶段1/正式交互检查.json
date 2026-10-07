@@ -1,0 +1,96 @@
+{
+  "life": {
+    "url": "?tab=life",
+    "visible": true,
+    "chatHidden": true
+  },
+  "historyAndRefreshLife": true,
+  "draftRestoredAfterRefresh": true,
+  "errors": [],
+  "localTabMetrics": {
+    "rows": [
+      {
+        "tab": "life",
+        "ok": true,
+        "ms": 955.2
+      },
+      {
+        "tab": "profile",
+        "ok": true,
+        "ms": 22.8
+      },
+      {
+        "tab": "chat",
+        "ok": true,
+        "ms": 995.8
+      },
+      {
+        "tab": "life",
+        "ok": true,
+        "ms": 38.8
+      },
+      {
+        "tab": "profile",
+        "ok": true,
+        "ms": 18
+      },
+      {
+        "tab": "chat",
+        "ok": true,
+        "ms": 48.9
+      }
+    ],
+    "extraApiRequests": 0
+  },
+  "discoveryThemeAndTeamLinks": true,
+  "focusedTabMetrics": [
+    {
+      "tab": "life",
+      "domMs": 8.5,
+      "frameMs": 797.2,
+      "focused": true
+    },
+    {
+      "tab": "profile",
+      "domMs": 11.1,
+      "frameMs": 1006.2,
+      "focused": true
+    },
+    {
+      "tab": "chat",
+      "domMs": 6.9,
+      "frameMs": 8.2,
+      "focused": true
+    },
+    {
+      "tab": "life",
+      "domMs": 6.9,
+      "frameMs": 8.5,
+      "focused": true
+    },
+    {
+      "tab": "profile",
+      "domMs": 6.6,
+      "frameMs": 14.8,
+      "focused": true
+    },
+    {
+      "tab": "chat",
+      "domMs": 6,
+      "frameMs": 8.4,
+      "focused": true
+    }
+  ],
+  "frameControl": {
+    "noInteractionFrameMs": [
+      0.5,
+      1000.2,
+      1007.8,
+      1007.1,
+      1008.3,
+      1001.2
+    ],
+    "visibility": "visible",
+    "focused": true
+  }
+}

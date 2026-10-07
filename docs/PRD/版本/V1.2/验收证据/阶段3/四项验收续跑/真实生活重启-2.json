@@ -1,0 +1,22 @@
+{
+  "status": "verified",
+  "before_pid": 34473,
+  "after_pid": 35682,
+  "resumes": 2,
+  "deadline": 1790998881,
+  "deadline_unchanged": true,
+  "private_hash_unchanged": true,
+  "shared_hash_unchanged": true,
+  "private_events": 1,
+  "shared_exchanges": 1,
+  "budget": {
+    "authorized": true,
+    "requests": 2,
+    "reserved_cny": 2.2912,
+    "budget_cny": 3.0,
+    "requests_max": 2,
+    "paused": false,
+    "automatic_retries": 0
+  },
+  "largest_gap_seconds": 60
+}

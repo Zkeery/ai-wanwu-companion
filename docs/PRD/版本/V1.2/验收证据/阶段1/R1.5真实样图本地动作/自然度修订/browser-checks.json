@@ -1,0 +1,22 @@
+{
+  "url": "http://127.0.0.1:3046/companions/5",
+  "balancedSupport": true,
+  "model_calls": 0,
+  "widths": [
+    {
+      "viewport": 1440,
+      "changed": 58020,
+      "backgroundCornerChanged": 0,
+      "overflow": false
+    },
+    {
+      "viewport": 390,
+      "changed": 58785,
+      "backgroundCornerChanged": 0,
+      "overflow": false
+    }
+  ],
+  "startStop": true,
+  "reopen": true,
+  "reducedMotion": true
+}

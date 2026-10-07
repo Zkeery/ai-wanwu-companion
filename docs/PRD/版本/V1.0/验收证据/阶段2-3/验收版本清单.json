@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-09-18T12:51:20.189Z",
+  "base_commit": "0437c2c",
+  "uncommitted": true,
+  "checks": {
+    "backend": 107,
+    "page": 13,
+    "chrome_flow": "passed with isolated mock model",
+    "new_process_recovery": "passed",
+    "real_model_quality": "pending authorization"
+  },
+  "files": [
+    {
+      "path": "backend/app/api/chat.py",
+      "sha256": "e3507fb45b3e5d9e21ad8ff933b3eb76c1b2072a8c927b4ab8606d0dfc88d081"
+    },
+    {
+      "path": "backend/app/api/scene.py",
+      "sha256": "5ba790802964474c5406a94d65f34e67e0f108879d4fe5a9c55b08a837ed6985"
+    },
+    {
+      "path": "backend/app/services/chat.py",
+      "sha256": "f625b7f17d09cd381635e37005ae3c982412e8b8a0d5f3979927ec2267f61ce3"
+    },
+    {
+      "path": "backend/app/services/scene.py",
+      "sha256": "a28965b63ed3920fb3a40904063c9fc208b44b73b8ed8481d754fc7d4204415d"
+    },
+    {
+      "path": "backend/app/services/prompts.py",
+      "sha256": "3eeeb6ef132ccd907af3170403a25dce038c1f5916361efc19739f9a3c1fd5a4"
+    },
+    {
+      "path": "backend/app/models/models.py",
+      "sha256": "337046b43b97630459ab3e6af737b8b4ec135225bd53d71f93300d4783b0e877"
+    },
+    {
+      "path": "backend/app/schemas/schemas.py",
+      "sha256": "943f3a5415e5d96cc6771dac80eb31ddfdc34720a79aafb774ecf9c6ce932357"
+    },
+    {
+      "path": "backend/app/static/index.html",
+      "sha256": "12f5a352a90e9e166b80d76e6d4e5ec8569319e51f9e0453a23286f246728bfe"
+    },
+    {
+      "path": "backend/tests/test_scene_acceptance.py",
+      "sha256": "3fdfe9e1008892c860a41732d6fde0b747e2b92ba0b9886a4488a0cdca365e51"
+    },
+    {
+      "path": "backend/tests/test_scene_intent.py",
+      "sha256": "3627151ba5386aa3fd3643b793fdba3c0d67882e1319416159d0bb926688583b"
+    },
+    {
+      "path": "backend/tests/test_ui.cjs",
+      "sha256": "2e2006eca0bd08807a5600d1047e27fad32fbe38f0055fb9a7d3a8af86ecbde9"
+    }
+  ]
+}

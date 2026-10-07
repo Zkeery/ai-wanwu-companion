@@ -1,0 +1,86 @@
+{
+  "audit": {
+    "tables": 52,
+    "oldRows": 229,
+    "unchanged": 227,
+    "changed": 2,
+    "deleted": 0,
+    "added": 4,
+    "differences": [
+      {
+        "table": "life_runtime_automatic",
+        "before": 1,
+        "after": 1,
+        "unchanged": 0,
+        "changed": 1,
+        "deleted": 0,
+        "added": 0
+      },
+      {
+        "table": "life_runtime_automatic_tasks",
+        "before": 1,
+        "after": 2,
+        "unchanged": 1,
+        "changed": 0,
+        "deleted": 0,
+        "added": 1
+      },
+      {
+        "table": "life_runtime_dispatches",
+        "before": 8,
+        "after": 9,
+        "unchanged": 8,
+        "changed": 0,
+        "deleted": 0,
+        "added": 1
+      },
+      {
+        "table": "life_runtime_events",
+        "before": 32,
+        "after": 33,
+        "unchanged": 32,
+        "changed": 0,
+        "deleted": 0,
+        "added": 1
+      },
+      {
+        "table": "life_runtime_tasks",
+        "before": 40,
+        "after": 41,
+        "unchanged": 40,
+        "changed": 0,
+        "deleted": 0,
+        "added": 1
+      },
+      {
+        "table": "sessions",
+        "before": 2,
+        "after": 2,
+        "unchanged": 1,
+        "changed": 1,
+        "deleted": 0,
+        "added": 0
+      }
+    ]
+  },
+  "restart": {
+    "tables": 52,
+    "oldRows": 233,
+    "unchanged": 232,
+    "changed": 1,
+    "deleted": 0,
+    "added": 0,
+    "differences": [
+      {
+        "table": "sessions",
+        "before": 2,
+        "after": 2,
+        "unchanged": 1,
+        "changed": 1,
+        "deleted": 0,
+        "added": 0
+      }
+    ]
+  },
+  "providerCalls": 0
+}

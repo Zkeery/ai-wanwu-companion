@@ -1,0 +1,54 @@
+{
+  "http": {
+    "group_id": "bb5b04ad-68db-4c8f-a5eb-442d006f13ee",
+    "results": [
+      {
+        "activity": "rest",
+        "state": "ready",
+        "status": 200,
+        "sha256": "378f64e67470ee7543da0823d77975e78ff38e52ae04a83923415a43d4eb4e51",
+        "matches": true,
+        "anonymous": 401
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "status": 200,
+        "sha256": "a2d1ac2c186dd357ae570441016b98c66b3357090488dc675a9678ce910c0c58",
+        "matches": true,
+        "anonymous": 401
+      },
+      {
+        "activity": "observe",
+        "state": "ready",
+        "status": 200,
+        "sha256": "213264d798068c52ce58c37a47b0c50ee4d6e6369ebf8f984d4a2a5d456d60ff",
+        "matches": true,
+        "anonymous": 401
+      }
+    ],
+    "origin": "offline_rules"
+  },
+  "restart": {
+    "same_companions_and_revision": true,
+    "activity": "observe",
+    "resource_status": 200,
+    "pack_id": "285198a69d2f40018b7d4599032f9f6a"
+  },
+  "recall": {
+    "group_id": "bb5b04ad-68db-4c8f-a5eb-442d006f13ee",
+    "companions_after_recall": 0,
+    "old_resource_status": 404,
+    "returned_to_original_home": true,
+    "home_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb"
+  },
+  "tests": {
+    "backend": 52,
+    "frontend": 103,
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed"
+  },
+  "browser": "pending_control_confirmation",
+  "model_calls": 0
+}

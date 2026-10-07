@@ -1,0 +1,24 @@
+{
+  "status": "ready",
+  "character_id": 9,
+  "adopted": true,
+  "activities": [
+    {
+      "activity": "rest",
+      "state": "ready",
+      "request_id": "8ddce820-1ba2-4531-8138-98f5f5e92c11"
+    },
+    {
+      "activity": "walk",
+      "state": "ready",
+      "request_id": "d7700df1-e476-4b18-8721-188f8d142aa3"
+    },
+    {
+      "activity": "observe",
+      "state": "ready",
+      "request_id": "a09065b4-dfe5-49fc-b6f8-91f403fdfd68"
+    }
+  ],
+  "new_provider_requests": 0,
+  "binding_network_forbidden": true
+}

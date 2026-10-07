@@ -1,0 +1,83 @@
+{
+  "origin": "real_eval",
+  "reserved_micro": 3436800,
+  "attempts": [
+    {
+      "case_id": "day-observe",
+      "state": "passed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "day-observe",
+        "billing": "reserved_unknown",
+        "candidate": {
+          "activity": "observe",
+          "target_id": "00000000-0000-4000-8000-000000000016",
+          "reason": "白天下于休息限制，当前仅允许观察，庭院树木为可见目标。"
+        },
+        "content": "{\"activity\":\"observe\",\"target_id\":\"00000000-0000-4000-8000-000000000016\",\"reason\":\"白天下于休息限制，当前仅允许观察，庭院树木为可见目标。\"}",
+        "model": "qwen3.8-flash",
+        "usage": {
+          "prompt_tokens": 265,
+          "completion_tokens": 356,
+          "total_tokens": 621
+        },
+        "estimated_micro": 1174,
+        "elapsed_ms": 6624
+      }
+    },
+    {
+      "case_id": "night-rest",
+      "state": "passed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "night-rest",
+        "billing": "reserved_unknown",
+        "candidate": {
+          "activity": "rest",
+          "target_id": null,
+          "reason": "当前上海时间为23:00，处于夜间休息时段，且允许活动仅包含休息。"
+        },
+        "content": "{\"activity\":\"rest\",\"target_id\":null,\"reason\":\"当前上海时间为23:00，处于夜间休息时段，且允许活动仅包含休息。\"}",
+        "model": "qwen3.8-flash",
+        "usage": {
+          "prompt_tokens": 222,
+          "completion_tokens": 312,
+          "total_tokens": 534
+        },
+        "estimated_micro": 1020,
+        "elapsed_ms": 9775
+      }
+    },
+    {
+      "case_id": "empty-walk",
+      "state": "passed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "empty-walk",
+        "billing": "reserved_unknown",
+        "candidate": {
+          "activity": "walk",
+          "target_id": null,
+          "reason": "当前为12:00非休息时段，允许活动仅有walk，visible_items为空不能observe。"
+        },
+        "content": "{\"activity\":\"walk\",\"target_id\":null,\"reason\":\"当前为12:00非休息时段，允许活动仅有walk，visible_items为空不能observe。\"}",
+        "model": "qwen3.8-flash",
+        "usage": {
+          "prompt_tokens": 222,
+          "completion_tokens": 271,
+          "total_tokens": 493
+        },
+        "estimated_micro": 910,
+        "elapsed_ms": 5813
+      }
+    }
+  ],
+  "price_check": {
+    "model": "qwen3.8-flash",
+    "updated_at": "2026-09-22 15:25:56",
+    "reserve_micro": 1145600
+  }
+}

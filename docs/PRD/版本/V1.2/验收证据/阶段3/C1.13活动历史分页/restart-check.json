@@ -1,0 +1,11 @@
+{
+  "previousPid": 66555,
+  "currentPid": 68669,
+  "tables": 48,
+  "changed": [],
+  "restoredHistoryRows": 25,
+  "uniqueHistoryTimes": 25,
+  "excludedTables": [
+    "sessions"
+  ]
+}

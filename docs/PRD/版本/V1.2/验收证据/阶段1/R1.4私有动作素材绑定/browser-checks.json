@@ -1,0 +1,42 @@
+{
+  "date": "2026-09-26",
+  "mock": true,
+  "asset_kind": "hand_drawn_fixture",
+  "url": "http://127.0.0.1:3046/companions/1",
+  "isolated_backend_port": 8045,
+  "real_user_data_changed": false,
+  "body_pixels_changed": true,
+  "background_pixels_fixed": true,
+  "private_static_blob": true,
+  "pointer_leave_stopped": true,
+  "mobile_button_start_stop": true,
+  "widths": [
+    1440,
+    768,
+    390
+  ],
+  "dialog_widths": [
+    520,
+    520,
+    356
+  ],
+  "horizontal_overflow": false,
+  "reopen_ready": true,
+  "draft_preserved": true,
+  "missing_has_static_and_no_play_button": true,
+  "asset_failure_keeps_static": true,
+  "manual_retry_after_restoring_asset": true,
+  "reduced_motion_static_and_no_play_button": true,
+  "focus_and_reduced_motion_emulation_restored": true,
+  "isolated_services_restart_restored": true,
+  "synthetic_single_prepare_from_dom_load_ms": 56,
+  "network_motion_requests_during_button_start_stop": 0,
+  "cli_dry_run_written": false,
+  "model_calls": 0,
+  "real_sms_calls": 0,
+  "cost": 0,
+  "real_photo_motion_and_timing": "pending",
+  "final_update": "2026-09-27",
+  "synthetic_persisted_cleanup_recovered_on_startup": true,
+  "active_bound_fixture_preserved_after_cleanup": true
+}

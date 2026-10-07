@@ -1,0 +1,71 @@
+{
+  "source": "C1.45 archived real atlas; isolated synthetic owner and database",
+  "atlas_sha256": "48ff50f039d9591b6fea261fb719d0d7db225d72e8dda47841ffe38521e40926",
+  "dry_run_written": false,
+  "initial_submission": {
+    "character_id": 1,
+    "written": true,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "queued",
+        "written": true
+      },
+      {
+        "activity": "walk",
+        "state": "queued",
+        "written": true
+      },
+      {
+        "activity": "observe",
+        "state": "queued",
+        "written": true
+      }
+    ],
+    "atlas_sha256": "48ff50f039d9591b6fea261fb719d0d7db225d72e8dda47841ffe38521e40926",
+    "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c"
+  },
+  "after_restart": {
+    "character_id": 1,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      }
+    ]
+  },
+  "backup_restore_equal": true,
+  "duplicate_submission_written": false,
+  "assets": [
+    {
+      "activity": "rest",
+      "http_status": 200,
+      "sprite_sha256": "bcc8cd1bfe510207d55c837a9317ece430c53d682e3e116b9494c2d206476a03"
+    },
+    {
+      "activity": "walk",
+      "http_status": 200,
+      "sprite_sha256": "5081f9097d9b66807c549f91ef21085b330c3f8e6fbe00b47737b037b17f4cf3"
+    },
+    {
+      "activity": "observe",
+      "http_status": 200,
+      "sprite_sha256": "41c9569ea87103b8544e5fc3410363b3f4e78c391dfff2fb2ffb62e3bdaa4a86"
+    }
+  ],
+  "new_model_calls": 0
+}

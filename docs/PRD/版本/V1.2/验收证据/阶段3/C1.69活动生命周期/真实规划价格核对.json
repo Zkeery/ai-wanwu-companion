@@ -1,0 +1,91 @@
+{
+  "checked_at": "2026-09-29T09:27:50.450Z",
+  "name": "qwen3.8-flash",
+  "status": "RELEASED",
+  "offShelfFlag": 0,
+  "contextLength": "1000000",
+  "maxCompletionTokens": 128000,
+  "prices": {
+    "lowestProviderPrice": null,
+    "prices": [
+      {
+        "stage": "",
+        "stageText": "",
+        "type": null,
+        "priceCurrency": "CNY",
+        "price": [
+          {
+            "priceCode": "INPUT",
+            "priceName": "Input",
+            "priceNameZH": "输入",
+            "priceValue": "0.800000",
+            "originalPrice": "0.800000",
+            "discountRate": "1.000000",
+            "unitCode": "M_TOKENS",
+            "unitName": "M",
+            "unitNameZh": "M",
+            "direction": "INPUT",
+            "fixedName": "M Tokens",
+            "fixedNameZh": "百万Tokens"
+          },
+          {
+            "priceCode": "OUTPUT",
+            "priceName": "Output",
+            "priceNameZH": "输出",
+            "priceValue": "2.700000",
+            "originalPrice": "2.700000",
+            "discountRate": "1.000000",
+            "unitCode": "M_TOKENS",
+            "unitName": "M",
+            "unitNameZh": "M",
+            "direction": "OUTPUT",
+            "fixedName": "M Tokens",
+            "fixedNameZh": "百万Tokens"
+          },
+          {
+            "priceCode": "INPUT_CACHE_HIT",
+            "priceName": "Input (Cache Hit)",
+            "priceNameZH": "输入（命中缓存）",
+            "priceValue": "0.100000",
+            "originalPrice": "0.100000",
+            "discountRate": "1.000000",
+            "unitCode": "M_TOKENS",
+            "unitName": "M",
+            "unitNameZh": "M",
+            "direction": "INPUT",
+            "fixedName": "M Tokens",
+            "fixedNameZh": "百万Tokens"
+          },
+          {
+            "priceCode": "DISPLAY_CACHE_CREATE",
+            "priceName": "Cache Create",
+            "priceNameZH": "显式缓存创建",
+            "priceValue": "1.250000",
+            "originalPrice": "1.250000",
+            "discountRate": "1.000000",
+            "unitCode": "M_TOKENS",
+            "unitName": "M",
+            "unitNameZh": "M",
+            "direction": "INPUT",
+            "fixedName": "M Tokens",
+            "fixedNameZh": "百万Tokens"
+          },
+          {
+            "priceCode": "DISPLAY_CACHE_HIT",
+            "priceName": "Cache Hit",
+            "priceNameZH": "显式缓存命中",
+            "priceValue": "0.100000",
+            "originalPrice": "0.100000",
+            "discountRate": "1.000000",
+            "unitCode": "M_TOKENS",
+            "unitName": "M",
+            "unitNameZh": "M",
+            "direction": "INPUT",
+            "fixedName": "M Tokens",
+            "fixedNameZh": "百万Tokens"
+          }
+        ]
+      }
+    ]
+  }
+}

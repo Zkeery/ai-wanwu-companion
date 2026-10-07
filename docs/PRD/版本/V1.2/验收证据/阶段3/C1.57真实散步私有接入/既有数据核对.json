@@ -1,0 +1,272 @@
+{
+  "tables": {
+    "motion_cleanup_tasks": {
+      "before": 0,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "users": {
+      "before": 2,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "verification_codes": {
+      "before": 1,
+      "added_or_changed": 1,
+      "removed_or_changed": 1
+    },
+    "living_memberships": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "photos": {
+      "before": 17,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "generation_credits": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "sessions": {
+      "before": 4,
+      "added_or_changed": 4,
+      "removed_or_changed": 1
+    },
+    "teams": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "objects": {
+      "before": 18,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "photo_requests": {
+      "before": 1,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "team_members": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "characters": {
+      "before": 17,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "character_motion_assets": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "character_personalities": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "messages": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "memories": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "scene_states": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "scene_imports": {
+      "before": 7,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "generation_charges": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "theme_publications": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "team_submissions": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "scene_proposals": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "scene_agent_chats": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "recreations": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "living_spaces": {
+      "before": 17,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "life_gatherings": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_gathering_receipts": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_visits": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_inventory": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_notifications": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_shared_memories": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_competitions": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_resource_wallets": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_decorations": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "companion_voice_preferences": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "companion_voice_rounds": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "companion_audio": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "living_receipts": {
+      "before": 34,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "living_activity_events": {
+      "before": 25,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "living_seasons": {
+      "before": 3,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "living_season_receipts": {
+      "before": 3,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_permissions": {
+      "before": 16,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "life_runtime_setting_receipts": {
+      "before": 34,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "life_runtime_tasks": {
+      "before": 64,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    },
+    "life_runtime_limits": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_events": {
+      "before": 55,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_dispatches": {
+      "before": 19,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_calls": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "scene_agent_runs": {
+      "before": 0,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_automatic": {
+      "before": 1,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_viewers": {
+      "before": 8,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "life_runtime_automatic_tasks": {
+      "before": 5,
+      "added_or_changed": 0,
+      "removed_or_changed": 0
+    },
+    "character_activity_motion_assets": {
+      "before": 4,
+      "added_or_changed": 1,
+      "removed_or_changed": 0
+    }
+  },
+  "old_uploads": 15,
+  "changed_old_uploads": [],
+  "integrity": "ok"
+}

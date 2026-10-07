@@ -1,0 +1,10 @@
+{
+  "season": "spring",
+  "items": 2,
+  "votePassed": true,
+  "stale": false,
+  "positions": [
+    "left: 38%; top: 47.5%;",
+    "left: 58%; top: 54%;"
+  ]
+}

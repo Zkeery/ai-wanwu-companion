@@ -1,0 +1,28 @@
+{
+  "qaRestart": {
+    "tables": 42,
+    "changedTables": [
+      "sessions"
+    ],
+    "businessUnchanged": true
+  },
+  "mainSinceOlderBaseline": {
+    "tables": 42,
+    "changedTables": [
+      "sessions",
+      "life_gatherings",
+      "life_gathering_receipts",
+      "life_shared_memories"
+    ],
+    "businessUnchanged": false
+  },
+  "main": {
+    "tables": 42,
+    "changedTables": [
+      "sessions"
+    ],
+    "businessUnchanged": true,
+    "baseline": "R4.2 main update baseline"
+  },
+  "note": "旧R3.5基线至更新前已有共同空间表变化，不能据此归因本轮；更新前新建基线核对本轮，未改写已有记录。"
+}

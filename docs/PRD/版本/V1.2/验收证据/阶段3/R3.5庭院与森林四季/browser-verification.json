@@ -1,0 +1,108 @@
+{
+  "homeMeasured": [
+    {
+      "scene": "home",
+      "season": "spring",
+      "mainSeason": "base",
+      "left": "0%",
+      "top": "0%",
+      "imageWidth": 1536,
+      "previewWidth": 620,
+      "overflow": false
+    },
+    {
+      "scene": "home",
+      "season": "summer",
+      "mainSeason": "base",
+      "left": "-100%",
+      "top": "0%",
+      "imageWidth": 1536,
+      "previewWidth": 620,
+      "overflow": false
+    },
+    {
+      "scene": "home",
+      "season": "autumn",
+      "mainSeason": "base",
+      "left": "0%",
+      "top": "-100%",
+      "imageWidth": 1536,
+      "previewWidth": 620,
+      "overflow": false
+    },
+    {
+      "scene": "home",
+      "season": "winter",
+      "mainSeason": "base",
+      "left": "-100%",
+      "top": "-100%",
+      "imageWidth": 1536,
+      "previewWidth": 620,
+      "overflow": false
+    },
+    {
+      "scene": "home",
+      "viewport": 390,
+      "overflow": false,
+      "mainSeason": "base"
+    }
+  ],
+  "forestDesktopScreenshots": [
+    {
+      "season": "spring",
+      "file": "forest-spring-desktop.png",
+      "exists": true
+    },
+    {
+      "season": "summer",
+      "file": "forest-summer-desktop.png",
+      "exists": true
+    },
+    {
+      "season": "autumn",
+      "file": "forest-autumn-desktop.png",
+      "exists": true
+    },
+    {
+      "season": "winter",
+      "file": "forest-winter-desktop.png",
+      "exists": true
+    }
+  ],
+  "forestMobileScreenshot": {
+    "file": "forest-winter-mobile.png",
+    "exists": true
+  },
+  "note": "Forest screenshots came from the completed preview loop. In-memory measurements were not persisted when the later home mobile click was intercepted; they are not reconstructed as measurements.",
+  "forestMeasured": [
+    {
+      "season": "spring",
+      "mainSeason": "base",
+      "overflow": false,
+      "imageWidth": 1536
+    },
+    {
+      "season": "summer",
+      "mainSeason": "base",
+      "overflow": false,
+      "imageWidth": 1536
+    },
+    {
+      "season": "autumn",
+      "mainSeason": "base",
+      "overflow": false,
+      "imageWidth": 1536
+    },
+    {
+      "season": "winter",
+      "mainSeason": "base",
+      "overflow": false,
+      "imageWidth": 1536
+    }
+  ],
+  "forestMobileMeasured": {
+    "mainSeason": "base",
+    "overflow": false,
+    "previewWidth": 284
+  }
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>万物伙伴 · 架构与完整流程</title>
+<style>
+:root{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;color:#302b40;background:#b8ded8}*{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1240px;margin:auto;padding:28px}header{padding-top:42px}small{letter-spacing:.16em;color:#405f5b}h1{font-size:clamp(26px,4vw,44px);margin:12px 0}p{line-height:1.8;margin:8px 0;color:#4a5059}nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}button{border:1px solid #688b87;border-radius:14px;padding:13px 20px;font:inherit;color:#302b40;background:#f8f1e3;cursor:pointer;min-height:46px}button[aria-selected=true]{background:#302b40;color:#fff;border-color:#302b40}button:focus-visible{outline:3px solid #b34f42;outline-offset:3px}.panel{background:#fffaf1;border:1px solid #98b9b2;border-radius:24px;padding:24px;box-shadow:0 8px 0 #729f9740}.panel[hidden]{display:none}.intro{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}h2{margin:0 0 8px;font-size:24px}.badge{border-radius:100px;padding:7px 13px;background:#d8eee7;white-space:nowrap;font-size:13px}.draft{background:#f5d5ca}.canvas{overflow:auto;margin-top:18px;border-radius:18px;background:#fffdf7}.canvas svg{display:block;width:100%;height:auto;min-width:850px}svg text{font-family:system-ui,-apple-system,"PingFang SC",sans-serif}.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}.note{background:#f0e9db;border-radius:14px;padding:14px;font-size:14px;line-height:1.75}.note b{display:block;color:#302b40;margin-bottom:4px}footer{font-size:13px}a{color:#375f77} .hint{font-size:13px;color:#596563}@media(max-width:650px){header,main,footer{padding:18px}.panel{padding:16px}.intro{display:block}.badge{display:inline-block;margin-top:8px}.notes{grid-template-columns:1fr}.canvas svg{min-width:900px}nav button{flex:1;padding:12px 9px;font-size:14px}}@media print{nav,.hint{display:none}.panel[hidden]{display:block}.panel{break-before:page;box-shadow:none}.canvas svg{min-width:0}body{background:white}header{padding-top:0}}
+</style>
+<header><small>LITTLE COMPANIONS / PROJECT MAP</small><h1>万物伙伴，怎样连接在一起？</h1><p>先看产品如何运行，再看用户如何走完流程，再看 V1.2 的入口、自主生活和语音会话规划。</p><nav role="tablist" aria-label="图解类型"><button id="tab-a" role="tab" aria-selected="true" aria-controls="a">01 技术架构</button><button id="tab-b" role="tab" aria-selected="false" aria-controls="b" tabindex="-1">02 完整业务流程</button><button id="tab-c" role="tab" aria-selected="false" aria-controls="c" tabindex="-1">03 V1.2 界面联动</button><button id="tab-d" role="tab" aria-selected="false" aria-controls="d" tabindex="-1">04 伙伴怎样生活</button><button id="tab-e" role="tab" aria-selected="false" aria-controls="e" tabindex="-1">05 心情与语音</button></nav></header>
+<main>
+<section class="panel" id="a" role="tabpanel" aria-labelledby="tab-a"><div class="intro"><div><h2>一套前端，一套后端，多个业务模块</h2><p>当前实现基线：V1.1 · 0f13a8b。方框表示职责，不表示独立服务器。</p></div><span class="badge">现有代码结构</span></div><div class="canvas" id="arch"></div><p class="hint">手机可横向滑动图表。实线为已有链路；虚线为已实现但受开关与确认约束的 Agent 路径。</p><div class="notes"><div class="note"><b>权限在后端判断</b>私人形象看所有权；公开墙看发布状态；小队图片看成员权限。</div><div class="note"><b>数据持续保留</b>账号、伙伴、聊天、空间和任务存入 SQLite；角色图片保存在本项目文件目录。</div><div class="note"><b>上线边界</b>正式短信未接通；主环境场景 Agent 与额度开关此前保持关闭，真实验收与部署仍待完成。</div></div></section>
+<section class="panel" id="b" role="tabpanel" aria-labelledby="tab-b" hidden><div class="intro"><div><h2>伙伴是一切互动的中心</h2><p>创作得到伙伴，聊天与生活围绕它展开，分享由用户主动选择。</p></div><span class="badge">已有业务能力与规则</span></div><div class="canvas" id="business"></div><p class="hint">图示概括业务规则；不代表生成速度、真实 AI 效果或生产环境已验收。</p><div class="notes"><div class="note"><b>照片 → 特征 → 角色 → 图像</b>不是只按名字合成；改名不会重新绘图，同一主题也会有不同伙伴。</div><div class="note"><b>默认属于自己</b>生成后私人保存。公开发布和小队提交各自预览、各自确认，可以撤下或撤回。</div><div class="note"><b>失败时保留进度</b>断线先核对服务端状态，说明原因再决定重试；不自动重复生成、扣额或分享。</div></div></section>
+<section class="panel" id="c" role="tabpanel" aria-labelledby="tab-c" hidden><div class="intro"><div><h2>固定入口，围绕同一个伙伴继续</h2><p>首页先看伙伴与真实近况已确认；以下具体导航和联动为推荐方案。</p></div><span class="badge draft">V1.2 规划 · 尚未开发</span></div><div class="canvas" id="navigation"></div><div class="notes"><div class="note"><b>全局导航不变来变去</b>手机和桌面都是“伙伴、创作、发现”。聊天与生活属于当前伙伴，不再混进全局导航。</div><div class="note"><b>操作后知道去哪里</b>从主题／小队进入创作，完成后保留来源并提供回到原处的动作；不替用户自动公开。</div><div class="note"><b>生活与好友不是一回事</b>现有同住是自己的伙伴，小队目前仅展示作品。V1.2 新增共同生活规划见第 04 张图。</div></div></section>
+
+<section class="panel" id="d" role="tabpanel" aria-labelledby="tab-d" hidden><div class="intro"><div><h2>有自己的家，也能与朋友相聚</h2><p>已确认：保留原住处；伙伴自主规划、聊天、完成任务。先规划与模拟，后确认真实预算。</p></div><span class="badge draft">C 批生活规划 · 尚未开发</span></div><div class="canvas" id="lifeplan"></div><div class="notes"><div class="note"><b>自主行动有范围</b>观察、散步、交流与获准照料可以自主进行；删除、付费、公开发布仍需用户确认。</div><div class="note"><b>委屈回家是可选故事</b>可以表达不同意见，想独处就回家；情绪会随休息缓解，不要求用户一直在线安慰。</div><div class="note"><b>进度来自真实存档</b>离线成长按时间结算，AI 未运行时不虚构已经完成的任务或对话。调用次数与总费用有上限。</div></div></section>
+<section class="panel" id="e" role="tabpanel" aria-labelledby="tab-e" hidden><div class="intro"><div><h2>同一位伙伴，可以打字，也可以说话</h2><p>已确认：点按录音、说完发送、伙伴语音回复；心情可以主动选择，也允许从当前表达中轻量理解并纠正。</p></div><span class="badge draft">D 批语音规划 · 尚未开发</span></div><div class="canvas" id="voiceplan"></div><div class="notes"><div class="note"><b>同一位伙伴</b>文字与语音延续同一角色、同一段私人会话。可以切换表达方式，伙伴的身份与性格保持一致。</div><div class="note"><b>不替用户定义感受</b>心情理解只是可纠正的线索，可以跳过或关闭；私人感受不会自动进入小队。</div><div class="note"><b>先把一次说话走通</b>录音、转写、回复与播放有独立状态；语音失败仍可看文字，重播不重新生成聊天或执行场景动作。</div></div></section>
+</main><footer>源码核对与页面观察：2026-09-21 · V1.2 图解整理：2026-09-22。V1.1 剩余验收不因版本切换自动关闭。<br><a href="项目架构与流程图.md">文字与 Mermaid 源图</a> · <a href="../../PRD.md">V1.2 PRD</a></footer>
+<script>
+const palettes={base:['#fff8e9','#adb8ad'],mint:['#c8e9e0','#619b8f'],purple:['#e9def5','#9a85b7'],peach:['#f8d8cc','#c98e7c'],yellow:['#f7e7ae','#bfa45b'],blue:['#d9eafa','#91adc4']};
+const node=(id,x,y,w,h,title,lines=[],tone='base')=>({id,x,y,w,h,title,lines,tone});
+const edge=(from,to,label='',options={})=>({from,to,label,...options});
+const architecture={height:990,nodes:[
+node('u',430,22,300,66,'用户',['手机网页 / 桌面网页'],'mint'),
+node('fe',350,130,460,82,'Next.js · React · TypeScript',['页面、交互、登录状态 ｜ 前端 3020'],'mint'),
+node('api',350,264,460,82,'FastAPI · 后端 8020',['身份权限、输入校验、API / SSE / 图片访问'],'purple'),
+node('auth',20,424,208,100,'账号',['验证码 / 会话','历史数据归属']),
+node('create',248,424,208,100,'创作',['上传 / 识别 / 构思','生图 / 改名 / 收藏'],'peach'),
+node('chat',476,424,208,100,'陪伴',['聊天 / 记忆','场景变更提议'],'yellow'),
+node('life',704,424,208,100,'生活',['三场景 / 独居同住','布置 / 照料 / 成长'],'mint'),
+node('social',932,424,208,100,'主题与分享',['主题 / 公开作品墙','好友小队'],'blue'),
+node('model',28,634,310,96,'ModelClient',['超时、有限重试、结构校验','视觉 / 文本 / 图像适配'],'peach'),
+node('agent',426,634,310,96,'受约束场景 Agent',['任务状态 / 工具白名单','启用后仍需规则与用户确认'],'purple'),
+node('db',820,634,310,96,'SQLite 持久化',['各业务模块保存账号与内容','空间、请求、提议与执行状态'],'mint'),
+node('external',28,834,310,96,'外部 AI 服务',['视觉识别、文字构思与回复','按角色外观描述生成形象'],'peach'),
+node('guard',426,834,310,96,'确定性规则执行',['提议 → 确认 → 校验 → 保存','结果回到同一伙伴与空间'],'yellow'),
+node('files',820,834,310,96,'本地角色图片',['数据库记录图片引用','经对应权限接口读取'],'blue')],edges:[
+edge('u','fe'),edge('fe','api','同源请求'),...['auth','create','chat','life','social'].map(id=>edge('api',id)),
+edge('create','model'),edge('chat','model'),edge('chat','agent','启用时',{dash:true}),edge('model','external'),edge('agent','external','模型决策',{dash:true}),edge('agent','guard','确认与规则',{dash:true}),edge('life','db','保存空间'),edge('social','db','保存展示关系'),edge('db','files','图片路径关联'),edge('guard','db','保存结果',{side:true})]};
+const business={height:1100,nodes:[
+node('entry',380,20,400,76,'进入产品',['登录后回到原操作；可先看产品介绍'],'mint'),
+node('login',20,168,200,88,'注册 / 登录',['需要时验证码登录']),
+node('photo',250,168,200,88,'选照片',['自由创作或主题'],'peach'),
+node('concept',480,168,200,88,'识别与构思',['物体特征 / 名字 / 性格'],'peach'),
+node('image',710,168,200,88,'生成最终形象',['文字外观描述 → 生图'],'peach'),
+node('result',940,168,200,88,'首次见面',['可改名 / 可纠正'],'peach'),
+node('existing',20,348,280,88,'已有伙伴',['从首页选择继续陪伴'],'mint'),
+node('private',430,348,360,88,'我的私人伙伴',['角色、名字、性格和图片已保存'],'mint'),
+node('recovery',900,348,240,104,'失败 / 断线',['查询已保存状态','明确原因后再重试'],'base'),
+node('talk',30,572,320,94,'聊天与记忆',['持续对话 / 查看与管理记忆'],'yellow'),
+node('reside',420,572,320,94,'选择住处与生活方式',['庭院 / 绿洲 / 营地','独居或自己的伙伴同住'],'mint'),
+node('share',810,572,320,94,'主题作品要分享吗？',['默认不分享；范围由用户选择'],'blue'),
+node('proposal',30,768,320,88,'场景变更提议',['用户确认；拒绝则不改变'],'purple'),
+node('living',420,768,320,88,'布置、照料与成长',['保存到同一空间 / 按规则撤销'],'mint'),
+node('wall',810,746,320,88,'预览并确认 → 公开作品墙',['可撤下；私人伙伴仍保留'],'blue'),
+node('team',810,906,320,88,'预览并确认 → 好友小队',['需已加入小队；可撤回 / 退出'],'blue'),
+node('continue',240,948,420,84,'回到伙伴，继续聊天和生活',['刷新或重进后读取已保存的状态'],'mint')],edges:[
+edge('entry','login'),edge('login','photo','新伙伴',{side:true}),edge('photo','concept','',{side:true}),edge('concept','image','',{side:true}),edge('image','result','',{side:true}),edge('login','existing','已有伙伴'),edge('existing','private','',{side:true}),edge('result','private','私人保存'),edge('image','recovery','失败时',{dash:true}),edge('private','talk'),edge('private','reside'),edge('private','share','主题作品'),edge('talk','proposal'),edge('reside','living'),edge('proposal','living','确认后执行',{side:true}),edge('share','wall','选择公开'),edge('share','team','选择队内',{bend:1150}),edge('living','continue')]};
+const navigation={height:1060,nodes:[
+node('root',365,25,430,78,'固定全局导航',['手机与桌面：同顺序、同名称'],'purple'),
+node('home',30,185,320,96,'伙伴',['首页 / 真实近况','和它聊聊 / 去它的住处'],'mint'),
+node('make',420,185,320,96,'创作',['自由 / 主题','照片 → 独特伙伴'],'peach'),
+node('discover',810,185,320,96,'发现',['主题与好友','作品墙 / 我的好友小队'],'blue'),
+node('current',30,391,320,100,'当前伙伴',['始终显示是谁、住在哪里','局部导航：聊天 / 生活 / 资料'],'mint'),
+node('outcome',420,391,320,100,'生成结果',['主操作：和它聊聊','次操作：安排住处'],'peach'),
+node('source',810,391,320,100,'带着来源去创作',['主题身份 / 小队来源','完成后可返回原目的地'],'blue'),
+node('talk',20,630,210,100,'聊天',['对话 / 场景提议','确认后去生活看结果'],'yellow'),
+node('live',270,630,210,100,'生活',['当前住处 / 布置','照料 / 搬家 / 同住'],'mint'),
+node('profile',520,630,210,100,'资料',['名字 / 性格 / 记忆','再创作 / 删除管理'],'purple'),
+node('publish',820,630,310,100,'需要分享时才预览并确认',['公开墙或队内，分别选择','不自动发布，不自动重复扣额'],'blue'),
+node('state',120,895,920,98,'一条连续体验：同一账号、同一伙伴、同一住处、明确返回目标',['返回保留列表位置；切换保留草稿；失败保留进度；换号清理旧状态'],'mint')],edges:[
+edge('root','home'),edge('root','make'),edge('root','discover'),edge('home','current'),edge('make','outcome'),edge('discover','source'),edge('source','outcome','保留上下文',{side:true}),edge('outcome','current','进入伙伴',{side:true}),edge('current','talk'),edge('current','live'),edge('current','profile'),edge('source','publish'),edge('talk','state'),edge('live','state'),edge('profile','state'),edge('publish','state')]};
+
+const lifeplan={height:1090,nodes:[
+node('root',360,24,440,76,'选择伙伴的生活方式',['家保留；相聚不等于永久搬走'],'mint'),
+node('private',20,180,320,94,'私人独居',['自己的小天地','布置、交流、日常目标'],'mint'),
+node('owned',420,180,320,94,'自己的伙伴同住',['同一账号的多个伙伴','共用布置，各有性格与记忆'],'mint'),
+node('team',820,180,320,94,'小队空间相聚',['各自主人的角色，明确允许参与','第一批先验证家庭庭院'],'blue'),
+node('plan',330,380,500,92,'伙伴观察环境，选择今天做什么',['读取真实场景 → AI 有限计划 → 权限与预算校验'],'purple'),
+node('daily',20,566,320,92,'自己的日常',['休息、散步、看书、观察','时间、天气与物件影响选择'],'yellow'),
+node('social',420,566,320,92,'伙伴之间的相处',['打招呼、短交流、分享发现','不同性格，不同表达'],'peach'),
+node('task',820,566,320,92,'共同目标与照料',['获准后种树、布置、浇水','任务由实际存档判断完成'],'mint'),
+node('record',330,754,500,92,'留下真实发生的生活记录',['用户重进可以看近况、参与或改变计划'],'mint'),
+node('home',20,952,320,92,'有分歧，想独处时回家',['先表达与协商','原住处保留，安全结束当前步骤'],'peach'),
+node('calm',420,952,320,92,'休息与自我调节',['用户可安慰，也可以尊重独处','不在线也能恢复'],'yellow'),
+node('again',820,952,320,92,'愿意时再次相聚',['继续聊天或共同目标','不强迫立即和好'],'blue')],edges:[edge('root','private'),edge('root','owned'),edge('root','team'),edge('private','plan'),edge('owned','plan'),edge('team','plan'),edge('plan','daily'),edge('plan','social'),edge('plan','task'),edge('daily','record'),edge('social','record'),edge('task','record'),edge('record','home','可选情节'),edge('home','calm','',{side:true}),edge('calm','again','',{side:true})]};
+const voiceplan={height:1130,nodes:[
+node('root',350,24,460,80,'进入同一位伙伴的聊天',['名字、人设、私人上下文保持一致'],'mint'),
+node('text',20,200,320,92,'打字',['输入文字，主动发送'],'base'),
+node('audio',420,200,320,92,'说话',['点一下录音 → 说完发送','可以取消未发送录音'],'peach'),
+node('mood',820,200,320,92,'用户主动表达心情',['可以选择，也可以自己说','可跳过，不强制填写'],'yellow'),
+node('asr',420,380,320,92,'语音转文字',['识别结果可见','静音或失败时重说 / 改打字'],'peach'),
+node('understand',330,566,500,100,'理解表达与当前心情线索',['轻量判断，可纠正、可关闭','私人线索不流入小队'],'purple'),
+node('reply',330,748,500,92,'伙伴以自己的性格回应',['根据当下需要调整措辞','文字与语音是同一条回复'],'mint'),
+node('visible',20,940,320,92,'显示文字并保存会话',['语音失败也可阅读','不重复产生回复或场景动作'],'base'),
+node('tts',420,940,320,92,'合成伙伴语音',['采用授权角色音色','真实调用另行核定预算'],'blue'),
+node('play',820,940,320,92,'播放 / 停止 / 重播',['首版不是电话式连续通话','播放控制不改变已保存结果'],'blue')],edges:[edge('root','text'),edge('root','audio'),edge('root','mood'),edge('audio','asr'),edge('text','understand','',{viaY:522}),edge('asr','understand'),edge('mood','understand','',{viaY:522}),edge('understand','reply'),edge('reply','visible'),edge('reply','tts'),edge('tts','play','',{side:true})]};
+
+const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('"','&quot;');
+function draw(container,data,title){const map=new Map(data.nodes.map(n=>[n.id,n]));let svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 ${data.height}" role="img" aria-label="${title}"><title>${title}</title><defs><marker id="arrow-${container}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#68837d"/></marker></defs>`;
+for(const e of data.edges){const a=map.get(e.from),b=map.get(e.to);let x1=a.x+a.w/2,y1=a.y+a.h,x2=b.x+b.w/2,y2=b.y,m=e.viaY??(y1+y2)/2,d,tx=(x1+x2)/2,ty=m-8;if(e.side){const right=b.x>a.x;x1=right?a.x+a.w:a.x;y1=a.y+a.h/2;x2=right?b.x:b.x+b.w;y2=b.y+b.h/2;d=`M${x1},${y1} L${x2},${y2}`;tx=(x1+x2)/2;ty=(y1+y2)/2-9}else if(e.bend){x1=a.x+a.w;y1=a.y+a.h/2;x2=b.x+b.w;y2=b.y+b.h/2;d=`M${x1},${y1} H${e.bend} V${y2} H${x2}`;tx=e.bend-58;ty=(y1+y2)/2}else{d=`M${x1},${y1} V${m} H${x2} V${y2}`;}svg+=`<path d="${d}" fill="none" stroke="#68837d" stroke-width="2" ${e.dash?'stroke-dasharray="7 5"':''} marker-end="url(#arrow-${container})"/>`;if(e.label)svg+=`<text x="${tx}" y="${ty}" text-anchor="middle" font-size="12" fill="#4b625c" paint-order="stroke" stroke="#fffdf7" stroke-width="5">${esc(e.label)}</text>`;}
+for(const n of data.nodes){const [fill,stroke]=palettes[n.tone];svg+=`<g><rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="17" fill="${fill}" stroke="${stroke}"/><text x="${n.x+n.w/2}" y="${n.y+29}" text-anchor="middle" font-weight="650" font-size="17" fill="#302b40">${esc(n.title)}</text>`;n.lines.forEach((l,i)=>svg+=`<text x="${n.x+n.w/2}" y="${n.y+53+i*22}" text-anchor="middle" font-size="13" fill="#45504f">${esc(l)}</text>`);svg+='</g>';}document.getElementById(container).innerHTML=svg+'</svg>';}
+draw('arch',architecture,'现有技术架构：前端、后端业务、AI 与持久化');draw('business',business,'从照片创造到持续陪伴与主动分享的完整业务流程');draw('navigation',navigation,'V1.2 推荐界面联动，尚未开发');
+draw('lifeplan',lifeplan,'V1.2 伙伴自主生活与小队相聚规划');draw('voiceplan',voiceplan,'V1.2 心情适配与点按语音会话规划');
+const tabs=[...document.querySelectorAll('[role=tab]')];function activate(t){for(const b of tabs){const selected=b===t;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;document.getElementById(b.getAttribute('aria-controls')).hidden=!selected;}}tabs.forEach((t,i)=>{t.addEventListener('click',()=>activate(t));t.addEventListener('keydown',e=>{let index;if(e.key==='ArrowRight')index=(i+1)%tabs.length;else if(e.key==='ArrowLeft')index=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')index=0;else if(e.key==='End')index=tabs.length-1;else return;e.preventDefault();activate(tabs[index]);tabs[index].focus();});});
+</script>
+</html>

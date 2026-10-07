@@ -1,0 +1,19 @@
+{
+  "tests": {
+    "exit": 0,
+    "summary": [
+      " Test Files  5 passed (5)",
+      "      Tests  103 passed (103)",
+      "stderr | tests/companion-motion-preview.test.tsx > keeps preview available on missing endpoint or malformed state, without exposing raw errors",
+      "stderr | tests/companion-motion-preview.test.tsx > keeps preview available on missing endpoint or malformed state, without exposing raw errors"
+    ]
+  },
+  "typecheck": {
+    "exit": 0,
+    "summary": []
+  },
+  "lint": {
+    "exit": 0,
+    "summary": []
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "source": "https://console.aihubmix.com/logs",
+  "time": "2026-09-29 00:08:32",
+  "key_name": "AI万物伙伴-Sunburst",
+  "model": "Azure/gpt-image-2.5-sunburst",
+  "actual_cost_usd": 0.02066,
+  "status": "Success",
+  "trace_id": "2026092816074955514399329024090",
+  "note": "平台日志token和latency为0占位，实际耗时采用本地回执45097ms"
+}

@@ -1,0 +1,13 @@
+.section { margin: 12px 0; min-width: 0; }
+.section button { min-height: 44px; white-space: normal; }
+.category { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.category select { min-height: 44px; min-width: 110px; padding: 8px 12px; border: 1px solid #dfd6c5; border-radius: 12px; background: #fffdf8; color: inherit; font: inherit; }
+.list { margin-top: 12px; font-size: .9rem; line-height: 1.6; }
+.card { border: 1px solid #dfd6c5; border-radius: 16px; padding: 12px; margin: 12px 0; }
+.card h3 { font-size: 1rem; margin: 0 0 10px; }
+.image { display: block; width: 100%; max-width: 440px; height: auto; max-height: 42dvh; object-fit: contain; margin: auto; border-radius: 12px; background: #ecf1e3; }
+.fullImage { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; }
+.check { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0; }
+.check input { flex-shrink: 0; margin-top: 6px; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.section button:disabled { opacity: .5; cursor: not-allowed; }

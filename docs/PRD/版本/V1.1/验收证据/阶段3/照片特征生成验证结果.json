@@ -1,0 +1,93 @@
+{
+  "date": "2026-09-21",
+  "scope": "照片特征与性格驱动形象",
+  "checks": [
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "350 passed, 2 warnings in 9.97s"
+      ]
+    },
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  13 passed (13)",
+        "      Tests  85 passed (85)"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 2.1s"
+      ]
+    }
+  ],
+  "migration": {
+    "backup": "data/backups/before-photo-features-20260921-165930.db",
+    "tableCount": 14,
+    "changedOldTables": [],
+    "objectsField": true,
+    "charactersField": true,
+    "imagesUnchanged": true,
+    "backendPid": 17401,
+    "status": 401
+  },
+  "browser": {
+    "mode": "isolated mock",
+    "desktop": {
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1425
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390,
+      "textareaFontSize": 16
+    },
+    "passed": [
+      "手机号登录",
+      "识别候选与对应特征",
+      "编辑特征后刷新恢复",
+      "生成完成",
+      "改名保存且图片地址不变"
+    ],
+    "screenshots": [
+      "照片特征确认-手机.png",
+      "照片特征确认-桌面.png"
+    ]
+  },
+  "realModel": "待验；本轮未调用付费模型",
+  "stage": "R3 开发与联调中，未进入 R4",
+  "secretScan": {
+    "configuredValues": 2,
+    "scannedFiles": 1391,
+    "matchedFiles": 0
+  },
+  "serviceChecks": [
+    {
+      "url": "http://127.0.0.1:3020/companions/new",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "url": "http://127.0.0.1:8020/api/v1/auth/me",
+      "status": 401,
+      "passed": true
+    }
+  ],
+  "cleanup": "isolated QA services and artifacts removed; main services and backup retained"
+}

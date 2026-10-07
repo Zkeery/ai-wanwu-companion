@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-24",
+  "environment": "local Ego Lite Chromium; frontend 3043; backend 8043; offline preview",
+  "clock": "page performance.now() from captured click event to observed DOM result",
+  "samples": [
+    {
+      "action": "completed competition to companion chat",
+      "viewport": "1492x718",
+      "feedback_ms": null,
+      "complete_ms": [165, 163, 477],
+      "complete_condition": "target chat and saved history visible"
+    },
+    {
+      "action": "save voice mood and voice settings",
+      "viewport": "1440x900",
+      "feedback_ms": [3, 2, 2],
+      "complete_ms": [20, 18, 19],
+      "feedback_condition": "save button disabled",
+      "complete_condition": "save button re-enabled after response"
+    }
+  ],
+  "excluded": [
+    "high-level browser click timings include automation overhead",
+    "first voice send waited 15 seconds for a nonexistent status string",
+    "offline generation timings are not the PRD real-image 8-second samples"
+  ]
+}

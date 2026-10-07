@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-30T17:33:17.465629+00:00",
+  "scope": "local configuration and source preflight; no network or database access",
+  "ready_for_release": false,
+  "summary": {
+    "pass": 9,
+    "blocked": 6,
+    "pending": 9
+  },
+  "checks": [
+    {
+      "id": "production_environment",
+      "status": "blocked",
+      "message": "当前不是生产环境",
+      "source": "backend/app/core/config.py",
+      "next_step": "完成正式短信等阻塞项后使用生产配置；不直接修改本地开发服务"
+    },
+    {
+      "id": "legacy_claim_config",
+      "status": "pass",
+      "message": "历史数据认领授权未配置",
+      "source": "backend/app/core/config.py",
+      "next_step": "正式环境移除开发历史认领配置"
+    },
+    {
+      "id": "life_preview",
+      "status": "pass",
+      "message": "生活模拟与隔离预览开关均关闭",
+      "source": "backend/app/core/config.py",
+      "next_step": "正式环境关闭预览开关；真实功能须按独立验收与发布方案接入"
+    },
+    {
+      "id": "dev_token",
+      "status": "blocked",
+      "message": "开发令牌仍启用",
+      "source": "backend/app/core/config.py",
+      "next_step": "生产环境禁用开发令牌；保留本地联调环境"
+    },
+    {
+      "id": "fixed_sms_code",
+      "status": "blocked",
+      "message": "固定验证码仍启用",
+      "source": "backend/app/core/config.py",
+      "next_step": "生产环境移除固定验证码并验证错码拒绝"
+    },
+    {
+      "id": "model_provider",
+      "status": "pass",
+      "message": "已配置模型凭证；未检验有效性",
+      "source": "backend/app/core/config.py",
+      "next_step": "真实模型验收前核实配置；本预检不调用模型"
+    },
+    {
+      "id": "model_transport",
+      "status": "pass",
+      "message": "模型接口配置为 HTTPS 且无 URL 内嵌凭证",
+      "source": "backend/app/core/config.py",
+      "next_step": "核实当前服务商 HTTPS 接口；不在报告中输出地址"
+    },
+    {
+      "id": "model_call_bounds",
+      "status": "pass",
+      "message": "调用超时与重试在预检边界内",
+      "source": "backend/app/core/config.py",
+      "next_step": "根据质量与费用方案设置正数超时（≤300 秒）及有限重试（0–3）；此范围不是性能验收"
+    },
+    {
+      "id": "generation_quota",
+      "status": "blocked",
+      "message": "生成额度开关仍关闭",
+      "source": "backend/app/core/config.py",
+      "next_step": "完成真实契约和额度验收后再开放，不由预检自动开启"
+    },
+    {
+      "id": "scene_agent",
+      "status": "pending",
+      "message": "场景 Agent 尚未开放，需真实验收后决定启用",
+      "source": "backend/app/core/config.py",
+      "next_step": "完成确认／拒绝及真实回复质量验收"
+    },
+    {
+      "id": "persistent_database",
+      "status": "pass",
+      "message": "配置非内存数据库；未验证生产持久化",
+      "source": "backend/app/core/config.py",
+      "next_step": "生产数据须使用持久存储并验证备份恢复"
+    },
+    {
+      "id": "frontend_sms_hint",
+      "status": "blocked",
+      "message": "前端开发验证码提示仍配置",
+      "source": "frontend/.env* + process environment (production inputs)",
+      "next_step": "正式构建清除开发配置，再检查实际产物；运行时改变量不会清除已打包内容"
+    },
+    {
+      "id": "frontend_offline",
+      "status": "pass",
+      "message": "前端离线模拟入口未配置",
+      "source": "frontend/.env* + process environment (production inputs)",
+      "next_step": "正式构建清除开发配置，再检查实际产物；运行时改变量不会清除已打包内容"
+    },
+    {
+      "id": "frontend_life_preview",
+      "status": "pass",
+      "message": "前端生活预览入口未配置",
+      "source": "frontend/.env* + process environment (production inputs)",
+      "next_step": "正式构建清除开发配置，再检查实际产物；运行时改变量不会清除已打包内容"
+    },
+    {
+      "id": "frontend_public_secrets",
+      "status": "pass",
+      "message": "未发现已配置的公开密钥类变量",
+      "source": "frontend/.env* + process environment (production inputs)",
+      "next_step": "密钥只留服务端；本项为命名检查，产物还需独立核查"
+    },
+    {
+      "id": "sms_provider",
+      "status": "blocked",
+      "message": "默认短信发送器仍为模拟实现",
+      "source": "backend/app/api/deps.py",
+      "next_step": "接入已获批准的短信平台，并完成收发与限流验收"
+    },
+    {
+      "id": "private_image_access",
+      "status": "pending",
+      "message": "未匹配已知开发实现或源码不可读；替代实现仍需验证",
+      "source": "backend/app/main.py",
+      "next_step": "核实匿名已知 URL 访问并实现兼容鉴权，复验公开与队内图片"
+    },
+    {
+      "id": "legacy_claim",
+      "status": "pending",
+      "message": "未匹配已知开发实现或源码不可读；替代实现仍需验证",
+      "source": "backend/app/api/auth.py",
+      "next_step": "验证认领授权与范围，禁止任意登录账号认领无主历史数据"
+    },
+    {
+      "id": "real_quality",
+      "status": "pending",
+      "message": "真实识别、差异化形象与回复质量待验",
+      "source": "docs/PRD/版本/V1.1/技术文档/第6阶段技术开发文档.md",
+      "next_step": "明确样例、评分与费用授权后执行"
+    },
+    {
+      "id": "cost_cap",
+      "status": "pending",
+      "message": "整条模型链路成本上限及熔断证据待补齐",
+      "source": "docs/PRD/版本/V1.1/技术文档/第6阶段技术开发文档.md",
+      "next_step": "区分账号生成次数与平台费用上限，明确内测预算"
+    },
+    {
+      "id": "data_lifecycle",
+      "status": "pending",
+      "message": "识别元数据、请求记录及完整删除期限待确认",
+      "source": "docs/PRD/版本/V1.1/技术文档/第6阶段技术开发文档.md",
+      "next_step": "确认留存口径后实现并验证，保留已确认共居删除规则"
+    },
+    {
+      "id": "backup_restore",
+      "status": "pending",
+      "message": "生产数据库与角色图联合恢复尚待验证",
+      "source": "docs/PRD/版本/V1.1/技术文档/第6阶段技术开发文档.md",
+      "next_step": "先隔离演练，不覆盖主数据"
+    },
+    {
+      "id": "hosting",
+      "status": "pending",
+      "message": "国内持久存储、HTTPS、日志告警及部署方案待验",
+      "source": "docs/PRD/版本/V1.1/技术文档/第6阶段技术开发文档.md",
+      "next_step": "完成预算与平台确认后实施，当前不创建云资源"
+    },
+    {
+      "id": "end_to_end",
+      "status": "pending",
+      "message": "生产双账号权限和真实设备全链路待验",
+      "source": "docs/PRD/版本/V1.1/技术文档/第6阶段技术开发文档.md",
+      "next_step": "按前端第6阶段路径收集证据；配置扫描不能替代"
+    }
+  ]
+}

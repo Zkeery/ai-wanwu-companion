@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-22T15:34:47.281Z",
+  "environment": "isolated 3042/8042",
+  "browser": "Chrome",
+  "operations": [
+    "place",
+    "move",
+    "care",
+    "store",
+    "restore",
+    "atmosphere",
+    "undo"
+  ],
+  "pagination": {
+    "firstPage": 20,
+    "afterNextPage": 23
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844
+  },
+  "modelCalls": 0,
+  "restart": {
+    "oldPid": 60521,
+    "eventsAndTimestampsIdentical": true,
+    "records": 23
+  }
+}

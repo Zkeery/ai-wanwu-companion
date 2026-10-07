@@ -1,0 +1,16 @@
+{
+  "before": {
+    "dump_sha256": "0bdbe6fec9049e4683785eca7d90be9c0762aa03d64becc75463204b1376506b",
+    "characters": 3,
+    "active_characters": 0,
+    "active_photos": 0
+  },
+  "after": {
+    "dump_sha256": "0bdbe6fec9049e4683785eca7d90be9c0762aa03d64becc75463204b1376506b",
+    "characters": 3,
+    "ready": 3
+  },
+  "unchangedSinceStart": true,
+  "proxyStatus": 200,
+  "readyCharacters": 3
+}

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "fresh_process_verified": true,
+  "integrity": "ok",
+  "bound_assets": 15,
+  "ready_preparation_tasks": 15,
+  "generation_request_rows_preserved": 10,
+  "asset_and_receipt_files": 110,
+  "all_file_hashes_equal": true,
+  "database_rows_equal": true,
+  "source_unchanged": true,
+  "additional_model_requests": 0,
+  "restore_path": ".runtime/c174-real-quality-life/bound-restore"
+}

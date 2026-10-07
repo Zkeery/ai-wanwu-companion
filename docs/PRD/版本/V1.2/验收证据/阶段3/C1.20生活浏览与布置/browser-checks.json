@@ -1,0 +1,21 @@
+{
+  "widths": [
+    1440,
+    390
+  ],
+  "scenes": [
+    "home",
+    "forest",
+    "desert"
+  ],
+  "horizontalOverflow": false,
+  "homeSavedMovedPosition": true,
+  "homeReloadDefaultsToBrowse": true,
+  "homeLocateOriginalWithoutEditing": true,
+  "desertBrowseArrowCannotMove": true,
+  "desertDiscardTemplateWithoutApply": true,
+  "forestToolsExplicitOnly": true,
+  "background": "初次工具聚焦短暂隐藏页面导致退出编辑；已改为仅取消未提交手势、保留选择，正常浏览器模式复测通过",
+  "focusEmulationRestored": true,
+  "metricsRestored": true
+}

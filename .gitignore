@@ -1,0 +1,29 @@
+.env
+.env.*
+!.env.example
+!.env.blueprint.example
+.venv/
+.blueprint-venv/
+node_modules/
+__pycache__/
+.pytest_cache/
+.runtime/
+data/
+logs/
+.next/
+.next-*/
+dist/
+.DS_Store
+# Project-local Lima transient state (short Unix socket path on macOS).
+/l/
+/_config/
+/_networks/
+/_disks/
+/_templates/
+
+# 独立仓库发布时排除本地工作文件与缓存
+work/
+backups/
+.vefaas/
+*.pyc
+*.tsbuildinfo

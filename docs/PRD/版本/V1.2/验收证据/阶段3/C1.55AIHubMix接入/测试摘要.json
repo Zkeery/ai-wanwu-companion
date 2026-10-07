@@ -1,0 +1,9 @@
+{
+  "exit": 0,
+  "summary": [
+    "=============================== warnings summary ===============================",
+    "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+    "1515 passed, 2 warnings in 254.39s (0:04:14)"
+  ],
+  "realGenerationRequests": 0
+}

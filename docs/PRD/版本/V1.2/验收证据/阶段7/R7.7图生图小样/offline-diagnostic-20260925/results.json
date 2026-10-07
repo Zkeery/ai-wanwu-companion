@@ -1,0 +1,258 @@
+{
+  "protocol_id": "r77-qwen-image-3-i2i-v1",
+  "mock": true,
+  "started_at": "2026-09-25T12:26:45.972865+08:00",
+  "price_verified_on": null,
+  "model": "qwen-image-3.0",
+  "max_calls": 8,
+  "budget_cny": "2.00",
+  "unit_reserve_cny": "0.20",
+  "reserved_cny": "1.60",
+  "status": "completed",
+  "calls": [
+    {
+      "sample_id": "r77-01",
+      "case_id": "cup",
+      "repeat": 1,
+      "input_sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "prompt_sha256": "2244ef8201fff1a790db353b8776ecb418e6db0e583d8d444c87e96fac7be964",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.09120799950323999,
+        "model_post": 3.1881250033620745,
+        "download": 0.011458003427833319,
+        "decode": 1.6286250029224902,
+        "save": 0.15008400077931583
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-01.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 5.077957990579307,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-02",
+      "case_id": "apple",
+      "repeat": 1,
+      "input_sha256": "d39f93acccb418595184a041deb566a55f398ce667ec984ec1c438b9177ac4d8",
+      "prompt_sha256": "4dea511079a0bfda8882cde20f74838052bbbd126b7d1bda7bf201c6043efbce",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.10066699178423733,
+        "model_post": 3.0434590007644147,
+        "download": 0.009499999578110874,
+        "decode": 1.7142080032499507,
+        "save": 0.18766699940897524
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-02.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 5.067707999842241,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-03",
+      "case_id": "plant",
+      "repeat": 1,
+      "input_sha256": "3f70034f8869a644be7d729f97c30e8b10f6fdddb9182112d7d572a0d129d8fb",
+      "prompt_sha256": "a55766c141d8f892c7136cb946fcbbef6c6a948898ee11688023eb2333fe990f",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.6423750019166619,
+        "model_post": 2.7898749976884574,
+        "download": 0.007915994501672685,
+        "decode": 1.5700420044595376,
+        "save": 0.1152500044554472
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-03.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 5.131292011355981,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-04",
+      "case_id": "multi",
+      "repeat": 1,
+      "input_sha256": "bb8d69851bf2273cc97c3f43e387ec9e5d3059f9b1926338bcbb7840d68935c3",
+      "prompt_sha256": "c5b35bc08ed0e6fedd7ef34c332acbe23789798f037c402c06b49afb0acffa16",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.12154199066571891,
+        "model_post": 2.8142499941168353,
+        "download": 0.00954199640545994,
+        "decode": 1.5949170046951622,
+        "save": 0.14674999692942947
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-04.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 4.695583003922366,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-05",
+      "case_id": "cup",
+      "repeat": 2,
+      "input_sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "prompt_sha256": "2244ef8201fff1a790db353b8776ecb418e6db0e583d8d444c87e96fac7be964",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.08708301174920052,
+        "model_post": 3.4559589985292405,
+        "download": 0.009458992280997336,
+        "decode": 1.6475000011269003,
+        "save": 0.24408299941569567
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-05.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 5.458416999317706,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-06",
+      "case_id": "apple",
+      "repeat": 2,
+      "input_sha256": "d39f93acccb418595184a041deb566a55f398ce667ec984ec1c438b9177ac4d8",
+      "prompt_sha256": "4dea511079a0bfda8882cde20f74838052bbbd126b7d1bda7bf201c6043efbce",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.10287499753758311,
+        "model_post": 2.8872079856228083,
+        "download": 0.00866700429469347,
+        "decode": 1.6196659998968244,
+        "save": 0.14170899521559477
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-06.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 4.768540995428339,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-07",
+      "case_id": "plant",
+      "repeat": 2,
+      "input_sha256": "3f70034f8869a644be7d729f97c30e8b10f6fdddb9182112d7d572a0d129d8fb",
+      "prompt_sha256": "a55766c141d8f892c7136cb946fcbbef6c6a948898ee11688023eb2333fe990f",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.5683749914169312,
+        "model_post": 2.8182079986436293,
+        "download": 0.008542003342881799,
+        "decode": 1.6053750005085021,
+        "save": 0.12179200712125748
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-07.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 5.129375000251457,
+      "local_within_8s": true
+    },
+    {
+      "sample_id": "r77-08",
+      "case_id": "multi",
+      "repeat": 2,
+      "input_sha256": "bb8d69851bf2273cc97c3f43e387ec9e5d3059f9b1926338bcbb7840d68935c3",
+      "prompt_sha256": "c5b35bc08ed0e6fedd7ef34c332acbe23789798f037c402c06b49afb0acffa16",
+      "status": "succeeded",
+      "reserved_cny": "0.20",
+      "timings_ms": {
+        "preprocess": 0.1110419980250299,
+        "model_post": 3.477916994597763,
+        "download": 0.009125011274591088,
+        "decode": 1.6627080040052533,
+        "save": 0.20204098836984485
+      },
+      "quality": "NEED_REVIEW",
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_url": false,
+        "first_has_b64_json": true
+      },
+      "response_model": null,
+      "artifact": "r77-08.png",
+      "output_sha256": "d382a68c3718127dd59b698f17254343409e081bd6996627ed5bf79c42569897",
+      "local_total_ms": 5.478167004184797,
+      "local_within_8s": true
+    }
+  ],
+  "release_passed": false,
+  "timing_scope": "local preprocess through image validation and save; excludes browser upload/display",
+  "source_manifest_sha256": "6156206ddedb2d84d94090e5e502654428e6807f51b0933ac3197ab23c4d5451",
+  "script_sha256": "ee3faa34ec50e5f91e260e050c75959d2e3f2a0d085c744a903713d768d31b8a"
+}

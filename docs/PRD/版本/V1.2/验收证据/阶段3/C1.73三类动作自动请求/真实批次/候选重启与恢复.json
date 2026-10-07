@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-01",
+  "runtime": ".runtime/c160-review",
+  "phase": "needs_review",
+  "actual_backend_restart": true,
+  "full_backup_verified": true,
+  "new_directory_restore_verified": true,
+  "all_database_tables_identical": true,
+  "tables": 71,
+  "upload_files": 20,
+  "ledger_files": 44,
+  "root_state_files": 7,
+  "environment_unchanged": true,
+  "paid_worker_enabled": false,
+  "recovery_model_calls": 0,
+  "total_batch_model_calls": 3,
+  "three_candidates_readable_after_restart": true,
+  "restore_copy_removed_after_verification": true,
+  "backup_retained": true,
+  "human_review": "pending",
+  "real_bind_and_playback": "pending",
+  "note": "由完整备份工具capture、restore-test、实际SIGTERM后启动serve-companions、verify及本人页面读取核对；不以制包只读检查代替绑定播放。私有详细回执留在.runtime/c173-real-candidates-recovery.json。"
+}

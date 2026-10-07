@@ -1,0 +1,12 @@
+{
+  "group": 1,
+  "text": "本次从上传到图片显示用时 42.6 秒",
+  "images": [
+    {
+      "path": "/uploads/characters/2d24bbc450034e30a504af3f1d19a39b.png",
+      "loaded": true,
+      "width": 1024,
+      "height": 1024
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-22T15:50:42.213Z",
+  "environment": "isolated 3042/8042",
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "visualReviewed": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "visualReviewed": true
+    }
+  ],
+  "journey": [
+    "home shows 3 saved user actions",
+    "journal deep link same companion and visible region",
+    "quiet action saved",
+    "return to home shows updated quiet fact",
+    "refresh and isolated backend restart"
+  ],
+  "restartSameFacts": true,
+  "modelCalls": 0
+}

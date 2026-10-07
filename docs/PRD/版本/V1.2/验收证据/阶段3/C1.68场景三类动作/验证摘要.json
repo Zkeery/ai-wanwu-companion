@@ -1,0 +1,35 @@
+{
+  "tests": {
+    "exit": 0,
+    "summary": [
+      " Test Files  4 passed (4)",
+      "      Tests  34 passed (34)"
+    ]
+  },
+  "typecheck": {
+    "exit": 0,
+    "summary": []
+  },
+  "lint": {
+    "exit": 0,
+    "summary": []
+  },
+  "build": {
+    "exit": 0,
+    "summary": [
+      "✓ Compiled successfully in 2.9s"
+    ]
+  },
+  "real_browser": {
+    "character": 4,
+    "desktop": "1500x760",
+    "mobile": "390x844",
+    "rest_stationary": true,
+    "observe_stationary": true,
+    "walk_moves": true,
+    "switch_clears_paused_frame": true,
+    "pause_resume_end": true,
+    "mobile_no_horizontal_overflow": true
+  },
+  "new_model_requests": 0
+}

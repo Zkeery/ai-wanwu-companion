@@ -1,0 +1,12 @@
+{
+  "browser": "TaskSpace 21 / p4",
+  "actualOfflineQuickPause": true,
+  "automaticWriteRetry": false,
+  "onlineReadRecovered": true,
+  "pauseControlReenabled": true,
+  "homePermissionUnchanged": {
+    "enabled": true,
+    "revision": 1
+  },
+  "networkRestored": true
+}

@@ -1,0 +1,173 @@
+{
+  "date": "2026-09-28",
+  "checks": [
+    {
+      "scene": "home",
+      "width": 1440,
+      "plants": {
+        "width": 1440,
+        "overflow": false,
+        "trees": 1
+      },
+      "locate": {
+        "selected": "46bf9c27-49ce-4b82-b140-816d618354d2",
+        "editing": false
+      },
+      "records": {
+        "labels": [
+          "照料了小树"
+        ],
+        "overflow": false
+      },
+      "detail": {
+        "dialogs": 1,
+        "hasId": true,
+        "overflow": false
+      },
+      "chat": {
+        "oneDialog": true,
+        "cancelKeptDrafts": true
+      }
+    },
+    {
+      "scene": "home",
+      "width": 390,
+      "plants": {
+        "width": 390,
+        "overflow": false,
+        "trees": 1
+      },
+      "locate": {
+        "selected": "46bf9c27-49ce-4b82-b140-816d618354d2",
+        "editing": false
+      },
+      "records": {
+        "labels": [
+          "照料了小树"
+        ],
+        "overflow": false
+      },
+      "detail": {
+        "dialogs": 1,
+        "hasId": true,
+        "overflow": false
+      },
+      "chat": {
+        "oneDialog": true,
+        "cancelKeptDrafts": true
+      }
+    },
+    {
+      "scene": "forest",
+      "width": 1440,
+      "plants": {
+        "width": 1440,
+        "overflow": false,
+        "trees": 1
+      },
+      "locate": {
+        "selected": "95790813-1f89-4629-b45b-c31668fe39c5",
+        "editing": false
+      },
+      "records": {
+        "labels": [
+          "照料了小树"
+        ],
+        "overflow": false
+      },
+      "detail": {
+        "dialogs": 1,
+        "hasId": true,
+        "overflow": false
+      },
+      "chat": {
+        "oneDialog": true,
+        "cancelKeptDrafts": true
+      }
+    },
+    {
+      "scene": "forest",
+      "width": 390,
+      "plants": {
+        "width": 390,
+        "overflow": false,
+        "trees": 1
+      },
+      "locate": {
+        "selected": "95790813-1f89-4629-b45b-c31668fe39c5",
+        "editing": false
+      },
+      "records": {
+        "labels": [
+          "照料了小树"
+        ],
+        "overflow": false
+      },
+      "detail": {
+        "dialogs": 1,
+        "hasId": true,
+        "overflow": false
+      },
+      "chat": {
+        "oneDialog": true,
+        "cancelKeptDrafts": true
+      }
+    },
+    {
+      "scene": "desert",
+      "width": 1440,
+      "plants": {
+        "width": 1440,
+        "overflow": false,
+        "trees": 1
+      },
+      "locate": {
+        "selected": "647ec205-530b-48a2-8e30-e381bdd3e6ce",
+        "editing": false
+      },
+      "records": {
+        "labels": [
+          "照料了小树"
+        ],
+        "overflow": false
+      },
+      "detail": {
+        "dialogs": 1,
+        "hasId": true,
+        "overflow": false
+      },
+      "chat": {
+        "oneDialog": true,
+        "cancelKeptDrafts": true
+      }
+    },
+    {
+      "scene": "desert",
+      "width": 390,
+      "plants": {
+        "width": 390,
+        "overflow": false,
+        "trees": 1
+      },
+      "locate": {
+        "selected": "647ec205-530b-48a2-8e30-e381bdd3e6ce",
+        "editing": false
+      },
+      "records": {
+        "labels": [
+          "照料了小树"
+        ],
+        "overflow": false
+      },
+      "detail": {
+        "dialogs": 1,
+        "hasId": true,
+        "overflow": false
+      },
+      "chat": {
+        "oneDialog": true,
+        "cancelKeptDrafts": true
+      }
+    }
+  ]
+}

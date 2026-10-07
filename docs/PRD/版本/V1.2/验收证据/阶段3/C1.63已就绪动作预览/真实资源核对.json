@@ -1,0 +1,56 @@
+{
+  "character_id": 4,
+  "new_model_requests": 0,
+  "character": {
+    "status": 200
+  },
+  "/motion-preparation": {
+    "status": 200
+  },
+  "preparation": {
+    "character_id": 4,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      }
+    ]
+  },
+  "/motion?activity=walk": {
+    "status": 200
+  },
+  "motion_keys": [
+    "state",
+    "pack_id",
+    "source_sha256",
+    "slot",
+    "activity",
+    "frame_width",
+    "frame_height",
+    "frame_count",
+    "fps",
+    "sprite_sha256",
+    "background_sha256",
+    "sprite_url",
+    "background_url"
+  ],
+  "sprite": {
+    "status": 200,
+    "sha256": "a2d1ac2c186dd357ae570441016b98c66b3357090488dc675a9678ce910c0c58"
+  },
+  "anonymous_status": 401
+}

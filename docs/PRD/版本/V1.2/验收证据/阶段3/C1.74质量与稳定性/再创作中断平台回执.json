@@ -1,0 +1,21 @@
+{
+  "source_url": "https://maas.antdigital.com/console/call-log",
+  "verified_on": "2026-10-02",
+  "ledger_call_id": "53f29bb1-b0af-4b7e-82db-2cb43027fff5",
+  "operation": "repeat_pothos:text:1",
+  "started_at": 1790867108,
+  "platform_time_shanghai": "2026-10-01 23:05:08",
+  "model": "qwen3.8-flash",
+  "request_id": "6cb4bf76-9942-41b0-ac1b-1fc383a44a55",
+  "trace_id": "28c0cdb60dbbdd819e1056c3dfc5fd31",
+  "log_id": "1790867108711vEeAcO4kHw",
+  "platform_status_code": 0,
+  "response_code_source": "downstream_remote_disconnect",
+  "elapsed_ms": 43435,
+  "upstream_request_id": null,
+  "usage": null,
+  "model_response_recoverable": false,
+  "actual_bill_verified": false,
+  "full_reservation_retained_cny": 1.1456,
+  "additional_model_requests": 0
+}

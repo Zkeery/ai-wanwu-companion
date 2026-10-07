@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="description" content="认识蔓蔓，看看她休息、散步和观察世界的样子。AI万物伙伴形象与动作演示。">
+  <title>万物伙伴 · 认识蔓蔓</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header><a class="brand" href="./">万物伙伴<span>LITTLE COMPANIONS</span></a><span class="badge">形象与动作演示</span></header>
+  <main>
+    <section class="intro">
+      <p class="eyebrow">MEET YOUR LITTLE COMPANION</p>
+      <h1>日常里，<br>多一个小小的陪伴。</h1>
+      <p class="lead">这是蔓蔓。叶片是她的身体，藤蔓是她伸向世界的手臂。看看她休息、散步，还有好奇地打量四周的样子。</p>
+      <div class="identity"><img src="assets/static.png" alt="蔓蔓的静态形象"><div><strong>蔓蔓</strong><span>温柔 · 好奇 · 喜欢阳光</span></div></div>
+      <p class="scope">本页展示已采用的3D风格形象和动作。聊天、上传生成、短信登录与后台生活尚未接入这个在线演示。</p>
+    </section>
+    <section class="companion" aria-label="蔓蔓动作播放器">
+      <div class="stage" aria-busy="true"><span class="stage-caption">MANMAN</span><div id="sprite" class="sprite loading" role="img" aria-label="蔓蔓休息动作加载中"></div><div class="ground"></div><p id="load-status" role="status">正在加载休息动作…</p></div>
+      <div class="controls">
+        <div class="activities" role="group" aria-label="选择动作">
+          <button type="button" data-activity="rest" aria-pressed="true">休息</button>
+          <button type="button" data-activity="walk" aria-pressed="false">散步</button>
+          <button type="button" data-activity="observe" aria-pressed="false">观察</button>
+        </div>
+        <button id="toggle" class="toggle" type="button" aria-pressed="false">暂停播放</button>
+        <button id="retry" class="toggle" type="button" hidden>重新加载</button>
+        <p id="description" aria-live="polite">闭上眼睛，慢慢放松。</p>
+      </div>
+    </section>
+  </main>
+  <footer>AI万物伙伴 · 让日常，有一点回应。</footer>
+</body>
+</html>

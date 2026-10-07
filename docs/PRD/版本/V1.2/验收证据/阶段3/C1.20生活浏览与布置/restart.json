@@ -1,0 +1,17 @@
+{
+  "port": 8047,
+  "ready": true,
+  "oldPid": 2118,
+  "newPid": 14901,
+  "unchanged": [
+    "living_spaces",
+    "life_runtime_permissions",
+    "life_runtime_tasks",
+    "characters"
+  ],
+  "changed": [],
+  "initialHealthProbe": "初次探针使用不存在的/health路径未成功；后续真实浏览器加载本人场景和保存／撤销均成功。",
+  "browserConfirmedSavedTreeX": 0.63,
+  "browserConfirmedDefaultMode": "browse",
+  "afterUndoTreeX": 0.58
+}

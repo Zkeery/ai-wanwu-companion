@@ -1,0 +1,58 @@
+{
+  "http": 200,
+  "anonymous": 401,
+  "after_pause": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "companion_id": "4",
+    "permission": {
+      "enabled": false,
+      "activities": [
+        "rest",
+        "walk"
+      ],
+      "revision": 2
+    },
+    "present": true,
+    "observed_at": 1790674883,
+    "next_allowed_at": 1790675340,
+    "tasks": [
+      {
+        "id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+        "state": "done",
+        "created_at": 1790674740,
+        "retry_at": 0,
+        "activity": "walk",
+        "target_id": null,
+        "error_code": null,
+        "dispatch_requested": false,
+        "reason": "当前时间不在22:00至07:00强制休息时段，且允许活动包含walk，故选择步行。"
+      }
+    ],
+    "automatic": {
+      "enabled": false,
+      "revision": 0,
+      "next_at": 0,
+      "today_count": 0,
+      "daily_limit": 2,
+      "viewing_until": 0,
+      "budget_available": false
+    },
+    "current_activity": null
+  },
+  "ledger_calls": 1,
+  "budget": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "cap": 1145600,
+    "committed": 1145600
+  },
+  "browser": {
+    "real_canvas_frames_changed": true,
+    "desktop": "1500x900",
+    "mobile": "390x844",
+    "pause_frame_resume": true,
+    "paused_life_removes_actor": true,
+    "paused_reload": true
+  }
+}

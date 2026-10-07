@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-02",
+  "snapshot_only": true,
+  "original_windows": [
+    {"origin": "offline_fixture", "deadline_beijing": "2026-10-02 22:40:49", "largest_observation_gap_seconds": 11664, "continuous_acceptance_eligible": false},
+    {"origin": "real_provider", "deadline_beijing": "2026-10-02 23:13:42", "largest_observation_gap_seconds": 10630, "continuous_acceptance_eligible": false}
+  ],
+  "new_offline_window": {
+    "origin": "offline_fixture", "status": "running", "deadline_beijing": "2026-10-03 11:03:39",
+    "scans_at_read": 17, "largest_observation_gap_seconds_at_read": 60, "process_lock_held": true,
+    "provider_requests": 0, "full_24h_completed": false
+  },
+  "new_real_window": {"status": "prepared", "authorized": false, "requests": 0, "budget_cny_proposed": 3, "requests_max_proposed": 2},
+  "real_website": {"url": "http://127.0.0.1:3059", "authorized": false, "requests": 0, "budget_cny_proposed": 5, "requests_max_proposed": 12},
+  "old_budget": {"requests": 35, "reserved_cny": 11.5904, "reserved_usd": 1.666665, "unknown_results": 1, "authorization_still_valid": true},
+  "power_lease_check": {"duration_seconds": 3, "passed": true, "guard_released_after_owner_exit": true, "temporary_files_removed": true, "does_not_prove_24h": true},
+  "checks": {"backend_passed": 51, "backend_total": 51, "frontend_passed": 66, "frontend_total": 66, "build": true, "types": true, "lint": true},
+  "new_model_requests": 0,
+  "cost_confirmation_received": false,
+  "new_ego_window_confirmation_received": false,
+  "generation_8000ms_passed": false
+}

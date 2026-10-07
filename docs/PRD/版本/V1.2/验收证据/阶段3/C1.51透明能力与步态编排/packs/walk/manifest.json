@@ -1,0 +1,13 @@
+{
+  "version": "companion-motion-sprite-v1",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "activity": "walk",
+  "frame_width": 360,
+  "frame_height": 270,
+  "frame_count": 16,
+  "fps": 8,
+  "sprite_file": "sprite.png",
+  "background_file": "background.png",
+  "sprite_sha256": "6b069da35a832be000aa3f1e76a67f3856cbf01925d8493e4eea34675671aa53",
+  "background_sha256": "4e809dc409de6ba23b6bd534995194b763cb8cbf66089476895438b1446a5111"
+}

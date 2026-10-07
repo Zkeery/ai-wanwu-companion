@@ -1,0 +1,34 @@
+{
+  "normal": {
+    "tasks": [
+      {
+        "id": "3a880402-4b77-4974-8bf4-f6ae4dd10aea",
+        "state": "done"
+      }
+    ],
+    "dispatches": 1,
+    "events": 1
+  },
+  "restart": {
+    "tasks": [
+      {
+        "id": "61f53c1b-37a9-4e41-b480-f23faaacacca",
+        "state": "done"
+      }
+    ],
+    "dispatches": 1,
+    "events": 1,
+    "same_task_after_restart": true
+  },
+  "pause": {
+    "tasks": [
+      {
+        "id": "7201d605-cd8b-48a2-b483-8bbfa3ebde03",
+        "state": "cancelled"
+      }
+    ],
+    "dispatches": 1,
+    "events": 0
+  },
+  "provider_call_records": 0
+}

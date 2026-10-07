@@ -1,0 +1,23 @@
+{
+  "verified_on": "2026-10-01",
+  "source": "https://console.aihubmix.com/",
+  "method": "已登录Chrome的异步任务表，按三个真实供应商任务ID核对；页面含凭证，未截图",
+  "platform_key_name": "AI万物伙伴-Sunburst",
+  "currency": "USD",
+  "tasks": [
+    {"activity": "rest", "provider_task_id": "t_4ddb46188b145a4c7e3fdcba", "status": "completed", "actual_cost_usd": 0.020980},
+    {"activity": "walk", "provider_task_id": "t_bbe619cb663e0a96ee0fe832", "status": "completed", "actual_cost_usd": 0.020650},
+    {"activity": "observe", "provider_task_id": "t_a0f92dcb802ceb1e87de5e48", "status": "completed", "actual_cost_usd": 0.021170}
+  ],
+  "actual_total_usd": 0.062800,
+  "approved_budget_usd": 0.30,
+  "remaining_quota_before_batch_usd": 0.08,
+  "remaining_quota_for_batch_usd": 0.30,
+  "remaining_quota_after_batch_display_usd": 0.24,
+  "remaining_quota_restored_usd": 0.08,
+  "quota_restore_verified": true,
+  "quota_is_remaining_not_total_cap": true,
+  "recharge": false,
+  "additional_model_calls": 0,
+  "note": "额度列表仅两位小数；精确费用来自异步任务表。生成回执usage为空，不能据此声称免费。原始回执保留，账单另行记录。"
+}

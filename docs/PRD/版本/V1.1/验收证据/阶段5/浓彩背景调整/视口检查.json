@@ -1,0 +1,77 @@
+[
+  {
+    "route": "/",
+    "width": 360,
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 390,
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 430,
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 768,
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 1440,
+    "overflow": false
+  },
+  {
+    "route": "/themes",
+    "width": 360,
+    "overflow": false
+  },
+  {
+    "route": "/themes",
+    "width": 390,
+    "overflow": false
+  },
+  {
+    "route": "/themes",
+    "width": 430,
+    "overflow": false
+  },
+  {
+    "route": "/themes",
+    "width": 768,
+    "overflow": false
+  },
+  {
+    "route": "/themes",
+    "width": 1440,
+    "overflow": false
+  },
+  {
+    "route": "/companions/new",
+    "width": 360,
+    "overflow": false
+  },
+  {
+    "route": "/companions/new",
+    "width": 390,
+    "overflow": false
+  },
+  {
+    "route": "/companions/new",
+    "width": 430,
+    "overflow": false
+  },
+  {
+    "route": "/companions/new",
+    "width": 768,
+    "overflow": false
+  },
+  {
+    "route": "/companions/new",
+    "width": 1440,
+    "overflow": false
+  }
+]

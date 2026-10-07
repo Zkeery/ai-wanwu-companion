@@ -1,0 +1,13 @@
+{
+  "authorization_ref": "real-web-recovery-20261002-4.8cny-11requests",
+  "budget_cny": 4.8,
+  "requests_max": 11,
+  "automatic_retries": 0,
+  "confirmed": true,
+  "user_reply": "好，确认跑",
+  "endpoint": "https://maas-api.antdigital.com/v1",
+  "original_reserved_cny": 0.2,
+  "combined_web_cap_cny": 5,
+  "total_round_cap_cny": 8,
+  "original_stops_retained": true
+}

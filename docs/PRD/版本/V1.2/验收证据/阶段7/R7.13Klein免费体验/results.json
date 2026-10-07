@@ -1,0 +1,49 @@
+{
+  "protocol_id": "r713-official-free-demo-quality-v1",
+  "mock": false,
+  "route": "official_free_web_demo",
+  "direct_probe_api_calls": 0,
+  "direct_paid_api_calls": 0,
+  "demo_internal_request_count": "not_instrumented",
+  "project_display_gate_passed": false,
+  "max_demo_submissions": 2,
+  "cases": [
+    {
+      "case_id": "cup",
+      "source_sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "prompt_sha256": "2244ef8201fff1a790db353b8776ecb418e6db0e583d8d444c87e96fac7be964",
+      "hashes_verified": true,
+      "status": "valid_image_observed",
+      "submitted_at": "2026-09-26T13:33:21.063Z",
+      "observed_at": "2026-09-26T13:34:13.903Z",
+      "model_label": "[klein] 9B",
+      "width": 1024,
+      "height": 768,
+      "browser_blob_mime_type": "image/png",
+      "decoded_format": "JPEG",
+      "artifact": "cup-9b.jpg",
+      "prompt_rewritten_by_demo": true,
+      "actual_prompt": "A complete, warm, and cute anthropomorphic companion, based on the white ceramic coffee cup from the reference photo. It retains its white ceramic texture , round handle on the left side , and cup opening with light brown coffee . The cup body naturally grows a natural, cute expression and naturally growing limbs , in a lively posture posture. The background is a simple, clean background without plates or food . A 1024-pixel square character illustration [klein] 9B",
+      "timing": "not_instrumented; observation time is not generation latency"
+    },
+    {
+      "case_id": "apple",
+      "source_sha256": "d39f93acccb418595184a041deb566a55f398ce667ec984ec1c438b9177ac4d8",
+      "prompt_sha256": "4dea511079a0bfda8882cde20f74838052bbbd126b7d1bda7bf201c6043efbce",
+      "hashes_verified": true,
+      "status": "valid_image_observed",
+      "submitted_at": "2026-09-26T13:34:23.829Z",
+      "observed_at": "2026-09-26T13:34:57.041Z",
+      "model_label": "[klein] 9B",
+      "width": 1024,
+      "height": 768,
+      "browser_blob_mime_type": "image/png",
+      "decoded_format": "JPEG",
+      "artifact": "apple-9b.jpg",
+      "prompt_rewritten_by_demo": true,
+      "actual_prompt": "a full-body, warm, cute anthropomorphic apple companion, a lovely, happy face , with naturally growing small, cute limbs limbs, a lively and active pose pose. The apple retains its its original red and yellow mottled skin skin, {apple_shape} apple outline, and the intact top stem stem on top. Simple background. Not a regular person or other fruit. 1024x1024 pixel character image [klein] 9B",
+      "timing": "not_instrumented; observation time is not generation latency"
+    }
+  ],
+  "status": "two_demo_submissions_completed_quality_review_pending"
+}

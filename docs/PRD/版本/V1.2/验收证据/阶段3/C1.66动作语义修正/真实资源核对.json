@@ -1,0 +1,21 @@
+{
+  "rest": {
+    "list_status": 200,
+    "image_status": 200,
+    "state": "needs_review",
+    "sha256_match": true,
+    "anonymous_status": 401
+  },
+  "observe": {
+    "list_status": 200,
+    "image_status": 200,
+    "state": "needs_review",
+    "sha256_match": true,
+    "anonymous_status": 401
+  },
+  "walk": {
+    "status": 200,
+    "state": "ready",
+    "pack_id": "90af4205888d48af924422f7c096b068"
+  }
+}

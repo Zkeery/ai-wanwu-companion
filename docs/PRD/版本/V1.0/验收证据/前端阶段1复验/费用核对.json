@@ -1,0 +1,48 @@
+{
+  "currency": "CNY",
+  "budget": 0.1,
+  "calls": 30,
+  "successes": 26,
+  "failures": 4,
+  "usageInputTokens": 6216,
+  "usageOutputTokens": 3228,
+  "knownUsageListPriceEstimate": 0.013688400000000002,
+  "conservativeUsagePlusUnknownFailureCeiling": 0.04148040000000003,
+  "unknownUsageCalls": 4,
+  "latestBatchPreflightCeiling": 0.08986170000000002,
+  "withinBudget": true,
+  "pricingSource": "https://maas.antdigital.com/models/modelservice-1788174495570001431",
+  "note": "非实际账单。已返回usage按输入2.1元/百万、输出2.7元/百万保守结算；未知或未完成请求保留全部预留额。释放已结算请求未用预留后才允许新批次。",
+  "batches": [
+    {
+      "file": "真实样例原始结果-prompt-v2-retry.json",
+      "calls": 1,
+      "complete": 1,
+      "reserved": 0.005125200000000001
+    },
+    {
+      "file": "真实样例原始结果-prompt-v2.json",
+      "calls": 8,
+      "complete": 7,
+      "reserved": 0.041201100000000004
+    },
+    {
+      "file": "真实样例原始结果-prompt-v3.json",
+      "calls": 10,
+      "complete": 10,
+      "reserved": 0.0576759
+    },
+    {
+      "file": "真实样例原始结果-retry1.json",
+      "calls": 3,
+      "complete": 3,
+      "reserved": 0.014586000000000002
+    },
+    {
+      "file": "真实样例原始结果.json",
+      "calls": 8,
+      "complete": 5,
+      "reserved": 0.038933100000000005
+    }
+  ]
+}

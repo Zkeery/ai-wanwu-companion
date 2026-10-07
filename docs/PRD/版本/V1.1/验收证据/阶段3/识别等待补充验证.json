@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-21",
+  "checks": [
+    {
+      "label": "tests",
+      "exit": 0,
+      "summary": [
+        " Test Files  13 passed (13)",
+        "      Tests  82 passed (82)"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 2.2s"
+      ]
+    }
+  ],
+  "browserVerification": "Tabbit CLI timed out; live refresh not verified",
+  "liveRecognition": "Latest persisted receipt ready; POST photos returned 201",
+  "scope": "No real model request initiated by this check"
+}

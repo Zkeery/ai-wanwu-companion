@@ -1,0 +1,22 @@
+{
+  "desktop": {
+    "season": "winter",
+    "overflow": false,
+    "images": [
+      {
+        "width": 1536,
+        "private": false
+      },
+      {
+        "width": 320,
+        "private": true
+      }
+    ],
+    "item": "left: 38%; top: 47.5%;"
+  },
+  "mobile": {
+    "season": "winter",
+    "overflow": false,
+    "worldWidth": 350
+  }
+}

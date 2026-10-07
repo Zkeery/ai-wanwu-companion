@@ -1,0 +1,41 @@
+{
+  "retrieved_at": "2026-09-25T03:01:50.269Z",
+  "inputs": [
+    {
+      "id": "cup",
+      "file": "cup.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Coffee_in_a_mug.jpg",
+      "author": "Kurt Kaiser",
+      "license": "CC0",
+      "sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "bytes": 91361
+    },
+    {
+      "id": "apple",
+      "file": "apple.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Apple15112024.jpg",
+      "author": "mali maeder",
+      "license": "CC0",
+      "sha256": "d39f93acccb418595184a041deb566a55f398ce667ec984ec1c438b9177ac4d8",
+      "bytes": 105373
+    },
+    {
+      "id": "plant",
+      "file": "plant.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Potted_Gerbera.jpg",
+      "author": "San906",
+      "license": "CC0",
+      "sha256": "3f70034f8869a644be7d729f97c30e8b10f6fdddb9182112d7d572a0d129d8fb",
+      "bytes": 608540
+    },
+    {
+      "id": "multi",
+      "file": "multi.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Coffee_beans_and_white_mug.jpg",
+      "author": "Jessica Lewis",
+      "license": "CC0",
+      "sha256": "bb8d69851bf2273cc97c3f43e387ec9e5d3059f9b1926338bcbb7840d68935c3",
+      "bytes": 115373
+    }
+  ]
+}

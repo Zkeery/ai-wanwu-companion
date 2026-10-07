@@ -1,0 +1,91 @@
+{
+  "source_protocol_id": "r75-candidate-pilot-v1",
+  "sample_count": 8,
+  "success_count": 5,
+  "failure_count": 3,
+  "local_within_8s_count": 0,
+  "fastest_success_sample_id": "pilot-02",
+  "fastest_success_local_total_ms": 14334.705,
+  "fastest_success_model_request_pair_ms": 12304.308,
+  "all_successful_model_request_pairs_over_8s": true,
+  "scope": "local preprocessing through download and decode; excludes browser upload and display",
+  "release_passed": false,
+  "samples": [
+    {
+      "sample_id": "pilot-01",
+      "status": "succeeded",
+      "local_total_ms": 20681.069,
+      "local_within_8s": false,
+      "vision": "ling-3.0-flash-vl",
+      "image": "wan2.6-t2i",
+      "model_request_pair_ms": 18602.196,
+      "other_local_ms": 2078.874,
+      "model_request_pair_over_8s": true
+    },
+    {
+      "sample_id": "pilot-02",
+      "status": "succeeded",
+      "local_total_ms": 14334.705,
+      "local_within_8s": false,
+      "vision": "ling-3.0-flash-vl",
+      "image": "wan2.6-t2i",
+      "model_request_pair_ms": 12304.308,
+      "other_local_ms": 2030.397,
+      "model_request_pair_over_8s": true
+    },
+    {
+      "sample_id": "pilot-03",
+      "status": "failed",
+      "local_total_ms": 7389.519,
+      "local_within_8s": false,
+      "error_type": "ConnectError"
+    },
+    {
+      "sample_id": "pilot-04",
+      "status": "succeeded",
+      "local_total_ms": 17249.144,
+      "local_within_8s": false,
+      "vision": "ling-3.0-flash-vl",
+      "image": "qwen-image-plus",
+      "model_request_pair_ms": 13291.156,
+      "other_local_ms": 3957.987,
+      "model_request_pair_over_8s": true
+    },
+    {
+      "sample_id": "pilot-05",
+      "status": "failed",
+      "local_total_ms": 66894.993,
+      "local_within_8s": false,
+      "error_type": "ReadTimeout"
+    },
+    {
+      "sample_id": "pilot-06",
+      "status": "succeeded",
+      "local_total_ms": 23972.922,
+      "local_within_8s": false,
+      "vision": "qwen3.8-flash",
+      "image": "wan2.6-t2i",
+      "model_request_pair_ms": 22524.266,
+      "other_local_ms": 1448.656,
+      "model_request_pair_over_8s": true
+    },
+    {
+      "sample_id": "pilot-07",
+      "status": "succeeded",
+      "local_total_ms": 24656.697,
+      "local_within_8s": false,
+      "vision": "qwen3.8-flash",
+      "image": "qwen-image-plus",
+      "model_request_pair_ms": 21862.64,
+      "other_local_ms": 2794.057,
+      "model_request_pair_over_8s": true
+    },
+    {
+      "sample_id": "pilot-08",
+      "status": "failed",
+      "local_total_ms": 38549.296,
+      "local_within_8s": false,
+      "error_type": "RemoteProtocolError"
+    }
+  ]
+}

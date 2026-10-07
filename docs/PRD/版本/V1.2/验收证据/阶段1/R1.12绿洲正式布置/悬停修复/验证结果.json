@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-27",
+  "before": {
+    "frames": 40,
+    "span_x_px": 71.79571533203125,
+    "span_y_px": 125.4610595703125
+  },
+  "after": {
+    "desktop_hover_frames": 60,
+    "desktop_span_x_px": 0,
+    "desktop_span_y_px": 0,
+    "desktop_hover_active": true,
+    "press_active": true,
+    "press_dx_px": 0,
+    "press_dy_px": 0,
+    "drag_before": [
+      "70%",
+      "72%"
+    ],
+    "drag_preview": [
+      "73.1712%",
+      "73.5856%"
+    ],
+    "escape_restored": [
+      "70%",
+      "72%"
+    ],
+    "mouse_leave_dx_px": 0,
+    "mouse_leave_dy_px": 0,
+    "mobile_width": 390,
+    "mobile_hover_active": true,
+    "mobile_after_60_frames_dx_px": 0,
+    "mobile_after_60_frames_dy_px": 0,
+    "mobile_overflow": false,
+    "all_saved_layouts_and_revisions_unchanged": true
+  },
+  "tests": {
+    "passed": 22,
+    "total": 22,
+    "lint": "passed",
+    "typecheck_in_build": "passed",
+    "production_build": ".next-motion-r1121"
+  }
+}

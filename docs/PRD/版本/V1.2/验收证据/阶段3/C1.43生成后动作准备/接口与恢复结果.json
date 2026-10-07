@@ -1,0 +1,125 @@
+{
+  "origin": "archived_candidate_local_integration",
+  "model_calls": 0,
+  "quality_gate": "pending",
+  "before": {
+    "character_id": 1,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "waiting_source",
+        "attempts": 0,
+        "error_code": null
+      }
+    ]
+  },
+  "queued": {
+    "character_id": 1,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "queued",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "queued",
+        "attempts": 0,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "queued",
+        "attempts": 0,
+        "error_code": null
+      }
+    ]
+  },
+  "after": {
+    "status": {
+      "character_id": 1,
+      "activities": [
+        {
+          "activity": "rest",
+          "state": "ready",
+          "attempts": 1,
+          "error_code": null
+        },
+        {
+          "activity": "walk",
+          "state": "ready",
+          "attempts": 1,
+          "error_code": null
+        },
+        {
+          "activity": "observe",
+          "state": "ready",
+          "attempts": 1,
+          "error_code": null
+        }
+      ]
+    },
+    "assets": {
+      "rest": {
+        "state": "ready",
+        "pack_id": "91ae46085d3c497083c529bf18626656",
+        "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+        "slot": "activity",
+        "activity": "rest",
+        "frame_width": 360,
+        "frame_height": 270,
+        "frame_count": 16,
+        "fps": 8,
+        "sprite_sha256": "7db5be2150702d6c9a7fb208dc0253158a2d588a9d254d9c24aeef47ac676950",
+        "background_sha256": "8a7f25a06d62c97eec531771098b143999252919546a3146f328119ded0b86c4",
+        "sprite_url": "/api/v1/characters/1/motion/activity/rest/91ae46085d3c497083c529bf18626656/sprite",
+        "background_url": "/api/v1/characters/1/motion/activity/rest/91ae46085d3c497083c529bf18626656/background"
+      },
+      "walk": {
+        "state": "ready",
+        "pack_id": "4bdaaefc9d0a4434b230ed981cbc19a7",
+        "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+        "slot": "activity",
+        "activity": "walk",
+        "frame_width": 360,
+        "frame_height": 270,
+        "frame_count": 16,
+        "fps": 8,
+        "sprite_sha256": "ecbef4f0799013bf48a07c1807c09148bf7b5a009c5b5e4232a538539bab48d7",
+        "background_sha256": "8b7ed7f4948e25f2d51fca4283275ef52243d2e31e99c2020757d615742f96af",
+        "sprite_url": "/api/v1/characters/1/motion/activity/walk/4bdaaefc9d0a4434b230ed981cbc19a7/sprite",
+        "background_url": "/api/v1/characters/1/motion/activity/walk/4bdaaefc9d0a4434b230ed981cbc19a7/background"
+      },
+      "observe": {
+        "state": "ready",
+        "pack_id": "90fd6b85d0fe4304af0525e189674c15",
+        "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+        "slot": "activity",
+        "activity": "observe",
+        "frame_width": 360,
+        "frame_height": 270,
+        "frame_count": 16,
+        "fps": 8,
+        "sprite_sha256": "65cdc65a66311640e77bcf759dd934898d7b493af958630e3c6a74fc4c5dfbb1",
+        "background_sha256": "846714d3d9b1005158f127c1227330b26be32bc7b45eeeab2cb4e0ca14a7bc18",
+        "sprite_url": "/api/v1/characters/1/motion/activity/observe/90fd6b85d0fe4304af0525e189674c15/sprite",
+        "background_url": "/api/v1/characters/1/motion/activity/observe/90fd6b85d0fe4304af0525e189674c15/background"
+      }
+    }
+  },
+  "restart_equal": true,
+  "sqlite_backup_restore_equal": true
+}

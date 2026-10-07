@@ -1,0 +1,9 @@
+{
+  "rows": 25,
+  "uniqueTimes": 25,
+  "ordered": true,
+  "end": true,
+  "reads": 3,
+  "writes": 0,
+  "overflow": false
+}

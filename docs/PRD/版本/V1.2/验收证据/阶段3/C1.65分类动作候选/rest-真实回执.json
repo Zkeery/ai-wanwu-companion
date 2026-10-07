@@ -1,0 +1,15 @@
+{
+  "job_id": "970e6bba12e0546cc990d31a4469039a21391b658e40ce1244c68f7045f1f5fe",
+  "character_id": 4,
+  "state": "needs_review",
+  "origin": "generated",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "candidate_sha256": "1b626dbc78de5ca6ce96b66481f7eba391827c385b7d3cb326a236ffd78f2d59",
+  "generation_requests": 1,
+  "activity": "rest",
+  "duration_ms": 52167,
+  "usage": {},
+  "actual_bill_verified": false,
+  "human_review_required": true,
+  "prompt_sha256": "de48e6db36a2cfcf8c729f3622835a9a10c2e9f0f0d503f90ddaad6c9cd8d507"
+}

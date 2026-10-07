@@ -1,0 +1,78 @@
+[
+  {
+    "check": "current_message_once",
+    "passed": false,
+    "detail": {
+      "actual_copies": 2,
+      "last_roles": [
+        "user",
+        "user"
+      ]
+    }
+  },
+  {
+    "check": "memory_changes_affect_next_system_context",
+    "passed": true,
+    "detail": {
+      "added": true,
+      "edited": true,
+      "removed": true
+    }
+  },
+  {
+    "check": "cleared_history_stays_empty_during_stream",
+    "passed": false,
+    "detail": {
+      "remaining_roles": [
+        "assistant"
+      ],
+      "sse_done": true
+    }
+  },
+  {
+    "check": "character_delete_leaves_no_orphan_reply",
+    "passed": true,
+    "detail": {
+      "orphan_rows": 0,
+      "sse_done": false
+    }
+  },
+  {
+    "check": "validation_error_contract",
+    "passed": false,
+    "detail": {
+      "status": 422,
+      "top_level_keys": [
+        "detail"
+      ]
+    }
+  },
+  {
+    "check": "history_and_memory_survive_new_process",
+    "passed": true,
+    "detail": {
+      "expected_messages": 8,
+      "restored_messages": 8,
+      "memory_restored": true
+    }
+  },
+  {
+    "check": "upstream_eof_without_done_is_failure",
+    "passed": false,
+    "detail": {
+      "raised_error": false,
+      "chunks": [
+        "前半"
+      ]
+    }
+  },
+  {
+    "check": "partial_stream_is_not_silently_retried",
+    "passed": false,
+    "detail": {
+      "raised_error": false,
+      "attempts": 2,
+      "joined_text": "前半前半"
+    }
+  }
+]

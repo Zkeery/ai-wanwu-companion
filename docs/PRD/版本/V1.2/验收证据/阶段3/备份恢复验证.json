@@ -1,0 +1,10 @@
+{
+  "backup": "data/backups/r31-seasons-20260923-103703",
+  "old_tables_unchanged": 27,
+  "image_files_restored": 10,
+  "integrity_check": "ok",
+  "foreign_key_check": "ok",
+  "new_season_tables_created": true,
+  "live_database_modified": false,
+  "model_calls": 0
+}

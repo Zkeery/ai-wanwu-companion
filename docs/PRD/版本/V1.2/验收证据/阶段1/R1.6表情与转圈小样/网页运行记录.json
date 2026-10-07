@@ -1,0 +1,29 @@
+{
+  "id": "doubao-web-apple-01",
+  "state": "succeeded",
+  "max_submissions": 1,
+  "submitted_at": "2026-09-27T03:34:58.542Z",
+  "entitlement": "standard free trial until 10-25; period and week unused",
+  "prompt": "以我上传的苹果小怪灵为唯一角色参考，生成6秒、4:3的连续动画。保持红黄苹果表皮、果梗、原来的眼睛眉毛嘴巴和四肢、立体质感、背景及构图不变。镜头固定，不推拉、不绕拍。0到1.5秒：它自然眨一下眼，挑眉，露出古灵精怪的小笑容。1.5到4.8秒：略微下蹲蓄力，用小脚迈步转一个完整的360度圈，依次清楚露出侧面、背面、另一侧和正面，手臂自然跟随，重心与脚步配合，有轻微弹性。4.8到6秒：回到原图站位和朝向，轻轻站稳，再眨一下眼，恢复原来的表情和姿势。动作柔和连贯，有角色主动活动的感觉。不要把整张图片平面旋转或左右翻转，不要新增五官四肢，不要背景漂移、跳切、文字或镜头运动。无配乐、无说话、无音效。",
+  "setting": [
+    "4:3 · 6s"
+  ],
+  "sendEnabled": true,
+  "images": 37,
+  "observed_submissions": 1,
+  "conversation_url": "https://www.doubao.com/chat/38444365112456706",
+  "observed_at": "2026-09-27T03:35:36.899Z",
+  "additional_payment_requested": false,
+  "chat_messages_sent": 2,
+  "generation_cards_observed": 1,
+  "confirmation_message": "确认原参数，使用当前标准套餐免费体验额度，不购买或升级",
+  "generating_observed_at": "2026-09-27T03:36:00.738Z",
+  "provider_notice": "本次使用 Seedance 2.0 Mini 生成，预计等待5分钟。本次生成将消耗每日免费额度。",
+  "result_file": "apple-doubao-mini.mp4",
+  "completed_observed_at": "2026-09-27T03:39:19.370Z",
+  "quality": "expression and side/back turn visible; turn count appears greater than one; human naturalness review pending",
+  "watermark": "豆包AI生成",
+  "audio_stream_present": true,
+  "user_feedback": "先暂时这样吧",
+  "user_decision": "temporarily_keep_direction; pause refinement; formal integration and performance not accepted"
+}

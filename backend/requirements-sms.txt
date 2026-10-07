@@ -1,0 +1,2 @@
+# Optional SMS signing dependency; no service account is loaded by this integration.
+volcengine==1.0.228

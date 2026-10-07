@@ -1,0 +1,10 @@
+{
+  "review_ref": "c174-20261001-fifteen-motion-user-adopted",
+  "reviewer": "product_owner",
+  "user_reply": "15 个动作都采用，继续绑定",
+  "reviewed_artifacts": ["五类动作桌面对照.png", "真实动作候选/index.html"],
+  "reviewed_summary_sha256": "35c66cf8b6c38250a13f9e94fa4698040feeba183eb65ddc7f80f0f176ca1dca",
+  "accepted_motion_count": 15,
+  "additional_model_calls_authorized": 0,
+  "formal_two_rater_calibration": false
+}

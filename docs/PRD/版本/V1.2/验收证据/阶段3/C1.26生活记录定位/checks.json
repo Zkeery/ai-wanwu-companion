@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-28",
+  "checks": [
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  64 passed (64)",
+        "      Tests  691 passed (691)"
+      ]
+    },
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "111 passed, 2 warnings in 6.50s"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 2.9s",
+        "  Running TypeScript ...",
+        "  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.",
+        "  Finished TypeScript in 2.6s ...",
+        "  Generating static pages using 9 workers (0/11) ...",
+        "  Generating static pages using 9 workers (2/11) \r",
+        "  Generating static pages using 9 workers (5/11) \r",
+        "  Generating static pages using 9 workers (8/11) \r",
+        "✓ Generating static pages using 9 workers (11/11) in 99ms"
+      ]
+    }
+  ],
+  "generated_config_restored": true
+}

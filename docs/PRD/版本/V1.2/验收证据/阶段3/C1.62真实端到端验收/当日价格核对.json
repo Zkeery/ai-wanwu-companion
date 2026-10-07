@@ -1,0 +1,6 @@
+{
+  "source": "https://aihubmix.com/model/gpt-image-2.5-sunburst",
+  "http_status": 200,
+  "retrieved_at": "2026-09-29T04:11:56.768Z",
+  "pricing": "Token-based pricing: Text input $5 / 1M tokens ｜ Image input $8 / 1M tokens ｜ Image output $30 / 1M tokens Image Generation Quality 1024x1024 1024x1536 1536x1024 low $ 0.006 $ 0.005 $ 0.005 medium $ 0.053 $ 0.041 $ 0.041 high $ 0.211 $ 0.165 $ 0.165 auto $ 0.211 $ 0.165 $ 0.165 Input Modalities Text Vision Output Modalities Image Providers Azure gpt-image-2.5-sunburst Pricing $5 $10 Input Image $8/M tokens Cache Read $1.25/M tokens Output Image $30/M tokens Context 0 Max output 0 Latency - Throughput - Uptime 99.00% uptime 2 days ago 96.33% uptime yesterday 100.00% uptime today OpenAI gpt-image-2.5-sunburst Pricing $5 $10 Input Image $8/M tok"
+}

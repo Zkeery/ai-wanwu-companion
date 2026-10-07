@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "calls": [
+    {
+      "model": "ling-3.0-flash-vl",
+      "started_at": 1789747196.7694862,
+      "http_status": 200,
+      "usage": {
+        "completion_tokens": 75,
+        "prompt_tokens": 135,
+        "total_tokens": 210
+      },
+      "seconds": 1.942
+    }
+  ],
+  "price_confirmed_free": true,
+  "http_status": 201,
+  "response": {
+    "id": 1,
+    "status": "done",
+    "objects": [
+      {
+        "id": 1,
+        "label": "杯子"
+      }
+    ]
+  }
+}

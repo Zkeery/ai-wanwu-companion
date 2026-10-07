@@ -1,0 +1,14 @@
+{
+  "mock": true,
+  "asset_kind": "hand_drawn_fixture",
+  "default_gate_status": 404,
+  "enabled_gate_status": 200,
+  "desktop": {
+    "different_body_frames": false,
+    "background_corner_stable": true,
+    "portrait_box_stable": true,
+    "status": "动作已就绪，移入形象或点按钮",
+    "overflow": false
+  },
+  "stopped_status": "动作已就绪，移入形象或点按钮"
+}

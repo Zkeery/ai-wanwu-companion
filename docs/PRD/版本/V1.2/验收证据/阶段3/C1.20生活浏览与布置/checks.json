@@ -1,0 +1,13 @@
+{
+  "test": 0,
+  "lint": 0,
+  "typecheck": 0,
+  "build": 0,
+  "frontendTests": 626,
+  "newModeTests": 13,
+  "secretMatches": 0,
+  "scannedFiles": 59,
+  "generatedConfigRestored": true,
+  "brokenLinks": 0,
+  "diffCheck": 0
+}

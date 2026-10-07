@@ -1,0 +1,101 @@
+{
+  "manifest": "真实冒烟运行配置-retry1.json",
+  "calls": [
+    {
+      "model": "ling-3.0-flash-vl",
+      "started_at": 1789744883.023951,
+      "reserved_cny": 0,
+      "http_status": 200,
+      "seconds": 2.581,
+      "usage": {
+        "completion_tokens": 78,
+        "prompt_tokens": 135,
+        "total_tokens": 213
+      }
+    },
+    {
+      "model": "qwen3.8-flash",
+      "started_at": 1789744885.637055,
+      "reserved_cny": 0.0153648,
+      "http_status": 200,
+      "seconds": 10.271,
+      "usage": {
+        "prompt_tokens": 113,
+        "total_tokens": 332,
+        "completion_tokens": 219,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 113
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 180,
+          "text_tokens": 219
+        }
+      }
+    },
+    {
+      "model": "qwen3.8-flash",
+      "started_at": 1789744895.917572,
+      "reserved_cny": 0.0153648,
+      "http_status": 200,
+      "seconds": 4.901,
+      "usage": {
+        "completion_tokens": 203,
+        "completion_tokens_details": {
+          "reasoning_tokens": 176,
+          "text_tokens": 203
+        },
+        "prompt_tokens": 114,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 114
+        },
+        "total_tokens": 317
+      }
+    },
+    {
+      "model": "wan2.6-t2i",
+      "started_at": 1789744900.8282712,
+      "reserved_cny": 0.016,
+      "http_status": 200,
+      "seconds": 16.257,
+      "usage": {
+        "image_count": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "size": "1024*1024",
+        "total_tokens": 0
+      }
+    }
+  ],
+  "checks": {
+    "recognition": true,
+    "generation_ready": true,
+    "image_saved": true,
+    "renamed_and_collected": true
+  },
+  "passed": true,
+  "recognition_http_status": 201,
+  "photo": {
+    "id": 1,
+    "status": "done",
+    "objects": [
+      {
+        "id": 1,
+        "label": "杯子"
+      }
+    ]
+  },
+  "generation_sse": "event: started\ndata: {\"character_id\": 1}\n\nevent: chunk\ndata: {\"stage\": \"正在生成人设…\"}\n\nevent: chunk\ndata: {\"stage\": \"正在绘制角色图…\"}\n\nevent: done\ndata: {\"id\": 1, \"name\": \"米圆\", \"persona\": \"性格温润安静的陶瓷杯少女，总用圆滚滚的把手环住热饮，给人踏实又温柔的陪伴。\", \"opening_line\": \"你好，我是米圆，会安静地用圆滚滚的把手环住热饮，陪你慢慢暖起来。\", \"image_path\": \"characters/746643b7080d41cda01cba5f8aa18849.png\", \"status\": \"ready\", \"created_at\": \"2026-09-18T15:21:25.628588\"}\n\n",
+  "image_artifact": "真实生成杯子.png",
+  "character": {
+    "id": 1,
+    "name": "冒烟小杯",
+    "persona": "性格温润安静的陶瓷杯少女，总用圆滚滚的把手环住热饮，给人踏实又温柔的陪伴。",
+    "opening_line": "你好，我是米圆，会安静地用圆滚滚的把手环住热饮，陪你慢慢暖起来。",
+    "image_path": "characters/746643b7080d41cda01cba5f8aa18849.png",
+    "status": "ready",
+    "created_at": "2026-09-18T15:21:25.628588"
+  },
+  "reserved_cny": 0.046729599999999996
+}

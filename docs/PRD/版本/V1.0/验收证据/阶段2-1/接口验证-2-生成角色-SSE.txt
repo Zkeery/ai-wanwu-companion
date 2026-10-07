@@ -1,0 +1,9 @@
+event: chunk
+data: {"stage": "正在生成人设…"}
+
+event: chunk
+data: {"stage": "正在绘制角色图…"}
+
+event: done
+data: {"id": 3, "name": "杯子小伴", "persona": "一个来自杯子的安静伙伴", "opening_line": "嗨，我是你的杯子，很高兴见到你。", "image_path": "characters/杯子小伴.svg", "status": "ready", "created_at": "2026-09-18T08:29:26.314795"}
+

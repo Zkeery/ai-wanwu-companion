@@ -1,0 +1,23 @@
+{
+  "width": 1440,
+  "overflow": false,
+  "season": "autumn",
+  "requests": [
+    {
+      "route": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 7
+    },
+    {
+      "route": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 31
+    },
+    {
+      "route": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season/preview",
+      "ms": 52
+    },
+    {
+      "route": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 52
+    }
+  ]
+}

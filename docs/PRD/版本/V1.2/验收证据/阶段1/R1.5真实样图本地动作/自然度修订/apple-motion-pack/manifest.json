@@ -1,0 +1,12 @@
+{
+  "version": "companion-motion-sprite-v1",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "frame_width": 512,
+  "frame_height": 384,
+  "frame_count": 24,
+  "fps": 16,
+  "sprite_file": "sprite.png",
+  "background_file": "background.png",
+  "sprite_sha256": "4cd96e9776664f77ec2339aa31e05a789cf3837fe72e9216d09706b58f3e6d34",
+  "background_sha256": "c171899dad5608823af2c72df5c7e5a43ca4af52e4a616d96c175f165b2875f2"
+}

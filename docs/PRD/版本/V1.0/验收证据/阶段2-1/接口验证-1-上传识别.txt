@@ -1,0 +1,1 @@
+{"id":4,"status":"done","objects":[{"id":7,"label":"杯子"},{"id":8,"label":"植物"}]}

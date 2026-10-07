@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-21",
+  "baselineCommit": "3d09dd5",
+  "scope": "R3 独居／同住与成员管理",
+  "checks": [
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  14 passed (14)",
+        "      Tests  99 passed (99)"
+      ]
+    },
+    {
+      "label": "backend-living",
+      "exit": 0,
+      "summary": [
+        "15 passed, 2 warnings in 0.51s"
+      ]
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 722ms"
+      ]
+    }
+  ],
+  "restart": {
+    "unchanged": true,
+    "members": 2,
+    "items": 1
+  },
+  "browser": {
+    "mode": "isolated mock partners; real application/API/SQLite",
+    "passed": [
+      "登录与认领隔离测试伙伴",
+      "创建共居空间并加入第二个伙伴",
+      "第一个伙伴搬入并种树",
+      "刷新读取同一树木",
+      "第二个伙伴进入同一个空间看到同一树木",
+      "搬回独居未复制共居布置",
+      "移出成员不删除空间或物件",
+      "手机端重新加入并刷新恢复"
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 1000,
+        "scrollWidth": 1425,
+        "mainButtonsClickable": true
+      },
+      {
+        "width": 390,
+        "height": 1000,
+        "scrollWidth": 390,
+        "selectFontSize": 16
+      }
+    ],
+    "screenshots": [
+      "同住选择-桌面.png",
+      "同住选择-手机.png",
+      "同住庭院-手机.png"
+    ]
+  },
+  "realModel": "未调用；本增量不涉及模型，既有生成质量仍待验",
+  "stage": "R3 未整体验收",
+  "secretScan": {
+    "configuredValues": 2,
+    "scannedFiles": 1415,
+    "matchedFiles": 0
+  }
+}

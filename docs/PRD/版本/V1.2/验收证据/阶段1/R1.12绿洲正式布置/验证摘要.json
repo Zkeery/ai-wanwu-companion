@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-27",
+  "frontend_tests": {
+    "passed": 427,
+    "total": 427
+  },
+  "backend_related_tests": {
+    "passed": 143,
+    "total": 143,
+    "note": "142 related regressions plus one added API event test"
+  },
+  "final_targeted_tests": 5,
+  "typecheck": "passed",
+  "lint": "passed",
+  "production_build": ".next-motion-r112b",
+  "browser": {
+    "desktop_width": 1440,
+    "mobile_width": 390,
+    "horizontal_overflow": false,
+    "preview_cancel_without_write": true,
+    "atomic_template_apply": true,
+    "turn_saved_after_reload": true,
+    "native_drag_saved": true,
+    "cactus_left_before": "12%",
+    "cactus_left_after": "52.214%",
+    "keyboard_right_then_undo": true,
+    "store_restore": true,
+    "template_undo_preserves_previous_positions": true,
+    "mobile_place": true,
+    "placed_after_restart": 11,
+    "backend_restart_verified": true,
+    "motion_dialog_opens": true
+  },
+  "data_boundary": {
+    "other_spaces_unchanged": true,
+    "all_characters_unchanged": true,
+    "final_revision": 12
+  },
+  "new_model_calls": 0,
+  "new_fees": 0
+}

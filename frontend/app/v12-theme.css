@@ -1,0 +1,177 @@
+/* V1.2: stable destinations and one companion, three connected spaces. */
+body:has(.global-nav) { padding-left: 164px; }
+.global-nav { position: fixed; inset: 0 auto 0 0; width: 164px; padding: 34px 16px; display: flex; flex-direction: column; gap: 12px; z-index: 45; background: #ecfff9ed; border-right: 1px solid #92c9c1; backdrop-filter: blur(18px); }
+.global-nav-caption { color: #22645f; font-size: 12px; letter-spacing: 2px; font-weight: 800; line-height: 1.7; margin: 8px 8px 40px; }
+.global-nav a { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 20px; color: #52696a; text-decoration: none; font-weight: 750; border: 1px solid transparent; }
+.global-nav a:hover { background: #d4f4e9; }
+.global-nav a[aria-current="page"] { color: #173d3b; background: #7edace; border-color: #72bfb4; box-shadow: 0 5px 0 #539d9220; }
+.global-nav-spacer { display: none; }
+.v12-home .return-welcome { margin: 10px 0 36px; padding: 30px 36px; border: 1px solid #86bfb7; border-radius: 32px; background: linear-gradient(120deg,#b9eee1,#d2d0fa 95%); box-shadow: 0 12px 35px #3b9b8a12; }
+.v12-home .return-welcome h1 { font-size: clamp(27px,3.4vw,44px); letter-spacing: -1.2px; margin: 12px 0; }
+.welcome-spark { font-size: 100px; line-height: 1; color: #4a8279; flex: 0 0 auto; }
+.v12-home .companion-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
+.overview-card { min-width: 0; overflow: hidden; border-radius: 28px; background: #fffaf0; border: 1px solid #c2d6ce; box-shadow: 0 10px 28px #365d5412; }
+.overview-card .companion-card { display: block; padding: 0; border: 0; border-radius: 0; box-shadow: none; transform: none; background: transparent; }
+.overview-card .companion-card:hover { transform: none; box-shadow: none; }
+.overview-card .collection-motion .portrait img { object-fit: contain; transform: none; transition: none; }
+.overview-card .portrait { aspect-ratio: 1; border-radius: 20px; margin: 12px 12px 0; height: auto; width: auto; }
+.overview-card .portrait img { transform: none; transition: none; }
+.overview-card .card-info { padding: 18px 20px 0; }
+.overview-card .card-info h3 { font-size: 23px; overflow-wrap: anywhere; }
+.overview-card .card-info p { display: flex; align-items: center; gap: 6px; font-size: 13px; margin: 8px 0; color: #466760; }
+.overview-card-bottom { padding: 0 20px 20px; }
+.overview-life { padding: 14px 0; margin-bottom: 12px; border-block: 1px solid #d5e1da; overflow-wrap: anywhere; }
+.overview-life h4 { margin: 0 0 10px; font-size: 14px; color: #365d54; }
+.overview-life ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.overview-life li span { display: block; font-size: 13px; line-height: 1.5; }
+.overview-life li small { display: block; color: #537169; font-size: 11px; line-height: 1.7; margin-top: 3px; }
+.overview-life > p { font-size: 13px; color: #537169; margin-bottom: 8px; }
+.overview-life .text-button { display: inline-flex; align-items: center; min-height: 44px; margin-top: 4px; color: #365d54; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+#life-journal { scroll-margin-top: 24px; }
+.last-interaction { min-height: 22px; font-size: 12px; color: #716a7f; margin: 3px 0 15px; }
+.overview-actions { display: flex; gap: 8px; }
+.overview-actions .button { flex: 1; padding: 11px 7px; gap: 6px; min-height: 44px; font-size: 14px; white-space: nowrap; border-radius: 15px; }
+.overview-card .share-work { width: auto; margin-top: 12px; padding: 0; }
+.v12-detail .detail-layout { display: block; max-width: 1000px; margin: 0 auto 48px; padding-top: 0; }
+.companion-identity { display: flex; align-items: center; gap: 24px; margin: 8px 0 24px; }
+.companion-identity .profile-avatar { width: 88px; height: 88px; flex: 0 0 88px; border-radius: 25px; }
+.companion-identity h1 { margin: 7px 0; font-size: clamp(26px,3vw,38px); overflow-wrap: anywhere; line-height: 1.25; }
+.companion-identity p { margin: 0; color: #666776; font-size: 14px; }
+.companion-tabs { display: flex; padding: 6px; gap: 6px; border: 1px solid #b5c9c5; background: #e0ede6; border-radius: 21px; margin-bottom: 22px; }
+.companion-tabs button { flex: 1; border: 0; border-radius: 16px; padding: 14px 8px; background: transparent; color: #57716b; font-size: 16px; font-weight: 750; box-shadow: none; transform: none; }
+.companion-tabs button[aria-selected="true"] { background: #fffaf0; color: #493f62; box-shadow: 0 3px 10px #41594a13; }
+.companion-tabs button[aria-selected="false"] { background: transparent; box-shadow: none; }
+.companion-tabs button:focus-visible { outline: 2px solid #6e5285; outline-offset: -3px; }
+.companion-residence { display: inline-block; margin-top: 7px; color: #3d645c; font-size: 12px; }
+.chat-life-link { margin-left: auto; white-space: nowrap; }
+.tab-reply-status { font-size: 11px; margin-left: 7px; color: #527e74; }
+.v12-detail [hidden] { display: none !important; }
+.v12-detail .chat-panel { width: 100%; height: auto; min-height: 520px; }
+.v12-detail .chat-timeline { flex: 1 1 auto; height: 34vh; min-height: 230px; max-height: 540px; }
+.companion-life, .companion-profile-panel { background: #fffaf5; border: 1px solid #c8d5ce; border-radius: 28px; padding: 26px; }
+.companion-life .section-heading, .companion-profile-panel .section-heading { gap: 16px; flex-wrap: wrap; }
+.companion-life .section-heading p { margin-bottom: 0; font-size: 14px; color: #737080; }
+.companion-life .choose-home-note { text-align: center; padding: 48px 16px; }
+.companion-profile-panel .persona { margin: 12px 0 25px; max-width: 70ch; }
+.companion-profile-panel .memory-entry { margin: 20px 0; }
+.discover-heading { padding: 32px 0 28px; }
+.discover-heading h1 { font-size: clamp(30px,4vw,50px); margin: 14px 0; letter-spacing: -1px; }
+.discover-heading p { color: #646777; line-height: 1.8; }
+.discover-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.discover-card { border: 1px solid #91bcb2; border-radius: 32px; padding: 30px; text-decoration: none; color: #393f4e; box-shadow: 0 10px 28px #246e5b10; }
+.discover-theme { background: linear-gradient(140deg,#b9e6db,#ebf7c8); }
+.discover-teams { background: linear-gradient(140deg,#d9c8f5,#fbe0d7); }
+.discover-art { display: block; font-size: 76px; letter-spacing: 5px; height: 125px; }
+.discover-card h2 { display: flex; align-items: center; gap: 10px; margin: 14px 0; font-size: 27px; }
+.discover-card p { line-height: 1.9; color: #565667; min-height: 65px; }
+.discover-card strong { display: flex; align-items: center; gap: 10px; margin-top: 24px; }
+.discover-create { display: flex; align-items: center; gap: 20px; margin: 28px 0 40px; border-radius: 24px; padding: 23px 28px; background: #fffaf0d9; border: 1px solid #c8d5ce; }
+.discover-create h2 { margin: 0; font-size: 20px; }
+.discover-create p { margin: 8px 0 0; color: #716b7d; }
+.discover-create .button { margin-left: auto; }
+@media (max-width: 1180px) {
+  body:has(.global-nav) .shell { padding-left: 28px; padding-right: 28px; }
+  .v12-home .companion-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 760px) {
+  body:has(.global-nav) { padding-left: 0; }
+  body:has(.global-nav) .shell { padding-left: 20px; padding-right: 20px; }
+  .global-nav { inset: auto 12px max(10px,env(safe-area-inset-bottom)) 12px; width: auto; height: 70px; padding: 6px; flex-direction: row; gap: 4px; border: 1px solid #9ac4b8; border-radius: 23px; box-shadow: 0 6px 25px #26564e26; }
+  .global-nav-caption { display: none; }
+  .global-nav a { flex: 1; flex-direction: column; justify-content: center; gap: 3px; padding: 5px; font-size: 12px; border-radius: 17px; }
+  .global-nav-spacer { display: block; height: calc(100px + env(safe-area-inset-bottom)); }
+  .v12-home .return-welcome { padding: 24px; border-radius: 25px; margin-bottom: 25px; }
+  .welcome-spark { display: none; }
+  .v12-home .return-welcome h1 { font-size: 29px; }
+  .v12-home .companion-grid { gap: 16px; }
+  .overview-card .portrait { margin: 8px 8px 0; }
+  .overview-card .card-info { padding: 15px 16px 0; }
+  .overview-card-bottom { padding: 0 16px 18px; }
+  .companion-identity { gap: 16px; margin: 5px 0 20px; }
+  .companion-identity .profile-avatar { width: 68px; height: 68px; flex-basis: 68px; border-radius: 20px; }
+  .companion-identity .eyebrow { font-size: 9px; letter-spacing: 1px; }
+  .companion-identity p { font-size: 12px; }
+  .companion-tabs { margin-bottom: 16px; }
+  .companion-life, .companion-profile-panel { padding: 18px; border-radius: 24px; }
+  .companion-life .section-heading h2 { font-size: 21px; }
+  .v12-detail .chat-panel { min-height: 470px; }
+  .v12-detail .chat-timeline { height: 30vh; min-height: 180px; }
+  .discover-heading { padding-top: 15px; }
+  .discover-grid { grid-template-columns: 1fr; gap: 18px; }
+  .discover-card { padding: 25px; }
+  .discover-art { height: 100px; font-size: 60px; }
+  .discover-create { flex-wrap: wrap; padding: 22px; gap: 15px; }
+  .discover-create .button { margin-left: 0; width: 100%; }
+}
+@media (max-width: 520px) {
+  .v12-home .companion-grid { grid-template-columns: 1fr; }
+  .v12-home .collection-subtitle { display: none; }
+  .overview-card .portrait { aspect-ratio: 1.18; }
+}
+
+/* R2.1: stable, scrollable personality editing on desktop and mobile. */
+.personality-editor { max-width: 100%; color: #463448; }
+.personality-editor fieldset { border: 0; padding: 0; margin: 20px 0; min-width: 0; }
+.personality-editor label { display: block; font-weight: 600; margin: 12px 0 8px; }
+.personality-editor label small { display: block; font-weight: 400; margin-top: 4px; }
+.personality-editor select, .personality-editor textarea { display: block; width: 100%; max-width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid #a4cec8; border-radius: 12px; color: #463448; background: #fffdf7; font: inherit; }
+.personality-editor textarea { resize: vertical; min-height: 100px; }
+.personality-editor p, .personality-preview { white-space: pre-wrap; overflow-wrap: anywhere; }
+.personality-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.personality-tags button { background: #c8eee7; border: 1px solid #85b7b0; color: #265b58; padding: 8px 12px; border-radius: 18px; white-space: normal; }
+.personality-original { padding: 12px; background: #faf3e7; border-radius: 12px; }
+.personality-original summary { cursor: pointer; }
+.personality-preview, .personality-review { padding: 16px; background: #effaf5; border: 1px solid #b7dad0; border-radius: 16px; margin: 16px 0; }
+.personality-preview h3, .personality-review h3 { margin: 0 0 8px; font-size: 16px; }
+.personality-preview p { margin: 0; }
+.personality-actions, .personality-review .row { flex-wrap: wrap; gap: 10px; }
+.personality-actions button, .personality-review button { white-space: normal; }
+.personality-status { color: #245c55; background: #dbf2e6; padding: 12px; border-radius: 12px; }
+.result-personality { padding: 16px 0 24px; }
+.result-personality p, .companion-profile-panel .persona { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .personality-actions > button { width: 100%; } }
+
+.personality-footer { position: sticky; bottom: 0; z-index: 2; padding: 12px 0 1px; background: #fffdf9; border-top: 1px solid #d9e8e0; }
+.personality-footer .personality-status, .personality-footer .notice { margin: 0 0 10px; padding: 10px 12px; }
+.personality-footer .error-text:empty { display: none; }
+.personality-footer .field-hint { margin: 10px 0 0; }
+.personality-actions .personality-saved:disabled { opacity: 1; background: #d4eee4; color: #285e50; box-shadow: none; border-color: #9dcbbd; cursor: default; }
+
+/* R2.2: keep the route back next to the result it applies to. */
+.creation-origin { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #9bcfc6; border-radius: 20px; background: #e7f8f3; color: #305d59; }
+.creation-origin p { margin: .4rem 0; font-size: .95rem; line-height: 1.6; overflow-wrap: anywhere; }
+.creation-origin a { max-width: 100%; white-space: normal; }
+/* R3.1: compact seasons controls; no motion on placed objects. */
+.season-panel { margin: 1rem 0; padding: 1rem 1.25rem; border: 1px solid #afd4cb; border-radius: 24px; background: #f4fbf6; color: #365e59; }
+.season-summary, .season-options, .season-fields, .season-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.season-summary { justify-content: space-between; }
+.season-panel p { margin: .45rem 0; font-size: .94rem; line-height: 1.65; }
+.season-panel fieldset { border: 0; margin: 1rem 0; padding: 0; min-width: 0; }
+.season-panel legend { font-weight: 700; margin-bottom: .75rem; }
+.season-options label { display: flex; align-items: center; gap: .5rem; padding: .65rem .85rem; border-radius: 16px; background: #fffdf6; }
+.season-options input { width: 1.2rem; height: 1.2rem; accent-color: #28786d; }
+.season-field { display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; flex: 1; min-width: 150px; }
+.season-field select { width: 100%; padding: .8rem; border: 1px solid #94bdb4; border-radius: 14px; background: #fffdf6; color: #365e59; font: inherit; }
+.season-preview { padding: 1rem; background: #fff0cf; border-radius: 18px; margin: 1rem 0; }
+.season-actions { margin-top: 1rem; }
+.life-simulation h3, .life-simulation h4 { margin: .5rem 0; }
+.life-simulation small { font-size: .8rem; font-weight: 500; }
+.life-events { padding-left: 1.5rem; max-height: 320px; overflow-y: auto; }
+.life-events li { margin: .75rem 0; padding-bottom: .75rem; border-bottom: 1px solid #c7dfd6; }
+.life-events time { font-size: .8rem; }
+.season-panel [role="alert"] { color: #8e493c; }
+.season-panel [role="status"] { font-weight: 600; }
+@media (max-width: 480px) { .season-panel { padding: 1rem; } .season-fields { gap: 0; } .season-field { flex-basis: 100%; } .season-actions .button { flex: 1; padding-inline: .75rem; } }
+.life-runtime-panel .season-actions .button { flex: 0 0 auto; max-width: 100%; white-space: nowrap; }
+
+/* Creation result: saved status remains separate from the motion controls. */
+.creation-motion{min-width:0;align-self:start}
+.creation-motion .result-saved{display:flex;align-items:center;gap:6px;margin:0 0 12px;color:var(--green);font-size:13px}
+
+/* Scene actions keep the chat target separate from playback. */
+.scene-companion-entry{display:flex;flex:none;align-items:center;gap:4px;padding-right:6px;border-radius:30px;background:#fffdfaf5}
+.scene-companion-entry .scene-companion{background:transparent}
+.scene-motion-button{min-height:44px;flex:none;padding:8px 12px;border:1px solid #e1cdb4;border-radius:24px;background:#fff1e5;color:#594a40;font-size:12px;cursor:pointer}
+.scene-motion-button:focus-visible{outline:3px solid #a94b6b;outline-offset:2px}
+.scene-motion-note{color:#594a40;font-size:14px;line-height:1.6}
+@media(max-width:600px){.scene-companion-entry .scene-companion span{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.scene-motion-button{padding:8px}}

@@ -1,0 +1,21 @@
+{
+  "authorization_ref": "c174-20261001-user-approved-20cny-2usd",
+  "user_reply": "可以",
+  "approved_on": "2026-10-01",
+  "plan_sha256": "fdf02e0a016e020f2a9ce1e13e886dd9f055fffdb518f07c3c735f1d3a85363a",
+  "budget_cny": 20,
+  "budget_usd": 2,
+  "static_generations": 6,
+  "vision_requests_max": 6,
+  "static_image_requests_max": 6,
+  "supplemental_text_requests_max": 6,
+  "motion_requests_max": 18,
+  "life_requests_max": 8,
+  "private_life_requests_max": 4,
+  "shared_life_requests_max": 4,
+  "real_life_duration_seconds": 86400,
+  "automatic_retries": 0,
+  "human_review_before_binding": true,
+  "prior_authorizations_reused": false,
+  "topup_authorized": false
+}

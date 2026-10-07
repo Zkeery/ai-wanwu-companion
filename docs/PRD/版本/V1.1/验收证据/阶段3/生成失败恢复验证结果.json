@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-21",
+  "checks": [
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "363 passed, 2 warnings in 10.27s"
+      ]
+    },
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  14 passed (14)",
+        "      Tests  101 passed (101)"
+      ]
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 2.2s"
+      ]
+    }
+  ],
+  "finalChecks": {
+    "tableCount": 14,
+    "changedTables": [
+      "characters",
+      "sessions"
+    ],
+    "secretScan": {
+      "configuredValues": 2,
+      "scannedFiles": 1415,
+      "matchedFiles": 0
+    },
+    "serviceChecks": [
+      {
+        "url": "http://127.0.0.1:3020/companions/new",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "url": "http://127.0.0.1:8020/api/v1/auth/me",
+        "status": 401,
+        "passed": true
+      }
+    ]
+  },
+  "browser": {
+    "mockFailureReturnsToConfirmation": true,
+    "featuresSurviveReload": true,
+    "manualMockRetrySucceeded": true,
+    "viewports": [
+      1440,
+      390
+    ]
+  },
+  "incident": "识别成功，profile 阶段失败；旧日志不含根因。用户后续自行重试已观察到 profile 成功，agent 未触发真实模型调用。",
+  "dataComparison": "用户在重启前后继续使用应用，characters/sessions 有变化，不能宣称全库哈希不变；本轮无数据库结构变更。"
+}

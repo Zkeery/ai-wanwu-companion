@@ -1,0 +1,52 @@
+{
+  "authorization_ref": "R44-user-chat-one-round-20260929",
+  "model": "qwen3.8-flash",
+  "new_model_requests": 1,
+  "elapsed_seconds": 7.216,
+  "reserved_micro": 1145600,
+  "actual_charge": "unverified",
+  "tasks": [
+    {
+      "id": "9c2f376e-7bc6-42b6-b568-3a6d542a3655",
+      "state": "done",
+      "created_at": 1790682718,
+      "dispatched": true,
+      "error_code": null
+    }
+  ],
+  "exchanges": [
+    {
+      "id": "3c46104e-b198-4ce3-9642-eaf9b69529b6",
+      "at": 1790682725,
+      "message": "杯子小伴：眼前这片沙漠真安静，空气看起来也挺干燥的。；苹果散步·真实验收：是啊，沙地一直铺到远处，在这儿待着能看清不少开阔景象。",
+      "kind": "dialogue",
+      "characters": [
+        3,
+        4
+      ],
+      "origin": "real_provider",
+      "lines": [
+        {
+          "character_id": 3,
+          "text": "眼前这片沙漠真安静，空气看起来也挺干燥的。",
+          "item_ids": [],
+          "name": "杯子小伴"
+        },
+        {
+          "character_id": 4,
+          "text": "是啊，沙地一直铺到远处，在这儿待着能看清不少开阔景象。",
+          "item_ids": [],
+          "name": "苹果散步·真实验收"
+        }
+      ]
+    }
+  ],
+  "grants_remaining": 0,
+  "post_checks": {
+    "restart_same_exchange": true,
+    "authenticated_http": 200,
+    "anonymous_http": 401,
+    "both_in_private_spaces": true,
+    "dialogue_enabled": false
+  }
+}

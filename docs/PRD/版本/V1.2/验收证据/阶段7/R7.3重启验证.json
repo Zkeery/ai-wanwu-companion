@@ -1,0 +1,13 @@
+{
+  "database_unchanged": true,
+  "tables_compared": 25,
+  "active_before": 0,
+  "backup": ".runtime/backups/r73-20260922-151106",
+  "vision_thinking": false,
+  "connection_pool": true,
+  "checks": {
+    "backend": 200,
+    "frontend": 200,
+    "characters_authenticated": 200
+  }
+}

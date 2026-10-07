@@ -1,0 +1,43 @@
+{
+  "before": {
+    "season": "autumn",
+    "items": [
+      {
+        "id": "10ddc6cd-ba65-4d66-8464-ab38a2632c0b",
+        "x": 0.35,
+        "y": 0.5,
+        "growth_status": "growing"
+      }
+    ],
+    "companions": [
+      {
+        "id": 1,
+        "x": 0.5,
+        "y": 0.65,
+        "activity": "arriving"
+      }
+    ]
+  },
+  "after": {
+    "season": "winter",
+    "status": "passed",
+    "items": [
+      {
+        "id": "10ddc6cd-ba65-4d66-8464-ab38a2632c0b",
+        "x": 0.35,
+        "y": 0.5,
+        "growth_status": "growing"
+      }
+    ],
+    "companions": [
+      {
+        "id": 1,
+        "x": 0.5,
+        "y": 0.65,
+        "activity": "arriving"
+      }
+    ]
+  },
+  "itemsUnchanged": true,
+  "companionsUnchanged": true
+}

@@ -1,0 +1,235 @@
+{
+  "date": "2026-09-21",
+  "frontendTests": 80,
+  "backendTests": 308,
+  "typecheck": true,
+  "lint": true,
+  "build": true,
+  "proxy": {
+    "delayMs": 31000,
+    "defaultStatus": 500,
+    "configuredStatus": 201,
+    "repeatedRequests": false
+  },
+  "responsive": [
+    {
+      "path": "/",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/",
+      "viewport": 768,
+      "width": 753,
+      "smallButtons": 0
+    },
+    {
+      "path": "/",
+      "viewport": 1440,
+      "width": 1425,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/new",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/new",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/new",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/new",
+      "viewport": 768,
+      "width": 753,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/new",
+      "viewport": 1440,
+      "width": 1425,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1",
+      "viewport": 768,
+      "width": 753,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1",
+      "viewport": 1440,
+      "width": 1425,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes",
+      "viewport": 768,
+      "width": 768,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes",
+      "viewport": 1440,
+      "width": 1440,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/home",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/home",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/home",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/home",
+      "viewport": 768,
+      "width": 768,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/home",
+      "viewport": 1440,
+      "width": 1440,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/desert",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/desert",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/desert",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/desert",
+      "viewport": 768,
+      "width": 768,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/desert",
+      "viewport": 1440,
+      "width": 1440,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/forest",
+      "viewport": 360,
+      "width": 360,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/forest",
+      "viewport": 390,
+      "width": 390,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/forest",
+      "viewport": 430,
+      "width": 430,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/forest",
+      "viewport": 768,
+      "width": 768,
+      "smallButtons": 0
+    },
+    {
+      "path": "/companions/1/scenes/forest",
+      "viewport": 1440,
+      "width": 1440,
+      "smallButtons": 0
+    }
+  ],
+  "secrets": {
+    "scannedBuildFiles": 1392,
+    "matchedFiles": []
+  },
+  "restart": {
+    "backendPid": 8777,
+    "unauthenticatedStatus": 401,
+    "databaseUnchanged": true
+  }
+}

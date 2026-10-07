@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "protocol_id": "r75-candidate-pilot-v1",
+  "date": "2026-09-22",
+  "mode": "offline",
+  "user_scope": "manual_and_offline_only",
+  "real_provider_calls": 0,
+  "actual_cost_cny": 0,
+  "tests": {
+    "passed": 23,
+    "total": 23
+  },
+  "cli_dry_run_exit": 0,
+  "cli_offline_exit": 0,
+  "simulated_samples": 8,
+  "simulated_calls": 16,
+  "simulated_successes": 8,
+  "quality_review": "NEED_REVIEW",
+  "selection_passed": false,
+  "release_passed": false,
+  "source_files": {
+    "backend/scripts/compare_generation_candidates.py": "7c279de85ae2d04858f76585c8e3a21e7494984caa8ebd5f35e5d2304fe168d7",
+    "backend/app/services/prompts.py": "6f411a3c8bc52d12a0ffb589ec93b30ceac4c0dfc6c0e8e270cbd0a0c8e77390",
+    "backend/app/services/appearance.py": "ce787e7672b87bf6ed26c5f0c564012ebe9e68b3273b6363fd1a80238f47616a",
+    "backend/app/services/parsers.py": "51ff85fe0155e93eb02e12a69cacdffd6dbf01ead76a9c517ee6bb0a5d957606"
+  },
+  "notes": [
+    "离线图片是合成色块，仅检查图片解码和记录，不代表模型质量或性能。",
+    "离线模拟图片已清理；实际费用为0，预留1.184元仅为未来计划计算。",
+    "本轮没有浏览器上传到显示的真实性能结果。"
+  ]
+}

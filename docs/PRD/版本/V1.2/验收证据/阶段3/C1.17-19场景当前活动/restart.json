@@ -1,0 +1,44 @@
+{
+  "sameSavedActivities": true,
+  "scenes": {
+    "home": {
+      "permissionEnabled": true,
+      "permissionRevision": 1,
+      "taskStates": [
+        "done"
+      ],
+      "activities": [
+        "observe"
+      ],
+      "startedAt": [
+        1790509636
+      ]
+    },
+    "forest": {
+      "permissionEnabled": true,
+      "permissionRevision": 1,
+      "taskStates": [
+        "done"
+      ],
+      "activities": [
+        "walk"
+      ],
+      "startedAt": [
+        1790509688
+      ]
+    },
+    "desert": {
+      "permissionEnabled": false,
+      "permissionRevision": 2,
+      "taskStates": [
+        "done"
+      ],
+      "activities": [
+        "rest"
+      ],
+      "startedAt": [
+        1790509688
+      ]
+    }
+  }
+}

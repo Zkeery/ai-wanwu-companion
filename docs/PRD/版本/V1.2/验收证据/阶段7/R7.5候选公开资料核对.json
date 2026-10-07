@@ -1,0 +1,42 @@
+{
+  "verified_on": "2026-09-22",
+  "verification": "官方公开模型页及API调试示例，浏览器读取；无模型调用",
+  "items": [
+    {
+      "model": "qwen-image-plus",
+      "url": "https://maas.antdigital.com/models/modelService-1776180897810001134",
+      "price_cny_per_image": 0.2,
+      "observed_provider_p50_ms": 536,
+      "endpoint": "https://maas-api.antdigital.com/v1/images/generations",
+      "size_example": "1024x1024",
+      "limitation": "平台统计，非本项目最终图片延迟；可能受样本量和统计口径影响，不能据此选型。"
+    },
+    {
+      "model": "qwen3.8-flash",
+      "url": "https://maas.antdigital.com/models/modelservice-1788174495570001431",
+      "input_cny_per_million": 0.8,
+      "output_cny_per_million": 2.7,
+      "supports_image_input": true,
+      "observed_provider_ttft_ms": 4110,
+      "limitation": "首token耗时不等于完整结构化响应耗时。"
+    },
+    {
+      "model": "wan2.7-image",
+      "url": "https://maas.antdigital.com/models/modelservice-1779365753222001051",
+      "price_cny_per_image": 0.2,
+      "observed_provider_p50_ms": 27070,
+      "pilot_included": false
+    },
+    {
+      "model": "wan2.6-t2i",
+      "url": "https://maas.antdigital.com/models/modelservice-1779365948338001295",
+      "price_cny_per_image": 0.016,
+      "role": "baseline"
+    },
+    {
+      "model": "ling-3.0-flash-vl",
+      "url": "https://maas.antdigital.com/docs/updates/ling-3-0-flash-vl-free-period-ending",
+      "free_until": "2026-09-24T10:00:00+08:00"
+    }
+  ]
+}

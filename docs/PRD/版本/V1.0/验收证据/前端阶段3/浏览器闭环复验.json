@@ -1,0 +1,40 @@
+{
+  "verifiedAt": "2026-09-18T16:08:15.538Z",
+  "mode": "isolated real FastAPI and browser, model mock",
+  "fileChooser": "native Chrome picker; extension API Not allowed remains, no permission changes",
+  "steps": [
+    {
+      "buttonEnabled": true,
+      "file": "C:\\fakepath\\超尺寸测试.png",
+      "message": "图片长边不能超过 4096px，请缩小后重新选择",
+      "scrollWidth": 375,
+      "step": "oversize-error",
+      "width": 390
+    },
+    {
+      "canGenerate": true,
+      "description": "一只米白色陶瓷杯（HEIC 验收）",
+      "scrollWidth": 375,
+      "step": "heic-objects",
+      "width": 390
+    },
+    {
+      "canGenerate": true,
+      "description": "一只米白色陶瓷杯（HEIC 验收）",
+      "scrollWidth": 1425,
+      "step": "heic-objects",
+      "width": 1440
+    },
+    {
+      "step": "rename-refresh",
+      "savedName": "HEIC验收杯（mock）",
+      "chatHref": "/companions/4"
+    },
+    {
+      "step": "chat",
+      "reply": "（mock）我听到你说：HEIC 上传闭环验收完成了吗？",
+      "url": "http://127.0.0.1:3021/companions/4"
+    }
+  ],
+  "passed": true
+}

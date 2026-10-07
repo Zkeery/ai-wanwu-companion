@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-09-28T16:07:07.828Z",
+  "prompt_omitted": true,
+  "image_omitted": true,
+  "status": 400,
+  "error": {
+    "code": "schema_violation",
+    "message": "Required parameter `prompt` is missing.",
+    "tid": "2026092816070767032523883137308",
+    "type": "invalid_request_error"
+  }
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "width": 1440,
+    "scroll": "top",
+    "label": "已保存",
+    "visible": true,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "scroll": "bottom",
+    "label": "已保存",
+    "visible": true,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "scroll": "top",
+    "label": "已保存",
+    "visible": true,
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "scroll": "bottom",
+    "label": "已保存",
+    "visible": true,
+    "overflow": false
+  }
+]

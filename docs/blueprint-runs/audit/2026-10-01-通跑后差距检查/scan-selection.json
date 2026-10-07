@@ -1,0 +1,328 @@
+{
+  "features": {
+    "destructive_ops": {
+      "value": "yes",
+      "evidence": "删除伙伴、短信发送、额度消耗、场景写操作均需权限与确认"
+    },
+    "audit_needed": {
+      "value": "yes",
+      "evidence": "费用账本、授权回执、登录发送计数需要可审计留存"
+    },
+    "multi_step": {
+      "value": "yes",
+      "evidence": "生活规划、比赛、语音链路均为多步，但产品以固定编排实现，不默认引入 TodoWrite"
+    },
+    "context_heavy": {
+      "value": "no",
+      "evidence": "无大规模并行探索子任务需求"
+    },
+    "large_knowledge": {
+      "value": "no",
+      "evidence": "无按需 Skill 知识库需求"
+    },
+    "long_sessions": {
+      "value": "later",
+      "evidence": "聊天取最近历史；完整上下文压缩非当前阻塞项"
+    },
+    "cross_session_memory": {
+      "value": "yes",
+      "evidence": "已有手动记忆与历史；不等于必须引入蓝图 Memory 组件"
+    },
+    "persistent_goals": {
+      "value": "yes",
+      "evidence": "生活/自动交流任务需跨重启恢复，已用领域持久化实现"
+    },
+    "slow_operations": {
+      "value": "yes",
+      "evidence": "生图、语音合成、后台规划属于慢操作，已有领域 worker/队列"
+    },
+    "scheduled": {
+      "value": "yes",
+      "evidence": "每日无人观看/观看频率的自动生活与自动交流"
+    },
+    "parallel_isolated": {
+      "value": "no",
+      "evidence": "无多 Agent 隔离工作区需求"
+    },
+    "external_ecosystem": {
+      "value": "no",
+      "evidence": "无 MCP/第三方插件生态需求"
+    },
+    "fixed_orchestration": {
+      "value": "yes",
+      "evidence": "主产品是照片→角色→聊天/生活/比赛的固定 C 端流程"
+    },
+    "auto_completion": {
+      "value": "no",
+      "evidence": "完成判定由业务规则与用户确认，不交给独立评估器"
+    }
+  },
+  "decisions": [
+    {
+      "id": "s01",
+      "name": "Agent Loop",
+      "decision": "必选",
+      "reason": "一切基础：循环 + 工具（一切基础，恒选）",
+      "feature": ""
+    },
+    {
+      "id": "s02",
+      "name": "工具系统",
+      "decision": "必选",
+      "reason": "需要调用外部系统/API/数据源（一切基础，恒选）",
+      "feature": ""
+    },
+    {
+      "id": "s03",
+      "name": "权限系统",
+      "decision": "必选",
+      "reason": "删除伙伴、短信发送、额度消耗、场景写操作均需权限与确认",
+      "feature": "destructive_ops"
+    },
+    {
+      "id": "s04",
+      "name": "钩子系统",
+      "decision": "必选",
+      "reason": "费用账本、授权回执、登录发送计数需要可审计留存",
+      "feature": "audit_needed"
+    },
+    {
+      "id": "s05",
+      "name": "任务规划",
+      "decision": "必选",
+      "reason": "生活规划、比赛、语音链路均为多步，但产品以固定编排实现，不默认引入 TodoWrite",
+      "feature": "multi_step"
+    },
+    {
+      "id": "s06",
+      "name": "子 Agent",
+      "decision": "放弃",
+      "reason": "无大规模并行探索子任务需求",
+      "feature": "context_heavy"
+    },
+    {
+      "id": "s07",
+      "name": "技能加载",
+      "decision": "放弃",
+      "reason": "无按需 Skill 知识库需求",
+      "feature": "large_knowledge"
+    },
+    {
+      "id": "s08",
+      "name": "上下文压缩",
+      "decision": "二期",
+      "reason": "聊天取最近历史；完整上下文压缩非当前阻塞项",
+      "feature": "long_sessions"
+    },
+    {
+      "id": "s09",
+      "name": "记忆系统",
+      "decision": "必选",
+      "reason": "已有手动记忆与历史；不等于必须引入蓝图 Memory 组件",
+      "feature": "cross_session_memory"
+    },
+    {
+      "id": "s10",
+      "name": "任务系统",
+      "decision": "必选",
+      "reason": "生活/自动交流任务需跨重启恢复，已用领域持久化实现",
+      "feature": "persistent_goals"
+    },
+    {
+      "id": "s11",
+      "name": "后台任务",
+      "decision": "必选",
+      "reason": "生图、语音合成、后台规划属于慢操作，已有领域 worker/队列",
+      "feature": "slow_operations"
+    },
+    {
+      "id": "s12",
+      "name": "定时调度",
+      "decision": "必选",
+      "reason": "每日无人观看/观看频率的自动生活与自动交流",
+      "feature": "scheduled"
+    },
+    {
+      "id": "s13",
+      "name": "Agent 团队",
+      "decision": "放弃",
+      "reason": "无多 Agent 隔离工作区需求",
+      "feature": "parallel_isolated"
+    },
+    {
+      "id": "s14",
+      "name": "MCP 插件",
+      "decision": "放弃",
+      "reason": "无 MCP/第三方插件生态需求",
+      "feature": "external_ecosystem"
+    },
+    {
+      "id": "s15",
+      "name": "集成 Harness",
+      "decision": "必选",
+      "reason": "第一版已选 8 个可选组件（s03, s04, s05, s09, s10, s11, s12, s16），需归一到单一循环",
+      "feature": ""
+    },
+    {
+      "id": "s16",
+      "name": "工作流运行时",
+      "decision": "必选",
+      "reason": "主产品是照片→角色→聊天/生活/比赛的固定 C 端流程",
+      "feature": "fixed_orchestration"
+    },
+    {
+      "id": "s17",
+      "name": "目标闭环",
+      "decision": "放弃",
+      "reason": "完成判定由业务规则与用户确认，不交给独立评估器",
+      "feature": "auto_completion"
+    }
+  ],
+  "scan_components": {
+    "s01": {
+      "strength": "strong",
+      "code_files": 10,
+      "doc_files": 5,
+      "top_hits": [
+        "backend/app/living/competition_ai.py:96",
+        "backend/app/living/gathering_automatic.py:310",
+        "backend/app/living/gathering_dialogue.py:90"
+      ]
+    },
+    "s02": {
+      "strength": "strong",
+      "code_files": 10,
+      "doc_files": 1,
+      "top_hits": [
+        "backend/app/living/competition_ai.py:317",
+        "backend/app/living/gathering_dialogue.py:298",
+        "backend/app/living/life_live_planner.py:49"
+      ]
+    },
+    "s03": {
+      "strength": "strong",
+      "code_files": 33,
+      "doc_files": 56,
+      "top_hits": [
+        "backend/app/api/life_runtime.py:41",
+        "backend/app/api/life_runtime.py:92",
+        "backend/app/api/life_runtime.py:93"
+      ]
+    },
+    "s04": {
+      "strength": "strong",
+      "code_files": 4,
+      "doc_files": 4,
+      "top_hits": [
+        "backend/app/main.py:108",
+        "demos/garden-agent/server.py:44",
+        "frontend/components/create-companion.tsx:126"
+      ]
+    },
+    "s05": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 2,
+      "top_hits": []
+    },
+    "s06": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 0,
+      "top_hits": []
+    },
+    "s07": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 8,
+      "top_hits": []
+    },
+    "s08": {
+      "strength": "strong",
+      "code_files": 9,
+      "doc_files": 10,
+      "top_hits": [
+        "backend/app/services/model_client.py:295",
+        "backend/scripts/analyze_generation_pilot.py:1",
+        "frontend/components/collection.tsx:105"
+      ]
+    },
+    "s09": {
+      "strength": "strong",
+      "code_files": 38,
+      "doc_files": 54,
+      "top_hits": [
+        "backend/app/main.py:150",
+        "backend/app/api/chat.py:15",
+        "backend/app/api/chat.py:18"
+      ]
+    },
+    "s10": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 1,
+      "top_hits": []
+    },
+    "s11": {
+      "strength": "strong",
+      "code_files": 27,
+      "doc_files": 62,
+      "top_hits": [
+        "backend/app/main.py:72",
+        "backend/app/main.py:74",
+        "backend/app/main.py:75"
+      ]
+    },
+    "s12": {
+      "strength": "strong",
+      "code_files": 21,
+      "doc_files": 25,
+      "top_hits": [
+        "backend/app/api/life_runtime.py:48",
+        "backend/app/api/life_runtime.py:100",
+        "backend/app/api/life_runtime.py:101"
+      ]
+    },
+    "s13": {
+      "strength": "strong",
+      "code_files": 2,
+      "doc_files": 2,
+      "top_hits": [
+        "frontend/app/discover/page.tsx:14",
+        "frontend/components/collection.tsx:97"
+      ]
+    },
+    "s14": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 8,
+      "top_hits": []
+    },
+    "s15": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 12,
+      "top_hits": []
+    },
+    "s16": {
+      "strength": "strong",
+      "code_files": 16,
+      "doc_files": 55,
+      "top_hits": [
+        "backend/app/api/motion_candidates.py:14",
+        "backend/app/api/motion_candidates.py:54",
+        "backend/app/api/motion_candidates.py:91"
+      ]
+    },
+    "s17": {
+      "strength": "strong",
+      "code_files": 12,
+      "doc_files": 34,
+      "top_hits": [
+        "backend/app/api/gatherings.py:56",
+        "backend/app/core/config.py:43",
+        "backend/app/core/config.py:56"
+      ]
+    }
+  }
+}

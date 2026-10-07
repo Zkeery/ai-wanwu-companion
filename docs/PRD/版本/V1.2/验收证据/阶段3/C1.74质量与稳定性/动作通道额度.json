@@ -1,0 +1,19 @@
+{
+  "authorization_ref": "c174-20261001-user-approved-20cny-2usd",
+  "verified_on": "2026-10-01",
+  "source": "https://console.aihubmix.com/token",
+  "project_key_name": "AI万物伙伴-Sunburst",
+  "platform_key_display_sha256": "ee5116d95a9e9e0d7b21c3c6ad22134eda37442c6a8e2f3838958988ae478ac0",
+  "model_allowlist": ["gpt-image-2.5-sunburst"],
+  "unlimited": false,
+  "fallback_models": 0,
+  "remaining_usd_before": 0.08,
+  "remaining_usd_approved": 2.0,
+  "quota_restore_target_usd": 0.08,
+  "recharged": false,
+  "remaining_usd_after_15_displayed": 1.66,
+  "platform_spend_from_rounded_display_usd": 0.34,
+  "actual_bill_verified": false,
+  "remaining_usd_restored_verified": 0.08,
+  "status": "closed_after_15_requests"
+}

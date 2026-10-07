@@ -1,0 +1,18 @@
+{
+  "authorization_ref": "c175-manan-motion-20261002-3calls-0.30usd",
+  "approved_on": "2026-10-02",
+  "user_reply": "蔓蔓的三类动作已准备好，确认！",
+  "character_id": 9,
+  "source_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+  "activities": ["rest", "walk", "observe"],
+  "requests_max": 3,
+  "budget_usd": "0.30",
+  "reservation_per_request_usd": "0.10",
+  "automatic_retries": 0,
+  "fallback_models": 0,
+  "model_allowlist": ["gpt-image-2.5-sunburst"],
+  "original_photo_upload": false,
+  "static_regeneration": false,
+  "motion_adoption_authorized": false,
+  "platform_quota_recheck_required": true
+}

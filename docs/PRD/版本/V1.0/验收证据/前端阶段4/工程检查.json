@@ -1,0 +1,21 @@
+{
+  "backend": {
+    "passed": 165,
+    "total": 165,
+    "existing_dependency_warnings": 2
+  },
+  "frontend": {
+    "passed": 34,
+    "total": 34
+  },
+  "legacy": {
+    "passed": 13,
+    "total": 13
+  },
+  "lint": true,
+  "typecheck": true,
+  "build": true,
+  "real_provider_calls_this_phase": 3,
+  "real_performance_status": "passed: one real sample",
+  "real_generation_seconds": 21.536568957999407
+}

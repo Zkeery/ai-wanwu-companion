@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-21",
+  "scope": "R5.1 personal themes",
+  "engineering_verified": true,
+  "full_R5_complete": false,
+  "backend_tests": {
+    "passed": 511,
+    "total": 511
+  },
+  "frontend_tests": {
+    "passed": 168,
+    "total": 168
+  },
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "browser": {
+    "theme": [
+      {
+        "width": 360,
+        "scrollWidth": 360,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false
+      },
+      {
+        "width": 430,
+        "scrollWidth": 430,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false
+      },
+      {
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false
+      }
+    ],
+    "creation": [
+      {
+        "width": 360,
+        "scrollWidth": 360,
+        "overflow": false
+      },
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false
+      },
+      {
+        "width": 430,
+        "scrollWidth": 430,
+        "overflow": false
+      },
+      {
+        "width": 768,
+        "scrollWidth": 753,
+        "overflow": false
+      },
+      {
+        "width": 1440,
+        "scrollWidth": 1425,
+        "overflow": false
+      }
+    ],
+    "flows": [
+      "login",
+      "themed_upload",
+      "auto_generate_mock",
+      "rename",
+      "private_collection",
+      "reload",
+      "mismatch_stop",
+      "explicit_free_choice",
+      "free_choice_reload",
+      "free_generate_mock",
+      "backend_restart_recovery"
+    ]
+  },
+  "migration": {
+    "old_tables": 20,
+    "original_characters": 8,
+    "double_upgrade_unchanged": true,
+    "main_backup_taken": true,
+    "main_restarted": true
+  },
+  "paid_model_calls": 0,
+  "pending": [
+    "real_category_accuracy",
+    "real_generation_quality",
+    "user_visual_acceptance",
+    "R5.2_wall",
+    "R5.3_teams"
+  ]
+}

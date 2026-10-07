@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-01",
+  "stage": "C1.73",
+  "engineering_verified": true,
+  "full_real_acceptance": "pending",
+  "backend": {
+    "passed": 234,
+    "total": 234,
+    "modules": ["test_motion_atlas.py", "test_motion_preparation.py", "test_motion_generation_activities.py", "test_characters_api.py", "test_sunburst_walk.py", "test_motion_assets.py", "test_motion_atlas_provider.py", "test_motion_sheet.py", "test_motion_atlas_background.py", "test_motion_candidates.py", "test_motion_generation.py", "test_motion_atlas_quality.py", "test_character_walk_workflow.py", "test_motion_builder.py"]
+  },
+  "frontend": {
+    "passed": 202,
+    "total": 202,
+    "modules": ["motion-generation.test.ts", "create-companion.test.tsx", "current-activity-motion.test.tsx", "private-motion.test.ts", "motion-generation-status.test.tsx", "motion-player.test.tsx", "motion-candidate-review.test.tsx", "gathering-motion.test.tsx", "motion-candidates.test.ts", "companion-motion-preview.test.tsx", "recreate-companion.test.tsx", "private-motion-player.test.tsx", "motion-generation-activities.test.ts", "living-motion.test.tsx", "motion-preparation.test.ts"],
+    "typecheck": true,
+    "lint_zero_warnings": true,
+    "isolated_production_build": true
+  },
+  "browser": {"desktop": [1500, 900], "mobile": [390, 844], "restored_screenshot": [1500, 1100], "horizontal_overflow": false, "three_activity_playback": true, "refresh_ready": true, "synthetic_data_only": true},
+  "recovery": {"tables": 59, "upload_files": 11, "ledger_files": 12, "restart_identical": true, "new_directory_restore_started": true, "three_request_ids_and_sprites_identical": true, "three_review_records_readable": true, "anonymous_sprite_status": 401, "other_account_sprite_status": 404},
+  "artifact_scan": {"archive_members": 2077, "actual_credential_matches": 0, "original_configuration_hashes_unchanged": true, "temporary_archives_deleted": true},
+  "review_service_update": {"backend_port": 8048, "old_pid": 35560, "pid": 6682, "mode": "serve-companions", "frontend_pid": 4951, "frontend_restarted": false, "before_tables": 70, "after_tables": 71, "old_rows_unchanged": true, "upload_files": 19, "ledger_files": 32, "state_files": 7, "all_existing_external_files_unchanged": true, "new_activity_request_rows": 0, "paid_motion_enabled": false, "new_route_anonymous_status": 401},
+  "calls": {"synthetic_image_provider": 3, "actual_model": 0, "sms": 0, "cloud_deployment": 0},
+  "cleanup": {"isolated_services_stopped": true, "temporary_browser_token_removed": true, "temporary_sources_builds_data_sessions_logs_deleted": true, "private_review_backup_retained": true},
+  "real_batch_proposal": {"status": "awaiting_confirmation", "max_client_requests": 3, "automatic_retries": 0, "new_static_image_requests": 0, "budget_usd": 0.30, "output_only_reference_usd": 0.159}
+}

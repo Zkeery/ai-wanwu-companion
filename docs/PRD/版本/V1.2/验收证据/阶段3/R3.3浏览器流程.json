@@ -1,0 +1,42 @@
+{
+  "date": "2026-09-22",
+  "environment": "isolated fixture 8042/3042",
+  "steps": [
+    "existing synthetic session restored",
+    "home companion life tab",
+    "place tree",
+    "care tree",
+    "rain",
+    "undo rain",
+    "collapsed 3 events",
+    "expanded 4 events",
+    "mobile reload and expand",
+    "backend process restart and identical persisted events"
+  ],
+  "layouts": [
+    {
+      "width": 1440,
+      "documentWidth": 1425,
+      "journalWidth": 780
+    },
+    {
+      "width": 390,
+      "documentWidth": 375,
+      "journalWidth": 297
+    }
+  ],
+  "restartRestored": true,
+  "source": "actual user-triggered actions on isolated SQLite; no AI calls",
+  "visualScreenshotStatus": "blocked: Page.captureScreenshot repeated timeout; no screenshots claimed",
+  "url": "http://127.0.0.1:3042/companions/1?tab=life",
+  "visibleEvents": [
+    "撤销了上一步布置用户操作2026/9/22 18:09:35（上海时间）",
+    "开启了小雨用户操作2026/9/22 18:09:03（上海时间）",
+    "照料了小树用户操作2026/9/22 18:09:02（上海时间）"
+  ],
+  "issues": false,
+  "readTimingsMs": [
+    4,
+    28
+  ]
+}

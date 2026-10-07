@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": 1440,
+    "scene": "hub-world hub-world-forest season-autumn",
+    "season": "autumn",
+    "imageWidth": 1536,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "scene": "hub-world hub-world-forest season-autumn",
+    "season": "autumn",
+    "imageWidth": 1536,
+    "overflow": false
+  },
+  {
+    "viewport": 1440,
+    "scene": "hub-world hub-world-desert season-autumn",
+    "season": "autumn",
+    "imageWidth": 1536,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "scene": "hub-world hub-world-desert season-autumn",
+    "season": "autumn",
+    "imageWidth": 1536,
+    "overflow": false
+  }
+]

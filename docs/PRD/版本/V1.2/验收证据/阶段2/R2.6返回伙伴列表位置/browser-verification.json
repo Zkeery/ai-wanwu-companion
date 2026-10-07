@@ -1,0 +1,30 @@
+{
+  "desktop": {
+    "before": {
+      "offset": 167.8125,
+      "companionId": 2
+    },
+    "after": {
+      "top": 167.8125,
+      "focus": "collection-companion-2",
+      "consumed": true
+    }
+  },
+  "mobileAfterRestart": {
+    "before": {
+      "offset": -16.96875,
+      "companionId": 2
+    },
+    "after": {
+      "top": -16.96875,
+      "focus": "collection-companion-2",
+      "consumed": true,
+      "overflow": false
+    }
+  },
+  "nativeBack": true,
+  "changedWidth": {
+    "top": 167.8125,
+    "consumed": true
+  }
+}

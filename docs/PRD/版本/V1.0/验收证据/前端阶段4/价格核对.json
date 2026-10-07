@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-19",
+  "verified": true,
+  "provider": "蚂蚁数字科技",
+  "input_cny_per_million": 0.8,
+  "output_cny_per_million": 2.7,
+  "image_cny_each": 0.016,
+  "models": {
+    "chat": "qwen3.8-flash",
+    "image": "wan2.6-t2i"
+  },
+  "sources": [
+    "https://maas.antdigital.com/models/modelservice-1788174495570001431",
+    "https://maas.antdigital.com/models/modelservice-1779365948338001295"
+  ],
+  "method": "Chrome读取官方模型详情供应商表格；无API调用",
+  "reservation": "以输入2.1/百万保守预留；总上限0.0467296元，小于预算0.05元"
+}

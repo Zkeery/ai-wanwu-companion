@@ -1,0 +1,13 @@
+{
+  "budgetCny": 0.05,
+  "knownListPriceEstimateCny": 0.017321,
+  "conservativeUsageEstimateCny": 0.0176161,
+  "reservationCeilingCny": 0.046729599999999996,
+  "visionAttempts": 2,
+  "visionSuccesses": 1,
+  "textCalls": 2,
+  "imageCalls": 1,
+  "inputTokens": 227,
+  "outputTokens": 422,
+  "notes": "非实际账单；两次视觉尝试按当前官方限时免费公告计。首轮失败保留；复测独立授权，关闭自动重试。"
+}

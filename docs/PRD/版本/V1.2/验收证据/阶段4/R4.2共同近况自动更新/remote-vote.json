@@ -1,0 +1,20 @@
+{
+  "at": 1790500397988,
+  "revision": 10,
+  "season": {
+    "settings": {
+      "mode": "virtual",
+      "weeks": 1,
+      "start_season": "spring"
+    },
+    "started_at": 1790500397,
+    "revision": 3,
+    "observed_at": 1790500397,
+    "timezone": "Asia/Shanghai",
+    "current_season": "spring",
+    "next_change_at": 1791105197
+  },
+  "voteStatus": "passed",
+  "unchangedItems": true,
+  "unchangedCompanions": true
+}

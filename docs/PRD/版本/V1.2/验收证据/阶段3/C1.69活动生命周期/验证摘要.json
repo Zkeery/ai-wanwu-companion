@@ -1,0 +1,73 @@
+{
+  "frontend": {
+    "tests": {
+      "exit": 0,
+      "summary": [
+        " Test Files  5 passed (5)",
+        "      Tests  100 passed (100)"
+      ]
+    },
+    "types": {
+      "exit": 0,
+      "summary": []
+    },
+    "lint": {
+      "exit": 0,
+      "summary": []
+    }
+  },
+  "build": {
+    "exit": 0,
+    "summary": [
+      "✓ Compiled successfully in 2.9s"
+    ]
+  },
+  "backend": {
+    "exit": 0,
+    "summary": [
+      "30 passed, 2 warnings in 4.09s"
+    ]
+  },
+  "command": {
+    "exit": 0,
+    "summary": [
+      "3 passed in 0.28s"
+    ]
+  },
+  "http": {
+    "owner": 200,
+    "anonymous": 401
+  },
+  "state": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "companion_id": "4",
+    "permission": {
+      "enabled": false,
+      "activities": [],
+      "revision": 0
+    },
+    "present": true,
+    "observed_at": 1790674547,
+    "next_allowed_at": 1790674547,
+    "tasks": [],
+    "automatic": {
+      "enabled": false,
+      "revision": 0,
+      "next_at": 0,
+      "today_count": 0,
+      "daily_limit": 2,
+      "viewing_until": 0,
+      "budget_available": false
+    },
+    "current_activity": null
+  },
+  "budget": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "cap": 0,
+    "committed": 0
+  },
+  "new_model_requests": 0,
+  "real_end_to_end": "pending_explicit_new_authorization"
+}

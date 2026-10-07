@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "confirmed_on": "2026-10-02",
+  "user_reply": "好，那就用Chrome ，继续吧",
+  "authorization_ref": "c175-manan-motion-20261002-3calls-0.30usd",
+  "continuation_ref": "c175-manan-motion-20261002-manual-1",
+  "character_id": 9,
+  "source_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+  "max_total_provider_requests": 3,
+  "total_budget_usd": "0.30",
+  "original_budget_ledger_must_be_retained": true,
+  "original_failure_evidence_must_be_retained": true,
+  "automatic_retries": 0,
+  "motion_adoption_authorized": false
+}

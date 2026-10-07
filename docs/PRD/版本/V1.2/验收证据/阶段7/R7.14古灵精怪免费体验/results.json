@@ -1,0 +1,53 @@
+{
+  "protocol_id": "r714-free-demo-whimsical-style-v1",
+  "mock": false,
+  "user_review": {
+    "date": "2026-09-26",
+    "feedback": "嗯，挺好的。这一次虽然没有我的参考图那么精致吧，但也还行。",
+    "style_direction": "accepted_for_current_development_baseline",
+    "refinement": "less_refined_than_reference; improvement_remains",
+    "numeric_scores": null,
+    "formal_generation_gate_passed": false
+  },
+  "route": "official_free_web_demo",
+  "max_demo_submissions": 2,
+  "direct_paid_api_calls": 0,
+  "project_display_gate_passed": false,
+  "cases": [
+    {
+      "case_id": "cup",
+      "prompt": "以参考照片中盛着咖啡的白色陶瓷杯为唯一主体，设计一个古灵精怪、温暖讨喜的物体小怪灵。物体本身就是身体，保留白色陶瓷釉面、左侧圆把手、杯口与浅棕色咖啡，让人一眼认出原来的杯子。身体圆滚滚、重心低，短小圆润的手脚与杯身自然连接。它有一点慵懒又臭屁：半眯的琥珀色眼睛、一高一低的眉毛、偏向一侧的小小得意嘴角，双手叉腰，微微挺肚子。杯口的咖啡香气卷成一缕歪歪的小烟旋，带极轻的暖金色微光，是原物延伸出的奇妙细节。统一精致立体收藏玩具风，陶瓷材质有真实光泽，柔和电影灯光、克制的青蓝边缘光、简洁灰蓝渐变背景，完整全身居中展示。不要常规大笑脸，不要平面卡通插画，不要普通人形，不要恐怖或凶恶，不要额外主体、盘子、食物、卡片边框、文字、标志、战力或稀有度。1024×1024正方形角色图。",
+      "prompt_sha256": "8697bed9103b7184d74ae00c8d531b6537c9666ee7f9089e0b515f551d1c2a1f",
+      "source_sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "status": "valid_image_observed",
+      "submitted_at": "2026-09-26T14:43:16.107Z",
+      "observed_at": "2026-09-26T14:43:47.836Z",
+      "model_label": "[klein] 9B",
+      "width": 1024,
+      "height": 768,
+      "blob_mime_type": "image/png",
+      "decoded_format": "JPEG",
+      "artifact": "cup-9b.jpg",
+      "displayed_rewritten_prompt": "A mischievous and endearing charming object spirit creature, with its body formed by the glossy ceramic white ceramic cup filled with light brown coffee, maintaining the original white glazed finish, the round handle on the left, and the cup opening with coffee. The creature has a round and plump body with a low center of gravity, and short, rounded short and rounded limbs naturally connected to the cup body. It has a slightly lazy and conceited expression: #b5651d half-closed eyes, one high, one low eyebrows, a small small, smug smile mouth turned to one side, with its {arm_pose} arms akimbo and a slightly {belly_posture} belly. The coffee aroma from the cup opening swirls into a wobbly small wisp small wisp, with a very subtle very subtle warm golden glow warm golden glow, a magical detail extended from the original object. The style is {toy_style} collectible toy, with realistic {material_sheen} ceramic sheen, soft {lighting_style} cinematic lighting, subtle {rim_light_color} rim light, and a simple {background_style} gradient background. Full body centered display, 1024x1024 square character image. No big smiling faces, no flat cartoon illustrations, no ordinary humanoids, no scary or fierce elements, no extra subjects, plates, food, card borders, text, logos, combat power or rarity [klein] 9B",
+      "timing": "not instrumented; observation timestamps are not generation latency"
+    },
+    {
+      "case_id": "apple",
+      "prompt": "以参考照片中的一颗红黄苹果为唯一主体，设计一个古灵精怪、温暖讨喜的物体小怪灵。苹果本身就是身体，保留红黄斑驳的果皮、圆润苹果轮廓与顶部果梗，让人一眼认出原来的苹果。身体圆滚滚、重心低，短小圆润的手脚与果身自然连接。它有一点狡黠又淘气：琥珀色眼睛朝一旁偷瞄，一侧眉毛挑起，偏向一侧的俏皮小笑，露出一颗小小圆牙；一手藏在身后，一手伸出像正要恶作剧。顶部果梗仍完整可辨，果梗旁飘着两三颗淡金色的小光点，像藏着一点小魔法。统一精致立体收藏玩具风，果皮材质和斑纹清楚，柔和电影灯光、克制的青蓝边缘光、简洁灰蓝渐变背景，完整全身居中展示。不要常规大笑脸，不要平面卡通插画，不要普通人形、其他水果、恐怖獠牙或凶恶，不要额外主体、卡片边框、文字、标志、战力或稀有度。1024×1024正方形角色图。",
+      "prompt_sha256": "37fbbc70c140e2bce61a004a616363f2a2a42a12660bba16041da9e72c0c56bc",
+      "source_sha256": "d39f93acccb418595184a041deb566a55f398ce667ec984ec1c438b9177ac4d8",
+      "status": "valid_image_observed",
+      "submitted_at": "2026-09-26T14:43:57.529Z",
+      "observed_at": "2026-09-26T14:44:27.631Z",
+      "model_label": "[klein] 9B",
+      "width": 1024,
+      "height": 768,
+      "blob_mime_type": "image/png",
+      "decoded_format": "JPEG",
+      "artifact": "apple-9b.jpg",
+      "displayed_rewritten_prompt": "mischievous, warm, and endearing object sprite of a playful apple sprite, with the apple itself forming its body. The sprite retains its mottled red and yellow mottled skin, round apple contour, and the stem on top, making it instantly recognizable as an apple. The body is plump and low-centered, with short, rounded short, rounded limbs naturally connected to the fruit body. It has a slightly mischievous and cheeky expression: #b88a00 eyes peeking to one side, one eyebrow raised, a playful small smile tilted to one side, revealing a single small round tooth . One hand is hidden behind its back, and the other is extended as if about to play a trick. The top stem is still fully discernible, with two or three #FFD700 small light spots floating near it, as if hiding a little magic. The overall style is exquisite three-dimensional collectible toy style , with clear skin texture and patterns, soft cinematic lighting cinematic lighting, subtle #ADD8E6 rim light, and a #A0B5C9 gradient background, centered and displayed in full body. No conventional big smiling face, no flat cartoon illustrations, no ordinary humanoids, other fruits, scary fangs or fierceness, no additional subjects, card borders, text, logos, combat power, or rarity. 1024x1024 square character image [klein] 9B",
+      "timing": "not instrumented; observation timestamps are not generation latency"
+    }
+  ],
+  "status": "style_direction_accepted_refinement_remains"
+}

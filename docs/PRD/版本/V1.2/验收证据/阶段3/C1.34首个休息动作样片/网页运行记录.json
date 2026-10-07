@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-28",
+  "scope": "AI万物伙伴 C1.34 rest motion sample",
+  "state": "downloaded_and_reviewed",
+  "submission_limit": 1,
+  "submitted": 1,
+  "model": "Seedance 2.0 Mini",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "prompt_sha256": "7c40e78c116b334b9eedd63ab39f3258c2ff3f2fe0932200f02e1d51a953de68",
+  "ratio": "4:3",
+  "duration_seconds": 6,
+  "funding": "existing free daily allowance only; no purchase, recharge or upgrade",
+  "precheck": "standard plan; current-period usage 0%; free trial displayed through October 25",
+  "task_url": "https://www.doubao.com/chat/38444365112456706",
+  "outcome": {
+    "web_result": "你的视频生成好了。",
+    "file": "rest-doubao-mini.mp4",
+    "file_sha256": "650cdf7f7708db4cdd63c8a046ae64b75778002332847bc68175543a73c44771",
+    "duration_seconds": 6.08,
+    "resolution": "960x720",
+    "fps": 24,
+    "video_codec": "h264",
+    "has_audio": true,
+    "has_watermark": true,
+    "review": "recognizable rest/yawn, stable character and background; opening/ending arm pose and expression differ, so loop seam is visible; candidate only, not bound",
+    "classified_pack_check": "dry-run left no output; write produced validated rest manifest and 6042ms silent video in ignored isolated runtime directory; no import"
+  }
+}

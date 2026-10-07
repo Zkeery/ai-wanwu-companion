@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-28",
+  "checks": [
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  65 passed (65)",
+        "      Tests  714 passed (714)"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "99 passed, 2 warnings in 15.34s"
+      ]
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 2.7s",
+        "  Generating static pages using 9 workers (0/11) ...",
+        "  Generating static pages using 9 workers (2/11) \r",
+        "  Generating static pages using 9 workers (5/11) \r",
+        "  Generating static pages using 9 workers (8/11) \r",
+        "✓ Generating static pages using 9 workers (11/11) in 101ms"
+      ]
+    }
+  ],
+  "generated_config_restored": true,
+  "finalAfterPreviewLayout": [
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  65 passed (65)",
+        "      Tests  714 passed (714)"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 669ms",
+        "  Generating static pages using 9 workers (0/11) ...",
+        "  Generating static pages using 9 workers (2/11) \r",
+        "  Generating static pages using 9 workers (5/11) \r",
+        "  Generating static pages using 9 workers (8/11) \r",
+        "✓ Generating static pages using 9 workers (11/11) in 98ms"
+      ]
+    }
+  ]
+}

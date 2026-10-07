@@ -1,0 +1,54 @@
+[
+  {
+    "filename": "超尺寸测试.png",
+    "status": 400,
+    "body": {
+      "error": {
+        "code": "image_dimensions",
+        "message": "图片长边不能超过 4096px，请缩小后重新选择"
+      }
+    },
+    "expected": 400,
+    "pass": true
+  },
+  {
+    "filename": "合成杯子.heic",
+    "status": 201,
+    "body": {
+      "id": 2,
+      "status": "done",
+      "objects": [
+        {
+          "id": 3,
+          "label": "杯子"
+        },
+        {
+          "id": 4,
+          "label": "植物"
+        }
+      ]
+    },
+    "expected": 201,
+    "pass": true
+  },
+  {
+    "receipt": {
+      "status": "ready",
+      "photo": {
+        "id": 2,
+        "status": "done",
+        "objects": [
+          {
+            "id": 3,
+            "label": "杯子"
+          },
+          {
+            "id": 4,
+            "label": "植物"
+          }
+        ]
+      }
+    },
+    "status": 200
+  }
+]

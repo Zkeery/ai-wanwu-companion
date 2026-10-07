@@ -1,0 +1,47 @@
+{
+  "status": "running",
+  "origin": "real_provider",
+  "started_at": 1790867622,
+  "deadline": 1790954022,
+  "observed_until": 1790869618,
+  "actual_24h_elapsed": false,
+  "largest_observation_gap_seconds": 67,
+  "gap_limit_seconds": 120,
+  "resumes": 2,
+  "scans": 34,
+  "sqlite_integrity": "ok",
+  "private": {
+    "tasks": 2,
+    "succeeded": 1,
+    "failed": 1,
+    "daily_counts": {
+      "20727": 2
+    },
+    "daily_limit_ok": true,
+    "shortest_interval_seconds": 736,
+    "cadence_ok": true
+  },
+  "shared": {
+    "tasks": 2,
+    "succeeded": 1,
+    "failed": 1,
+    "daily_counts": {
+      "20727": 2
+    },
+    "daily_limit_ok": true,
+    "shortest_interval_seconds": 736,
+    "cadence_ok": true
+  },
+  "provider_requests": 4,
+  "unique_provider_operations": 4,
+  "unresolved_provider_results": 0,
+  "usage_estimated_cny": 0.0015647,
+  "reserved_cny": 4.5824,
+  "actual_bill_verified": false,
+  "private_events": 1,
+  "shared_exchanges": 1,
+  "shared_returned_home": false,
+  "private_automatic_enabled": true,
+  "shared_automatic_enabled": true,
+  "formal_visual_quality_completed": false
+}

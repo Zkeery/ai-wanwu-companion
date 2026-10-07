@@ -1,0 +1,51 @@
+{
+  "desktop": [
+    {
+      "scene": "home",
+      "careSaved": true,
+      "careDisabled": true,
+      "record": true,
+      "overflow": false
+    },
+    {
+      "scene": "forest",
+      "careSaved": true,
+      "careDisabled": true,
+      "record": true,
+      "overflow": false
+    }
+  ],
+  "mobile": [
+    {
+      "scene": "home",
+      "careDisabled": true,
+      "progress": 112,
+      "record": true,
+      "overflow": false
+    },
+    {
+      "scene": "forest",
+      "careDisabled": true,
+      "progress": 109,
+      "record": true,
+      "overflow": false
+    },
+    {
+      "scene": "desert",
+      "careDisabled": true,
+      "progress": 189,
+      "record": true,
+      "overflow": false
+    }
+  ],
+  "storage": {
+    "scene": "desert",
+    "overflow": false,
+    "width": 320,
+    "iconWidth": 22,
+    "storedGrowth": 1552,
+    "careButton": false,
+    "restored": true
+  },
+  "desert_care_saved_and_record": true
+}

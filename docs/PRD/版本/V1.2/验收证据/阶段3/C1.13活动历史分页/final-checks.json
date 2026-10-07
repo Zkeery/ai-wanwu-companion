@@ -1,0 +1,14 @@
+{
+  "test": 0,
+  "lint": 0,
+  "typecheck": 0,
+  "build": 0,
+  "backendTests": 1317,
+  "frontendTests": 570,
+  "projectFiles": 20,
+  "staticArtifacts": 33,
+  "configuredSecretHits": 0,
+  "brokenLinks": [],
+  "diffCheck": 0,
+  "generatedConfigRestored": true
+}

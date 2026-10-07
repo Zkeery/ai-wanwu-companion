@@ -1,0 +1,19 @@
+{
+  "status": "opened_for_approved_batch",
+  "authorization_ref": "c175-manan-motion-20261002-3calls-0.30usd",
+  "source": "https://console.aihubmix.com/token",
+  "browser": "user_logged_in_Chrome",
+  "verified_on": "2026-10-02",
+  "price_verified_on": "2026-10-02",
+  "remaining_usd_approved": "0.30",
+  "original_remaining_usd": "0.08",
+  "unlimited": false,
+  "model_allowlist": ["gpt-image-2.5-sunburst"],
+  "fallback_models": 0,
+  "platform_key_display_sha256": "ee5116d95a9e9e0d7b21c3c6ad22134eda37442c6a8e2f3838958988ae478ac0",
+  "project_key_matches_observed_mask": true,
+  "price_source": "https://aihubmix.com/model/gpt-image-2.5-sunburst",
+  "pricing": {"text_input_usd_per_million_tokens": "5", "image_input_usd_per_million_tokens": "8", "image_output_usd_per_million_tokens": "30", "medium_1024_output_reference_usd": "0.053", "input_is_additional": true},
+  "actual_bill_verified": false,
+  "restore_original_remaining_after_batch": true
+}

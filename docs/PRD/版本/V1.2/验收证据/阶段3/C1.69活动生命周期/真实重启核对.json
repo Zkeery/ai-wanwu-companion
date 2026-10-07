@@ -1,0 +1,96 @@
+{
+  "before": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "companion_id": "4",
+    "permission": {
+      "enabled": true,
+      "activities": [
+        "rest",
+        "walk"
+      ],
+      "revision": 1
+    },
+    "present": true,
+    "observed_at": 1790674799,
+    "next_allowed_at": 1790675340,
+    "tasks": [
+      {
+        "id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+        "state": "done",
+        "created_at": 1790674740,
+        "retry_at": 0,
+        "activity": "walk",
+        "target_id": null,
+        "error_code": null,
+        "dispatch_requested": false,
+        "reason": "当前时间不在22:00至07:00强制休息时段，且允许活动包含walk，故选择步行。"
+      }
+    ],
+    "automatic": {
+      "enabled": false,
+      "revision": 0,
+      "next_at": 0,
+      "today_count": 0,
+      "daily_limit": 2,
+      "viewing_until": 0,
+      "budget_available": false
+    },
+    "current_activity": {
+      "task_id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+      "activity": "walk",
+      "target_id": null,
+      "started_at": 1790674752,
+      "expires_at": 1790675352,
+      "source": "viewing"
+    }
+  },
+  "after": {
+    "origin": "real_provider",
+    "space_id": "5cdc8bd2-c97d-4e54-befd-34cc6f584ceb",
+    "companion_id": "4",
+    "permission": {
+      "enabled": true,
+      "activities": [
+        "rest",
+        "walk"
+      ],
+      "revision": 1
+    },
+    "present": true,
+    "observed_at": 1790674834,
+    "next_allowed_at": 1790675340,
+    "tasks": [
+      {
+        "id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+        "state": "done",
+        "created_at": 1790674740,
+        "retry_at": 0,
+        "activity": "walk",
+        "target_id": null,
+        "error_code": null,
+        "dispatch_requested": false,
+        "reason": "当前时间不在22:00至07:00强制休息时段，且允许活动包含walk，故选择步行。"
+      }
+    ],
+    "automatic": {
+      "enabled": false,
+      "revision": 0,
+      "next_at": 0,
+      "today_count": 0,
+      "daily_limit": 2,
+      "viewing_until": 0,
+      "budget_available": false
+    },
+    "current_activity": {
+      "task_id": "fcabc35d-a925-4d94-b53a-dba96ce4c5a6",
+      "activity": "walk",
+      "target_id": null,
+      "started_at": 1790674752,
+      "expires_at": 1790675352,
+      "source": "viewing"
+    }
+  },
+  "same_task_and_activity": true,
+  "http": 200
+}

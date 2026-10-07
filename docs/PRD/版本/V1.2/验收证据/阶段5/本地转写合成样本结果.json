@@ -1,0 +1,28 @@
+{
+  "plan": "本地转写合成样本预检方案.md",
+  "model_revision": "536b0662742c02347bc0e980a01041f333bce120",
+  "dependency": "faster-whisper 1.2.1",
+  "audio_source": "macOS Tingting zh_CN synthetic speech, 16kHz 16-bit mono WAV",
+  "external_model_calls": 0,
+  "batches": [
+    {
+      "id": "preflight-1",
+      "worker_config": "max_new_tokens=448",
+      "cases": [
+        {"case_id": "CN-01", "input": "你好，我今天有点累。", "result": "HTTPException", "seconds": 4.153},
+        {"case_id": "CN-02", "input": "我们明天一起去公园散步。", "result": "HTTPException", "seconds": 2.473},
+        {"case_id": "CN-03", "input": "请帮我记住，我喜欢蓝色的花。", "result": "HTTPException", "seconds": 1.819}
+      ],
+      "diagnostic": "Direct worker run on CN-01 raised ValueError: prompt length 3 + max_new_tokens 448 = 451 > model max_length 448. Service returned transcription_unavailable/503."
+    },
+    {
+      "id": "preflight-2",
+      "worker_config": "model default max_length; no explicit max_new_tokens",
+      "cases": [
+        {"case_id": "CN-01", "input": "你好，我今天有点累。", "output": "你好,我今天有點累。", "seconds": 2.334, "ok": true},
+        {"case_id": "CN-02", "input": "我们明天一起去公园散步。", "output": "我們明天一起去公園散步", "seconds": 1.889, "ok": true},
+        {"case_id": "CN-03", "input": "请帮我记住，我喜欢蓝色的花。", "output": "请帮我记住,我喜欢蓝色的花。", "seconds": 1.91, "ok": true}
+      ]
+    }
+  ]
+}

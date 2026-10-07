@@ -1,0 +1,73 @@
+{
+  "differences": [
+    {
+      "table": "characters",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "life_runtime_dispatches",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "life_runtime_events",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "life_runtime_permissions",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "life_runtime_setting_receipts",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "life_runtime_tasks",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "living_spaces",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "objects",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "photos",
+      "deleted": 0,
+      "changed": 0,
+      "added": 3
+    },
+    {
+      "table": "scene_imports",
+      "deleted": 0,
+      "changed": 0,
+      "added": 1
+    },
+    {
+      "table": "sessions",
+      "deleted": 0,
+      "changed": 1,
+      "added": 0
+    }
+  ],
+  "providerCallRows": 0,
+  "setupRepeatExit": 0,
+  "setupRepeatRowsUnchanged": true
+}

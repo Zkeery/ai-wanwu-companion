@@ -1,0 +1,8 @@
+{
+  "mode": "browser-only synthetic fixture; no model or DB writes",
+  "posts": 2,
+  "postCompletionReads": 0,
+  "replyCount": 2,
+  "sendEnabled": true,
+  "stillWaiting": false
+}

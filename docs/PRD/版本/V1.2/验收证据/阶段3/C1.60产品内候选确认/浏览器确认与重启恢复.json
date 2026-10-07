@@ -1,0 +1,26 @@
+{
+  "state": "ready",
+  "generation_requests": 0,
+  "activities": [
+    {
+      "activity": "observe",
+      "state": "waiting_source",
+      "attempts": 0
+    },
+    {
+      "activity": "rest",
+      "state": "waiting_source",
+      "attempts": 0
+    },
+    {
+      "activity": "walk",
+      "state": "ready",
+      "attempts": 1
+    }
+  ],
+  "bound_assets": 1,
+  "review_scope": "isolated_browser_workflow_replay",
+  "restored_after_real_service_restart": true,
+  "browser_review_posts": 1,
+  "backend_new_pid": 72498
+}

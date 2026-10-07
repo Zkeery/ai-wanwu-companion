@@ -1,0 +1,17 @@
+{
+  "desktop": {
+    "width": 1440,
+    "detailVisible": true,
+    "cancelledHasChat": false
+  },
+  "mobile": {
+    "draft": "想和你聊聊这条离线体验记录：\n本轮安排于 2026/9/27 18:16:33（上海时间） · 家庭庭院\n预设活动（离线样例）：歇了一会儿。",
+    "overflow": false,
+    "writes": 0
+  },
+  "close": {
+    "focused": "查看活动详情",
+    "open": false,
+    "writes": 0
+  }
+}

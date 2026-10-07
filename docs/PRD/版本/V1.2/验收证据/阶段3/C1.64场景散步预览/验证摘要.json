@@ -1,0 +1,66 @@
+{
+  "date": "2026-09-29",
+  "tests": {
+    "tests": {
+      "exit": 0,
+      "summary": [
+        " Test Files  5 passed (5)",
+        "      Tests  51 passed (51)",
+        "   Duration  2.16s (environment 52%, tests 20%, transform 14%, setup 8%, import 6%)"
+      ]
+    },
+    "typecheck": {
+      "exit": 0,
+      "summary": []
+    },
+    "lint": {
+      "exit": 0,
+      "summary": []
+    },
+    "build": {
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 941ms"
+      ]
+    }
+  },
+  "scene_regression": {
+    "exit": 0,
+    "summary": [
+      " Test Files  3 passed (3)",
+      "      Tests  42 passed (42)",
+      "   Duration  2.44s (environment 33%, tests 29%, setup 16%, transform 15%, import 8%)"
+    ]
+  },
+  "user_feedback": "能用",
+  "new_model_requests": 0,
+  "browser": {
+    "engine": "ego-browser",
+    "qa_character": 2,
+    "user_character": 4,
+    "desktop": [
+      1500,
+      760
+    ],
+    "mobile": [
+      390,
+      844
+    ],
+    "mobile_document_width": 390,
+    "real_sprite_canvas": true,
+    "native_mouse_start": true,
+    "pause": true,
+    "resume": true,
+    "end": true,
+    "editing_unmounts": true,
+    "emulation_cleared": true,
+    "window_returned": true
+  },
+  "user_http": {
+    "scene": 200,
+    "motion": 200,
+    "state": "ready",
+    "pack_id": "90af4205888d48af924422f7c096b068"
+  },
+  "whole_phase_complete": false
+}

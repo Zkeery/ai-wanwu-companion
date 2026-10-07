@@ -1,0 +1,62 @@
+{
+  "mode": "port3036 browser-only simulation; no backend writes or model calls",
+  "restored": {
+    "writes": [],
+    "origin": {
+      "kind": "team",
+      "theme": "fruit",
+      "teamId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+    },
+    "hasReturn": true
+  },
+  "returned": {
+    "selected": "900001",
+    "writes": [],
+    "overflow": false,
+    "position": 0,
+    "savedPosition": null
+  },
+  "teamRoundTrip": {
+    "savedPosition": {
+      "y": 425,
+      "offset": 0
+    },
+    "writesBeforeConfirmation": 0,
+    "result": {
+      "writes": [
+        "PUT /api/v1/teams/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/submissions/900001"
+      ],
+      "previewRemoved": true,
+      "y": 502,
+      "overflow": false
+    }
+  },
+  "themeRoundTrip": {
+    "before": {
+      "writes": [
+        "POST /api/v1/photos",
+        "POST /api/v1/characters"
+      ],
+      "overflow": false
+    },
+    "after": [
+      "POST /api/v1/photos",
+      "POST /api/v1/characters",
+      "PUT /api/v1/wall/characters/900001"
+    ],
+    "previewRemoved": true
+  },
+  "positionBeforeConfirmation": {
+    "y": 425,
+    "saved": {
+      "y": 425,
+      "offset": 0
+    }
+  },
+  "inaccessibleTeam": {
+    "writes": [],
+    "loadedCharacters": false,
+    "hasCollection": true,
+    "hasSubmit": false
+  }
+}

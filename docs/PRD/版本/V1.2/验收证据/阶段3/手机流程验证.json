@@ -1,0 +1,51 @@
+{
+  "width": 390,
+  "scrollWidth": 375,
+  "season": "spring",
+  "summary": "这里的四季 · 春天跟随现实 · 南半球调整四季",
+  "requests": [
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 7
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 9
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 7
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 24
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 38
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 284
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 203
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 46
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season/preview",
+      "ms": 21
+    },
+    {
+      "path": "/api/v1/living/spaces/6901c0a9-8212-41c0-85a0-46306620af2e/season",
+      "ms": 55
+    }
+  ],
+  "previewDidNotChangeSeason": true,
+  "reloadRestored": true,
+  "confirmReachedByScrolling": true
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=AI Companion local maintenance alarm checks
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=1min
+Unit=ai-companion-monitor.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,23 @@
+{
+  "origin": "real_eval",
+  "reserved_micro": 1145600,
+  "attempts": [
+    {
+      "case_id": "day-observe",
+      "state": "failed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "day-observe",
+        "billing": "reserved_unknown",
+        "error_code": "provider_error",
+        "elapsed_ms": 5015
+      }
+    }
+  ],
+  "price_check": {
+    "model": "qwen3.8-flash",
+    "updated_at": "2026-09-22 15:25:56",
+    "reserve_micro": 1145600
+  }
+}

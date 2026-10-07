@@ -1,0 +1,13 @@
+{
+  "input_tokens": 220,
+  "output_tokens": 456,
+  "image_count": 1,
+  "estimated_cny": 0.0174072,
+  "actual_billed_cny": null,
+  "estimate_basis": "provider usage × official listed prices, not billing receipt",
+  "conservative_reserved_cny": 0.046729599999999996,
+  "budget_cny": 0.05,
+  "within_budget": true,
+  "provider_calls": 3,
+  "automatic_retries": 0
+}

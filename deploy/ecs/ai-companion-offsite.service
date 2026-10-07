@@ -1,0 +1,24 @@
+[Unit]
+Description=AI Companion authorized bounded offsite backup
+After=network-online.target ai-companion-backup.service
+Wants=network-online.target
+RequiresMountsFor=/srv/ai-companion/data
+
+[Service]
+Type=oneshot
+User=aicompanion
+Group=aicompanion
+WorkingDirectory=/srv/ai-companion/current/backend
+EnvironmentFile=/etc/ai-companion/cloud-backup.env
+EnvironmentFile=/etc/ai-companion/cloud-schedule.env
+ExecStart=/srv/ai-companion/current/backend/.venv/bin/python -m scripts.ecs_offsite dispatch
+TimeoutStartSec=240
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/ai-companion/backups
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+StandardOutput=journal
+StandardError=journal

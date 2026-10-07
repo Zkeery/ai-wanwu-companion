@@ -1,0 +1,46 @@
+{
+  "protocol_id": "r79-seedream-flash-i2i-real-v1",
+  "source_protocol_id": "r78-seedream-flash-i2i-offline-v1",
+  "model": "doubao-seedream-5-0-flash-260915",
+  "mock": false,
+  "status": "stopped_after_over_8s",
+  "calls": [
+    {
+      "sample_id": "r79-01",
+      "case_id": "cup",
+      "repeat": 1,
+      "input_sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "prompt_sha256": "2244ef8201fff1a790db353b8776ecb418e6db0e583d8d444c87e96fac7be964",
+      "status": "succeeded",
+      "reserved_cny": "0.12",
+      "model_post_ms": 10658.377,
+      "http_status": 200,
+      "response_shape": {
+        "data_is_list": true,
+        "data_count": 1,
+        "first_is_object": true,
+        "first_has_b64_json": true,
+        "first_has_url": false
+      },
+      "response_model_matches": true,
+      "reported_generated_images": 1,
+      "artifact": "r79-01.jpg",
+      "output_sha256": "7e7944e57f1095c988a1aca9760a6972dd46d995f86c04d2a0e1f00333c15c9b",
+      "quality": "NEED_REVIEW",
+      "local_total_ms": 10660.512,
+      "local_within_8s": false
+    }
+  ],
+  "max_calls": 8,
+  "unit_reserve_cny": "0.12",
+  "approved_ceiling_cny": "1.20",
+  "reserved_cny": "0.12",
+  "price_verified_on": "2026-09-26",
+  "billable_requests_attempted": 1,
+  "release_passed": false,
+  "quality": "NEED_REVIEW",
+  "browser_e2e_latency": "NOT_TESTED",
+  "timing_scope": "local preprocess through validated image save; excludes browser upload/display",
+  "source_manifest_sha256": "6156206ddedb2d84d94090e5e502654428e6807f51b0933ac3197ab23c4d5451",
+  "script_sha256": "62fc1d04ae0f92960234c5c4fe720d4e3017a9483314a0d089503c2a59916b14"
+}

@@ -1,0 +1,25 @@
+{
+  "mode": "isolated mock fixture, real HTTP via Next proxy",
+  "samples": [
+    {
+      "path": "/api/v1/characters/1/personality",
+      "ms": 53.4
+    },
+    {
+      "path": "/api/v1/personality-options",
+      "ms": 53.5
+    },
+    {
+      "path": "/api/v1/personality-options",
+      "ms": 47.6
+    },
+    {
+      "path": "/api/v1/characters/1/personality",
+      "ms": 55.4
+    },
+    {
+      "path": "/api/v1/characters/1/personality",
+      "ms": 17.7
+    }
+  ]
+}

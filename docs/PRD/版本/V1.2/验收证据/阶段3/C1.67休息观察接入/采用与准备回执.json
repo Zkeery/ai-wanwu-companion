@@ -1,0 +1,40 @@
+{
+  "reviews": [
+    {
+      "job_id": "964db7f87eff7a8643958819332813faf30e3e06e39d1243029c8ba81650214a",
+      "activity": "rest",
+      "state": "queued",
+      "queue_state": "queued"
+    },
+    {
+      "job_id": "a9641db1bafd18320d5b718b5e7dd40f13d2eae26e6bea9a9989c20015c05beb",
+      "activity": "observe",
+      "state": "queued",
+      "queue_state": "queued"
+    }
+  ],
+  "preparation": {
+    "character_id": 4,
+    "activities": [
+      {
+        "activity": "rest",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "walk",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      },
+      {
+        "activity": "observe",
+        "state": "ready",
+        "attempts": 1,
+        "error_code": null
+      }
+    ]
+  },
+  "new_model_requests": 0
+}

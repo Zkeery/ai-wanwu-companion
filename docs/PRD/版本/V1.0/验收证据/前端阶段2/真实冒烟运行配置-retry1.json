@@ -1,0 +1,32 @@
+{
+  "budget_cny": 0.05,
+  "preflight_ceiling_cny": 0.046729599999999996,
+  "prior_reserved_cny": 0,
+  "batch": "retry1",
+  "models": {
+    "vision": "ling-3.0-flash-vl",
+    "chat": "qwen3.8-flash",
+    "image": "wan2.6-t2i"
+  },
+  "calls": {
+    "vision": 1,
+    "text": 2,
+    "image": 1
+  },
+  "max_retries": 0,
+  "max_tokens_per_text_call": 1024,
+  "max_input_text_bytes": 6000,
+  "prices": {
+    "vision": "Current official announcement: temporarily free",
+    "chat_input_conservative_cny_per_million": 2.1,
+    "chat_output_cny_per_million": 2.7,
+    "image_cny_each": 0.016
+  },
+  "pricing_checked": "2026-09-18",
+  "pricing_sources": [
+    "https://maas.antdigital.com/models/modelservice-1779365948338001295",
+    "https://maas.antdigital.com/models/modelservice-1788174495570001431"
+  ],
+  "fixture_sha256": "dec732d8fbefe62b99285320f219f170b878d427cf6a83588a03672035608dd8",
+  "scope": "One isolated photo->correction->generation->rename->collection smoke; not visual quality scoring"
+}

@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-09-28T16:02:24.532Z",
+  "request": {
+    "model": "gpt-image-2.5-sunburst",
+    "async": false
+  },
+  "prompt_omitted": true,
+  "image_omitted": true,
+  "status": 403,
+  "error": {
+    "code": "async_not_enabled",
+    "message": "Asynchronous tasks are not enabled. Please go to https://console.aihubmix.com/async-tasks to activate.",
+    "tid": "2026092816022438601864780370234",
+    "type": "invalid_request_error"
+  }
+}

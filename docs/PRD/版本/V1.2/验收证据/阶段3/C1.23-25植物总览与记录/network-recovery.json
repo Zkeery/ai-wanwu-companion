@@ -1,0 +1,17 @@
+{
+  "offline": {
+    "retained": true,
+    "chatDisabled": true,
+    "screenshot": "offline-detail-mobile.png"
+  },
+  "recovery": {
+    "category": "照料",
+    "labels": [
+      "照料了小树"
+    ]
+  },
+  "automation_notes": [
+    "Close matched two buttons; resolved with scoped dialog close selector",
+    "Bottom navigation covered the refresh button center; normal 300px scrolling exposed it"
+  ]
+}

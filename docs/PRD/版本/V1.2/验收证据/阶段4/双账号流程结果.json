@@ -1,0 +1,9 @@
+{
+  "synthetic_accounts": 2,
+  "nonmember_denied": true,
+  "owner_only_items": true,
+  "majority_season_passed": true,
+  "leave_revoked": true,
+  "dissolve_refunded_departed_member": true,
+  "no_model_calls": true
+}

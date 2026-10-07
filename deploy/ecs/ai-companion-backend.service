@@ -1,0 +1,33 @@
+[Unit]
+Description=AI Companion backend (one persistent worker)
+After=network-online.target
+Wants=network-online.target
+RequiresMountsFor=/srv/ai-companion/data
+BindsTo=srv-ai\x2dcompanion-data.mount
+After=srv-ai\x2dcompanion-data.mount
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=aicompanion
+Group=aicompanion
+WorkingDirectory=/srv/ai-companion/current/backend
+EnvironmentFile=/etc/ai-companion/backend.env
+ExecStartPre=/srv/ai-companion/current/backend/.venv/bin/python -m scripts.ecs_runtime check backend
+ExecStart=/srv/ai-companion/current/backend/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8020 --workers 1 --no-access-log
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/ai-companion/data
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

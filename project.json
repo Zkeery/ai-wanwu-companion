@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "name": "AI万物伙伴",
+  "ports": {
+    "backend": 8020,
+    "frontend": 3020
+  }
+}

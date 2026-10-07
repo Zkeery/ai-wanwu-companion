@@ -1,0 +1,8 @@
+{
+  "check": "enter_does_not_bypass_send_lock",
+  "passed": true,
+  "detail": {
+    "sendButtonDisabled": true,
+    "actualConcurrentPosts": 1
+  }
+}

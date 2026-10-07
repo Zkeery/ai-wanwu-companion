@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-27",
+  "url": "http://127.0.0.1:3046/companions/3",
+  "source": "existing generated apple, manual contours",
+  "model_calls": 0,
+  "pointer_enter_started": true,
+  "pointer_leave_stopped": true,
+  "input_method": "native CDP mouse; ego hover/click did not reliably trigger the expected state",
+  "observed_1300ms": {
+    "raf": 20,
+    "changedPixels": 55018,
+    "cornerChanged": 0
+  },
+  "widths": [
+    {
+      "viewport": 1440,
+      "dialog": 520,
+      "horizontalOverflow": false,
+      "status": "正在跳舞"
+    },
+    {
+      "viewport": 768,
+      "dialog": 520,
+      "horizontalOverflow": false,
+      "status": "正在跳舞"
+    },
+    {
+      "viewport": 390,
+      "dialog": 356,
+      "horizontalOverflow": false,
+      "status": "正在跳舞"
+    }
+  ],
+  "button_start_stop": true,
+  "reducedMotion": true,
+  "reopenReady": true,
+  "isolated_backend_restart_restored": true,
+  "repeated_import_character_id": 3,
+  "emulation_restored": true
+}

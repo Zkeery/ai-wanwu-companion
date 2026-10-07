@@ -1,0 +1,89 @@
+{
+  "date": "2026-09-21",
+  "baseline": "26115fa",
+  "backend_tests": {
+    "passed": 491,
+    "total": 491
+  },
+  "frontend_tests": {
+    "passed": 158,
+    "total": 158
+  },
+  "typecheck": "passed",
+  "lint": "passed",
+  "production_build": "passed",
+  "paid_model_calls": 0,
+  "responsive_widths": [
+    360,
+    390,
+    430,
+    768,
+    1440
+  ],
+  "horizontal_overflow_px": 0,
+  "restart": {
+    "main": {
+      "pid": 56466,
+      "before_counts": {
+        "characters": 8,
+        "generation_charges": 0,
+        "generation_credits": 0,
+        "living_memberships": 0,
+        "living_receipts": 35,
+        "living_spaces": 8,
+        "memories": 4,
+        "messages": 25,
+        "objects": 54,
+        "photo_requests": 13,
+        "photos": 14,
+        "recreations": 0,
+        "scene_agent_chats": 0,
+        "scene_agent_runs": 0,
+        "scene_imports": 2,
+        "scene_proposals": 0,
+        "scene_states": 7,
+        "sessions": 6,
+        "users": 5,
+        "verification_codes": 3
+      },
+      "all_tables_unchanged": true
+    },
+    "preview": {
+      "pid": 56475,
+      "before_counts": {
+        "characters": 5,
+        "generation_charges": 4,
+        "generation_credits": 2,
+        "living_memberships": 0,
+        "living_receipts": 5,
+        "living_spaces": 6,
+        "memories": 0,
+        "messages": 12,
+        "objects": 8,
+        "photo_requests": 3,
+        "photos": 4,
+        "recreations": 1,
+        "scene_agent_chats": 6,
+        "scene_agent_runs": 6,
+        "scene_imports": 3,
+        "scene_proposals": 0,
+        "scene_states": 4,
+        "sessions": 3,
+        "users": 3,
+        "verification_codes": 1
+      },
+      "all_tables_unchanged": true
+    }
+  },
+  "secret_check": {
+    "secretValuesChecked": 1,
+    "filesChecked": 44,
+    "secretMatchFiles": 0
+  },
+  "remaining": [
+    "R4 真实模型契约与质量验收",
+    "完整场景美术及真机体验",
+    "旧密集坐标不自动重排",
+    "V1.2 全链路 5 秒与模型更换"
+  ]
+}

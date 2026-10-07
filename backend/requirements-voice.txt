@@ -1,0 +1,2 @@
+# Optional local ASR; install only in this project's virtual environment.
+faster-whisper==1.2.1

@@ -1,0 +1,21 @@
+{
+  "tests": {
+    "exit": 0,
+    "summary": [
+      " Test Files  1 passed (1)",
+      "      Tests  5 passed (5)"
+    ]
+  },
+  "typecheck": {
+    "exit": 0,
+    "summary": []
+  },
+  "build": {
+    "exit": 1,
+    "summary": [
+      "⨯ Failed to load next.config.ts, see more info here https://nextjs.org/docs/messages/next-config-error",
+      "> Build error occurred",
+      "Error: Production configuration blocked: remove development login hints and offline preview flags."
+    ]
+  }
+}

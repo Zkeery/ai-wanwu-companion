@@ -1,0 +1,36 @@
+{
+  "confirmed": true,
+  "user_reply": "可以",
+  "date": "2026-10-02",
+  "total_budget_cny": 8,
+  "web": {
+    "budget_cny": 5,
+    "requests_max": 12,
+    "authorization_ref": "real-web-20261002-5cny-12requests"
+  },
+  "life": {
+    "budget_cny": 3,
+    "requests_max": 2,
+    "purpose_limits": {
+      "private": 1,
+      "shared": 1
+    },
+    "authorization_ref": "acceptance-life-20261002-3cny-2requests"
+  },
+  "browser": {
+    "new_ego_window_authorized": true,
+    "scope": "万物伙伴本地3059网页，桌面与手机宽度验收"
+  },
+  "automatic_retries": 0,
+  "original_unknown_reservation_retained": true,
+  "original_batch_replay_authorized": false,
+  "new_paid_motion_authorized": false,
+  "scope": [
+    "新网页拍照生成",
+    "文字聊天",
+    "新网页同图再创作",
+    "上传到图片显示≤8秒测速",
+    "独立真实连续24小时生活"
+  ],
+  "fee_accounts_independent": true
+}

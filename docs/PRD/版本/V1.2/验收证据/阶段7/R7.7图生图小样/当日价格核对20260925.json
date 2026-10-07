@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-09-25T12:23:43+08:00",
+  "source": "https://maas.antdigital.com/models/modelservice-1785985854107001982",
+  "model": "qwen-image-3.0",
+  "provider": "antdigital",
+  "input_cny_per_image": "0.02",
+  "output_cny_per_image": "0.18",
+  "one_input_one_output_estimate_cny": "0.20",
+  "attempt_limit": 8,
+  "estimated_reservation_cny": "1.60",
+  "approved_ceiling_cny": "2.00",
+  "provider_latency_display": "0ms / no data on current page; not a project measurement",
+  "authorization": "2026-09-25 user replied 好的 请继续 to the explicit R7.7 8-attempt / 2-CNY proposal",
+  "actual_invoice_verified": false
+}

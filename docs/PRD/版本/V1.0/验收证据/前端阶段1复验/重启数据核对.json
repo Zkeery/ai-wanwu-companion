@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-09-18T14:17:46.054Z",
+  "results": [
+    {
+      "path": "/characters",
+      "status": 200,
+      "unchanged": true
+    },
+    {
+      "path": "/characters/2/scene",
+      "status": 200,
+      "unchanged": true
+    },
+    {
+      "path": "/characters/2/messages",
+      "status": 200,
+      "unchanged": true
+    },
+    {
+      "path": "/characters/2/memories",
+      "status": 200,
+      "unchanged": true
+    },
+    {
+      "path": "/characters/1/messages",
+      "status": 200,
+      "unchanged": true
+    },
+    {
+      "path": "/characters/1/memories",
+      "status": 200,
+      "unchanged": true
+    },
+    {
+      "path": "/characters/1/scene",
+      "status": 200,
+      "unchanged": true
+    }
+  ]
+}

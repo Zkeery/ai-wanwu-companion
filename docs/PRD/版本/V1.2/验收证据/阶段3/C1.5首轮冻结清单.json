@@ -1,0 +1,35 @@
+{
+  "version": "c15-v1",
+  "model": "qwen3.8-flash",
+  "endpoint": "https://maas-api.antdigital.com/v1",
+  "prompt_sha256": "60f5656390db84a7d4f2cdb72c5a19510dd636ebda74660ff08b3b7cd3c71d48",
+  "cases": [
+    {
+      "case_id": "day-observe",
+      "input_sha256": "9ea02a734d074c7fd583647d532bf0089eb9dd124ba0972613f48d598f1b38e0"
+    },
+    {
+      "case_id": "night-rest",
+      "input_sha256": "8ca9675c35588f03438a67df49d1bcb7c81dc2caf99677a8967881ec98f145c0"
+    },
+    {
+      "case_id": "empty-walk",
+      "input_sha256": "0e7a49571dea20c6ee8565fefb41b2f2182302137ef9bed12898b9b95dbde647"
+    }
+  ],
+  "source_sha256": {
+    "life_planner_pilot.py": "0172708f79e95e8a65223131dac2ee9489a6a8edb3bf4520c03253ba212fb193",
+    "life_provider.py": "981a4fc0f649f3ad55d9c7b14910d56be036297125167c97209ea103609c1e70",
+    "life_planner.py": "99a0cd2b791ba4268250a83c60cb46daffc11b87ad92256e1ac84b5beea4c0f2",
+    "life_planning.py": "6495d3a2459f9312fe55e988f2e30bc683f0b213e6785b6cf45502bc81ed16d6"
+  },
+  "reserve_per_call_micro": 1145600,
+  "total_reserved_micro": 3436800,
+  "budget_micro": 4000000,
+  "retries": 0,
+  "requested_output_tokens": 512,
+  "billing_input_limit": 1000000,
+  "billing_output_limit": 128000,
+  "mode": "read_only_candidate_validation",
+  "requires_explicit_approval": true
+}

@@ -1,0 +1,171 @@
+{
+  "mock": false,
+  "manifest": {
+    "scope": "One synthetic object; isolated database and uploads; real localhost TCP/SSE timing",
+    "label": "一只米白色陶瓷杯，带圆形把手",
+    "calls": {
+      "vision": 0,
+      "text": 2,
+      "image": 1
+    },
+    "models": {
+      "chat": "qwen3.8-flash",
+      "image": "wan2.6-t2i"
+    },
+    "budget_cny": 0.05,
+    "preflight_ceiling_cny": 0.046729599999999996,
+    "max_retries": 0,
+    "max_input_text_bytes": 6000,
+    "max_tokens_per_text_call": 1024,
+    "image_count": 1,
+    "image_size": "1024x1024",
+    "threshold_seconds": 30,
+    "prices": {
+      "chat_input_conservative_cny_per_million": 2.1,
+      "chat_output_cny_per_million": 2.7,
+      "image_cny_each": 0.016
+    },
+    "price_evidence": "价格核对.json",
+    "approval_required": true,
+    "source_sha256": {
+      "backend/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/api/characters.py": "dd81c4e1c74b9f435ed2a232a1b0276d756cbd2260120cc62984ab2615656e8b",
+      "backend/app/api/chat.py": "e3507fb45b3e5d9e21ad8ff933b3eb76c1b2072a8c927b4ab8606d0dfc88d081",
+      "backend/app/api/photos.py": "1a60413871133b803b4159774d55678e47a14d13c611d2962077902e22b915b9",
+      "backend/app/api/scene.py": "5ba790802964474c5406a94d65f34e67e0f108879d4fe5a9c55b08a837ed6985",
+      "backend/app/core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "backend/app/core/config.py": "75421cf3d5e302c00c387fb14f143bf5ca1031ed00dce7babff5fe22f79e3085",
+      "backend/app/core/database.py": "64a11ccf11fbb2de4b6c8f2572ea661fc8ebe9b406b025f5aa799357b8377921",
+      "backend/app/core/errors.py": "63533be0dbb51a9a957bcc8140cf22e4cd7ddf3279cb8cd89f552670e7c96fa2",
+      "backend/app/main.py": "973ac8a1b6f6816e65fcffe9504ee70c9616dcc6821b5ce3a6dfc986213be28d",
+      "backend/app/models/__init__.py": "38fb106f4198b53cac1c49372c9b2e3bca571dd23b0111042ee977efb95f59ac",
+      "backend/app/models/models.py": "7c478935fe5c7ae72514f6b858dddee8925551597634be1e9d7aeedf24c662ea",
+      "backend/app/schemas/__init__.py": "567c65ce16be0a4f6e64695d1191cd43288414ada6412ec7a041276d8eb0b531",
+      "backend/app/schemas/schemas.py": "cfa86b0b4f4cad59efe269283153143c99a5f234fc84373a12a0d27f7a4f6af8",
+      "backend/app/services/__init__.py": "bfcda7833d77b16115308bf6c56a89653efc44c5e1b0dff09fad8b3ffb262c24",
+      "backend/app/services/character_generation.py": "7c04029fc3c74ca5ab6aaf2baea834632da68138cdb346c6329edbc851750e3f",
+      "backend/app/services/character_images.py": "d4267f6a3276d1dcc43c9d9d2a3e583896792fb3c56e095f2b7e1d9c96499099",
+      "backend/app/services/chat.py": "f625b7f17d09cd381635e37005ae3c982412e8b8a0d5f3979927ec2267f61ce3",
+      "backend/app/services/generation_stream.py": "b92af8cc27862e0177df3d8f146f035895bab096df4cc1cf38404a14c6afd3e5",
+      "backend/app/services/model_client.py": "286518ef89597163f30479ebc5f707e79a75f04bf986091fcbe55a17c8c27db3",
+      "backend/app/services/parsers.py": "00f1a2d4ba57484153b39b13a8e206ca92cccaf28a090d22e21ab635a0680af9",
+      "backend/app/services/photo_input.py": "194697d8a87a32016cffa8bf5cd3651e364786ba2c7e8638bc2d1b2e653566db",
+      "backend/app/services/prompts.py": "026cad7df2e51f1b809850b6eab1383bfc0b23687ddcf66cb0d19a3e6729f124",
+      "backend/app/services/scene.py": "a28965b63ed3920fb3a40904063c9fc208b44b73b8ed8481d754fc7d4204415d",
+      "backend/scripts/run_generation_latency_smoke.py": "3160d6b550c821819e1e6fd47182c2ebb0f1f7b790283b0889d3431c6b9eca46"
+    },
+    "limitation": "One sample is not a P95 or a causal serial/parallel provider comparison."
+  },
+  "calls": [
+    {
+      "kind": "persona",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 0.4191914579987497,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 113,
+        "total_tokens": 375,
+        "completion_tokens": 262,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 113
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 230,
+          "text_tokens": 262
+        }
+      },
+      "end_seconds": 7.880102207998789,
+      "seconds": 7.460910750000039
+    },
+    {
+      "kind": "opening",
+      "model": "qwen3.8-flash",
+      "reserved_cny": 0.0153648,
+      "start_seconds": 7.89218612500008,
+      "http_status": 200,
+      "usage": {
+        "prompt_tokens": 107,
+        "total_tokens": 301,
+        "completion_tokens": 194,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 107
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 169,
+          "text_tokens": 194
+        }
+      },
+      "end_seconds": 19.336133582999537,
+      "seconds": 11.443947457999457
+    },
+    {
+      "kind": "image",
+      "model": "wan2.6-t2i",
+      "reserved_cny": 0.016,
+      "start_seconds": 7.893232791999253,
+      "http_status": 200,
+      "usage": {
+        "image_count": 1,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "size": "1024*1024",
+        "total_tokens": 0
+      },
+      "end_seconds": 20.300498167000114,
+      "seconds": 12.407265375000861
+    }
+  ],
+  "checks": {
+    "ready_and_persisted": true,
+    "image_saved": true,
+    "within_30_seconds": true,
+    "parallel_calls_overlap": true,
+    "exact_call_counts": true
+  },
+  "passed": true,
+  "generation_seconds": 21.536568957999407,
+  "events": [
+    {
+      "event": "started",
+      "data": {
+        "character_id": 1
+      },
+      "seconds": 0.023011125000266475
+    },
+    {
+      "event": "chunk",
+      "data": {
+        "stage": "正在生成人设…"
+      },
+      "seconds": 0.023198958000648418
+    },
+    {
+      "event": "chunk",
+      "data": {
+        "stage": "正在准备开场白和角色图…"
+      },
+      "seconds": 7.4928012500004115
+    },
+    {
+      "event": "done",
+      "data": {
+        "id": 1,
+        "name": "米白",
+        "persona": "温润安静的米白瓷杯少女，圆把手是她随时递出的贴心弧度。",
+        "opening_line": "你好，我是米白，若你觉得凉或累了，就把掌心轻轻放进我的圆把手里吧。",
+        "image_path": "characters/8aaece02607845f6ab0ba642fdf39c36.png",
+        "status": "ready",
+        "created_at": "2026-09-18T16:46:57.478961"
+      },
+      "seconds": 21.536567458000718
+    }
+  ],
+  "image_artifact": "真实并行生成杯子.png",
+  "provider_overlap_seconds": 11.442900791000284,
+  "reserved_cny": 0.046729599999999996,
+  "provider_calls": 3
+}

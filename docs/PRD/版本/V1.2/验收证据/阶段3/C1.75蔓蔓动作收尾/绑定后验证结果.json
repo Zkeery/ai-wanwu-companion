@@ -1,0 +1,76 @@
+{
+  "recorded_on": "2026-10-02",
+  "character_id": 9,
+  "adopted": true,
+  "user_reply": "可以没问题",
+  "review_ref": "c175-manan-three-motions-user-accepted-20261002",
+  "reviewed_summary_sha256": "37a4ab39be8a7d7a068d514034dc0e58aa2942d79c2815b91ab759600a6e54cb",
+  "activities": {
+    "rest": "ready",
+    "walk": "ready",
+    "observe": "ready"
+  },
+  "binding": {
+    "network_forbidden": true,
+    "new_provider_requests": 0
+  },
+  "generation_guard": {
+    "requests": 3,
+    "succeeded": 3,
+    "unknown": 0,
+    "reserved_usd": "0.30",
+    "automatic_retries": 0
+  },
+  "platform_bill": {
+    "verified": true,
+    "actual_usd": "0.068950",
+    "evidence": "平台结算与额度恢复.json",
+    "key_limit_restored_usd": "0.08"
+  },
+  "checks": {
+    "related_tests_passed": 80,
+    "related_tests_total": 80
+  },
+  "chrome": {
+    "formal_page": "http://127.0.0.1:3059/companions/9?tab=chat",
+    "desktop_three_ready": true,
+    "rest_played": true,
+    "walk_played": true,
+    "observe_played": true,
+    "reload_three_ready": true,
+    "mobile_emulation_width": 390,
+    "mobile_emulation_height": 844,
+    "mobile_rest_played": true,
+    "physical_phone_verified": false
+  },
+  "recovery": {
+    "capture_verified": true,
+    "restored_in_new_directory": true,
+    "table_count": 71,
+    "upload_files": 42,
+    "ledger_files": 59,
+    "root_state_files": 7,
+    "restored_activity_assets": 3,
+    "restored_preparation_ready": 3,
+    "current_service_restarted": false,
+    "temporary_restore_directory_removed": true,
+    "snapshot_kept": true
+  },
+  "stability": {
+    "evidence_origin": "offline_fixture",
+    "status": "running",
+    "scans_at_check": 73,
+    "largest_gap_seconds": 61,
+    "provider_requests": 0,
+    "deadline_shanghai": "2026-10-03 15:08:04",
+    "passed": false
+  },
+  "remaining_gates": [
+    "physical_phone",
+    "two_person_quality_calibration",
+    "generation_within_8_seconds",
+    "24h_continuity",
+    "live_sms_qualification",
+    "actual_cloud_deployment"
+  ]
+}

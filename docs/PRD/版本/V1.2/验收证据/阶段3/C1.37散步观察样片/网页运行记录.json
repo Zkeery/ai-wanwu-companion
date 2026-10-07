@@ -1,0 +1,45 @@
+{
+  "batch": "C1.37",
+  "date": "2026-09-28",
+  "source": {
+    "path": "../../阶段7/R7.14古灵精怪免费体验/apple-9b.jpg",
+    "sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c"
+  },
+  "provider_ui": {
+    "conversation": "https://www.doubao.com/chat/38444365112456706",
+    "model": "Seedance 2.0 Mini",
+    "aspect_ratio": "4:3",
+    "requested_duration_seconds": 6,
+    "plan_shown": "标准套餐",
+    "quota_usage_shown_before_each_request": "0%",
+    "receipt": "本次生成将消耗每日免费额度",
+    "purchase_or_recharge": false
+  },
+  "requests": [
+    {
+      "activity": "walk",
+      "submitted_at_local": "2026-09-28 14:22 Asia/Shanghai",
+      "submissions": 1,
+      "prompt_file": "散步提示词.txt",
+      "prompt_sha256": "8df5f45e9f2463b442741032bc27917ef0a21cc80d4d6361d4f316df24cf4c8f",
+      "video_file": "walk-doubao-mini.mp4",
+      "video_sha256": "bc0da8bb286013f97098044c7e9d9a87b90ee9fcc40b2a8ceb2bb8d4d16f6057",
+      "video_bytes": 737963,
+      "review": "candidate_only: small foot lift but two-step walk unclear; moving watermark, audio track, loop seam"
+    },
+    {
+      "activity": "observe",
+      "submitted_at_local": "2026-09-28 14:28 Asia/Shanghai",
+      "submissions": 1,
+      "prompt_file": "观察提示词.txt",
+      "prompt_sha256": "a432be5f1319240f1be5a4bd1fe4f1f951560a54869b81b96e60dd7299543569",
+      "video_file": "observe-doubao-mini.mp4",
+      "video_sha256": "bee6f0cf657c93a9773295df1fdf87ca89c0e415a3ce5c7282d1abfb7a4cd6ce",
+      "video_bytes": 651108,
+      "review": "candidate_only: turns head and raises hand, but original plain backdrop has no existing object to observe; moving watermark, audio track, loop seam"
+    }
+  ],
+  "media": "Both originals: H.264 960x720 24fps 6.08s, AAC audio",
+  "isolated_pack_check": "Both activity packs validated after --write in a temporary project-local directory; temporary packs removed, no import or binding",
+  "formal_asset_accepted": false
+}

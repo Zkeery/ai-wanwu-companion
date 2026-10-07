@@ -1,0 +1,27 @@
+{
+  "authorization_ref": "R51-user-approved-one-voice-round-20260929",
+  "source": "local_synthetic_speech",
+  "character_id": 4,
+  "request_id": "185c5d96-1210-48da-8f16-1dd9c52afc43",
+  "model": "qwen3.8-flash",
+  "requests": 1,
+  "state": "completed",
+  "recognized_text": "你好,我今天有點累,想乾淨聊兩句。",
+  "corrected_text": "你好，我今天有点累，想安静聊两句。",
+  "saved_reply": "嗯嗯，累了就歇会儿吧。我就在这儿静静陪着，你想说啥都行，不想说也没关系。",
+  "asr_seconds": 4.391,
+  "model_seconds": 1.398,
+  "elapsed_seconds": 8.96,
+  "reserved_micro": 1145600,
+  "actual_charge": "unverified",
+  "checks": {
+    "audio_status": 200,
+    "anonymous_audio": 401,
+    "mime": "audio/wav",
+    "bytes": 339334,
+    "sha256": "9baa7a8389baf916d04d6ced17540e52e0f0b2a1f08ff4ef3a6535927fbca16f",
+    "playback_seconds": 0.370034,
+    "duration_seconds": 7.601769,
+    "page_refresh_no_autoplay": true
+  }
+}

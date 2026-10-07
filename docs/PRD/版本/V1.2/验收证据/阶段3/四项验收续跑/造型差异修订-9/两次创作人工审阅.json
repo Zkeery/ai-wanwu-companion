@@ -1,0 +1,18 @@
+{
+  "status": "accepted",
+  "user_reply": "采用",
+  "date": "2026-10-02",
+  "characters": [6, 9],
+  "accepted_character_id": 9,
+  "accepted_character_name": "蔓蔓",
+  "image_sha256": "7e2de954bf8207a8edbadc818242ca61455bc1b99f333e91363cc437e39eea70",
+  "visual_acceptance": true,
+  "acceptance_scope": "9号独立3D静态形象：植物形成完整角色，省略附带花盆、盆土与底座；采用本次新候选",
+  "original_candidates_retained": true,
+  "new_model_requests_after_review": 0,
+  "request_count_scope": "本采用记录保存时点；后续工作独立归档",
+  "motion_generation_authorized": false,
+  "formal_dual_reviewer_calibration_complete": false,
+  "generation_within_8_seconds_passed": false,
+  "continuous_24h_passed": false
+}

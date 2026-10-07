@@ -1,0 +1,20 @@
+{
+  "checked_date": "2026-09-27",
+  "sources": [
+    "https://www.volcengine.com/docs/82379/1544106",
+    "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+    "https://docs.volcengine.com/docs/ark/create-video-generation-task-api?lang=zh&redirect=1"
+  ],
+  "model": "doubao-seedance-2-0-mini-260615",
+  "price_cny_per_million_tokens": 23,
+  "console_cny_per_thousand_tokens": 0.023,
+  "assumes_discount": false,
+  "assumes_free_quota": false,
+  "output_size": [
+    1112,
+    834
+  ],
+  "estimated_tokens": 130416.75,
+  "estimated_cny": 2.99958525,
+  "notes": "旧1.0系列官方标记即将下线；mini当前可在已登录控制台选择，尚未验证提交权限。"
+}

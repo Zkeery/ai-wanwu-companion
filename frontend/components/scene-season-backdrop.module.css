@@ -1,0 +1,9 @@
+.layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.layer .atlas{position:absolute;width:200%;height:200%;max-width:none;object-fit:fill;pointer-events:none;user-select:none}
+.rain{position:absolute;inset:0;background:linear-gradient(#8293ac38,#60818b26),repeating-linear-gradient(112deg,transparent 0 39px,#e7f4ff30 40px 41px,transparent 42px 80px);pointer-events:none}
+.fallback{position:absolute;top:16px;left:4%;right:4%;z-index:5;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:8px;background:#fffaf0ed;border:1px solid #ddcbae;border-radius:12px;color:#615c4e;font-size:12px}
+.fallback button{font-size:12px;padding:6px 10px}
+.preview{margin:16px 0 0;max-width:620px}
+.canvas{position:relative;isolation:isolate;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:#d9e7d6}
+.preview figcaption{margin-top:8px;color:#686d5c;font-size:13px;line-height:1.6}
+.seasonBoard[data-season]{height:auto;aspect-ratio:3/2;isolation:isolate}

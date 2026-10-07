@@ -1,0 +1,25 @@
+{
+  "model": "gpt-image-2.5-sunburst",
+  "endpoint": "https://aihubmix.com/ai/v1/images/generations",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "prompt_sha256": "c8c33e28630f852bd3804b70dbc957e4ffb1718a6d45f827559334680ca679eb",
+  "size": "1024x1024",
+  "quality": "medium",
+  "background": "transparent",
+  "output_format": "png",
+  "n": 1,
+  "layout": "2x2",
+  "activity": "walk",
+  "billing": "aihubmix_metered",
+  "api_cost_cap_supported": false,
+  "model_snapshot_pinned": false,
+  "character_id": 2,
+  "state": "dry-run",
+  "generation_requests": 0,
+  "written": false,
+  "human_review_required": true,
+  "request": {
+    "state": "waiting_authorization",
+    "request_id": "9fef26a9-8407-45c7-be3e-78b9eabf5ccf"
+  }
+}

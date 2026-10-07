@@ -1,0 +1,20 @@
+{
+  "evidence_origin": "offline_fixture",
+  "new_process_drill": true,
+  "counts": {
+    "table_count": 1,
+    "file_count": 1,
+    "ledger_file_count": 1,
+    "state_file_count": 1
+  },
+  "snapshot_archive_and_restore_verified": true,
+  "concurrent_upload_change_rejected": true,
+  "failure_alarm_recorded": true,
+  "previous_verified_snapshot_preserved": true,
+  "probe_inputs": "synthetic_service_and_mount",
+  "external_notifications": 0,
+  "model_requests": 0,
+  "cloud_requests": 0,
+  "production_activation": "pending",
+  "private_artifacts": ".runtime/ecs-maintenance-check/9582b07794484e909ddfddca247d6947"
+}

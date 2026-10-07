@@ -1,0 +1,207 @@
+{
+  "scope": "R1 隔离内核验证；合成伙伴、可控服务端时钟；不是实际等待数天或产品界面",
+  "model_calls": 0,
+  "checks": {
+    "跨进程恢复空间、物件与进度": true,
+    "跨进程重复请求返回原回执": true,
+    "36 小时离线仅累计 24 小时成长": true,
+    "收纳 24 小时不增加成长": true,
+    "摆出保留身份且过期需照料": true,
+    "累计 72 小时有效成长后成熟": true
+  },
+  "passed": true,
+  "snapshots": {
+    "after_36h": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 2,
+      "observed_at": 129600,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.25,
+          "y": 0.5,
+          "stored": false,
+          "growth_seconds": 86400,
+          "settled_at": 129600,
+          "cared_until": 86400,
+          "stage": "growing",
+          "care_remaining_seconds": 0,
+          "growth_status": "needs_care"
+        }
+      ],
+      "can_undo": true
+    },
+    "place_receipt": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 1,
+      "observed_at": 0,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.25,
+          "y": 0.5,
+          "stored": false,
+          "growth_seconds": 0,
+          "settled_at": 0,
+          "cared_until": 0,
+          "stage": "planted",
+          "care_remaining_seconds": 0,
+          "growth_status": "needs_care"
+        }
+      ],
+      "can_undo": true
+    },
+    "restored": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 2,
+      "observed_at": 129600,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.25,
+          "y": 0.5,
+          "stored": false,
+          "growth_seconds": 86400,
+          "settled_at": 129600,
+          "cared_until": 86400,
+          "stage": "growing",
+          "care_remaining_seconds": 0,
+          "growth_status": "needs_care"
+        }
+      ],
+      "can_undo": true
+    },
+    "replayed_receipt": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 1,
+      "observed_at": 0,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.25,
+          "y": 0.5,
+          "stored": false,
+          "growth_seconds": 0,
+          "settled_at": 0,
+          "cared_until": 0,
+          "stage": "planted",
+          "care_remaining_seconds": 0,
+          "growth_status": "needs_care"
+        }
+      ],
+      "can_undo": true
+    },
+    "stored": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 4,
+      "observed_at": 151200,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.25,
+          "y": 0.5,
+          "stored": true,
+          "growth_seconds": 108000,
+          "settled_at": 151200,
+          "cared_until": 216000,
+          "stage": "growing",
+          "care_remaining_seconds": 64800,
+          "growth_status": "stored"
+        }
+      ],
+      "can_undo": true
+    },
+    "after_storage": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 4,
+      "observed_at": 237600,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.25,
+          "y": 0.5,
+          "stored": true,
+          "growth_seconds": 108000,
+          "settled_at": 237600,
+          "cared_until": 216000,
+          "stage": "growing",
+          "care_remaining_seconds": 0,
+          "growth_status": "stored"
+        }
+      ],
+      "can_undo": true
+    },
+    "placed_again": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 5,
+      "observed_at": 237600,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.8,
+          "y": 0.2,
+          "stored": false,
+          "growth_seconds": 108000,
+          "settled_at": 237600,
+          "cared_until": 216000,
+          "stage": "growing",
+          "care_remaining_seconds": 0,
+          "growth_status": "needs_care"
+        }
+      ],
+      "can_undo": true
+    },
+    "matured": {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "scene_type": "home",
+      "mode": "private",
+      "companion_id": "synthetic-fruit",
+      "revision": 7,
+      "observed_at": 388800,
+      "items": [
+        {
+          "id": "4cc0402f-2f2f-4e7e-a67c-a64631c9894e",
+          "kind": "tree",
+          "x": 0.8,
+          "y": 0.2,
+          "stored": false,
+          "growth_seconds": 259200,
+          "settled_at": 388800,
+          "cared_until": 410400,
+          "stage": "mature",
+          "care_remaining_seconds": 21600,
+          "growth_status": "mature"
+        }
+      ],
+      "can_undo": true
+    }
+  }
+}

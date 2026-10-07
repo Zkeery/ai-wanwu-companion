@@ -1,0 +1,25 @@
+{
+  "living_spaces": {
+    "existing_unchanged": true,
+    "previous": 3,
+    "now": 4
+  },
+  "living_seasons": {
+    "existing_unchanged": true,
+    "previous": 1,
+    "now": 2
+  },
+  "characters": {
+    "existing_unchanged": true,
+    "previous": 6,
+    "now": 6
+  },
+  "living_activity_events": {
+    "existing_unchanged": true,
+    "previous": 34,
+    "now": 35
+  },
+  "all_layouts_unchanged_by_seasons": true,
+  "all_events_unchanged_by_seasons": true,
+  "test_space": "cc20c987-d9e6-4f99-a108-453ef006584f"
+}

@@ -1,0 +1,21 @@
+{
+  "before": {
+    "deadline": 1790954022,
+    "private_event_sha256": "8aabce31c9f8920953ffe6ca218c4532ee18d23f9f9a55e8699aa4c2685e570e",
+    "shared_event_sha256": "ae8fc1d8a26f392efa145e4f695fdd354b5e70fa9b1d2c27ec6bc50f7c8120b2",
+    "private_events": 1,
+    "shared_exchanges": 1,
+    "life_provider_requests": 4
+  },
+  "original_resumes": 1,
+  "after": {
+    "deadline": 1790954022,
+    "private_event_sha256": "8aabce31c9f8920953ffe6ca218c4532ee18d23f9f9a55e8699aa4c2685e570e",
+    "shared_event_sha256": "ae8fc1d8a26f392efa145e4f695fdd354b5e70fa9b1d2c27ec6bc50f7c8120b2",
+    "private_events": 1,
+    "shared_exchanges": 1,
+    "life_provider_requests": 4
+  },
+  "actual_restart_verified": true,
+  "resumes": 2
+}

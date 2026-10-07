@@ -1,0 +1,23 @@
+.layer{position:absolute;inset:0;z-index:98;pointer-events:none;color:#344b40}
+.anchor{position:absolute;width:166px;height:190px;transform:translate(-50%,-50%);pointer-events:none}
+.traveller{width:100%;height:100%;animation-play-state:paused}
+.layer .actor{display:flex;align-items:center;flex-direction:column;position:relative;width:166px;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;transform:none!important;pointer-events:auto;cursor:pointer;color:inherit}
+.actor:focus-visible{outline:3px solid #407361!important;outline-offset:6px}
+.bubble{display:flex;align-items:center;gap:5px;white-space:nowrap;max-width:210px;padding:8px 12px;border-radius:16px;background:#fffdf2;box-shadow:0 4px 12px #42312022;font-size:13px;line-height:1.3;overflow:hidden;text-overflow:ellipsis}
+.portrait{display:grid;place-items:center;margin-top:7px;width:144px;height:108px;border-radius:20px;border:3px solid #fff7de;background:#e9ebd8;box-shadow:0 7px 14px #543c2630;overflow:hidden}
+.motionPortrait{border:0;background:transparent;box-shadow:none;overflow:visible}
+.portrait img{width:100%;height:100%;object-fit:contain}.portrait :global(.private-image-placeholder){font-size:10px;line-height:1.3;padding:4px}
+.shadow{width:48px;height:9px;border-radius:50%;background:#44341d33;margin-top:5px;filter:blur(2px)}
+.tools{position:absolute;left:12px;top:12px;right:12px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;pointer-events:none}
+.tools button{pointer-events:auto;border:1px solid #c6d1bc!important;border-radius:13px!important;padding:8px 11px!important;background:#fffff2ed!important;color:#344b40!important;box-shadow:0 3px 8px #33463214!important;font-size:12px!important;transform:none!important}
+.source{font-size:11px;background:#fcfff0e8;border-radius:8px;padding:5px 8px;line-height:1.6}
+.walk{animation:stroll 14s ease-in-out infinite}.rest{animation:breathe 4.5s ease-in-out infinite}
+.layer[data-motion=paused] *{animation-play-state:paused!important}
+.anchor:hover .traveller,.anchor:focus-within .traveller{animation-play-state:paused}
+.detail{overflow-wrap:anywhere}.detail h3{font-size:24px}.detail h4{margin-bottom:8px}.detail p{line-height:1.8}
+.actions{display:flex;flex-wrap:wrap;gap:9px}.note{font-size:13px;color:#647365}
+.activityMotion{max-width:220px;margin:12px auto}
+@keyframes stroll{0%,100%{transform:translateX(-45px)}50%{transform:translateX(45px)}}
+@keyframes breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.025)}}
+@media(prefers-reduced-motion:reduce){.layer *{animation:none!important}}
+@media(max-width:600px){.anchor,.layer .actor{width:132px}.anchor{height:158px}.portrait{width:112px;height:84px;border-radius:16px}.bubble{font-size:11px;padding:6px 8px;max-width:156px}.tools{left:8px;right:8px;top:8px;gap:4px}.tools button{padding:6px 8px!important;font-size:11px!important}.source{font-size:10px}.shadow{width:54px}.walk{animation-name:strollSmall}@keyframes strollSmall{0%,100%{transform:translateX(-22px)}50%{transform:translateX(22px)}}}

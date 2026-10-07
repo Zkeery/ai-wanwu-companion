@@ -1,0 +1,27 @@
+# Private configuration and local state; production uses environment variables.
+.env
+.env.*
+!.env.example
+!.env.blueprint.example
+.venv/
+__pycache__/
+.pytest_cache/
+.runtime/
+data/
+uploads/
+logs/
+.vefaas/
+.git/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+.DS_Store

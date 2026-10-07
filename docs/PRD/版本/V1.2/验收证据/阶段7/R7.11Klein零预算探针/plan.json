@@ -1,0 +1,72 @@
+{
+  "protocol_id": "r711-klein-4b-i2i-offline-v1",
+  "model": "flux-2-klein-4b",
+  "endpoint": "https://api.bfl.ai/v1/flux-2-klein-4b",
+  "order": [
+    "cup",
+    "apple",
+    "plant",
+    "multi",
+    "cup",
+    "apple",
+    "plant",
+    "multi"
+  ],
+  "inputs": [
+    {
+      "case_id": "cup",
+      "sha256": "c69eb1edf0f48f7cc97ed7140b83fe2d93e3fac15553a01cd07f0146bbc3350f",
+      "width": 960,
+      "height": 720,
+      "input_billed_mp": 1,
+      "quoted_usd": "0.015",
+      "prompt_sha256": "2244ef8201fff1a790db353b8776ecb418e6db0e583d8d444c87e96fac7be964"
+    },
+    {
+      "case_id": "apple",
+      "sha256": "d39f93acccb418595184a041deb566a55f398ce667ec984ec1c438b9177ac4d8",
+      "width": 960,
+      "height": 960,
+      "input_billed_mp": 1,
+      "quoted_usd": "0.015",
+      "prompt_sha256": "4dea511079a0bfda8882cde20f74838052bbbd126b7d1bda7bf201c6043efbce"
+    },
+    {
+      "case_id": "plant",
+      "sha256": "3f70034f8869a644be7d729f97c30e8b10f6fdddb9182112d7d572a0d129d8fb",
+      "width": 800,
+      "height": 1200,
+      "input_billed_mp": 1,
+      "quoted_usd": "0.015",
+      "prompt_sha256": "a55766c141d8f892c7136cb946fcbbef6c6a948898ee11688023eb2333fe990f"
+    },
+    {
+      "case_id": "multi",
+      "sha256": "bb8d69851bf2273cc97c3f43e387ec9e5d3059f9b1926338bcbb7840d68935c3",
+      "width": 960,
+      "height": 640,
+      "input_billed_mp": 1,
+      "quoted_usd": "0.015",
+      "prompt_sha256": "c5b35bc08ed0e6fedd7ef34c332acbe23789798f037c402c06b49afb0acffa16"
+    }
+  ],
+  "source_manifest_sha256": "6156206ddedb2d84d94090e5e502654428e6807f51b0933ac3197ab23c4d5451",
+  "input_format": "raw_base64_jpeg",
+  "width": 1024,
+  "height": 1024,
+  "output_format": "jpeg",
+  "safety_tolerance": 2,
+  "mp_pixels": 1048576,
+  "quoted_first_output_mp_usd": "0.014",
+  "quoted_reference_mp_usd": "0.001",
+  "price_checked_on": "2026-09-26",
+  "unit_reserve_usd": "0.03",
+  "proposed_ceiling_usd": "0.30",
+  "approved_budget_usd": null,
+  "real_requests_enabled": false,
+  "pre_screen_ms": 6000,
+  "prd_display_ms": 8000,
+  "poll_interval_seconds": 0.5,
+  "observation_seconds": 90,
+  "first_segment_count": 2
+}

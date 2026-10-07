@@ -1,0 +1,73 @@
+{
+  "date": "2026-09-21",
+  "scope": "V1.1 R6.2 + Tiffany background",
+  "backend": {
+    "passed": 590,
+    "total": 590
+  },
+  "frontend": {
+    "passed": 202,
+    "total": 202
+  },
+  "typecheck": true,
+  "lint": true,
+  "productionBuild": true,
+  "unsafeBuildRejected": true,
+  "liveIsolation": {
+    "owner": 200,
+    "anonymous": 401,
+    "otherAccount": 404,
+    "claim": 403,
+    "cache": "private, no-store",
+    "tokenInUrl": false
+  },
+  "restartPreservation": {
+    "tables": 24,
+    "characters": 9,
+    "changed_tables": []
+  },
+  "viewports": [
+    {
+      "width": 375,
+      "collectionHorizontalOverflow": false,
+      "existingImagesLoaded": true
+    },
+    {
+      "width": 390,
+      "collectionHorizontalOverflow": false,
+      "existingImagesLoaded": true
+    },
+    {
+      "width": 768,
+      "collectionHorizontalOverflow": false,
+      "existingImagesLoaded": true
+    },
+    {
+      "width": 1024,
+      "collectionHorizontalOverflow": false,
+      "existingImagesLoaded": true
+    },
+    {
+      "width": 1440,
+      "collectionHorizontalOverflow": false,
+      "existingImagesLoaded": true
+    }
+  ],
+  "imageSurfaces": [
+    "collection",
+    "companion",
+    "portrait_zoom",
+    "chat_avatar",
+    "scene_avatar",
+    "offline_creation_result",
+    "public_wall",
+    "private_team"
+  ],
+  "realModelCalls": 0,
+  "releasePreflight": {
+    "pass": 6,
+    "blocked": 5,
+    "pending": 9
+  },
+  "readyForRelease": false
+}

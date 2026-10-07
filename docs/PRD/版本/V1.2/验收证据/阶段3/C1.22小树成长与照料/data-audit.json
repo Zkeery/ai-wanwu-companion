@@ -1,0 +1,50 @@
+{
+  "tables": 52,
+  "totals": {
+    "before": 215,
+    "after": 229,
+    "removed": 0,
+    "modified": 5,
+    "added": 14,
+    "unchanged": 210
+  },
+  "changed_tables": [
+    {
+      "table": "sessions",
+      "before": 2,
+      "after": 2,
+      "removed": 0,
+      "added": 0,
+      "modified": 2,
+      "unchanged": 0
+    },
+    {
+      "table": "living_spaces",
+      "before": 10,
+      "after": 10,
+      "removed": 0,
+      "added": 0,
+      "modified": 3,
+      "unchanged": 7
+    },
+    {
+      "table": "living_receipts",
+      "before": 18,
+      "after": 25,
+      "removed": 0,
+      "added": 7,
+      "modified": 0,
+      "unchanged": 18
+    },
+    {
+      "table": "living_activity_events",
+      "before": 12,
+      "after": 19,
+      "removed": 0,
+      "added": 7,
+      "modified": 0,
+      "unchanged": 12
+    }
+  ],
+  "provider_calls": 0
+}

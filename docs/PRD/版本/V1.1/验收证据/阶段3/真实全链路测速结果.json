@@ -1,0 +1,174 @@
+{
+  "date": "2026-09-21",
+  "real_model_calls": 5,
+  "max_groups": 3,
+  "groups_executed": 3,
+  "success_count": 2,
+  "failed_count": 1,
+  "within_5_seconds_count": 0,
+  "sample": "同一256px杯子测试插画重复3次；非真实摄影质量集",
+  "frontend": "Next.js production build on isolated local port 3025",
+  "backend": "isolated local port 8025",
+  "models": {
+    "vision": "ling-3.0-flash-vl",
+    "image": "wan2.6-t2i"
+  },
+  "restrictions": {
+    "retries": 0,
+    "output_tokens_max": 4096,
+    "output_image_size": "1024x1024"
+  },
+  "estimated_cost_cny": 0.032,
+  "cost_is_actual_bill": false,
+  "reserved_cny": 0.032,
+  "authorized_budget_cny": 1,
+  "budget_within_limit": true,
+  "target_met": false,
+  "groups": [
+    {
+      "group": 1,
+      "status": "success",
+      "browser_result": {
+        "group": 1,
+        "text": "本次从上传到图片显示用时 42.6 秒",
+        "images": [
+          {
+            "path": "/uploads/characters/2d24bbc450034e30a504af3f1d19a39b.png",
+            "loaded": true,
+            "width": 1024,
+            "height": 1024
+          }
+        ]
+      },
+      "provider_calls": [
+        {
+          "group": 1,
+          "kind": "vision",
+          "model": "ling-3.0-flash-vl",
+          "reserved_cny": 0.0,
+          "started_at": "2026-09-21 18:01:54",
+          "http_status": 200,
+          "usage": {
+            "completion_tokens": 1633,
+            "prompt_tokens": 369,
+            "total_tokens": 2002
+          },
+          "finish_reason": "stop",
+          "seconds": 27.914
+        },
+        {
+          "group": 1,
+          "kind": "image",
+          "model": "wan2.6-t2i",
+          "reserved_cny": 0.016,
+          "started_at": "2026-09-21 18:02:22",
+          "http_status": 200,
+          "usage": {
+            "image_count": 1,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "size": "1024*1024",
+            "total_tokens": 0
+          },
+          "seconds": 11.933
+        }
+      ],
+      "downloads": [
+        {
+          "group": 1,
+          "http_status": 200,
+          "bytes": 1183858,
+          "seconds": 1.535
+        }
+      ],
+      "image_artifact": "真实全链路生成图-1.png",
+      "image_sha256": "93dbb9ffe9bb49ea50f364e1726207252eff084218077151956c05982aa1b904"
+    },
+    {
+      "group": 2,
+      "status": "failed",
+      "browser_result": {
+        "group": 2,
+        "status": "failed",
+        "message": "识别失败，请重试",
+        "photo_request": [
+          {
+            "duration_ms": 1722.5999999940395
+          }
+        ]
+      },
+      "provider_calls": [
+        {
+          "group": 2,
+          "kind": "vision",
+          "model": "ling-3.0-flash-vl",
+          "reserved_cny": 0.0,
+          "started_at": "2026-09-21 18:02:57",
+          "http_status": 429,
+          "seconds": 1.676
+        }
+      ],
+      "downloads": []
+    },
+    {
+      "group": 3,
+      "status": "success",
+      "browser_result": {
+        "group": 3,
+        "text": "本次从上传到图片显示用时 51.9 秒",
+        "images": [
+          {
+            "path": "/uploads/characters/6a43d349361c42d28c280b02b16351dd.png",
+            "loaded": true,
+            "width": 1024,
+            "height": 1024
+          }
+        ]
+      },
+      "provider_calls": [
+        {
+          "group": 3,
+          "kind": "vision",
+          "model": "ling-3.0-flash-vl",
+          "reserved_cny": 0.0,
+          "started_at": "2026-09-21 18:03:54",
+          "http_status": 200,
+          "usage": {
+            "completion_tokens": 1471,
+            "prompt_tokens": 369,
+            "total_tokens": 1840
+          },
+          "finish_reason": "stop",
+          "seconds": 36.423
+        },
+        {
+          "group": 3,
+          "kind": "image",
+          "model": "wan2.6-t2i",
+          "reserved_cny": 0.016,
+          "started_at": "2026-09-21 18:04:31",
+          "http_status": 200,
+          "usage": {
+            "image_count": 1,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "size": "1024*1024",
+            "total_tokens": 0
+          },
+          "seconds": 13.266
+        }
+      ],
+      "downloads": [
+        {
+          "group": 3,
+          "http_status": 200,
+          "bytes": 1256645,
+          "seconds": 0.906
+        }
+      ],
+      "image_artifact": "真实全链路生成图-3.png",
+      "image_sha256": "6f0e04b2f2c85af0414f893c3c0e85b5118c7fb14e53f4d8e6002d972f8f8acc"
+    }
+  ],
+  "limitation": "三次单一简单插画测试不足以推算真实用户P95或复杂摄影质量；第二次429失败保留。"
+}

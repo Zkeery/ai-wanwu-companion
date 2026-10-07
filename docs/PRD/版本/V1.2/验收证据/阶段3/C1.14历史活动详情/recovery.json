@@ -1,0 +1,15 @@
+{
+  "offline": {
+    "detail": true,
+    "chatDisabled": true,
+    "rows": 20
+  },
+  "recovered": {
+    "chatDisabled": false,
+    "rows": 25
+  },
+  "restored": {
+    "detail": "活动历史·离线样例 · 这条活动离线样例歇了一会儿本轮安排于 2026/9/27 18:16:33（上海时间）自主生活已暂停，已有记录会留下。聊聊这次活动",
+    "overflow": false
+  }
+}

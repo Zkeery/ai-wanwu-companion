@@ -1,0 +1,64 @@
+{
+  "classification": "本轮工程与约定样例客观验收，非整体产品或公开上线",
+  "target": "现有前端+后端聊天组合",
+  "issues": [
+    {
+      "id": "F01",
+      "problem": "记忆首次加载未完成即可写入，可能被旧读取覆盖",
+      "test": "blocks writes until the first memory read completes",
+      "fixed": true
+    },
+    {
+      "id": "F02",
+      "problem": "记忆写入成功后读取失败，界面无法区分是否已保存",
+      "test": "a successful write with failed readback is not presented as a failed write",
+      "fixed": true
+    },
+    {
+      "id": "F03",
+      "problem": "网络异常结果不确定时可直接重复保存",
+      "test": "an uncertain write retains draft and only retries the read",
+      "fixed": true
+    },
+    {
+      "id": "F04",
+      "problem": "关闭记忆弹窗后焦点落回body",
+      "test": "returns keyboard focus to the opener after the dialog is removed",
+      "fixed": true
+    },
+    {
+      "id": "Q02-v1",
+      "problem": "明确不想听建议时仍建议先慢慢喘口气",
+      "fixed": true
+    },
+    {
+      "id": "Q06-v2",
+      "problem": "当前无雨被扩展为未经提供的雨停历史",
+      "fixed": true,
+      "evidence": "prompt-v3 Q06/Q06-r2/Q06-r3全文通过"
+    }
+  ],
+  "checks": {
+    "frontendTests": 21,
+    "backendTests": 114,
+    "previousStaticTests": 13,
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "chromeMemoryFaultInjection": "PASS",
+    "chromeFocusReturn": "PASS",
+    "chromeCrossCharacterProposal": "PASS",
+    "originalDataUnchanged": true
+  },
+  "limits": [
+    "小样本客观验收；不评价统计稳定性",
+    "未替代用户主观视觉音色评分或多名人工校准",
+    "历史失败和不同Prompt分批保留"
+  ],
+  "modelWholeOutput": {
+    "batch": "prompt-v3",
+    "pass": 10,
+    "needReview": 0,
+    "repeat": "原8条各1次，Q06另重复2次"
+  }
+}

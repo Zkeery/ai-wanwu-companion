@@ -1,0 +1,8 @@
+{
+  "name": "garden-agent-h1-demo",
+  "host": "127.0.0.1",
+  "port": 3030,
+  "model": "offline-simulation",
+  "max_model_calls": 3,
+  "max_tool_calls": 3
+}

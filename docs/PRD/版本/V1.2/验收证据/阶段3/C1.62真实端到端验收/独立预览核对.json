@@ -1,0 +1,7 @@
+{
+  "script_syntax": true,
+  "embedded_sprite_matches_binding": true,
+  "network_generation_calls": false,
+  "browser_playback_verified_this_turn": false,
+  "browser_limitation": "Chrome正在由用户操作，原生控制连续提示用户切换；未继续抢占浏览器。"
+}

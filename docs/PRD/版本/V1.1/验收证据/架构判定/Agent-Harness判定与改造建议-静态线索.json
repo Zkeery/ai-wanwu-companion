@@ -1,0 +1,387 @@
+{
+  "method": "当前 AI 按手册分析，未运行模型管线；仅执行 scan_project 与 select_components 本地工具函数",
+  "scope": "/Users/zoe/Documents/happy/项目开发必备文档/projects/AI万物伙伴",
+  "source_digest": "4075b14c422cd4ffaa0b313aa2c4bc79f674050e622d62c151d7d1a9411a1383",
+  "file_count": 298,
+  "signals": {
+    "s01": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 0,
+      "locations": []
+    },
+    "s02": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 0,
+      "locations": []
+    },
+    "s03": {
+      "strength": "weak",
+      "code_files": 1,
+      "doc_files": 2,
+      "locations": [
+        {
+          "file": "backend/app/services/character_images.py",
+          "line": 15,
+          "pattern": "is_relative_to"
+        }
+      ]
+    },
+    "s04": {
+      "strength": "strong",
+      "code_files": 2,
+      "doc_files": 1,
+      "locations": [
+        {
+          "file": "frontend/components/create-companion.tsx",
+          "line": 71,
+          "pattern": "\\bhooks?\\b"
+        },
+        {
+          "file": "frontend/scripts/mock_backend.py",
+          "line": 62,
+          "pattern": "middleware"
+        }
+      ]
+    },
+    "s05": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 1,
+      "locations": []
+    },
+    "s06": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 0,
+      "locations": []
+    },
+    "s07": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 2,
+      "locations": []
+    },
+    "s08": {
+      "strength": "weak",
+      "code_files": 1,
+      "doc_files": 4,
+      "locations": [
+        {
+          "file": "frontend/lib/input-limits.ts",
+          "line": 6,
+          "pattern": "truncat"
+        }
+      ]
+    },
+    "s09": {
+      "strength": "strong",
+      "code_files": 17,
+      "doc_files": 28,
+      "locations": [
+        {
+          "file": "backend/app/main.py",
+          "line": 57,
+          "pattern": "memor(?:y|ies)"
+        },
+        {
+          "file": "backend/app/api/chat.py",
+          "line": 14,
+          "pattern": "memor(?:y|ies)"
+        },
+        {
+          "file": "backend/app/api/chat.py",
+          "line": 17,
+          "pattern": "memor(?:y|ies)"
+        },
+        {
+          "file": "backend/app/api/chat.py",
+          "line": 18,
+          "pattern": "memor(?:y|ies)"
+        },
+        {
+          "file": "backend/app/api/chat.py",
+          "line": 19,
+          "pattern": "memor(?:y|ies)"
+        }
+      ]
+    },
+    "s10": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 0,
+      "locations": []
+    },
+    "s11": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 4,
+      "locations": []
+    },
+    "s12": {
+      "strength": "strong",
+      "code_files": 2,
+      "doc_files": 1,
+      "locations": [
+        {
+          "file": "backend/scripts/benchmark_generation.py",
+          "line": 14,
+          "pattern": "interval"
+        },
+        {
+          "file": "backend/scripts/benchmark_generation.py",
+          "line": 19,
+          "pattern": "interval"
+        },
+        {
+          "file": "backend/scripts/benchmark_generation.py",
+          "line": 46,
+          "pattern": "interval"
+        },
+        {
+          "file": "backend/scripts/benchmark_generation.py",
+          "line": 50,
+          "pattern": "interval"
+        },
+        {
+          "file": "frontend/components/create-companion.tsx",
+          "line": 138,
+          "pattern": "interval"
+        }
+      ]
+    },
+    "s13": {
+      "strength": "weak",
+      "code_files": 1,
+      "doc_files": 1,
+      "locations": [
+        {
+          "file": "frontend/components/collection.tsx",
+          "line": 25,
+          "pattern": "crew"
+        }
+      ]
+    },
+    "s14": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 6,
+      "locations": []
+    },
+    "s15": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 5,
+      "locations": []
+    },
+    "s16": {
+      "strength": "none",
+      "code_files": 0,
+      "doc_files": 0,
+      "locations": []
+    },
+    "s17": {
+      "strength": "strong",
+      "code_files": 3,
+      "doc_files": 5,
+      "locations": [
+        {
+          "file": "backend/scripts/run_acceptance_real.py",
+          "line": 58,
+          "pattern": "acceptance"
+        },
+        {
+          "file": "backend/scripts/run_experience_smoke.py",
+          "line": 301,
+          "pattern": "acceptance"
+        },
+        {
+          "file": "frontend/scripts/mock_backend.py",
+          "line": 63,
+          "pattern": "acceptance"
+        }
+      ]
+    }
+  },
+  "feature_inputs": {
+    "destructive_ops": {
+      "value": "yes",
+      "evidence": "PRD F06/F08：花园提议须确认，删除需明确确认；F09 的公开和小队操作尚为规划。"
+    },
+    "audit_needed": {
+      "value": "yes",
+      "evidence": "PRD 第7节：模型质量、耗时与费用需有可核对证据；当前项目规则要求恢复与错误可识别。"
+    },
+    "multi_step": {
+      "value": "yes",
+      "evidence": "PRD F02/F03：识别、对象确认、人设生成、开场白与绘图、保存形成固定多步流程。"
+    },
+    "context_heavy": {
+      "value": "no",
+      "evidence": "当前无独立探索型子任务需求；开场白与绘图并行不等于自主子 Agent。"
+    },
+    "large_knowledge": {
+      "value": "no",
+      "evidence": "当前上下文仅人设、近期消息、手动记忆、花园规则，无庞大领域知识库。"
+    },
+    "long_sessions": {
+      "value": "later",
+      "evidence": "当前仅最近20条消息加手动记忆；更长上下文管理为后续评估，不自动采纳摘要。"
+    },
+    "cross_session_memory": {
+      "value": "yes",
+      "evidence": "PRD F08：手动记忆持久保存、可编辑删除；不需要自动提取。"
+    },
+    "persistent_goals": {
+      "value": "later",
+      "evidence": "当前持久化请求及提议，但未完成任务重启标失败；任务逐步续跑需后续设计。"
+    },
+    "slow_operations": {
+      "value": "no",
+      "evidence": "当前无必须持续数分钟、离线运行的任务需求；生成延迟已有独立目标。"
+    },
+    "scheduled": {
+      "value": "no",
+      "evidence": "PRD 3.3：定时问候与后台演化属远期，不构成本轮交付。"
+    },
+    "parallel_isolated": {
+      "value": "no",
+      "evidence": "没有多 Agent 隔离工作区需求。"
+    },
+    "external_ecosystem": {
+      "value": "no",
+      "evidence": "现有需求仅本项目业务接口与模型API，不需要MCP工具生态。"
+    },
+    "fixed_orchestration": {
+      "value": "yes",
+      "evidence": "角色生成顺序由代码固定，并行完成开场白与绘图。"
+    },
+    "auto_completion": {
+      "value": "no",
+      "evidence": "生成ready状态由完整结果保存决定，无需独立模型评判是否完成。"
+    }
+  },
+  "rule_suggestions": [
+    {
+      "id": "s01",
+      "name": "Agent Loop",
+      "decision": "必选",
+      "reason": "一切基础：循环 + 工具（一切基础，恒选）",
+      "feature": ""
+    },
+    {
+      "id": "s02",
+      "name": "工具系统",
+      "decision": "必选",
+      "reason": "需要调用外部系统/API/数据源（一切基础，恒选）",
+      "feature": ""
+    },
+    {
+      "id": "s03",
+      "name": "权限系统",
+      "decision": "必选",
+      "reason": "PRD F06/F08：花园提议须确认，删除需明确确认；F09 的公开和小队操作尚为规划。",
+      "feature": "destructive_ops"
+    },
+    {
+      "id": "s04",
+      "name": "钩子系统",
+      "decision": "必选",
+      "reason": "PRD 第7节：模型质量、耗时与费用需有可核对证据；当前项目规则要求恢复与错误可识别。",
+      "feature": "audit_needed"
+    },
+    {
+      "id": "s05",
+      "name": "任务规划",
+      "decision": "必选",
+      "reason": "PRD F02/F03：识别、对象确认、人设生成、开场白与绘图、保存形成固定多步流程。",
+      "feature": "multi_step"
+    },
+    {
+      "id": "s06",
+      "name": "子 Agent",
+      "decision": "放弃",
+      "reason": "当前无独立探索型子任务需求；开场白与绘图并行不等于自主子 Agent。",
+      "feature": "context_heavy"
+    },
+    {
+      "id": "s07",
+      "name": "技能加载",
+      "decision": "放弃",
+      "reason": "当前上下文仅人设、近期消息、手动记忆、花园规则，无庞大领域知识库。",
+      "feature": "large_knowledge"
+    },
+    {
+      "id": "s08",
+      "name": "上下文压缩",
+      "decision": "二期",
+      "reason": "当前仅最近20条消息加手动记忆；更长上下文管理为后续评估，不自动采纳摘要。",
+      "feature": "long_sessions"
+    },
+    {
+      "id": "s09",
+      "name": "记忆系统",
+      "decision": "必选",
+      "reason": "PRD F08：手动记忆持久保存、可编辑删除；不需要自动提取。",
+      "feature": "cross_session_memory"
+    },
+    {
+      "id": "s10",
+      "name": "任务系统",
+      "decision": "二期",
+      "reason": "当前持久化请求及提议，但未完成任务重启标失败；任务逐步续跑需后续设计。",
+      "feature": "persistent_goals"
+    },
+    {
+      "id": "s11",
+      "name": "后台任务",
+      "decision": "放弃",
+      "reason": "当前无必须持续数分钟、离线运行的任务需求；生成延迟已有独立目标。",
+      "feature": "slow_operations"
+    },
+    {
+      "id": "s12",
+      "name": "定时调度",
+      "decision": "放弃",
+      "reason": "PRD 3.3：定时问候与后台演化属远期，不构成本轮交付。",
+      "feature": "scheduled"
+    },
+    {
+      "id": "s13",
+      "name": "Agent 团队",
+      "decision": "放弃",
+      "reason": "没有多 Agent 隔离工作区需求。",
+      "feature": "parallel_isolated"
+    },
+    {
+      "id": "s14",
+      "name": "MCP 插件",
+      "decision": "放弃",
+      "reason": "现有需求仅本项目业务接口与模型API，不需要MCP工具生态。",
+      "feature": "external_ecosystem"
+    },
+    {
+      "id": "s15",
+      "name": "集成 Harness",
+      "decision": "必选",
+      "reason": "第一版已选 5 个可选组件（s03, s04, s05, s09, s16），需归一到单一循环",
+      "feature": ""
+    },
+    {
+      "id": "s16",
+      "name": "工作流运行时",
+      "decision": "必选",
+      "reason": "角色生成顺序由代码固定，并行完成开场白与绘图。",
+      "feature": "fixed_orchestration"
+    },
+    {
+      "id": "s17",
+      "name": "目标闭环",
+      "decision": "放弃",
+      "reason": "生成ready状态由完整结果保存决定，无需独立模型评判是否完成。",
+      "feature": "auto_completion"
+    }
+  ],
+  "interpretation": "规则结果基于现有PRD特征，含s01/s02恒选与s15阈值假设；最终采用范围以同目录Markdown人工复核为准，不代表能力已实现。"
+}

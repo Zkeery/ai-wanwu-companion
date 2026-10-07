@@ -1,0 +1,13 @@
+{
+  "version": "companion-motion-sprite-v1",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "activity": "observe",
+  "frame_width": 360,
+  "frame_height": 270,
+  "frame_count": 16,
+  "fps": 8,
+  "sprite_file": "sprite.png",
+  "background_file": "background.png",
+  "sprite_sha256": "65cdc65a66311640e77bcf759dd934898d7b493af958630e3c6a74fc4c5dfbb1",
+  "background_sha256": "846714d3d9b1005158f127c1227330b26be32bc7b45eeeab2cb4e0ca14a7bc18"
+}

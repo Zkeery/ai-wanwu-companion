@@ -1,0 +1,19 @@
+{
+  "kind": "read_only_models_endpoint",
+  "httpStatus": 200,
+  "elapsedMs": 4805,
+  "configuredModelsPresent": [
+    {
+      "id": "ling-3.0-flash-vl",
+      "present": true
+    },
+    {
+      "id": "qwen3.8-flash",
+      "present": true
+    },
+    {
+      "id": "wan2.6-t2i",
+      "present": false
+    }
+  ]
+}

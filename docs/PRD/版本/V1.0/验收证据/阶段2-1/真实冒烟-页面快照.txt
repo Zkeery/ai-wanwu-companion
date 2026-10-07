@@ -1,0 +1,25 @@
+[p1 "AI万物伙伴 · 验收界面" | space "AI万物伙伴 真实冒烟快照"(30): 1 managed, 0 untracked — p1* "AI万物伙伴 · 验收界面"]
+root
+  heading
+    text "AI万物伙伴 · 最小验收界面"
+  container
+    text "1. 上传照片"
+    paragraph
+      textbox [ref=1]
+        button [ref=2]
+          text "选择文件"
+        text "未选择任何文件"
+    paragraph
+      text "识别出的对象会显示在下方，点其中一个生成角色。"
+  container
+    text "3. 我的收藏"
+    container
+      image
+      text "瓷暖"
+      text "#1"
+      text "她总是安静地盛住温度，在你说渴之前递来一口安心。"
+      text "「来，先喝一口，我替你温着呢。」"
+      button [ref=3]
+        text "删除"
+
+

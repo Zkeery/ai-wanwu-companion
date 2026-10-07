@@ -1,0 +1,25 @@
+{
+  "mode": "mock model/SMS, real isolated HTTP and SQLite; injected recognition/image delay 7s each",
+  "bannerMs": 5003,
+  "posts": [
+    "/api/v1/photos",
+    "/api/v1/characters"
+  ],
+  "receiptQueries": 1,
+  "objectQueries": 1,
+  "durationText": "本次从上传到图片显示用时 14.5 秒",
+  "overdueSuccess": true,
+  "horizontalOverflow": false,
+  "imageDownloadWait": {
+    "bannerPresent": true,
+    "noCompletedTime": true,
+    "posts": 2,
+    "readyLinkAvailable": true,
+    "lateImageDisplayed": true
+  },
+  "navigation": {
+    "chatAvailable": true,
+    "restoredWithoutInventedTiming": true
+  },
+  "fixtureRerun": "First image-delay run interrupted by dev HMR and browser 10s wait limit; rerun after code stabilized. Both are simulated, no real performance samples discarded."
+}

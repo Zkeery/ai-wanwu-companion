@@ -1,0 +1,10 @@
+{
+  "original_tables": 52,
+  "original_rows": 204,
+  "changed_original_rows": {
+    "sessions": 2,
+    "living_spaces": 1
+  },
+  "removed_primary_keys": 0,
+  "supplier_calls": 0
+}

@@ -1,0 +1,19 @@
+{
+  "activity": "walk",
+  "api_cost_cap_supported": false,
+  "background": "transparent",
+  "billing": "aihubmix_metered",
+  "endpoint": "https://aihubmix.com/ai/v1/images/generations",
+  "generation_requests": 0,
+  "layout": "2x2",
+  "model": "gpt-image-2.5-sunburst",
+  "model_snapshot_pinned": false,
+  "n": 1,
+  "output_format": "png",
+  "prompt_sha256": "6b7b8467419fcfdfd9dc02a3ee6d8c726882bf58caf4db7e337a45c0dbd846ea",
+  "quality": "medium",
+  "size": "1024x1024",
+  "source_sha256": "7195f21cd80cefe8385308005f54acdabef54e12ac5e0c0254d2a7651445063c",
+  "state": "dry-run",
+  "written": false
+}

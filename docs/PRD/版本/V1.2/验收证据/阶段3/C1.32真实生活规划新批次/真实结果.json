@@ -1,0 +1,83 @@
+{
+  "origin": "real_eval",
+  "reserved_micro": 3436800,
+  "attempts": [
+    {
+      "case_id": "day-observe",
+      "state": "passed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "day-observe",
+        "billing": "reserved_unknown",
+        "candidate": {
+          "activity": "observe",
+          "target_id": "00000000-0000-4000-8000-000000000016",
+          "reason": "当前为白天非休息时段，仅允许观察，且视野中有树木可观察。"
+        },
+        "content": "{\n  \"activity\": \"observe\",\n  \"target_id\": \"00000000-0000-4000-8000-000000000016\",\n  \"reason\": \"当前为白天非休息时段，仅允许观察，且视野中有树木可观察。\"\n}",
+        "model": "qwen3.8-flash",
+        "usage": {
+          "prompt_tokens": 265,
+          "completion_tokens": 426,
+          "total_tokens": 691
+        },
+        "estimated_micro": 1363,
+        "elapsed_ms": 7677
+      }
+    },
+    {
+      "case_id": "night-rest",
+      "state": "passed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "night-rest",
+        "billing": "reserved_unknown",
+        "candidate": {
+          "activity": "rest",
+          "target_id": null,
+          "reason": "当前为上海时间23:00，处于22:00至07:00的休息时段，且允许活动仅包含rest，因此选择休息。"
+        },
+        "content": "{\"activity\":\"rest\",\"target_id\":null,\"reason\":\"当前为上海时间23:00，处于22:00至07:00的休息时段，且允许活动仅包含rest，因此选择休息。\"}",
+        "model": "qwen3.8-flash",
+        "usage": {
+          "prompt_tokens": 222,
+          "completion_tokens": 285,
+          "total_tokens": 507
+        },
+        "estimated_micro": 948,
+        "elapsed_ms": 4836
+      }
+    },
+    {
+      "case_id": "empty-walk",
+      "state": "passed",
+      "reserved_micro": 1145600,
+      "result": {
+        "origin": "real_eval",
+        "case_id": "empty-walk",
+        "billing": "reserved_unknown",
+        "candidate": {
+          "activity": "walk",
+          "target_id": null,
+          "reason": "当前为白天且不在上海22:00至07:00休息时段，allowed_activities仅允许散步，visible_items为空不可观察，因此选择散步。"
+        },
+        "content": "{\"activity\":\"walk\",\"target_id\":null,\"reason\":\"当前为白天且不在上海22:00至07:00休息时段，allowed_activities仅允许散步，visible_items为空不可观察，因此选择散步。\"}",
+        "model": "qwen3.8-flash",
+        "usage": {
+          "prompt_tokens": 222,
+          "completion_tokens": 180,
+          "total_tokens": 402
+        },
+        "estimated_micro": 664,
+        "elapsed_ms": 4560
+      }
+    }
+  ],
+  "price_check": {
+    "model": "qwen3.8-flash",
+    "updated_at": "2026-09-24 17:35:59",
+    "reserve_micro": 1145600
+  }
+}

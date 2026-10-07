@@ -1,0 +1,64 @@
+{
+  "photo": {
+    "id": 1,
+    "status": "done",
+    "objects": [
+      {
+        "id": 1,
+        "label": "测试小叶（mock）"
+      },
+      {
+        "id": 2,
+        "label": "测试小杯（mock）"
+      },
+      {
+        "id": 3,
+        "label": "旧候选3"
+      },
+      {
+        "id": 4,
+        "label": "旧候选4"
+      },
+      {
+        "id": 5,
+        "label": "旧候选5"
+      }
+    ]
+  },
+  "chatUserCodePoints": 4000,
+  "memoryCodePoints": 1000,
+  "legacyScene": {
+    "rain": 0,
+    "tree": 9,
+    "cloud": 0,
+    "sound": 1,
+    "flower": 0,
+    "mushroom": 0,
+    "pond": 0,
+    "bench": 0,
+    "campfire": 0,
+    "fireflies": 0
+  },
+  "invalid": [
+    {
+      "path": "/characters/1/chat",
+      "status": 400,
+      "body": {
+        "error": {
+          "code": "message_too_long",
+          "message": "消息不能超过 4000 字"
+        }
+      }
+    },
+    {
+      "path": "/characters/1/memories",
+      "status": 400,
+      "body": {
+        "error": {
+          "code": "memory_too_long",
+          "message": "记忆不能超过 1000 字"
+        }
+      }
+    }
+  ]
+}

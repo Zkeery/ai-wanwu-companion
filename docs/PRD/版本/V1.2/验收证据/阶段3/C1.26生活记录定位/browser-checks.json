@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-28",
+  "sceneChecks": [
+    {
+      "scene": "home",
+      "targetId": "46bf9c27-49ce-4b82-b140-816d618354d2",
+      "recordRevision": 6,
+      "recordRequestId": "8a1cfede-08fd-41d1-8ad9-9026013a013d",
+      "desktopFocusExact": true,
+      "mobileFocusExact": true,
+      "dialogClosed": true,
+      "browseModeRetained": true,
+      "mobileOverflow": false
+    },
+    {
+      "scene": "forest",
+      "targetId": "95790813-1f89-4629-b45b-c31668fe39c5",
+      "desktopFocusExact": true,
+      "mobileFocusExact": true,
+      "dialogClosed": true,
+      "browseModeRetained": true,
+      "mobileOverflow": false
+    },
+    {
+      "scene": "desert",
+      "targetId": "647ec205-530b-48a2-8e30-e381bdd3e6ce",
+      "recordRevision": 8,
+      "recordRequestId": "0bafcefd-4abb-4120-8b10-aefd0a59f2fe",
+      "desktopFocusExact": true,
+      "mobileFocusExact": true,
+      "dialogClosed": true,
+      "browseModeRetained": true,
+      "mobileOverflow": false,
+      "restartFocusExact": true
+    }
+  ],
+  "desktop": {
+    "width": 1440,
+    "height": 1000
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844
+  },
+  "realActionsPerScene": [
+    "move",
+    "undo"
+  ],
+  "legacyHomeCareHasNoLocator": true,
+  "notes": [
+    "定位零写入由自动化接口计数验证；实际浏览器验证焦点与模式。",
+    "撤销保存成功后因无历史而禁用撤销按钮，自动化等待启用超时；检查保存成功后继续，没有重发。"
+  ],
+  "taskSpaceFinished": true
+}

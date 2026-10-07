@@ -1,0 +1,155 @@
+{
+  "date": "2026-09-28",
+  "initial_attempt": [
+    {
+      "label": "frontend",
+      "exit": 1,
+      "summary": [
+        " ❯ tests/living-drag.test.tsx (17 tests | 1 failed) 1085ms",
+        " ❯ tests/tree-growth.test.tsx (17 tests | 3 failed) 437ms",
+        "   ✓ home failed care and failed reconciliation keep the snapshot and prevent another write until refreshed 61ms",
+        "   ✓ forest failed care and failed reconciliation keep the snapshot and prevent another write until refreshed 71ms",
+        "   ✓ desert failed care and failed reconciliation keep the snapshot and prevent another write until refreshed 38ms",
+        " Test Files  2 failed | 61 passed (63)",
+        "      Tests  4 failed | 668 passed (672)",
+        "⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯",
+        " FAIL  tests/living-drag.test.tsx > shows the effective care period, then refreshes expiration without losing selection",
+        "TestingLibraryElementError: Found multiple elements with the text: 照料有效 · 剩约 24 小时",
+        " FAIL  tests/tree-growth.test.tsx > home keeps selected growth after care, blocks double clicks and displays the saved result",
+        "TestingLibraryElementError: Found multiple elements with the text: 照料有效 · 剩约 24 小时",
+        " FAIL  tests/tree-growth.test.tsx > forest keeps selected growth after care, blocks double clicks and displays the saved result",
+        "TestingLibraryElementError: Found multiple elements with the text: 照料有效 · 剩约 24 小时",
+        " FAIL  tests/tree-growth.test.tsx > desert keeps selected growth after care, blocks double clicks and displays the saved result",
+        "TestingLibraryElementError: Found multiple elements with the text: 照料有效 · 剩约 24 小时"
+      ]
+    },
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "80 passed, 2 warnings in 4.06s"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 2,
+      "summary": [
+        "tests/life-journal.test.tsx(165,60): error TS2769: No overload matches this call.",
+        "tests/life-journal.test.tsx(169,60): error TS2769: No overload matches this call.",
+        "tests/life-journal.test.tsx(186,60): error TS2769: No overload matches this call.",
+        "tests/life-journal.test.tsx(207,63): error TS2769: No overload matches this call.",
+        "tests/life-journal.test.tsx(240,54): error TS2769: No overload matches this call.",
+        "tests/tree-overview.test.tsx(35,62): error TS2769: No overload matches this call."
+      ]
+    },
+    {
+      "label": "lint",
+      "exit": 1,
+      "summary": [
+        "  61:10  error  Error: Calling setState synchronously within an effect can trigger cascading renders"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "80 passed, 2 warnings in 4.06s"
+      ]
+    },
+    {
+      "label": "frontend",
+      "exit": 0,
+      "summary": [
+        " Test Files  63 passed (63)",
+        "      Tests  672 passed (672)"
+      ]
+    },
+    {
+      "label": "typecheck",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "lint",
+      "exit": 0,
+      "summary": []
+    },
+    {
+      "label": "build",
+      "exit": 0,
+      "summary": [
+        "✓ Compiled successfully in 3.3s",
+        "  Running TypeScript ...",
+        "  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.",
+        "  Finished TypeScript in 2.6s ...",
+        "  Generating static pages using 9 workers (0/11) ...",
+        "  Generating static pages using 9 workers (2/11) \r",
+        "  Generating static pages using 9 workers (5/11) \r",
+        "  Generating static pages using 9 workers (8/11) \r",
+        "✓ Generating static pages using 9 workers (11/11) in 121ms"
+      ]
+    }
+  ],
+  "generated_config_restored": true,
+  "preview_flags_test_attempt": [
+    {
+      "label": "backend",
+      "exit": 0,
+      "summary": [
+        "80 passed, 2 warnings in 4.06s"
+      ]
+    },
+    {
+      "label": "frontend",
+      "exit": 1,
+      "summary": [
+        " ❯ tests/living-drag.test.tsx (17 tests | 2 failed) 962ms",
+        " ❯ tests/living-atmosphere.test.tsx (6 tests | 1 failed) 1216ms",
+        " ❯ tests/oasis-editor.test.tsx (6 tests | 2 failed) 342ms",
+        "   × reconciles failed saves and blocks further writes until a successful refresh 42ms",
+        " Test Files  3 failed | 60 passed (63)",
+        "      Tests  5 failed | 667 passed (672)",
+        "⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯",
+        " FAIL  tests/living-atmosphere.test.tsx > exposes audio failure without changing saved atmosphere",
+        "TestingLibraryElementError: Found multiple elements with the role \"alert\"",
+        " FAIL  tests/living-drag.test.tsx > keeps layout stable when beginning another drag after an invalid drop",
+        "Error: expect(element).not.toBeInTheDocument()",
+        " FAIL  tests/living-drag.test.tsx > shows the effective care period, then refreshes expiration without losing selection",
+        "TestingLibraryElementError: Found multiple elements with the role \"button\" and name \"刷新状态\"",
+        " FAIL  tests/oasis-editor.test.tsx > reconciles failed saves and blocks further writes until a successful refresh",
+        "TestingLibraryElementError: Found multiple elements with the text: 刷新状态",
+        " FAIL  tests/oasis-editor.test.tsx > keeps enabled real records outside settings and stops reads while life is hidden",
+        "AssertionError: expected \"fetch\" to be called 1 times, but got 2 times"
+      ]
+    }
+  ],
+  "production_guard_probe": {
+    "label": "build",
+    "exit": 1,
+    "summary": [
+      "Error: Production configuration blocked: remove development login hints and offline preview flags."
+    ]
+  },
+  "credential_scan": {
+    "changedFilesAndProductionStaticChecked": 64,
+    "credentialMatches": 0,
+    "matchingFiles": []
+  },
+  "final_document_checks": {
+    "missingLinks": [],
+    "diffCheck": 0,
+    "generatedConfigs": [
+      {
+        "file": "next-env.d.ts",
+        "restored": true
+      },
+      {
+        "file": "tsconfig.json",
+        "restored": true
+      }
+    ],
+    "evidencePngs": 16
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "tests": {
+    "exit": 0,
+    "summary": [
+      " Test Files  4 passed (4)",
+      "      Tests  81 passed (81)"
+    ]
+  },
+  "typecheck": {
+    "exit": 2,
+    "summary": [
+      "tests/living-motion.test.tsx(84,60): error TS2769: No overload matches this call.",
+      "  Overload 1 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.",
+      "  Overload 2 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.",
+      "tests/living-motion.test.tsx(86,51): error TS2769: No overload matches this call.",
+      "  Overload 1 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.",
+      "  Overload 2 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.",
+      "tests/living-motion.test.tsx(87,60): error TS2769: No overload matches this call.",
+      "  Overload 1 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.",
+      "  Overload 2 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error."
+    ]
+  },
+  "lint": {
+    "exit": 0,
+    "summary": []
+  }
+}
