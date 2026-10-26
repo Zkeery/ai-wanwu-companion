@@ -2,7 +2,7 @@ from typing import Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, Form, UploadFile, Response
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator, model_validator
 
 from app.api.deps import get_current_user
 from app.api.gatherings import no_cache
@@ -10,7 +10,7 @@ from app.core.config import get_settings
 from app.core.database import engine
 from app.core.errors import api_error
 from app.models.models import User
-from app.services.voice import VoiceService, MAX_BYTES
+from app.services.voice import VoiceService, MAX_BYTES, trim_mood_text
 from app.services.transcription import transcribe
 
 service = VoiceService(engine)
@@ -20,8 +20,28 @@ router = APIRouter(prefix='/characters/{character_id}/voice', tags=['voice'], de
 class SettingsRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
     voice: str = Field(max_length=100)
-    mood: Literal['happy', 'calm', 'sad', 'tired', 'anxious', 'unsure'] | None
+    mood: Literal['happy', 'calm', 'sad', 'tired', 'anxious', 'irritated', 'unsure', 'custom'] | None
     automatic: bool = Field(strict=True)
+    mood_text: StrictStr | None = None
+
+    @field_validator('mood_text')
+    @classmethod
+    def normalize_mood_text(cls, value):
+        if value is None:
+            return None
+        value = trim_mood_text(value)
+        if not 1 <= len(value) <= 200:
+            raise ValueError('当前心情请填写1至200个字')
+        return value
+
+    @model_validator(mode='after')
+    def check_mood_text(self):
+        if 'mood_text' in self.model_fields_set:
+            if self.mood == 'custom' and self.mood_text is None:
+                raise ValueError('自己描述心情时请填写当前感受')
+            if self.mood != 'custom' and self.mood_text is not None:
+                raise ValueError('只有自己描述心情时可以填写当前感受')
+        return self
 
 
 class PreviewRequest(BaseModel):
@@ -36,7 +56,8 @@ def settings(character_id: int, user: User = Depends(get_current_user)):
 
 @router.put('/settings')
 def save(character_id: int, payload: SettingsRequest, user: User = Depends(get_current_user)):
-    return service.save_settings(user.id, character_id, payload.voice, payload.mood, payload.automatic)
+    extra = {'mood_text': payload.mood_text} if 'mood_text' in payload.model_fields_set else {}
+    return service.save_settings(user.id, character_id, payload.voice, payload.mood, payload.automatic, **extra)
 
 
 @router.post('/session/end')

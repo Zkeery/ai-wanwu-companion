@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import Activities from '@/components/activities';
 import Gatherings from '@/components/gatherings';
 import { activities, parseMatch } from '@/lib/activities';
@@ -20,6 +20,7 @@ vi.mock('@/lib/gatherings', async original => ({ ...await original<typeof import
 const match = parseMatch({ id: 'match-one', kind: 'observe', status: 'registration', me: 'owner', is_organizer: true, invitation: null, phase_end: null, end_at: null, observed_at: 100, participants: {}, votes: {}, events: [], rewards: {} });
 const space = parseGathering({ id: 'space-one', title: '伙伴花园', scene_type: 'home', revision: 1, closed: false, is_manager: true, me: 'owner', invitation: null, members: [{ id: 'owner', name: '我', manager: true }], companions: [], items: [], votes: [], events: [], stories: [], goal: null, story_enabled: false, season: { current_season: null } });
 const wallet = { balance: 20, shop: { colorful_pot: 20 }, decorations: [] };
+afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 beforeEach(() => {
   vi.resetAllMocks(); localStorage.clear(); localStorage.setItem(TOKEN_KEY, 'flow-session');
@@ -113,6 +114,7 @@ it('restores a failed gathering deep link and its companion and inventory choice
   render(<Gatherings />); await retry();
   expect(await screen.findByRole('heading', { name: '伙伴花园', level: 1 })).toBeInTheDocument();
   expect(await screen.findByRole('button', { name: '带 小苹果 来' })).toBeEnabled();
+  fireEvent.click(screen.getByRole('tab', { name: '布置与照料' }));
   expect(screen.getByRole('button', { name: '放回树' })).toBeEnabled();
   expect(api.characters).toHaveBeenCalledTimes(2); noWrites();
 });
@@ -145,6 +147,7 @@ it('refreshes the gathering catalog after a successful detail read and a failed 
   render(<Gatherings />); await screen.findByRole('heading', { name: '伙伴花园', level: 1 });
   await retry();
   expect(await screen.findByRole('button', { name: '带 小苹果 来' })).toBeEnabled();
+  fireEvent.click(screen.getByRole('tab', { name: '布置与照料' }));
   expect(screen.getByRole('button', { name: '放回树' })).toBeEnabled(); noWrites();
 });
 
@@ -176,4 +179,63 @@ it.each(['activity', 'gathering'])('keeps recovered companion choices when an ol
   await screen.findByRole('button', { name });
   await act(async () => resolve([]));
   expect(screen.getByRole('button', { name })).toBeEnabled(); noWrites();
+});
+
+it.each(['activity','gathering'] as const)('keeps a mounted %s detail reloadable and returns to its mounted list without writes',async kind=>{
+ vi.stubEnv('NEXT_PUBLIC_BASE_PATH','/partner');
+ const path=kind==='activity'?'/activities':'/gatherings';
+ history.replaceState(null,'','/partner'+path);
+ const Component=kind==='activity'?Activities:Gatherings;
+ const first=render(<Component/>);
+ fireEvent.click(await screen.findByRole('button',{name:kind==='activity'?/查看比赛与回忆/:/伙伴花园.*进去相聚/}));
+ const detailName=kind==='activity'?'报名 小苹果':'带 小苹果 来';
+ await screen.findByRole('button',{name:detailName});
+ expect(location.pathname).toBe('/partner'+path);
+ expect(location.search).toBe(kind==='activity'?'?match=match-one':'?space=space-one');
+ first.unmount();
+ render(<Component/>);
+ await screen.findByRole('button',{name:detailName});
+ expect(kind==='activity'?activities.read:gatherings.read).toHaveBeenCalledTimes(2);
+ fireEvent.click(screen.getByRole('button',{name:kind==='activity'?'所有活动':/所有共同住处$/}));
+ expect(location.pathname).toBe('/partner'+path);expect(location.search).toBe('');
+ noWrites();
+});
+
+it.each(['needs_care','mature'] as const)('describes a completed goal with %s tree without upgrading historical evidence',async growth_status=>{
+ history.replaceState(null,'','/gatherings?space=space-one');
+ vi.mocked(gatherings.read).mockResolvedValue({...space,goal:'completed',items:[{id:'tree',kind:'tree',x:.3,y:.4,mine:true,contributor_name:'我',growth_status}]});
+ render(<Gatherings/>);
+ fireEvent.click(await screen.findByRole('tab',{name:'布置与照料'}));
+ await screen.findByText(growth_status==='mature'?'目标已完成：小树已经长成，休息位置也布置好了。':'这个目标已有完成记录，原记录保留。');
+ noWrites();
+});
+
+
+it('clears a recovered polling failure without sending any write', async () => {
+  history.replaceState(null, '', '/activities?match=match-one');
+  const running = { ...match, status: 'running' as const, phase_end: 280, end_at: 280 };
+  vi.mocked(activities.read).mockResolvedValueOnce(running).mockRejectedValueOnce(new Error('轮询暂时中断')).mockResolvedValue(running);
+  let poll!: () => void;
+  const interval = vi.spyOn(globalThis, 'setInterval').mockImplementation((fn, ms) => { if (ms === 3000) poll = fn as () => void; return 123 as unknown as ReturnType<typeof setInterval>; });
+  render(<Activities />);
+  await screen.findByRole('button', { name: '给伙伴们加油' });
+  await act(async () => { poll(); });
+  expect(screen.getByText('轮询暂时中断')).toBeInTheDocument();
+  await act(async () => { poll(); });
+  expect(screen.queryByText('轮询暂时中断')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '给伙伴们加油' })).toBeEnabled(); noWrites(); interval.mockRestore();
+});
+
+it('does not hide a command failure when a later match poll succeeds', async () => {
+  history.replaceState(null, '', '/activities?match=match-one');
+  vi.mocked(activities.read).mockResolvedValue({ ...match, status: 'running', phase_end: 280, end_at: 280 });
+  vi.mocked(activities.command).mockRejectedValue(new Error('这次加油未保存'));
+  let poll!: () => void;
+  const interval = vi.spyOn(globalThis, 'setInterval').mockImplementation((fn, ms) => { if (ms === 3000) poll = fn as () => void; return 124 as unknown as ReturnType<typeof setInterval>; });
+  render(<Activities />);
+  fireEvent.click(await screen.findByRole('button', { name: '给伙伴们加油' }));
+  await screen.findByText('这次加油未保存');
+  await act(async () => { poll(); });
+  expect(screen.getByText('这次加油未保存')).toBeInTheDocument();
+  expect(activities.command).toHaveBeenCalledTimes(1); interval.mockRestore();
 });

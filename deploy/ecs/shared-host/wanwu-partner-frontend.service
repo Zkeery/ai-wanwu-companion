@@ -1,0 +1,32 @@
+[Unit]
+Description=Wanwu Partner Next.js production frontend
+Wants=network-online.target wanwu-partner-backend.service
+After=network-online.target wanwu-partner-backend.service
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=wanwu-partner
+Group=wanwu-partner
+WorkingDirectory=/opt/wanwu-partner/app/frontend/.next/standalone
+EnvironmentFile=/etc/wanwu-partner/frontend.env
+Environment=HOME=/opt/wanwu-partner/runtime/home
+Environment=NODE_OPTIONS=--max-old-space-size=384
+ExecStart=/opt/wanwu-partner/runtime/node/bin/node server.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/wanwu-partner/runtime /opt/wanwu-partner/logs
+MemoryHigh=384M
+MemoryMax=512M
+TasksMax=64
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

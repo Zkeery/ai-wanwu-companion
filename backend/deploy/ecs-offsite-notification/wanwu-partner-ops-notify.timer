@@ -1,0 +1,11 @@
+[Unit]
+Description=Wanwu Partner minute health and notification check
+
+[Timer]
+OnBootSec=60s
+OnUnitActiveSec=60s
+AccuracySec=1s
+Unit=wanwu-partner-ops-notify.service
+
+[Install]
+WantedBy=timers.target

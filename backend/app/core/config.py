@@ -50,8 +50,10 @@ class Settings(BaseSettings):
     model_timeout_seconds: float = 60.0
     model_max_retries: int = 2
     model_enable_thinking: bool | None = None  # Opt-in only after provider verification.
+    chat_enable_thinking: bool | None = None  # Ordinary streaming chat override.
     vision_enable_thinking: bool | None = None  # Separate from chat; verified MaaS Ling only.
     model_http_pool_enabled: bool = False  # Enable after connection reuse verification.
+    generation_timing_log: str = ""  # Optional private append-only JSONL diagnostics.
     character_bundle_enabled: bool = True
     scene_agent_enabled: bool = False  # Enable only after real-provider acceptance.
     generation_quota_enabled: bool = False

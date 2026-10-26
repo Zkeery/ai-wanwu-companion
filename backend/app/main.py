@@ -22,7 +22,8 @@ from app.models.models import Character, PhotoRequest
 from app.scene_agent import chat as agent_chat
 from app.services import generation_quota
 from app.services.model_http import close_model_http_clients
-from app.api import life_simulation, life_runtime, gatherings, voice, competitions
+from app.services.generation_timing import configure_timing_log, close_timing_log
+from app.api import life_simulation, life_runtime, gatherings, gathering_mahjong, voice, competitions
 
 Base.metadata.create_all(bind=engine)
 ensure_generation_columns(engine)
@@ -84,7 +85,9 @@ async def lifespan(app: FastAPI):
         life_worker = asyncio.create_task(consume(selected, execute_life))
     if gatherings.automatic_available():
         from app.living.gathering_automatic import consume as consume_shared
-        shared_worker = asyncio.create_task(consume_shared(gatherings.automatic_store, gatherings.automatic_client))
+        shared_worker = asyncio.create_task(consume_shared(gatherings.automatic_store, gatherings.automatic_client,
+                                task_factory=gatherings.automatic_task_client))
+    configure_timing_log(get_settings().generation_timing_log)
     try:
         yield
     finally:
@@ -100,6 +103,7 @@ async def lifespan(app: FastAPI):
         if generation_worker is not None:
             await generation_worker
         close_model_http_clients()
+        close_timing_log()
 
 
 app = FastAPI(title="AI万物伙伴", version="0.1.0", lifespan=lifespan)
@@ -154,6 +158,7 @@ app.include_router(living.location_router, prefix="/api/v1")
 app.include_router(life_simulation.router, prefix="/api/v1")
 app.include_router(life_runtime.router, prefix="/api/v1")
 app.include_router(gatherings.router, prefix="/api/v1")
+app.include_router(gathering_mahjong.router, prefix="/api/v1")
 app.include_router(voice.router, prefix="/api/v1")
 app.include_router(competitions.router, prefix="/api/v1")
 

@@ -1,5 +1,6 @@
 import { array, object, parseAuthUser, parseCharacter, parseCharacterOverview, parseLivingSpace, parseMemory, parseMessage, parseScene, parseSpaceSummary, type SceneAction, type SpaceMember } from './contracts';
 import { authHeaders, expireSession, getToken } from './auth';
+import { appFetch as fetch } from './base-path';
 import { parseThemes } from './themes';
 
 export class ApiError extends Error {

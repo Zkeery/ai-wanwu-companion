@@ -152,7 +152,9 @@ def test_project_adapter_checks_price_and_bounds_only_its_own_settings(monkeypat
     async def catalog():
         checks.append(True)
         return {'reserve_micro': grants.RESERVE_MICRO}
-    monkeypatch.setattr('dotenv.dotenv_values', lambda _: {'MODEL_BASE_URL': BASE_URL, 'MODEL_API_KEY': 'fixture-only'})
+    from app.core.config import Settings
+    monkeypatch.setattr('app.core.config.get_settings', lambda: Settings(_env_file=None,
+        model_base_url=BASE_URL, model_api_key='fixture-only'))
     monkeypatch.setattr('app.living.life_live_planner.check_current_catalog', catalog)
     def post(self, payload, settings):
         calls.append(True)
@@ -174,7 +176,9 @@ def test_price_check_failure_never_reaches_the_provider(monkeypatch):
     from app.living.life_provider import BASE_URL
     async def catalog():
         raise RuntimeError('catalog unavailable')
-    monkeypatch.setattr('dotenv.dotenv_values', lambda _: {'MODEL_BASE_URL': BASE_URL, 'MODEL_API_KEY': 'fixture-only'})
+    from app.core.config import Settings
+    monkeypatch.setattr('app.core.config.get_settings', lambda: Settings(_env_file=None,
+        model_base_url=BASE_URL, model_api_key='fixture-only'))
     monkeypatch.setattr('app.living.life_live_planner.check_current_catalog', catalog)
     monkeypatch.setattr('app.services.model_client.ModelClient._post_chat_completions', lambda *a: pytest.fail('must not call'))
     with pytest.raises(RuntimeError):

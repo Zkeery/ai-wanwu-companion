@@ -180,3 +180,21 @@ it('brings the transferred draft composer into view without sending', async () =
   await waitFor(() => expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({ block: 'center' }));
   expect(sendChat).not.toHaveBeenCalled();
 });
+
+it('keeps saved messages and new chat usable when scene loading fails, then recovers the scene', async () => {
+  vi.mocked(api.scene).mockRejectedValueOnce(new Error('住处暂时读不到'));
+  vi.mocked(api.messages).mockResolvedValue([{ id: 31, role: 'assistant', content: '保存过的问候', created_at: '' }]);
+  vi.mocked(sendChat).mockResolvedValue({ message: { id: 32, role: 'assistant', content: '继续陪你', created_at: '' }, proposal: null });
+  const view = render(<Companion id={1} />);
+  const input = await screen.findByLabelText('想对伙伴说的话');
+  expect(screen.getByText('保存过的问候')).toBeInTheDocument();
+  fireEvent.change(input, { target: { value: '继续聊' } });
+  fireEvent.click(screen.getByLabelText('发送消息'));
+  expect(await screen.findByText('继续陪你')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('tab', { name: '生活' })); view.rerender(<Companion id={1} />);
+  expect(screen.getByRole('alert')).toHaveTextContent('住处暂时读不到');
+  fireEvent.click(screen.getByRole('button', { name: /重新加载/ }));
+  await waitFor(() => expect(api.scene).toHaveBeenCalledTimes(2));
+  await waitFor(() => expect(screen.queryByText(/住处暂时读不到/)).not.toBeInTheDocument());
+  expect(sendChat).toHaveBeenCalledTimes(1);
+});

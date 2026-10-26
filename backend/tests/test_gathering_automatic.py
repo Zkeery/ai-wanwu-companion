@@ -317,7 +317,8 @@ def test_worker_lifecycle_starts_only_when_available_and_is_cancelled(client, mo
     from app.api import gatherings
     from app.living import gathering_automatic
     started, stopped = [], []
-    async def worker(store, factory):
+    async def worker(store, factory, *, task_factory=None):
+        assert task_factory is gatherings.automatic_task_client
         started.append(store)
         try:
             await asyncio.Event().wait()

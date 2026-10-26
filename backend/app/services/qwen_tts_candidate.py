@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 from io import BytesIO
+import struct
 from typing import Callable
 from urllib.parse import urlsplit, urlunsplit
 import wave
@@ -11,6 +12,8 @@ import httpx
 
 
 MODEL = 'qwen3-tts-instruct-flash-2026-01-26'
+FLASH_MODEL = 'qwen3-tts-flash'
+SUPPORTED_MODELS = frozenset({MODEL, FLASH_MODEL})
 API_URL = 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation'
 MAX_AUDIO_BYTES = 8 * 1024 * 1024
 MAX_TEXT_LENGTH = 300
@@ -35,9 +38,24 @@ def billed_characters(text: str) -> int:
     return sum(2 if '\u3400' <= char <= '\u9fff' else 1 for char in text)
 
 
-def estimated_price() -> Decimal:
-    # Count instructions too, even if the provider bills only the input text.
-    total = sum(billed_characters(SAMPLE_TEXT + instruction) for instruction in VOICES.values())
+def synthesis_input(text: str, voice: str, *, model: str = MODEL) -> dict:
+    if not isinstance(model, str) or model not in SUPPORTED_MODELS or voice not in VOICES:
+        raise CandidateError('项目语音模型或音色无效')
+    if not isinstance(text, str) or not 0 < len(text.strip()) <= MAX_TEXT_LENGTH or len(text) > MAX_TEXT_LENGTH:
+        raise CandidateError('回复文本超出语音合成限定长度')
+    result = {'text': text, 'voice': voice, 'language_type': 'Chinese'}
+    if model == MODEL:
+        result['instructions'] = VOICES[voice]
+    return result
+
+
+def request_characters(text: str, voice: str, *, model: str = MODEL) -> int:
+    value = synthesis_input(text, voice, model=model)
+    return billed_characters(value['text'] + value.get('instructions', ''))
+
+
+def estimated_price(*, model: str = MODEL) -> Decimal:
+    total = sum(request_characters(SAMPLE_TEXT, voice, model=model) for voice in VOICES)
     return PRICE_PER_10000_CHARS * Decimal(total) / 10000
 
 
@@ -67,8 +85,36 @@ def _read_wav(data: bytes) -> None:
             duration = sound.getnframes() / sound.getframerate()
             if not 0 < duration <= 60 or sound.getnchannels() not in (1, 2):
                 raise CandidateError('语音服务返回的音频长度无效')
+            expected = sound.getnframes() * sound.getnchannels() * sound.getsampwidth()
+            if len(sound.readframes(sound.getnframes())) != expected:
+                raise CandidateError('语音服务返回的音频内容不完整')
     except (wave.Error, ZeroDivisionError, EOFError, ValueError) as exc:
         raise CandidateError('语音服务返回的音频格式无效') from exc
+
+
+def normalize_downloaded_wav(data: bytes, *, model: str = MODEL,
+        content_length: str | None = None, content_encoding: str | None = None) -> bytes:
+    """Normalize only the exact Flash streaming header observed in saved trials."""
+    known_header = (44 < len(data) <= MAX_AUDIO_BYTES and data[:4] == b'RIFF'
+        and data[8:16] == b'WAVEfmt ' and data[36:40] == b'data'
+        and struct.unpack_from('<I', data, 4)[0] == 2147483583
+        and struct.unpack_from('<I', data, 40)[0] == 2147483547)
+    if model == FLASH_MODEL and known_header:
+        if (not isinstance(content_length, str) or not content_length.isascii()
+                or not content_length.isdigit() or int(content_length) != len(data)
+                or content_encoding is not None
+                or struct.unpack_from('<I', data, 16)[0] != 16
+                or struct.unpack_from('<HHIIHH', data, 20) != (1, 1, 24000, 48000, 2, 16)):
+            raise CandidateError('语音服务返回的音频完整性无法确认')
+        pcm_size = len(data) - 44
+        if pcm_size % 2 or not 0 < pcm_size / 48000 <= 60:
+            raise CandidateError('语音服务返回的音频长度无效')
+        value = bytearray(data)
+        struct.pack_into('<I', value, 4, len(data) - 8)
+        struct.pack_into('<I', value, 40, pcm_size)
+        data = bytes(value)
+    _read_wav(data)
+    return data
 
 
 @dataclass(frozen=True)
@@ -78,18 +124,15 @@ class CandidateAudio:
 
 
 def synthesize_candidate(api_key: str, voice: str, *, client: httpx.Client,
-        on_response: Callable[[dict], None] | None = None) -> CandidateAudio:
-    return synthesize_text(api_key, SAMPLE_TEXT, voice, client=client, on_response=on_response)
+        on_response: Callable[[dict], None] | None = None, model: str = MODEL) -> CandidateAudio:
+    return synthesize_text(api_key, SAMPLE_TEXT, voice, client=client, on_response=on_response, model=model)
 
 
 def synthesize_text(api_key: str, text: str, voice: str, *, client: httpx.Client,
-        on_response: Callable[[dict], None] | None = None) -> CandidateAudio:
+        on_response: Callable[[dict], None] | None = None, model: str = MODEL) -> CandidateAudio:
     if not api_key or voice not in VOICES:
         raise CandidateError('项目语音配置或音色无效')
-    if not isinstance(text, str) or not 0 < len(text.strip()) <= MAX_TEXT_LENGTH or len(text) > MAX_TEXT_LENGTH:
-        raise CandidateError('回复文本超出语音合成限定长度')
-    payload = {'model': MODEL, 'input': {'text': text, 'voice': voice,
-        'language_type': 'Chinese', 'instructions': VOICES[voice]}}
+    payload = {'model': model, 'input': synthesis_input(text, voice, model=model)}
     stage = 'provider_request'
     try:
         response = client.post(API_URL, json=payload, headers={'Authorization': f'Bearer {api_key}'},
@@ -105,13 +148,15 @@ def synthesize_text(api_key: str, text: str, voice: str, *, client: httpx.Client
         status = exc.response.status_code if isinstance(exc, httpx.HTTPStatusError) else None
         raise CandidateError('语音服务请求失败，结果需人工核对',
             stage=stage, http_status=status) from exc
-    return download_candidate(body, client=client)
+    return download_candidate(body, client=client, model=model)
 
 
-def download_candidate(body: object, *, client: httpx.Client) -> CandidateAudio:
+def download_candidate(body: object, *, client: httpx.Client, model: str = MODEL) -> CandidateAudio:
     """Recover a persisted response without issuing another synthesis request."""
     stage = 'provider_response'
     try:
+        if not isinstance(model, str) or model not in SUPPORTED_MODELS:
+            raise CandidateError('项目语音模型无效')
         if not isinstance(body, dict) or not isinstance(body.get('output'), dict):
             raise CandidateError('语音服务返回格式无效')
         output = body['output']
@@ -134,6 +179,8 @@ def download_candidate(body: object, *, client: httpx.Client) -> CandidateAudio:
             stream.raise_for_status()
             if 300 <= stream.status_code < 400:
                 raise CandidateError('语音下载发生非预期跳转')
+            content_length = stream.headers.get('content-length')
+            content_encoding = stream.headers.get('content-encoding')
             data = bytearray()
             for chunk in stream.iter_bytes():
                 data.extend(chunk)
@@ -141,7 +188,8 @@ def download_candidate(body: object, *, client: httpx.Client) -> CandidateAudio:
                     raise CandidateError('语音服务返回的音频过大')
         wav = bytes(data)
         stage = 'audio_validation'
-        _read_wav(wav)
+        wav = normalize_downloaded_wav(wav, model=model,
+            content_length=content_length, content_encoding=content_encoding)
         return CandidateAudio(wav, usage)
     except CandidateError as exc:
         if exc.stage == 'unknown':

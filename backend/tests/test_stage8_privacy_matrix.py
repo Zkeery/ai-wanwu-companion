@@ -83,7 +83,18 @@ def test_visit_media_permissions_are_revoked_on_leave(
     group = visited.json()
     shared_image = f"/api/v1/gatherings/{group['id']}/companions/{ready_character_id}/image"
     detail = f"/api/v1/gatherings/{group['id']}"
-    assert anon.get(shared_image, headers=member).content == png_header
+    # Shared portraits intentionally use the bounded WebP preview, rather than
+    # returning the original upload. Verify actual pixels and keep all access
+    # revocation assertions below; original-byte equality is the wrong contract.
+    from io import BytesIO
+    from PIL import Image, ImageChops, ImageStat
+    preview = anon.get(shared_image, headers=member)
+    assert preview.status_code == 200 and preview.headers['content-type'] == 'image/webp'
+    assert preview.headers['cache-control'] == 'private, no-store'
+    with Image.open(BytesIO(preview.content)) as shown, Image.open(BytesIO(png_header)) as original:
+        assert shown.format == 'WEBP' and shown.size == original.size
+        assert max(ImageStat.Stat(ImageChops.difference(shown.convert('RGB'), original.convert('RGB'))).mean) <= 5
+    assert (upload / image_name).read_bytes() == png_header
     assert anon.get(detail, headers=member).status_code == 200
     assert anon.get(shared_image, headers=stranger).status_code == 404
     assert anon.get(detail, headers=stranger).status_code == 404
@@ -95,12 +106,12 @@ def test_visit_media_permissions_are_revoked_on_leave(
         response = anon.get(path, headers=member)
         assert response.status_code == 404
         assert response.headers["cache-control"] == "private, no-store"
-        assert response.content != png_header
+        assert response.content != preview.content
     assert _command(anon, group, "start_goal", headers=member).status_code == 404
     assert anon.get(private_image, headers=member).status_code == 404
     assert all(anon.get(f"{voice_base}/audio/{aid}", headers=member).status_code == 404
                for aid in audio_ids)
-    assert client.get(shared_image).content == png_header
+    assert client.get(shared_image).content == preview.content
     reopened = GatheringStore(engine)
     assert reopened.read(TEST_USER_ID, group["id"])["id"] == group["id"]
     with pytest.raises(LivingError):

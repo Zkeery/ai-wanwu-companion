@@ -1,4 +1,5 @@
 import { checkResponse, request } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders, getToken } from './auth';
 import { array, object } from './contracts';
 export type TeamSummary = { id: string; title: string; theme_id: string; is_creator: boolean; invitation_active: boolean; member_count: number };

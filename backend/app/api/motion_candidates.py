@@ -87,6 +87,12 @@ def failure(exc):
 
 
 def describe(job_id: str, cid: int, owner: str) -> dict:
+    from app.services import video_motion_candidates as videos
+    try:
+        return videos.describe(job_id, cid, owner)
+    except AtlasProviderError as error:
+        if error.code != 'job_invalid':
+            raise
     current = flow.status(job_id, cid, owner, root=flow.DEFAULT_ROOT)
     digest = current.get('candidate_sha256')
     if not isinstance(digest, str) or not SHA.fullmatch(digest):
@@ -134,10 +140,23 @@ def candidates(character_id: int, response: Response,
             items.append(item)
             if len(items) == 21:
                 break
+        from app.services.video_motion_candidates import listing
+        items.extend(v for v in listing(character_id, user.id, activity) if not cursor or v['job_id'] > cursor)
+        items.sort(key=lambda v: v['job_id'])
         response.headers.update(HEADERS)
         return {'character_id': character_id, 'items': items[:20],
                 'next_cursor': items[19]['job_id'] if len(items) > 20 else None}
     except (MotionBindingError, AtlasProviderError, OSError) as exc:
+        raise failure(exc)
+
+
+@router.get('/characters/{character_id}/motion-candidates/{job_id}/video/{digest}')
+def video(character_id: int, job_id: str, digest: str, user: User = Depends(get_current_user)):
+    from app.services.video_motion_candidates import read_video
+    try:
+        raw = read_video(job_id, character_id, user.id, digest)
+        return Response(raw, media_type='video/mp4', headers={**HEADERS, 'X-Content-Type-Options': 'nosniff'})
+    except (MotionBindingError, AtlasProviderError, OSError, ValueError) as exc:
         raise failure(exc)
 
 
@@ -159,6 +178,14 @@ def image(character_id: int, job_id: str, digest: str, user: User = Depends(get_
 def review(character_id: int, job_id: str, body: ReviewRequest, response: Response,
            user: User = Depends(get_current_user)):
     try:
+        current = describe(job_id, character_id, user.id)
+        if current.get('kind') == 'video':
+            from app.services.video_motion_candidates import review as review_video
+            from app.core.database import SessionLocal
+            result = review_video(job_id, character_id, user.id, body.decision,
+                                  body.candidate_sha256, session_factory=SessionLocal)
+            response.headers.update(HEADERS)
+            return result
         flow.review(job_id, character_id, user.id, decision=body.decision,
                     candidate_sha256=body.candidate_sha256,
                     review_ref=f'web-{uuid4()}', root=flow.DEFAULT_ROOT)

@@ -38,6 +38,26 @@ it('does not send without funding or when the provider is unavailable', async ()
   expect(screen.getByRole('button',{name:'让他们聊两句'})).toBeDisabled();expect(dialogueApi.start).not.toHaveBeenCalled();
 });
 
+it.each([['outdoor', 'indoor'], ['indoor', 'bedroom']] as const)('explains %s/%s separation and only permits the round after the owners bring both into one area', async (first, second) => {
+  const g = gathering(); g.companions[0].area = first; g.companions[1].area = second;
+  g.companions[1].owner_id = 'friend'; const command = vi.fn(), refresh = vi.fn();
+  const view = render(<GatheringDialogue gathering={g} busy={false} command={command} refresh={refresh} />);
+  await screen.findByText('还没有保存的 AI 交流。');
+  fireEvent.click(screen.getByLabelText('选择伙伴1')); fireEvent.click(screen.getByLabelText('选择伙伴2'));
+  expect(screen.getByText('这两位伙伴在不同区域，请先让他们来到同一区域，再发起交流。')).toBeVisible();
+  expect(screen.getByRole('button', { name: '让他们聊两句' })).toBeDisabled();
+  expect(dialogueApi.start).not.toHaveBeenCalled(); expect(command).not.toHaveBeenCalled();
+  const together = { ...g, revision: 2, companions: g.companions.map(c => ({ ...c, area: first })) };
+  view.rerender(<GatheringDialogue gathering={together} busy={false} command={command} refresh={refresh} />);
+  expect(screen.queryByText('这两位伙伴在不同区域，请先让他们来到同一区域，再发起交流。')).toBeNull();
+  expect(screen.getByRole('button', { name: '让他们聊两句' })).toBeEnabled();
+  vi.mocked(dialogueApi.start).mockResolvedValue({ ...status(), grants: [] });
+  fireEvent.click(screen.getByRole('button', { name: '让他们聊两句' }));
+  fireEvent.click(screen.getByRole('button', { name: '确认这一轮' }));
+  await waitFor(() => expect(dialogueApi.start).toHaveBeenCalledTimes(1));
+  expect(dialogueApi.start).toHaveBeenCalledWith('group', expect.objectContaining({ expected_revision: 2, character_ids: [1, 2] }), expect.any(AbortSignal));
+});
+
 it('saves owner permissions with explicit commands and never gives another owner a toggle', async () => {
   const g=gathering();g.companions[1].owner_id='other';const command=vi.fn();
   render(<GatheringDialogue gathering={g} busy={false} command={command} refresh={vi.fn()}/>);
@@ -72,6 +92,43 @@ it('recovers after an uncertain POST by reading; never replays the POST', async 
   fireEvent.click(screen.getByRole('button',{name:'更新交流记录'}));
   await waitFor(()=>expect(dialogueApi.read).toHaveBeenCalledTimes(3));
   expect(dialogueApi.start).toHaveBeenCalledTimes(1);
+});
+
+it('refreshes the shared snapshot once when a timed-out POST later completes in read-only polling, without reposting', async () => {
+  vi.useFakeTimers();
+  const running = { ...status(), grants: [], tasks: [{ id: 'late-task', state: 'running' as const, created_at: 1, dispatched: true }] };
+  const done = { ...running, tasks: [{ ...running.tasks[0], state: 'done' as const }], exchanges: [{ id: 'late-exchange', at: 2,
+    lines: [{ character_id: 1, name: '伙伴1', text: '合成迟到的真实交流甲。' }, { character_id: 2, name: '伙伴2', text: '合成迟到的真实交流乙。' }] }] };
+  vi.mocked(dialogueApi.start).mockRejectedValue(new Error('timeout'));
+  vi.mocked(dialogueApi.read).mockResolvedValueOnce(status()).mockResolvedValueOnce(running).mockResolvedValue(done);
+  let mounted!: ReturnType<typeof mount>;
+  await act(async () => { mounted = mount(); });
+  fireEvent.click(screen.getByLabelText('选择伙伴1')); fireEvent.click(screen.getByLabelText('选择伙伴2'));
+  fireEvent.click(screen.getByRole('button', { name: '让他们聊两句' }));
+  await act(async () => fireEvent.click(screen.getByRole('button', { name: '确认这一轮' })));
+  expect(mounted.refresh).not.toHaveBeenCalled(); expect(dialogueApi.start).toHaveBeenCalledTimes(1);
+  await act(async () => { await vi.advanceTimersByTimeAsync(2000); });
+  expect(screen.getByText('合成迟到的真实交流甲。', { exact: false })).toBeVisible();
+  expect(mounted.refresh).toHaveBeenCalledTimes(1); expect(dialogueApi.start).toHaveBeenCalledTimes(1);
+  await act(async () => mounted.rerender(<GatheringDialogue gathering={{ ...gathering(), revision: 2 }} busy={false} command={mounted.command} refresh={mounted.refresh} />));
+  await act(async () => fireEvent.click(screen.getByRole('button', { name: '更新交流记录' })));
+  await act(async () => { await vi.advanceTimersByTimeAsync(10_000); });
+  expect(mounted.refresh).toHaveBeenCalledTimes(1); expect(dialogueApi.start).toHaveBeenCalledTimes(1);
+  expect(dialogueApi.read).toHaveBeenCalledTimes(5);
+});
+
+it('does not refresh twice when the POST already returned and refreshed a published exchange', async () => {
+  const result = { ...status(), grants: [], exchanges: [{ id: 'returned-exchange', at: 2,
+    lines: [{ character_id: 1, name: '伙伴1', text: '合成一次成功的交流。' }, { character_id: 2, name: '伙伴2', text: '合成第二句。' }] }] };
+  vi.mocked(dialogueApi.start).mockResolvedValue(result); const { refresh } = mount();
+  await screen.findByText('还没有保存的 AI 交流。');
+  fireEvent.click(screen.getByLabelText('选择伙伴1')); fireEvent.click(screen.getByLabelText('选择伙伴2'));
+  fireEvent.click(screen.getByRole('button', { name: '让他们聊两句' }));
+  vi.mocked(dialogueApi.read).mockResolvedValue(result);
+  fireEvent.click(screen.getByRole('button', { name: '确认这一轮' }));
+  await screen.findByText('合成一次成功的交流。', { exact: false });
+  await act(async () => fireEvent.click(screen.getByRole('button', { name: '更新交流记录' })));
+  expect(refresh).toHaveBeenCalledTimes(1); expect(dialogueApi.start).toHaveBeenCalledTimes(1);
 });
 
 it('restores saved exchanges without a new call and rejects offline-origin results', async () => {

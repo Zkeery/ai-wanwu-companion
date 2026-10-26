@@ -39,3 +39,12 @@ it('falls back on image failure, supports manual retry and clears failure for a 
 it('keeps the last confirmed background when a failed save is reconciled to old settings',async()=>{
  vi.mocked(seasonApi.save).mockRejectedValue(new Error('offline'));render(<LivingScene space={space} onChange={vi.fn()}/>);await open();fireEvent.click(screen.getByRole('button',{name:'确认设置'}));await screen.findByText(/已核对服务器设置/);expect(screen.getByRole('group',{name:'绿洲沙地'})).toHaveAttribute('data-season','base');expect(seasonApi.save).toHaveBeenCalledTimes(1);
 });
+
+it('supports season settings in an owned shared oasis without changing its layout',async()=>{
+ render(<LivingScene space={{...space,mode:'shared',companion_id:null}} onChange={vi.fn()}/>);
+ expect(screen.getByRole('region',{name:'植物照料总览'})).toBeInTheDocument();
+ await open();fireEvent.click(screen.getByRole('button',{name:'确认设置'}));
+ await screen.findByText('四季已保存，场景现在生效。');
+ expect(screen.getByRole('group',{name:'绿洲沙地'})).toHaveAttribute('data-season','autumn');
+ expect(api.living.action).not.toHaveBeenCalled();
+});

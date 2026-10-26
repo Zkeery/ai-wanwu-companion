@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
 import { Heart, Camera, Compass } from 'lucide-react';
 import { AUTH_CHANGED, getToken } from '@/lib/auth';
+import { withoutBasePath } from '@/lib/base-path';
 
 function subscribe(listener: () => void) {
   window.addEventListener(AUTH_CHANGED, listener);
@@ -12,7 +13,7 @@ function subscribe(listener: () => void) {
 }
 export default function MobileNav() {
   const token = useSyncExternalStore(subscribe, getToken, () => null);
-  const path = usePathname();
+  const path = withoutBasePath(usePathname());
   if (!token) return null;
   const entries = [
     { href: '/', label: '伙伴', Icon: Heart, current: path === '/' || /^\/companions\/\d+(?:\/|$)/.test(path) },

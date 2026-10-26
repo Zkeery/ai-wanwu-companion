@@ -12,6 +12,9 @@ it('opens and switches all scene artwork without requests or changing a session'
   const { container } = render(<ScenePreviewPage />);
   for (const scene of ['家庭庭院', '森林营地']) {
     fireEvent.click(screen.getByRole('button', { name: scene }));
+    fireEvent.click(screen.getByRole('button', { name: '默认画面' }));
+    expect(container.querySelector('[data-scene-art="base"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-season-art]')).toBeNull();
     for (const [name, id] of [['春天', 'spring'], ['夏天', 'summer'], ['秋天', 'autumn'], ['冬天', 'winter']]) {
       fireEvent.click(screen.getByRole('button', { name }));
       expect(container.querySelector('[data-season-art]')).toHaveAttribute('data-season-art', id);

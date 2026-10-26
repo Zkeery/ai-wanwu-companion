@@ -8,6 +8,10 @@ PAUSED_MESSAGE = 'AI服务已暂停，暂时无法识别、生成或发送新对
 
 
 def model_availability(request: Request) -> dict:
+    daily = getattr(request.app.state, 'daily_model_quota', None)
+    if daily is not None and daily.status()['remaining'] == 0:
+        from app.services.daily_model_quota import DAILY_LIMIT_MESSAGE
+        return {'model_available': False, 'unavailable_message': DAILY_LIMIT_MESSAGE}
     budget = getattr(request.app.state, 'model_budget', None)
     if budget is None:
         return {'model_available': True, 'unavailable_message': None}
@@ -20,6 +24,10 @@ def model_availability(request: Request) -> dict:
 
 
 def require_model_available(request: Request, _user=Depends(get_current_user)):
+    daily = getattr(request.app.state, 'daily_model_quota', None)
+    if daily is not None and daily.status()['remaining'] == 0:
+        from app.services.daily_model_quota import DAILY_LIMIT_MESSAGE
+        raise api_error(429, 'daily_model_limit', DAILY_LIMIT_MESSAGE)
     state = model_availability(request)
     if not state['model_available']:
         raise api_error(503, 'model_service_paused', PAUSED_MESSAGE)

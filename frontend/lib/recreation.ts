@@ -1,4 +1,5 @@
 import { authHeaders, getToken } from './auth';
+import { appFetch as fetch } from './base-path';
 import { consumeCreation } from './creation';
 
 const storageKey = (id: number) => `companion-recreation:${id}`;

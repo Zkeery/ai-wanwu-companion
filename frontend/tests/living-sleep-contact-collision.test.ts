@@ -1,0 +1,33 @@
+import * as THREE from 'three';
+import { expect, it } from 'vitest';
+import { buildAvatar } from '@/lib/living-meshes';
+import { computeLivingBedPose } from '@/lib/living-sleep-support';
+import { createLivingContactCollision } from '@/lib/living-contact-collision';
+import type { JourneyPose } from '@/lib/living-home-journey';
+import { parseGathering } from '@/lib/gatherings';
+import current from './fixtures/id5-current-g58-20261025.json';
+
+it('detects the real penetrating bouquet pose even when sleep decorations have duplicate empty names', () => {
+  const character = parseGathering(current.group).companions.find(companion => companion.id === 5)!;
+  const value = buildAvatar(character.avatar3d!), avatar = { ...value, baseScale: value.root.scale.clone() };
+  const bed = new THREE.Group(); bed.name = 'room-bed-0'; bed.userData.homeNavObstacle = true;
+  const mattress = new THREE.Mesh(new THREE.BoxGeometry(2.15, .24, 3.25), new THREE.MeshBasicMaterial());
+  mattress.name = bed.name + '-mattress'; mattress.position.set(5.65, .54, -4.9); bed.add(mattress); bed.updateMatrixWorld(true);
+  const blend = .8378018905, pose: JourneyPose = {x: 5.65, y: .558091, z: -4.319943, yaw: 0, tilt: -1.054582, scale: .916219811, area: 'bedroom', contact: 'sleep'};
+  const sleeping = computeLivingBedPose(value.sleepSupport, avatar.baseScale.clone().multiplyScalar(.9), 1)!;
+  expect(sleeping.adjustments.filter(adjustment => adjustment.part.name === '').length).toBeGreaterThan(1);
+  avatar.root.position.set(pose.x, pose.y, pose.z); avatar.root.rotation.set(pose.tilt, pose.yaw, 0); avatar.root.scale.copy(avatar.baseScale).multiplyScalar(pose.scale);
+  for (const leg of [avatar.leftLeg, avatar.rightLeg]) leg.position.z = sleeping.legOffsetZ * blend;
+  for (const adjustment of sleeping.adjustments) adjustment.part.position.z = THREE.MathUtils.lerp(adjustment.awakeZ, adjustment.asleepZ, blend);
+  avatar.root.updateMatrixWorld(true);
+  const inner = new THREE.Box3().setFromObject(mattress, true).expandByScalar(-.006), vertex = new THREE.Vector3(); let inside = 0;
+  avatar.root.traverse(object => { if (object instanceof THREE.Mesh) { const positions = object.geometry.getAttribute('position'); for (let index = 0; index < positions.count; index++) if (inner.containsPoint(vertex.fromBufferAttribute(positions, index).applyMatrix4(object.matrixWorld))) inside++; }});
+  expect(inside, 'independent live vertices prove this pose really penetrates the mattress').toBeGreaterThan(0);
+  const before = avatar.root.matrixWorld.elements.slice(), probe = createLivingContactCollision();
+  expect(probe.isClear(avatar, bed, null, pose, pose, blend, blend, [bed.name], false, 'sleep')).toBe(false);
+  expect(probe.getLastCollision()?.obstacle).toBe(mattress.name);
+  expect(avatar.root.matrixWorld.elements).toEqual(before);
+  const geometries = new Set<THREE.BufferGeometry>(), materials = new Set<THREE.Material>();
+  for (const root of [avatar.root, bed]) root.traverse(object => { if (object instanceof THREE.Mesh) { geometries.add(object.geometry); for (const material of Array.isArray(object.material) ? object.material : [object.material]) materials.add(material); }});
+  geometries.forEach(geometry => geometry.dispose()); materials.forEach(material => material.dispose());
+});

@@ -1,0 +1,10 @@
+import {expect,it} from 'vitest';
+import {planSocialGathering} from '@/lib/living-social-gathering';
+import {createLivingNavigation} from '@/lib/living-navigation';
+const bounds={minX:-5,maxX:5,minZ:-4,maxZ:4},wall={minX:.6,maxX:1,maxZ:4,minZ:-4};
+const actors=[{id:2,area:'outdoor' as const,radius:.25,from:{x:3,z:2}},{id:5,area:'outdoor' as const,radius:.25,from:{x:3,z:-2}}];
+const graph=(_area:unknown,radius:number)=>createLivingNavigation({bounds,blocked:[wall],clearance:radius,step:.16});
+it('selects one common reachable circle instead of the clear but disconnected default circle',()=>{const old=JSON.stringify(actors),plan=planSocialGathering(actors,()=>bounds,graph,()=>[]);expect(plan.size).toBe(2);for(const a of actors){const p=plan.get(a.id)!;expect(p.position.x).toBeGreaterThan(1.25);expect(graph(a.area,a.radius).planTo({from:a.from,to:p.position,id:a.id}).blocked).toBeNull();}expect(JSON.stringify(actors)).toBe(old);});
+it('does not pretend disconnected members can cross a solid wall',()=>{const input=[actors[0],{...actors[1],from:{x:-3,z:-2}}],before=JSON.stringify(input);expect(planSocialGathering(input,()=>bounds,graph,()=>[]).size).toBe(0);expect(JSON.stringify(input)).toBe(before);});
+it('preserves old optional-origin callers and their deterministic default circle',()=>{const input=actors.map(({from:_from,...a})=>a);const plan=planSocialGathering(input,()=>bounds,graph,()=>[]);expect(plan.size).toBe(2);expect(plan.get(2)!.position.x).toBe(0);expect(Math.abs(plan.get(5)!.position.x)).toBeLessThan(1e-8);expect(JSON.stringify([...plan])).toBe(JSON.stringify([...planSocialGathering(input,()=>bounds,graph,()=>[])]));});
+it('rejects an invalid actual origin without moving it into the circle',()=>{const input=[{...actors[0],from:{x:NaN,z:2}},actors[1]];expect(planSocialGathering(input,()=>bounds,graph,()=>[]).size).toBe(0);expect(Number.isNaN(input[0].from.x)).toBe(true);});

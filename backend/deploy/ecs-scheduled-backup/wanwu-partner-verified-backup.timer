@@ -1,0 +1,11 @@
+[Unit]
+Description=Wanwu Partner daily verified backup
+
+[Timer]
+OnCalendar=*-*-* 03:00:00 Asia/Shanghai
+AccuracySec=1min
+Persistent=false
+Unit=wanwu-partner-verified-backup.service
+
+[Install]
+WantedBy=timers.target

@@ -59,7 +59,7 @@ def reply_mode():
     return 'configured_model' if settings.voice_live_reply_enabled else 'disabled'
 
 
-def configured_reply(messages, *, style_version=None, settings=None, max_payload_bytes=None):
+def configured_reply(messages, *, style_version=None, settings=None, max_payload_bytes=None, post=None):
     settings = settings or get_settings()
     if not settings.voice_live_reply_enabled or settings.use_mock or settings.app_env == 'test':
         raise ModelError('语音正式回复未启用')
@@ -76,7 +76,7 @@ def configured_reply(messages, *, style_version=None, settings=None, max_payload
         import json
         if len(json.dumps(payload, ensure_ascii=False).encode()) > max_payload_bytes:
             raise ModelError('语音上下文超过本次授权范围')
-    result = client._post_chat_completions(payload, bounded)
+    result = (post or client._post_chat_completions)(payload, bounded)
     if not isinstance(result, str) or not result.strip() or len(result) > 4000:
         raise ModelError('语音回复为空或超出长度限制')
     reply = result.strip()

@@ -16,7 +16,7 @@ import tarfile
 from uuid import uuid4
 
 from scripts.ecs_runtime import safe_path
-from scripts.check_full_flow_recovery import load_snapshot
+from scripts.check_full_flow_recovery import extra_databases, load_snapshot
 
 MAX_BYTES = 1024 ** 3
 PREFIX = 'ai-companion-backups/'
@@ -34,6 +34,7 @@ def inventory(manifest: dict) -> set[str]:
     names = {'app.db', 'manifest.json'}
     names.update('uploads/' + name for name in manifest['files'])
     state = manifest['runtime_state']
+    names.update(extra_databases(manifest))
     names.update('ledger/' + name for name in (state['ledger'] or {}))
     names.update(state['state_files'])
     for name in names:

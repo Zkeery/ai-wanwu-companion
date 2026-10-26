@@ -1,24 +1,32 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { dialogueApi, type DialogueStatus } from '@/lib/gathering-dialogue';
-import type { Gathering } from '@/lib/gatherings';
+import { gatheringCompanionArea, type Gathering } from '@/lib/gatherings';
 import { errorText, ApiError } from '@/lib/api';
 import { getToken } from '@/lib/auth';
 import { Modal } from './common';
 import GatheringAutomatic from './gathering-automatic';
 
-type Props = { gathering: Gathering; busy: boolean; command: (command: Record<string, unknown>) => Promise<void>; refresh: () => void };
+type Props = { gathering: Gathering; busy: boolean; command: (command: Record<string, unknown>) => Promise<void>; refresh: () => void; compact?: boolean };
 export default function GatheringDialogue(props: Props) {
   return <Dialogue key={props.gathering.id} {...props} />;
 }
-function Dialogue({ gathering: g, busy, command, refresh }: Props) {
+function Dialogue({ gathering: g, busy, command, refresh, compact = false }: Props) {
   const [status, setStatus] = useState<DialogueStatus | null>(null), [error, setError] = useState('');
   const [selected, setSelected] = useState<number[]>([]), [confirm, setConfirm] = useState(false);
   const [sending, setSending] = useState(false), [reload, setReload] = useState(0);
   const [automatic, setAutomatic] = useState(false);
   const alive = useRef(true), lock = useRef(false), sendController = useRef<AbortController | null>(null);
+  const knownExchanges = useRef<Set<string> | null>(null);
   const refreshRef = useRef(refresh);
   useEffect(() => { refreshRef.current = refresh; }, [refresh]);
+  function rememberExchanges(value: DialogueStatus) {
+    const ids = value.exchanges.map(exchange => exchange.id);
+    if (knownExchanges.current === null) { knownExchanges.current = new Set(ids); return false; }
+    const fresh = ids.some(id => !knownExchanges.current!.has(id));
+    ids.forEach(id => knownExchanges.current!.add(id));
+    return fresh;
+  }
   useEffect(() => { alive.current = true; return () => { alive.current = false; sendController.current?.abort(); }; }, []);
   useEffect(() => {
     if (sending) return;
@@ -38,6 +46,7 @@ function Dialogue({ gathering: g, busy, command, refresh }: Props) {
         const value = await dialogueApi.read(g.id, request.signal);
         if (!valid() || request.signal.aborted || controller !== request) return;
         setStatus(value); setError('');
+        if (rememberExchanges(value)) refreshRef.current();
         if (value.tasks.some(t => t.state === 'running')) timer = setTimeout(() => void read(), 2000);
       } catch (e) {
         if (valid() && !request.signal.aborted && controller === request) {
@@ -65,8 +74,11 @@ function Dialogue({ gathering: g, busy, command, refresh }: Props) {
   }, [status]);
   const eligible = g.companions.filter(c => c.dialogue_allowed);
   const activeSelected = selected.filter(id => eligible.some(c => c.id === id));
-  const validSelection = activeSelected.length === 2
-    && activeSelected.some(id => eligible.some(c => c.id === id && c.owner_id === g.me));
+  const selectedCompanions = eligible.filter(c => activeSelected.includes(c.id));
+  const differentAreas = selectedCompanions.length === 2
+    && new Set(selectedCompanions.map(c => gatheringCompanionArea(g, c))).size > 1;
+  const validSelection = activeSelected.length === 2 && !differentAreas
+    && selectedCompanions.some(c => c.owner_id === g.me);
   const grant = status?.grants.find(grant => grant.character_ids.length === 2
     && grant.character_ids.every(id => activeSelected.includes(id)));
   const running = sending || !!status?.tasks.some(t => t.state === 'running');
@@ -78,7 +90,7 @@ function Dialogue({ gathering: g, busy, command, refresh }: Props) {
     try {
       const value = await dialogueApi.start(g.id, { request_id: crypto.randomUUID(), expected_revision: g.revision,
         character_ids: grant.character_ids, grant_id: grant.id }, controller.signal);
-      if (alive.current && getToken() === token) { setStatus(value); refreshRef.current(); }
+      if (alive.current && getToken() === token) { rememberExchanges(value); setStatus(value); refreshRef.current(); }
     } catch (e) {
       if (alive.current && getToken() === token) setError('本次发送结果需核对；不会自动重发。' + errorText(e));
     } finally {
@@ -86,7 +98,9 @@ function Dialogue({ gathering: g, busy, command, refresh }: Props) {
       if (alive.current && getToken() === token) { setSending(false); setReload(n => n + 1); }
     }
   }
-  return <section className="team-panel" aria-label="伙伴们聊两句"><h2>伙伴们聊两句</h2>
+  const runningMessage = running && <p role="status">{automatic ? '伙伴正在组织想法，可随时暂停自动安排。' : '伙伴正在组织想法，离开后可回来查看；不会自动开启下一轮。'}</p>;
+  const latestProblem = status?.tasks.slice(0,1).filter(t => t.state === 'failed' || t.state === 'unknown').map(t => <p key={t.id} role="status">{t.state === 'unknown' ? '上一轮结果未知，已停止且不会重发。' : '上一轮未发布对话，已停止；可核对参与许可与场景。'}</p>);
+  const manualControls = <>
     <p>聊聊眼前的场景。只使用在场名字、预设性格标签和共同物件，私人聊天、记忆与自定义性格不会带入。</p>
     {g.is_manager ? <label><input type="checkbox" checked={g.dialogue_enabled} disabled={busy} onChange={e => void command({ action: 'dialogue_space', enabled: e.target.checked })} />允许这个空间开展伙伴交流</label>
       : <p>{g.dialogue_enabled ? '共同交流已开启' : '等待管理者开启共同交流'}</p>}
@@ -96,18 +110,31 @@ function Dialogue({ gathering: g, busy, command, refresh }: Props) {
     <div className="hub-actions">{eligible.map(c => <label key={c.id}><input type="checkbox" checked={activeSelected.includes(c.id)} disabled={running || busy || (!activeSelected.includes(c.id) && activeSelected.length >= 2)}
       onChange={e => setSelected(e.target.checked ? [...activeSelected, c.id] : activeSelected.filter(id => id !== c.id))} />选择{c.name}</label>)}</div>
     {status === null && !error && <p role="status">正在读取交流记录…</p>}
+    {differentAreas && <p role="status">这两位伙伴在不同区域，请先让他们来到同一区域，再发起交流。</p>}
     {status && !status.available && <p>真实交流尚未开放，参与许可和已有记录仍可查看。</p>}
     {status?.available && !grant && <p>当前组合没有可用的单轮费用授权。</p>}
     {grant && <p>本轮最多预留 ¥{(grant.cap_micro / 1_000_000).toFixed(4)}，仅发送一次；实际费用以账单为准。</p>}
     {automatic && <p>自动交流正在安排；暂停后可以发起手动单轮交流。</p>}
     <div className="hub-actions"><button className="button primary" disabled={!ready} onClick={() => setConfirm(true)}>让他们聊两句</button>
       <button className="button" disabled={sending} onClick={() => setReload(n => n + 1)}>更新交流记录</button></div>
-    {running && <p role="status">{automatic ? '伙伴正在组织想法，可随时暂停自动安排。' : '伙伴正在组织想法，离开后可回来查看；不会自动开启下一轮。'}</p>}
-    {error && <p role="alert">{error}</p>}
-    {status?.tasks.slice(0,1).filter(t => t.state === 'failed' || t.state === 'unknown').map(t => <p key={t.id} role="status">{t.state === 'unknown' ? '上一轮结果未知，已停止且不会重发。' : '上一轮未发布对话，已停止；可核对参与许可与场景。'}</p>)}
+    {!compact && runningMessage}
+    {!compact && error && <p role="alert">{error}</p>}
+    {!compact && latestProblem}
     {status?.exchanges.length ? status.exchanges.slice().reverse().map(e => <div className="hub-item" key={e.id}><small>AI 伙伴交流 · {new Date(e.at * 1000).toLocaleString('zh-CN')}</small>
       {e.lines.map(line => <p key={line.character_id}><strong>{line.name}：</strong>{line.text}</p>)}</div>) : status && <p>还没有保存的 AI 交流。</p>}
-    <GatheringAutomatic gathering={g} busy={busy || sending} onState={setAutomatic} refresh={() => { setReload(n => n + 1); refreshRef.current(); }} />
+  </>;
+  return <section className={`team-panel${compact ? ' hub-dialogue-compact' : ''}`} aria-label={compact ? 'AI伙伴交流' : '伙伴们聊两句'}>
+    {compact ? <>
+      <div className="hub-ai-status-row">
+        <h2>AI伙伴交流</h2>
+        <p className="hub-ai-status-copy" role="status">{!status ? (error ? '交流状态暂未核对，请查看下方提示。' : '正在读取交流状态…') : !status.available ? '暂未开放，可查看已有记录和参与设置。' : '交流服务可用，发起前仍需参与许可和费用授权。'}</p>
+      </div>
+      {runningMessage}
+      {error && <p role="alert">{error}</p>}
+      {latestProblem}
+      <details className="hub-settings-disclosure"><summary>查看交流设置与记录</summary>{manualControls}</details>
+    </> : <><h2>伙伴们聊两句</h2>{manualControls}</>}
+    <GatheringAutomatic gathering={g} busy={busy || sending} compact={compact} onState={setAutomatic} refresh={() => { setReload(n => n + 1); refreshRef.current(); }} />
     {confirm && <Modal title="确认这一轮交流" close={() => setConfirm(false)}><p>将所选伙伴的公开名字、预设性格标签及当前场景交给模型，生成结果在共同空间中可见。本轮只发送一次，最多预留 ¥{grant ? (grant.cap_micro / 1_000_000).toFixed(4) : '—'}。</p>
       <div className="hub-actions"><button className="button" onClick={() => setConfirm(false)}>取消</button><button className="button primary" disabled={!ready} onClick={() => void send()}>确认这一轮</button></div></Modal>}
   </section>;

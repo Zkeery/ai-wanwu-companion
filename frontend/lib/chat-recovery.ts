@@ -1,3 +1,4 @@
+import { randomRequestId } from './request-id';
 import { api, ApiError } from './api';
 import { readChatDraft, writeChatDraft } from './chat-draft';
 
@@ -24,7 +25,7 @@ export function reserveChat(id: number, message: string): string {
     if (pending.message !== message) throw new Error('上条消息尚未核对完成，请先核对聊天结果');
     return pending.requestId;
   }
-  const next = { requestId: crypto.randomUUID(), message };
+  const next = { requestId: randomRequestId(), message };
   fallback.set(id, next);
   try { sessionStorage.setItem(key(id), JSON.stringify(next)); } catch { /* In-page recovery still works. */ }
   return next.requestId;

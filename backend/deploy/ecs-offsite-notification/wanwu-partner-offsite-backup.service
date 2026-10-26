@@ -1,0 +1,20 @@
+[Unit]
+Description=Wanwu Partner authorized private Beijing TOS backup copy
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+WorkingDirectory=/opt/wanwu-partner/app/backend
+ExecStart=/opt/wanwu-partner/runtime/offsite-2.9.3/bin/python -m scripts.ecs_offsite_once --root /opt/wanwu-partner --config /opt/wanwu-partner/private/offsite-authorization.json --credentials /opt/wanwu-partner/private/offsite-credentials.json --engine /opt/wanwu-partner/app/backend/scripts/ecs_verified_snapshot.py
+TimeoutStartSec=2400
+MemoryMax=768M
+CPUQuota=100%
+TasksMax=64
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/wanwu-partner/private/offsite-backup
+NoNewPrivileges=yes
+Restart=no

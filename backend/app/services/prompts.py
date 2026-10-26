@@ -20,19 +20,20 @@ VISION_PROMPT = (
 
 VISION_CONCEPT_PROMPT = (
     "将照片中最主要、清晰的主体排在数组第一位，系统会自动为它生成伙伴。"
-    "只为第一个对象构思独特、温暖可爱的拟人化伙伴，在第一个元素增加concept对象；其他候选保留label、visual_features与category："
-    '{"name":"角色名","persona":"性格一句话","opening_line":"它对用户的第一句话","appearance_description":"完整形象设计描述"}。'
-    "主体的name建议2–8字、persona建议15–30字、opening_line建议15–30字、appearance_description建议60–120字，均须非空。"
+    "只为第一个对象构思独特、温暖可爱的拟人化伙伴。第一个元素直接增加四个平铺字符串字段："
+    "character_name（角色名）、character_persona（性格一句话）、opening_line（第一句话）、appearance_description（完整形象设计描述）。"
+    "不要输出concept字段，不嵌套角色对象，也不要把这些字段写成JSON字符串或数组。其他候选只保留label、visual_features与category。"
+    "character_name建议2–8字、character_persona建议15–30字、opening_line建议15–30字、appearance_description建议60–120字，均须非空字符串。"
     "形象设计须保留该对象的可见颜色、轮廓与纹理，描述拟人化身体、表情、姿态、材质；"
     "性格与表情一致，不套用固定名字和外观。候选特征简洁准确，整体只输出上述JSON数组。"
     "第一个对象也必须包含visual_features；不要把同一主体拆成带concept和带visual_features的两个候选。"
     "以下是完整数组结构示例，字段值须根据照片重新填写："
     + json.dumps([{
         "label": "物品名", "visual_features": "照片中可见的主体特征", "category": "object",
-        "concept": {"name": "角色名", "persona": "性格一句话", "opening_line": "开场白",
-                    "appearance_description": "完整形象设计描述"},
+        "character_name": "角色名", "character_persona": "性格一句话", "opening_line": "开场白",
+        "appearance_description": "完整形象设计描述",
     }], ensure_ascii=False)
-    + "。每个候选对象和其中的concept分别闭合；输出前检查整个数组为合法JSON。背景不作为候选物品。"
+    + "。输出前检查整个数组为合法JSON，主对象四个角色字段齐全且均为字符串。背景不作为候选物品。"
     + STYLE_GUIDANCE
 )
 

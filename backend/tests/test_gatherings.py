@@ -30,16 +30,30 @@ def member(s, g, uid):
     return s.join(uid, str(uuid4()), g['invitation'], uid)
 
 
-def test_full_life_and_home_recovery(world, ready_character_id):
+@pytest.mark.parametrize('scene,furniture', [('home', 'bench'), ('desert', 'shade'), ('forest', 'cushion')])
+def test_full_life_and_home_recovery(world, ready_character_id, scene, furniture):
     s, clock = world
-    g = create(s)
+    g = create(s, scene=scene)
     g = command(s, g, 'visit', character_id=ready_character_id)
     g = command(s, g, 'start_goal')
-    for kind in ('tree', 'bench'):
+    for kind in ('tree', furniture):
         g = command(s, g, 'layout', command=dict(action='place', kind=kind, x=.3, y=.4))
     tree = next(i for i in g['items'] if i['kind'] == 'tree')
     g = command(s, g, 'layout', command=dict(action='care', item_id=tree['id']))
+    assert g['goal']['status'] == 'active'
+    # Repeated care within one day must not turn three days into one click.
+    g = command(s, g, 'layout', command=dict(action='care', item_id=tree['id']))
+    assert g['goal']['status'] == 'active'
+    for _ in range(2):
+        clock[0] += 86400
+        g = command(s, g, 'layout', command=dict(action='care', item_id=tree['id']))
+        assert g['goal']['status'] == 'active'
+    clock[0] += 86400
+    g = s.read(TEST_USER_ID, g['id'])
     assert g['goal']['status'] == 'completed'
+    assert next(i for i in g['items'] if i['kind'] == 'tree')['growth_seconds'] == 3 * 86400
+    assert len([e for e in g['events'] if e.get('kind') == 'goal_completed']) == 1
+    assert s.read(TEST_USER_ID, g['id']) == g
     g = command(s, g, 'activity', character_ids=[ready_character_id], activity='observe')
     assert g['companions'][0]['activity'] == 'observe'
     reloaded = GatheringStore(engine, lambda: clock[0]).read(TEST_USER_ID, g['id'])
@@ -275,3 +289,21 @@ def test_personal_scene_is_readable_but_not_mutable_during_visit(client, world, 
     assert back_home.status_code == 200
     assert back_home.json()['living']['id'] == home['id']
     assert back_home.json()['living']['revision'] == home['revision']
+
+
+def test_preexisting_completed_goal_is_preserved_without_new_completion(world):
+    from app.living.gatherings import groups
+    import json
+    s, clock = world
+    g = create(s)
+    g = command(s, g, 'start_goal')
+    with s.transaction() as conn:
+        raw, rev = s.load(conn, g['id'])
+        raw['goal'].update(status='completed', completed_at=clock[0])
+        s.save(conn, raw, rev)
+        before = json.dumps(raw, sort_keys=True)
+    restored = GatheringStore(engine, lambda: clock[0]).read(TEST_USER_ID, g['id'])
+    assert restored['goal']['status'] == 'completed'
+    assert not [e for e in restored['events'] if e.get('kind') == 'goal_completed']
+    with engine.connect() as conn:
+        assert json.dumps(json.loads(conn.execute(select(groups.c.state_json).where(groups.c.id == g['id'])).scalar_one()), sort_keys=True) == before

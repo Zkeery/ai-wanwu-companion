@@ -1,0 +1,35 @@
+name: Independent uptime monitor
+on:
+  schedule:
+    - cron: '3,8,13,18,23,28,33,38,43,48,53,58 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [check, bootstrap, drill]
+        default: check
+permissions:
+  contents: write
+concurrency:
+  group: independent-uptime-state
+  cancel-in-progress: false
+jobs:
+  check:
+    if: github.repository == 'Zkeery/wanwu-partner-uptime-monitor' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Read reviewed monitor code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Run isolated external monitor
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          WANWU_TARGET_ORIGIN: ${{ secrets.WANWU_TARGET_ORIGIN }}
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+          FEISHU_SIGNING_SECRET: ${{ secrets.FEISHU_SIGNING_SECRET }}
+          STATE_ENCRYPTION_KEY: ${{ secrets.STATE_ENCRYPTION_KEY }}
+          MONITOR_MODE: ${{ inputs.mode || 'check' }}
+        run: node monitor.mjs "$MONITOR_MODE"

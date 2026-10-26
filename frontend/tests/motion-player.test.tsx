@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import MotionPlayer, { type MotionAsset } from '@/components/motion-player';
+import type { LoadedMotion } from '@/lib/private-motion';
 
 const asset: MotionAsset = { spriteUrl: '/motion-preview-assets/sprite.png', backgroundUrl: '/motion-preview-assets/background.png', frameWidth: 320, frameHeight: 320, frameCount: 12, fps: 12 };
 let requests: MockImage[], frames: Map<number, FrameRequestCallback>, serial: number, reduced: boolean, mediaChange: () => void;
@@ -28,6 +29,25 @@ beforeEach(() => {
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 const mount = () => render(<MotionPlayer name="示意" staticSrc="/motion-preview-assets/static.png" asset={asset} />);
 
+it('stops an active old action while retaining the same portrait during the next action request', async () => {
+  const dispose = vi.fn();
+  const first = vi.fn(async () => ({ asset, dispose }));
+  const next = vi.fn(() => new Promise<LoadedMotion>(() => {}));
+  const view = render(<MotionPlayer name="切换伙伴" staticSrc="/motion-preview-assets/static.png" activity="rest" loadAsset={first} />);
+  loadStatic(); await act(async () => {}); loadAssets();
+  const image = screen.getByRole('img');
+  fireEvent.click(screen.getByRole('button', { name: '看看休息动作' }));
+  expect(image.parentElement?.className).toContain('playingPortrait');
+  view.rerender(<MotionPlayer name="切换伙伴" staticSrc="/motion-preview-assets/static.png" activity="observe" loadAsset={next} />);
+  expect(screen.getByRole('img')).toBe(image);
+  expect(image.parentElement?.className).not.toContain('playingPortrait');
+  expect(screen.getByRole('status')).toHaveTextContent('正在准备动作');
+  expect(dispose).toHaveBeenCalledTimes(1);
+  await act(async () => {});
+  expect(next).toHaveBeenCalledTimes(1);
+  expect(frames.size).toBe(0);
+});
+
 async function mountVideo(scene = false) {
   const decoders: HTMLVideoElement[]=[];
   vi.spyOn(HTMLMediaElement.prototype,'load').mockImplementation(function(this: HTMLVideoElement) { if(this.src) decoders.push(this); });
@@ -45,6 +65,18 @@ async function mountVideo(scene = false) {
   });
   return {view,play,pause,dispose,decode};
 }
+
+it('retains the portrait until the video actually starts instead of exposing an empty video frame', async () => {
+  const { decode } = await mountVideo(); decode();
+  const image = screen.getByRole('img');
+  fireEvent.click(screen.getByRole('button', { name: '跳个舞' }));
+  expect(image.parentElement?.className).not.toContain('playingPortrait');
+  expect(screen.getByRole('status')).toHaveTextContent('正在开始动作');
+  fireEvent.playing(document.querySelector('video')!);
+  expect(image.parentElement?.className).toContain('playingPortrait');
+  fireEvent.click(screen.getByRole('button', { name: '停止动作' }));
+  expect(image.parentElement?.className).not.toContain('playingPortrait');
+});
 
 it('lets missing private motion be checked again without reloading the page', async () => {
   const dispose = vi.fn();

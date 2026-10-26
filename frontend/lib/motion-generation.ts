@@ -1,4 +1,5 @@
 import { checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders, getToken } from './auth';
 
 export const generationStates = ['not_requested', 'waiting_authorization', 'queued', 'running', 'needs_review',

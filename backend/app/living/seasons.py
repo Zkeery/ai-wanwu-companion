@@ -1,4 +1,4 @@
-"""Private-space seasons: deterministic projection, separate from growth and layout."""
+"""Owner-managed home seasons, separate from growth and cross-account voting."""
 from __future__ import annotations
 
 import hashlib
@@ -80,9 +80,9 @@ def project(settings: Settings | None, started_at: int | None, revision: int, no
 
 
 def read(conn, owner_id: str, space_id: str, now: int) -> dict:
-    space = LivingStore._row(conn, owner_id, space_id)
-    if space["mode"] != "private":
-        raise LivingError("invalid_action", "共同空间的四季需要成员共同决定，暂未开放")
+    # LivingStore spaces belong to one account, including its own companions'
+    # shared home. Cross-account gatherings have a separate store and votes.
+    LivingStore._row(conn, owner_id, space_id)
     row = conn.execute(select(preferences).where(preferences.c.space_id == space_id)).mappings().first()
     if row is None:
         return project(None, None, 0, now)

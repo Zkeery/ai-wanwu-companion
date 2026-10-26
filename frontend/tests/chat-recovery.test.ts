@@ -5,6 +5,16 @@ import { readChatDraft, writeChatDraft } from '@/lib/chat-draft';
 import { sendChat } from '@/lib/stream';
 
 beforeEach(() => { vi.restoreAllMocks(); clearPendingChat(77); writeChatDraft(77, ''); });
+it('keeps one recoverable chat receipt without secure-context randomUUID', () => {
+  const nativeCrypto = globalThis.crypto;
+  vi.stubGlobal('crypto', { getRandomValues: nativeCrypto.getRandomValues.bind(nativeCrypto) });
+  try {
+    const id = reserveChat(77, 'HTTP聊天验收');
+    expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    expect(reserveChat(77, 'HTTP聊天验收')).toBe(id);
+    expect(pendingChat(77)).toEqual({ requestId: id, message: 'HTTP聊天验收' });
+  } finally { vi.unstubAllGlobals(); }
+});
 it('reuses one key and rejects changing an unresolved request', () => {
   const key = reserveChat(77, '种树');
   expect(reserveChat(77, '种树')).toBe(key);

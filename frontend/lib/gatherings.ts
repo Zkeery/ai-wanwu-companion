@@ -1,16 +1,38 @@
 import { request } from './api';
 import { object, array } from './contracts';
+import { parseAvatar3D } from './shared-living-3d';
+import type { HomeLeisureActivity } from './living-home-leisure';
+
+export type SavedLeisure = { activity: HomeLeisureActivity; seat_id: string; station_version: 1 };
+export function parseSavedLeisure(value: unknown): SavedLeisure {
+  const r = object(value);
+  if (!['tea', 'television', 'mahjong', 'bench'].includes(String(r.activity)) || r.station_version !== 1
+    || typeof r.seat_id !== 'string' || !r.seat_id || r.seat_id.length > 160) throw new Error('生活活动数据格式不正确');
+  return { activity: r.activity as HomeLeisureActivity, seat_id: r.seat_id, station_version: 1 };
+}
 
 export function text(v: unknown): string { if (typeof v !== 'string') throw new Error('共同生活数据格式不正确'); return v; }
 export function number(v: unknown): number { if (typeof v !== 'number' || !Number.isFinite(v)) throw new Error('共同生活数据格式不正确'); return v; }
 export function boolean(v: unknown): boolean { if (typeof v !== 'boolean') throw new Error('共同生活数据格式不正确'); return v; }
+function careRemaining(v: unknown): number {
+  const value = number(v);
+  if (value < 0) throw new Error('共同生活数据格式不正确');
+  return value;
+}
+export type GatheringArea = 'indoor' | 'outdoor' | 'bedroom';
+function parseCompanionArea(value: unknown): GatheringArea {
+  if (value !== 'indoor' && value !== 'outdoor' && value !== 'bedroom') throw new Error('共同生活数据格式不正确');
+  return value;
+}
 export function record(v: unknown) { const r = object(v); return { id: text(r.id), message: text(r.message), at: number(r.at) }; }
 export function gatheringEvent(v: unknown) {
   const r = object(v);
   return { ...record(v), kind: r.kind == null ? null : text(r.kind),
     activity: r.activity == null ? null : text(r.activity),
     characters: r.characters == null ? [] : array(r.characters, number),
-    origin: r.origin == null ? null : text(r.origin) };
+    origin: r.origin == null ? null : text(r.origin),
+    ...(r.area === undefined ? {} : { area: parseCompanionArea(r.area) }),
+    ...(r.lines === undefined ? {} : { lines: array(r.lines, value => { const line = object(value); return { character_id: number(line.character_id), name: text(line.name), text: text(line.text) }; }) }) };
 }
 export function parseSummary(v: unknown) { const r = object(v); return { id: text(r.id), title: text(r.title), scene_type: text(r.scene_type), member_count: number(r.member_count) }; }
 export function parseGathering(v: unknown) {
@@ -19,9 +41,13 @@ export function parseGathering(v: unknown) {
     id: text(r.id), title: text(r.title), scene_type: text(r.scene_type), revision: number(r.revision),
     closed: boolean(r.closed), is_manager: boolean(r.is_manager), me: text(r.me), invitation: r.invitation == null ? null : text(r.invitation),
     dialogue_enabled: r.dialogue_enabled === undefined ? false : boolean(r.dialogue_enabled),
+    ...({ mahjong_available: r.mahjong_available === undefined ? false : boolean(r.mahjong_available) } as { mahjong_available?: boolean }),
     members: array(r.members, value => { const m = object(value); return { id: text(m.id), name: text(m.name), manager: boolean(m.manager) }; }),
-    companions: array(r.companions, value => { const c = object(value); return { id: number(c.id), name: text(c.name), owner_id: text(c.owner_id), activity: text(c.activity), x: number(c.x), y: number(c.y), dialogue_allowed: c.dialogue_allowed === undefined ? false : boolean(c.dialogue_allowed) }; }),
-    items: array(r.items, value => { const i = object(value); return { id: text(i.id), kind: text(i.kind), x: number(i.x), y: number(i.y), mine: boolean(i.mine), contributor_name: text(i.contributor_name), growth_status: i.growth_status == null ? null : text(i.growth_status) }; }),
+    companions: array(r.companions, value => { const c = object(value); return { id: number(c.id), name: text(c.name), owner_id: text(c.owner_id), activity: text(c.activity), x: number(c.x), y: number(c.y), dialogue_allowed: c.dialogue_allowed === undefined ? false : boolean(c.dialogue_allowed), ...(c.area === undefined ? {} : { area: parseCompanionArea(c.area) }), ...(c.avatar3d === undefined ? {} : { avatar3d: parseAvatar3D(c.avatar3d, number(c.id)) }), ...(c.leisure == null ? {} : { leisure: parseSavedLeisure(c.leisure) }) }; }),
+    items: array(r.items, value => { const i = object(value); return { id: text(i.id), kind: text(i.kind), x: number(i.x), y: number(i.y), mine: boolean(i.mine), contributor_name: text(i.contributor_name), growth_status: i.growth_status == null ? null : text(i.growth_status),
+      ...(i.stage === undefined ? {} : { stage: i.stage === null ? null : text(i.stage) }),
+      ...(i.care_remaining_seconds === undefined ? {} : { care_remaining_seconds: i.care_remaining_seconds === null ? null : careRemaining(i.care_remaining_seconds) }),
+      ...(i.flipped === undefined ? {} : { flipped: boolean(i.flipped) }), ...(i.stored === undefined ? {} : { stored: boolean(i.stored) }) }; }),
     votes: array(r.votes, value => { const v = object(value), choices = object(v.choices); return { id: text(v.id), kind: text(v.kind), status: text(v.status), deadline: number(v.deadline), electorate: array(v.electorate, text), choices: Object.fromEntries(Object.entries(choices).map(([k, v]) => [k, boolean(v)])) }; }),
     events: array(r.events, gatheringEvent), story_enabled: boolean(r.story_enabled),
     stories: array(r.stories, value => { const s = object(value); return { id: text(s.id), status: text(s.status), message: text(s.message), recover_at: number(s.recover_at) }; }),
@@ -29,7 +55,13 @@ export function parseGathering(v: unknown) {
     season: season.current_season == null ? null : text(season.current_season),
   };
 }
-export type Gathering = ReturnType<typeof parseGathering>;
+export type Gathering = Omit<ReturnType<typeof parseGathering>, 'mahjong_available'> & { mahjong_available?: boolean };
+export function gatheringCompanionArea(g: Pick<Gathering, 'scene_type'>, companion: { area?: GatheringArea }): GatheringArea {
+  // Area comes from the saved server snapshot. Legacy frontend records remain
+  // outdoors until a fresh snapshot explicitly projects their current area.
+  return ['home', 'forest', 'desert'].includes(g.scene_type) && (companion.area === 'indoor' || companion.area === 'bedroom') ? companion.area : 'outdoor';
+}
+export const gatheringAreaNames: Record<GatheringArea, string> = { outdoor: '院子', indoor: '客厅', bedroom: '卧室' };
 export function activityEvidence(g: Gathering, id: number) {
   const companion = g.companions.find(c => c.id === id);
   if (!companion) return null;

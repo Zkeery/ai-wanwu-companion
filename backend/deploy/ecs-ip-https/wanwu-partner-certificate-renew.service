@@ -1,0 +1,16 @@
+[Unit]
+Description=Wanwu Partner IP certificate renewal
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+ExecStart=/opt/wanwu-partner/runtime/certbot-5.8.0/bin/certbot renew --config-dir /opt/wanwu-partner/private/acme/production/config --work-dir /opt/wanwu-partner/private/acme/production/work --logs-dir /opt/wanwu-partner/private/acme/production/logs --non-interactive --no-random-sleep-on-renew --deploy-hook /opt/wanwu-partner/runtime/https-renew-hook.sh
+TimeoutStartSec=300
+MemoryMax=512M
+NoNewPrivileges=yes
+ProtectHome=yes
+PrivateTmp=yes
+Restart=no

@@ -1,7 +1,9 @@
 import { checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders } from './auth';
 import type { MotionAsset } from '@/components/motion-player';
 import type { Activity } from './life-simulation';
+import { sha256Hex } from './sha256';
 
 export type LoadedMotion = { asset: MotionAsset | null; dispose: () => void };
 
@@ -68,8 +70,7 @@ async function media(url: string, digest: string, token: string, signal: AbortSi
   } catch (error) { await reader.cancel(); throw error; }
   finally { reader.releaseLock(); }
   const blob = new Blob(parts, { type: mime });
-  const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await blob.arrayBuffer())),
-    n => n.toString(16).padStart(2, '0')).join('');
+  const hash = await sha256Hex(await blob.arrayBuffer(), signal);
   if (size === 0 || hash !== digest) throw new Error('动作素材无法核对');
   return blob;
 }

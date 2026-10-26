@@ -1,4 +1,5 @@
 import { checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders, getToken } from './auth';
 import { array, object, parseCharacter, type Character } from './contracts';
 import { MAX_CANDIDATES } from './input-limits';
@@ -52,7 +53,7 @@ async function request(path: string, signal: AbortSignal, init: RequestInit = {}
 }
 export const creationApi = {
   correction: async (id: number, requestId: string, signal: AbortSignal) => parsePhoto(await request(`/photos/${id}/corrections`, signal, { method: 'POST', headers: { 'Idempotency-Key': requestId } })),
-  upload: async (file: File, requestId: string, signal: AbortSignal, themeId?: string | null) => { const body = new FormData(); body.append('file', file); if (themeId) body.append('theme_id', themeId); return parsePhoto(await request('/photos', signal, { method: 'POST', body, headers: { 'Idempotency-Key': requestId } })); },
+  upload: async (file: File, requestId: string, signal: AbortSignal, themeId?: string | null, traceId?: string) => { const body = new FormData(); body.append('file', file); if (themeId) body.append('theme_id', themeId); return parsePhoto(await request('/photos', signal, { method: 'POST', body, headers: { 'Idempotency-Key': requestId, ...(traceId ? { 'X-Generation-Trace': traceId } : {}) } })); },
   photo: async (id: number, signal: AbortSignal) => parsePhoto(await request(`/photos/${id}`, signal)),
   receipt: async (key: string, signal: AbortSignal): Promise<{ status: 'running' | 'ready' | 'failed'; photo: Photo | null }> => {
     const r = object(await request(`/photos/requests/${encodeURIComponent(key)}`, signal));
@@ -60,7 +61,7 @@ export const creationApi = {
     return { status: r.status, photo: r.photo == null ? null : parsePhoto(r.photo) };
   },
   byObject: async (id: number, signal: AbortSignal) => { const r = await request(`/characters/by-object/${id}`, signal); return r == null ? null : parseCharacter(r); },
-  rename: async (id: number, name: string, signal: AbortSignal) => parseCharacter(await request(`/characters/${id}`, signal, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) })),
+  rename: async (id: number, name: string, signal: AbortSignal) => parseCharacter(await request(`/characters/${id}`, signal, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) })),
 };
 
 // Only a server-confirmed, persisted failure can skip the uncertain-state check.
@@ -104,9 +105,9 @@ export async function consumeCreation(response: Response, stage: (text: string) 
     cancelReader(); reader.releaseLock();
   }
 }
-export async function generateCompanion(objectId: number, label: string, signal: AbortSignal, stage: (text: string) => void, visualFeatures?: string, freeCreation = false): Promise<Character> {
+export async function generateCompanion(objectId: number, label: string, signal: AbortSignal, stage: (text: string) => void, visualFeatures?: string, freeCreation = false, traceId?: string): Promise<Character> {
   const combined = AbortSignal.any([signal, AbortSignal.timeout(180000)]);
   const requestToken = getToken();
-  const response = await fetch('/api/v1/characters', { method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders() }, body: JSON.stringify({ object_id: objectId, label, ...(visualFeatures === undefined ? {} : { visual_features: visualFeatures }), ...(freeCreation ? { free_creation: true } : {}) }), signal: combined });
+  const response = await fetch('/api/v1/characters', { method: 'POST', headers: { 'Content-Type': 'application/json', ...authHeaders(), ...(traceId ? { 'X-Generation-Trace': traceId } : {}) }, body: JSON.stringify({ object_id: objectId, label, ...(visualFeatures === undefined ? {} : { visual_features: visualFeatures }), ...(freeCreation ? { free_creation: true } : {}) }), signal: combined });
   return consumeCreation(response, stage, combined, requestToken);
 }

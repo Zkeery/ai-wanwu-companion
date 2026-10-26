@@ -1,0 +1,148 @@
+{
+  "group": {
+    "id": "600b7ac0-2164-482d-99e6-f52ba3a7f9a0",
+    "title": "无动作只读形态复现",
+    "scene_type": "home",
+    "revision": 53,
+    "closed": false,
+    "is_manager": true,
+    "me": "fixture-owner-0",
+    "members": [
+      {
+        "id": "fixture-owner-0",
+        "name": "合成成员0",
+        "manager": true
+      },
+      {
+        "id": "fixture-owner-1",
+        "name": "合成成员1",
+        "manager": false
+      }
+    ],
+    "companions": [
+      {
+        "id": 4,
+        "owner_id": "fixture-owner-0",
+        "name": "合成伙伴4",
+        "activity": "walk",
+        "area": "outdoor",
+        "x": 0.65,
+        "y": 0.55,
+        "avatar3d": {
+          "version": 1,
+          "kind": "garment",
+          "body": "#eee9df",
+          "accent": "#a7bec9",
+          "detail": "#5b5964",
+          "seed": 2536437237,
+          "source": "procedural_existing_features"
+        },
+        "leisure": null
+      },
+      {
+        "id": 5,
+        "owner_id": "fixture-owner-1",
+        "name": "合成伙伴5",
+        "activity": "talk",
+        "area": "outdoor",
+        "x": 0.65,
+        "y": 0.55,
+        "avatar3d": {
+          "version": 1,
+          "kind": "bouquet",
+          "body": "#b69acf",
+          "accent": "#efa3b8",
+          "detail": "#65516f",
+          "seed": 2414310844,
+          "source": "procedural_existing_features"
+        },
+        "leisure": null
+      },
+      {
+        "id": 2,
+        "owner_id": "fixture-owner-0",
+        "name": "合成伙伴2",
+        "activity": "talk",
+        "area": "outdoor",
+        "x": 0.65,
+        "y": 0.55,
+        "avatar3d": {
+          "version": 1,
+          "kind": "plant",
+          "body": "#6ca572",
+          "accent": "#a88668",
+          "detail": "#426c4c",
+          "seed": 2787687353,
+          "source": "procedural_existing_features"
+        },
+        "leisure": null
+      }
+    ],
+    "items": [
+      {
+        "id": "fixture-item-0",
+        "kind": "bench",
+        "x": 0.2,
+        "y": 0.25,
+        "flipped": false,
+        "mine": true,
+        "contributor_name": "合成贡献者",
+        "stored": false,
+        "stage": null,
+        "care_remaining_seconds": null,
+        "growth_status": null
+      },
+      {
+        "id": "fixture-item-1",
+        "kind": "tree",
+        "x": 0.38,
+        "y": 0.25,
+        "flipped": false,
+        "mine": true,
+        "contributor_name": "合成贡献者",
+        "stored": false,
+        "stage": "planted",
+        "care_remaining_seconds": 0,
+        "growth_status": "needs_care"
+      },
+      {
+        "id": "fixture-item-2",
+        "kind": "bench",
+        "x": 0.56,
+        "y": 0.25,
+        "flipped": false,
+        "mine": true,
+        "contributor_name": "合成贡献者",
+        "stored": false,
+        "stage": null,
+        "care_remaining_seconds": null,
+        "growth_status": null
+      }
+    ],
+    "votes": [],
+    "events": [],
+    "stories": [],
+    "goal": null,
+    "story_enabled": false,
+    "dialogue_enabled": false,
+    "mahjong_available": false,
+    "season": {
+      "current_season": null
+    }
+  },
+  "floor": {
+    "revision": 162,
+    "seq": 4,
+    "applied": 4,
+    "commands": [],
+    "checkpoint": {
+      "active": null,
+      "states": [],
+      "version": 1
+    },
+    "fingerprint": "sanitized-existing-shape",
+    "driver": false,
+    "lease_until": 0,
+    "server_time": 1
+  }
+}

@@ -6,11 +6,16 @@ import styles from './motion-player.module.css';
 import PrivateImage from './private-image';
 import type { LoadedMotion } from '@/lib/private-motion';
 import type { Activity } from '@/lib/life-simulation';
+import type { ImageLoadStage } from '@/lib/private-images';
 
 export type MotionAsset = { spriteUrl: string; backgroundUrl: string; frameWidth: number; frameHeight: number; frameCount: number; fps: number; videoUrl?: string; durationMs?: number; activity?: Activity };
 type Props = { staticSrc: string; name: string; asset?: MotionAsset; privateStatic?: boolean;
   activity?: Activity;
+  resourceKey?: string;
+  playRequest?: number;
+  quietWhenUnavailable?: boolean;
   compact?: boolean; scene?: boolean; href?: string; overlay?: ReactNode;
+  onStaticStage?: (stage: ImageLoadStage) => void;
   onStaticLoad?: (image: HTMLImageElement) => void; onStaticError?: () => void; onSceneStill?: (png: string) => void;
   loadAsset?: (signal: AbortSignal) => Promise<LoadedMotion> };
 
@@ -40,7 +45,7 @@ export default function MotionPlayer(props: Props) {
   return <Player key={JSON.stringify([props.staticSrc, props.asset, revision])} {...props} retry={() => setRevision(n => n + 1)} />;
 }
 
-function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsset, retry, compact, scene, href, overlay, onStaticLoad, onStaticError, onSceneStill, activity }: Props & { retry: () => void }) {
+function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsset, retry, compact, scene, href, overlay, onStaticLoad, onStaticStage, onStaticError, onSceneStill, activity, resourceKey, playRequest, quietWhenUnavailable }: Props & { retry: () => void }) {
   const playerId = useId();
   const [activated, setActivated] = useState(!compact);
   const [inView, setInView] = useState(!compact);
@@ -51,6 +56,17 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
   const [staticFailed, setStaticFailed] = useState(false);
   const [phase, setPhase] = useState<'waiting' | 'missing' | 'ready' | 'failed'>(loadAsset ? 'waiting' : !asset ? 'missing' : usable ? 'waiting' : 'failed');
   const [playing, setPlaying] = useState(false);
+  const [motionPainted, setMotionPainted] = useState(false);
+  const [resource, setResource] = useState({ loadAsset, resourceKey });
+  // Only the action changes. Keep the already decoded private portrait mounted,
+  // and stop presenting the previous action before the new request can finish.
+  if (resource.loadAsset !== loadAsset || resource.resourceKey !== resourceKey) {
+    setResource({ loadAsset, resourceKey });
+    setLoadedAsset(null);
+    setPhase(loadAsset ? 'waiting' : !suppliedAsset ? 'missing' : valid(suppliedAsset) ? 'waiting' : 'failed');
+    setPlaying(false);
+    setMotionPainted(false);
+  }
   const canvas = useRef<HTMLCanvasElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const portrait = useRef<HTMLDivElement>(null);
@@ -73,6 +89,11 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
     window.dispatchEvent(new CustomEvent('companion-motion-start', { detail: playerId }));
     setPlaying(true);
   }, [phase, reduced, staticFailed, inView, playerId]);
+  useEffect(() => {
+    if (!playRequest || phase !== 'ready' || !inView) return;
+    const frame = requestAnimationFrame(startPlaying);
+    return () => cancelAnimationFrame(frame);
+  }, [playRequest, phase, inView, startPlaying]);
   useEffect(() => {
     if (!scene || !activity || phase !== 'ready' || !inView) return;
     const frame = requestAnimationFrame(startPlaying);
@@ -157,7 +178,7 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
     return () => { active = false; controller.abort(); clearTimeout(timer);
       if (decoder) { decoder.onloadeddata = decoder.onerror = null; decoder.removeAttribute('src'); decoder.load(); }
       dispose(); sprite.onload = background.onload = null; sprite.onerror = background.onerror = null; images.current = null; };
-  }, [activated, staticReady, suppliedAsset, loadAsset]);
+  }, [activated, staticReady, suppliedAsset, loadAsset, resourceKey]);
 
   useEffect(() => {
     if (!asset?.videoUrl || !video.current) return;
@@ -197,7 +218,7 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
       return () => clearTimeout(failure);
     }
     const context = ctx;
-    let frame = 0, active = true;
+    let frame = 0, active = true, painted = false;
     const started = performance.now(), pack = images.current;
     const paint = (now: number) => {
       if (!active || document.hidden) return;
@@ -206,6 +227,7 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
         context.clearRect(0, 0, width!, height!);
         if (!scene) context.drawImage(pack.background, 0, 0, width!, height!);
         context.drawImage(pack.sprite, index * width!, 0, width!, height!, 0, 0, width!, height!);
+        if (!painted) { painted = true; setMotionPainted(true); }
         if (scene && activity && !stillSent.current && canvas.current && stillCallback.current) {
           try {
             const png = canvas.current.toDataURL('image/png');
@@ -222,15 +244,17 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
     return () => { active = false; cancelAnimationFrame(frame); };
   }, [playing, phase, reduced, asset, width, height, count, fps, scene, activity]);
 
-  const visible = playing && phase === 'ready' && !reduced;
+  const requested = playing && phase === 'ready' && !reduced;
+  const visible = requested && motionPainted;
   const canPlay = phase === 'ready' && !reduced && !staticFailed && inView;
   const classifiedActivity = activity ?? asset?.activity;
   const activityLabel = classifiedActivity ? { rest: '休息', walk: '散步', observe: '观察' }[classifiedActivity] : null;
   const status = staticFailed ? '静态形象暂时看不到' : phase === 'missing' ? activityLabel ? '这类动作还没准备好，先看看静态形象' : '动作还没准备好，先看看静态形象'
     : phase === 'failed' ? '动作没加载好，静态形象仍保留' : phase === 'waiting' ? '正在准备动作…'
-    : reduced ? '已按系统偏好保持静态' : visible ? activityLabel ? `正在播放${activityLabel}动作` : '正在跳舞' : '动作已就绪，移入形象或点按钮';
+    : reduced ? '已按系统偏好保持静态' : requested && !visible ? '正在开始动作…'
+    : visible ? activityLabel ? `正在播放${activityLabel}动作` : '正在跳舞' : '动作已就绪，移入形象或点按钮';
   const staticPortrait = privateStatic
-        ? <PrivateImage src={staticSrc} alt={name} retryable={false} onLoad={e => { staticPainted(); onStaticLoad?.(e.currentTarget); }} onUnavailable={staticUnavailable} onError={staticUnavailable} />
+        ? <PrivateImage src={staticSrc} alt={name} onLoadStage={onStaticStage} retryable={false} onLoad={e => { staticPainted(); onStaticLoad?.(e.currentTarget); }} onUnavailable={staticUnavailable} onError={staticUnavailable} />
         : <img ref={staticImage} src={staticSrc} alt={name} onLoad={e => { staticPainted(); onStaticLoad?.(e.currentTarget); }} onError={staticUnavailable} />;
   return <section aria-label={`${name}的动作`} aria-hidden={scene || undefined}
     className={`${styles.player} ${privateStatic ? styles.private : ''} ${compact ? `${styles.compact} collection-motion` : ''} ${scene ? styles.scene : ''}`}>
@@ -239,14 +263,15 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
       {asset?.videoUrl
         ? <video ref={video} src={asset.videoUrl} muted playsInline loop preload="auto" aria-hidden="true"
           className={visible ? styles.active : styles.hidden} onVolumeChange={e => { e.currentTarget.muted = true; }}
+          onPlaying={() => setMotionPainted(true)}
           onError={() => { setPhase('failed'); setPlaying(false); }} />
         : <canvas ref={canvas} width={usable ? width : 320} height={usable ? height : 320} className={visible ? styles.active : styles.hidden} aria-hidden="true" />}
       {overlay}
     </div>
-    {!scene && <div className={styles.controls}>
+    {!scene && (!quietWhenUnavailable || phase === 'ready' || staticFailed) && <div className={styles.controls}>
     <p role="status" aria-live="polite">{status}</p>
-    {canPlay && <button type="button" aria-pressed={visible} onClick={e => { e.preventDefault(); e.stopPropagation(); if (playing) setPlaying(false); else startPlaying(); }}>{visible ? '停止动作' : activityLabel ? `看看${activityLabel}动作` : '跳个舞'}</button>}
-    {(phase === 'failed' || staticFailed) && <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); retry(); }}>重新加载动作</button>}
+    {canPlay && <button type="button" aria-pressed={requested} onClick={e => { e.preventDefault(); e.stopPropagation(); if (playing) setPlaying(false); else startPlaying(); }}>{requested ? '停止动作' : activityLabel ? `看看${activityLabel}动作` : '跳个舞'}</button>}
+    {(phase === 'failed' || staticFailed) && <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); retry(); }}>{staticFailed ? '重新加载形象' : '重新加载动作'}</button>}
     {phase === 'missing' && !staticFailed && loadAsset && <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); retry(); }}>检查动作是否就绪</button>}
     </div>}
   </section>;

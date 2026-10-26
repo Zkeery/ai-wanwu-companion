@@ -37,7 +37,7 @@ function CandidateList({ id, token, onChange, activity }: { id: number; token: s
   const [revision, setRevision] = useState(0);
   const [cursor, setCursor] = useState<string | null>(null);
   return <div className={styles.list}>
-    <p>检查形象是否一致、四个姿态是否完整。使用后会准备{activityNames[activity]}动作，原来的图片仍保留。</p>
+    <p>图片检查四个姿态；视频请完整播放，检查形象与动作。确认后会准备{activityNames[activity]}动作，原来的图片仍保留。</p>
     <button type="button" onClick={() => { setCursor(null); setRevision(n => n+1); }}>更新候选状态</button>
     <CandidatePage key={`${revision}-${cursor}`} id={id} token={token} cursor={cursor} activity={activity} onNext={setCursor} onChange={onChange} />
   </div>;
@@ -66,6 +66,7 @@ function CandidatePage({ id, token, cursor, activity, onNext, onChange }: { id: 
 function Candidate({ id, token, item: initial, onChange }: { id: number; token: string; item: MotionCandidate; onChange: () => void }) {
   const [item, setItem] = useState(initial);
   const activityName = activityNames[item.activity ?? 'walk'];
+  const video = item.kind === 'video';
   const [src, setSrc] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -77,10 +78,10 @@ function Candidate({ id, token, item: initial, onChange }: { id: number; token: 
   useEffect(() => {
     const controller = new AbortController(); lifetime.current = controller;
     let url: string | null = null;
-    if (initial.image_url) void candidateImage(initial, id, token, controller.signal).then(blob => {
+    if (initial.image_url || initial.video_url) void candidateImage(initial, id, token, controller.signal).then(blob => {
       if (controller.signal.aborted || getToken() !== token) return;
       url = URL.createObjectURL(blob); setSrc(url);
-    }).catch(() => { if (!controller.signal.aborted && getToken() === token) setNotice('图片暂时无法显示，请更新后再检查。'); });
+    }).catch(() => { if (!controller.signal.aborted && getToken() === token) setNotice('动作素材暂时无法显示，请更新后再检查。'); });
     return () => { controller.abort(); if (url) URL.revokeObjectURL(url); };
   }, [initial, id, token]);
   const decide = async (decision: 'accept' | 'reject') => {
@@ -91,7 +92,7 @@ function Candidate({ id, token, item: initial, onChange }: { id: number; token: 
     try {
       const result = await reviewCandidate(id, item, decision, token, controller.signal);
       if (controller.signal.aborted || getToken() !== token) return;
-      setItem(result); setNotice(decision === 'reject' ? `已保留你的选择，这份候选不会用于${activityName}。` : `选择已保存，动作准备好后可切换到${activityName}查看。`);
+      setItem(result); setNotice(decision === 'reject' ? `已保留你的选择，这份候选不会用于${activityName}。` : video && result.state === 'reviewed' ? '已确认这一段；三类动作均确认后会一起准备。' : `选择已保存，动作准备好后可切换到${activityName}查看。`);
       onChange();
     } catch {
       if (!controller.signal.aborted && getToken() === token) {
@@ -105,13 +106,17 @@ function Candidate({ id, token, item: initial, onChange }: { id: number; token: 
   const reviewable = item.state === 'needs_review' || item.state === 'reviewed';
   return <article className={styles.card} aria-label={`${activityName}动作候选`}>
     <h3>{labels[item.state].replace('散步', activityName)}</h3>
-    <p>{activityCriteria[item.activity ?? 'walk']}</p>
-    {src && <Image unoptimized width={1024} height={1024} className={styles.image} src={src} alt={`伙伴的四个${activityName}姿态候选`} onLoad={() => setLoaded(true)}
+    <p>{video ? (item.activity === 'rest' ? '持续闭眼、放松休息，呼吸自然。' : item.activity === 'observe' ? '能看见清楚的左右转头和视线变化。' : '双脚自然交替迈步，形象保持一致。') : activityCriteria[item.activity ?? 'walk']}</p>
+    {video && <p>请完整播放这段视频后确认。三类均采用后才会统一准备；拒绝任一段，本组不会采用。</p>}
+    {src && !video && <Image unoptimized width={1024} height={1024} className={styles.image} src={src} alt={`伙伴的四个${activityName}姿态候选`} onLoad={() => setLoaded(true)}
       onError={() => { setLoaded(false); setNotice('图片未完整显示，请更新后再检查。'); }} />}
-    {src && loaded && <a className={styles.fullImage} href={src} target="_blank" rel="noreferrer">打开完整图片</a>}
+    {src && video && <video className={styles.image} src={src} controls muted playsInline preload="metadata"
+      aria-label={`伙伴的${activityName}动作视频候选`} onEnded={() => setLoaded(true)}
+      onError={() => { setLoaded(false); setNotice('视频未完整显示，请更新后再检查。'); }} />}
+    {src && loaded && !video && <a className={styles.fullImage} href={src} target="_blank" rel="noreferrer">打开完整图片</a>}
     {reviewable && <>
       <label className={styles.check}><input type="checkbox" checked={checked} disabled={!loaded || busy || uncertain}
-        onChange={e => setChecked(e.target.checked)} />{activityChecks[item.activity ?? 'walk']}形象一致，姿态完整且没有多余背景</label>
+        onChange={e => setChecked(e.target.checked)} />{video ? '我已完整看过视频，形象一致，动作符合要求且没有多余背景' : <>{activityChecks[item.activity ?? 'walk']}形象一致，姿态完整且没有多余背景</>}</label>
       <div className={styles.actions}>
         <button type="button" disabled={!loaded || !checked || busy || uncertain} onClick={() => void decide('accept')}>
           {busy ? '正在保存…' : item.state === 'reviewed' ? '继续准备' : '使用这个动作'}</button>

@@ -1,0 +1,20 @@
+[Unit]
+Description=Wanwu Partner verified backup and isolated restore check
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /opt/wanwu-partner/app/backend/scripts/ecs_backup_once.py --root /opt/wanwu-partner --engine /opt/wanwu-partner/app/backend/scripts/ecs_verified_snapshot.py --engine-sha256 2a35a3de60d11f009c23aaabab6cc967000ec31a489ae3c923c4e19051f1417b
+TimeoutStartSec=300
+MemoryMax=768M
+CPUQuota=100%
+TasksMax=64
+PrivateNetwork=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/wanwu-partner/backups
+NoNewPrivileges=yes
+Restart=no

@@ -63,7 +63,13 @@ def _uuid(value: str) -> str:
 def _require_complete_saved_model(value) -> None:
     """Defaults are for creation, not for silently repairing damaged saved data."""
     if isinstance(value, BaseModel):
-        if (set(type(value).model_fields) - value.model_fields_set) - ({"flipped"} if isinstance(value, Item) else set()):
+        optional = {"flipped"} if isinstance(value, Item) else set()
+        if isinstance(value, (State, Snapshot)):
+            optional.add('world')
+        from app.living.rules import WorldState
+        if isinstance(value, WorldState):
+            optional.add('leisure')
+        if (set(type(value).model_fields) - value.model_fields_set) - optional:
             raise ValueError("incomplete saved record")
         for field in type(value).model_fields:
             _require_complete_saved_model(getattr(value, field))
@@ -102,6 +108,7 @@ class LivingStore:
 
     def initialize(self) -> None:
         """Explicit isolated-schema setup; production migration belongs to R2."""
+        from app.living import villa_floor  # register additive floor tables
         try:
             metadata.create_all(self.engine)
         except SQLAlchemyError:
@@ -128,7 +135,9 @@ class LivingStore:
             raw = json.loads(row["state_json"])
             if isinstance(raw, dict) and raw.get("schema_version") == 1:
                 # Only complete v1 envelopes are eligible for this explicit upgrade.
-                if set(raw) != {"schema_version", "last_write_at", "items", "undo"}:
+                legacy_fields = {"schema_version", "last_write_at", "items", "undo"}
+                if (set(raw) - {'world'} != legacy_fields or
+                        ('world' in raw and raw['world'] is not None)):
                     raise ValueError("incomplete v1 state")
                 raw = {**raw, "schema_version": 2, "atmosphere": {"rain": False, "sound": True}}
             state = State.model_validate(raw)
@@ -136,6 +145,10 @@ class LivingStore:
             if any(item.kind not in CATALOG[row["scene_type"]]["items"]
                    for item in state.items.values()):
                 raise ValueError()
+            if state.world and state.world.leisure:
+                from app.living.world_state import valid_leisure
+                if not valid_leisure(row['scene_type'], state.items.values(), state.world.leisure.model_dump()):
+                    raise ValueError('invalid saved world station')
             return state
         except (ValidationError, ValueError, KeyError, TypeError):
             raise LivingError("corrupt_state", "场景存档无法读取，请保留数据并联系维护人员") from None
@@ -143,11 +156,15 @@ class LivingStore:
     @staticmethod
     def _snapshot(row, state: State, now: int) -> dict:
         projected = settle(state, now)
-        return {"id": row["id"], "scene_type": row["scene_type"],
+        result = {"id": row["id"], "scene_type": row["scene_type"],
                 "mode": row["mode"], "companion_id": row["companion_id"],
                 "revision": row["revision"], "observed_at": now,
                 "items": public_items(projected), "can_undo": projected.undo is not None,
                 "atmosphere": projected.atmosphere.model_dump()}
+        if projected.world is not None:
+            # Store/receipt retain the base area; presentation overlays its seat area.
+            result['world'] = projected.world.model_dump(exclude_none=True)
+        return result
 
     def create_space(self, owner_id: str, space_id: str, scene_type: str,
                      mode: str, companion_id: str | None = None) -> dict:
@@ -208,6 +225,10 @@ class LivingStore:
             snapshot = Snapshot.model_validate(raw)
             _require_complete_saved_model(snapshot)
             result = snapshot.model_dump()
+            if 'world' not in raw:
+                result.pop('world', None)
+            elif snapshot.world is not None:
+                result['world'] = snapshot.world.model_dump(exclude_none=True)
             if result["id"] != space_id:
                 raise ValueError()
             return result
@@ -233,6 +254,11 @@ class LivingStore:
                     return previous
                 if row["revision"] != expected_revision:
                     raise LivingError("conflict", "场景已更新，请重新读取后再操作")
+                if parsed.action in ('world_activity', 'world_leisure') and (
+                        row['mode'] != 'private' or not row['companion_id'] or not row['companion_id'].isdigit()):
+                    raise LivingError('invalid_action', '请在绑定伙伴的私人住处安排活动')
+                from app.living.villa_floor import require_floor_idle
+                require_floor_idle(conn, 'private', space_id)
                 now = self._now()
                 state = apply(self._state(row), row["scene_type"], parsed, now)
                 changed = conn.execute(update(spaces).where(

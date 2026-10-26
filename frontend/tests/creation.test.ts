@@ -1,5 +1,5 @@
 import { expect, it, vi } from 'vitest';
-import { consumeCreation, GenerationFailedError, creationApi, parsePhoto, validatePhoto } from '@/lib/creation';
+import { consumeCreation, generateCompanion, GenerationFailedError, creationApi, parsePhoto, validatePhoto } from '@/lib/creation';
 
 const character = { id: 7, name: '小杯', persona: '温柔', opening_line: '你好', image_path: null, status: 'ready', created_at: '' };
 it('caps legacy candidates after validating the entire response', () => {
@@ -55,4 +55,29 @@ it('releases a hanging generation read on timeout and never treats it as a resul
 }, 1000);
 it('ignores malformed events after the saved generation done', async () => {
   await expect(consumeCreation(stream('event: done\ndata: '+JSON.stringify(character)+'\n\nevent: error\ndata: broken-json\n\n'), vi.fn(), new AbortController().signal)).resolves.toEqual(character);
+});
+
+it('uses the gateway-compatible save method on the creation result', async () => {
+  const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({ ...character, name: '新名字' })));
+  vi.stubGlobal('fetch', fetcher);
+  try {
+    const saved = await creationApi.rename(7, '新名字', new AbortController().signal);
+    expect(saved.name).toBe('新名字');
+    expect(fetcher.mock.calls[0][1].method).toBe('PUT');
+  } finally { vi.unstubAllGlobals(); }
+});
+
+it('correlates diagnostic upload and generation without changing idempotency or credentials', async () => {
+  const trace = '12345678-1234-4234-8234-123456789012';
+  const fetcher = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ id: 1, status: 'done', objects: [{ id: 2, label: '杯子' }] })))
+    .mockResolvedValueOnce(stream('event: done\ndata: ' + JSON.stringify(character) + '\n\n'));
+  vi.stubGlobal('fetch', fetcher);
+  try {
+    const signal = new AbortController().signal;
+    await creationApi.upload(new File(['image'], 'cup.png'), 'stable-request', signal, null, trace);
+    await generateCompanion(2, '杯子', signal, vi.fn(), '', false, trace);
+    expect(fetcher.mock.calls[0][1].headers).toMatchObject({ 'Idempotency-Key': 'stable-request', 'X-Generation-Trace': trace });
+    expect(fetcher.mock.calls[1][1].headers['X-Generation-Trace']).toBe(trace);
+    expect(JSON.parse(fetcher.mock.calls[1][1].body)).not.toHaveProperty('trace');
+  } finally { vi.unstubAllGlobals(); }
 });

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { api, ApiError, errorText } from '@/lib/api';
 import { actionNames, type Character, type Message, type Scene } from '@/lib/contracts';
-import { moods, transcriptionMessages, voiceApi, receiptLabel, liveSessionLabels, type VoiceReceipt, type AudioRecord, type parseVoiceSettings } from '@/lib/voice';
+import { moods, inspectMoodText, MOOD_TEXT_LIMIT, transcriptionMessages, voiceApi, receiptLabel, liveSessionLabels, type VoiceReceipt, type AudioRecord, type parseVoiceSettings } from '@/lib/voice';
 import { getToken } from '@/lib/auth';
 import { Brand, Loading, Modal, Notice } from './common';
 import { useTeamSession } from './team-shared';
@@ -32,7 +32,8 @@ function VoiceChat({ id }: { id: number }) {
   const [scene, setScene] = useState<Scene | null>(null), [sceneError, setSceneError] = useState('');
   const sendingUnresolved = pending !== null || receipts.some(r => r.state === 'running' || r.state === 'text_ready');
   const [settings, setSettings] = useState<ReturnType<typeof parseVoiceSettings> | null>(null);
-  const [voice, setVoice] = useState(''), [mood, setMood] = useState(''), [automatic, setAutomatic] = useState(true);
+  const [voice, setVoice] = useState(''), [mood, setMood] = useState(''), [moodText, setMoodText] = useState(''), [automatic, setAutomatic] = useState(true);
+  const moodInput = inspectMoodText(moodText);
   const [clip, setClip] = useState<Blob | null>(null), [text, setText] = useState(''), [recording, setRecording] = useState(false), [finalizing, setFinalizing] = useState(false), [seconds, setSeconds] = useState(0);
   const [clipPlaybackStatus, setClipPlaybackStatus] = useState(''), [clipPlayedSeconds, setClipPlayedSeconds] = useState(0);
   const [captureNotice, setCaptureNotice] = useState('');
@@ -135,10 +136,20 @@ function VoiceChat({ id }: { id: number }) {
     }).catch(() => {
       if (mounted.current && getToken() === token) { setScene(null); setSceneError('暂时无法核对场景提议，请刷新记录后再试。'); }
     });
-    Promise.all([api.character(id), api.messages(id), voiceApi.settings(id), voiceApi.history(id), voiceApi.receipts(id)]).then(([c, m, s, a, r]) => { if (mounted.current) { setCharacter(c); setMessages(m); setSettings(s); setVoice(s.voice); setMood(s.mood || ''); setAutomatic(s.automatic); setAudios(a); setReceipts(r); } }).catch(e => { if (mounted.current) setError(errorText(e)); });
+    Promise.all([api.character(id), api.messages(id), voiceApi.settings(id), voiceApi.history(id), voiceApi.receipts(id)]).then(([c, m, s, a, r]) => { if (mounted.current && getToken() === token) { setCharacter(c); setMessages(m); setSettings(s); setVoice(s.voice); setMood(s.mood || ''); setMoodText(s.mood_text || ''); setAutomatic(s.automatic); setAudios(a); setReceipts(r); } }).catch(e => { if (mounted.current && getToken() === token) setError(errorText(e)); });
     return () => { mounted.current = false; discard.current = true; releaseTrackListeners.current?.(); if (timer.current) clearInterval(timer.current); if (recorder.current?.state === 'recording') recorder.current.stop(); wavRecorder.current?.cancel(); input.current?.getTracks().forEach(t => t.stop()); playerRef.current?.pause(); if (url.current) URL.revokeObjectURL(url.current); if (clipUrl.current) { URL.revokeObjectURL(clipUrl.current); clipUrl.current = ''; } };
   }, [id]);
   async function work(fn: () => Promise<void>) { if (lock.current) return; lock.current = true; setBusy(true); setError(''); setNotice(''); try { await fn(); } catch (e) { if (mounted.current) setError(errorText(e)); } finally { lock.current = false; if (mounted.current) setBusy(false); } }
+  async function saveSettings() {
+    if (mood === 'custom' && moodInput.issue) { setError(moodInput.issue); return; }
+    await work(async () => {
+      const token = getToken();
+      const saved = await voiceApi.save(id, voice, mood || null, automatic, mood === 'custom' ? moodInput.text : null);
+      if (!mounted.current || getToken() !== token) return;
+      setSettings(saved); setMood(saved.mood || ''); setMoodText(saved.mood_text || '');
+      setNotice('当前心情和音色设定已保存。旧消息和已有音频保持原样。');
+    });
+  }
   async function refreshScene(signal?: AbortSignal) {
     const token = getToken();
     try {
@@ -426,8 +437,10 @@ function VoiceChat({ id }: { id: number }) {
         })}>结束真实聊天</button>}
       </section>}
       {draftWarning && <p role="status">浏览器暂时无法保存文字草稿，请在离开前复制需要保留的文字。</p>}
-      <section className="team-panel"><h2>今天感觉怎么样？</h2><label className="field">我现在的心情<select value={mood} onChange={e => setMood(e.target.value)}><option value="">暂不选择 / 清除原判断</option>{Object.entries(moods).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></label>{settings.mood_source === 'suggested' && <p>这是根据文字提出的候选，你可以纠正。</p>}<label><input type="checkbox" checked={automatic} onChange={e => setAutomatic(e.target.checked)} />允许从当前文字提出心情候选</label><p>主动选择和纠正优先。心情只用于你的私聊。</p>
-        <label className="field">伙伴的音色<select value={voice} onChange={e => setVoice(e.target.value)}>{!settings.voices.length && <option value="">暂时没有可用音色</option>}{settings.voices.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}</select></label><div className="hub-actions"><button className="button" disabled={busy || !voice} onClick={() => void play(() => voiceApi.preview(id, voice))}>试听，不发送消息</button><button className="button primary" disabled={busy} onClick={() => void work(async () => { const s = await voiceApi.save(id, voice, mood || null, automatic); setSettings(s); setNotice('心情和音色已保存。已有音频保持原样。'); })}>保存设置</button></div>
+      <section className="team-panel"><h2>今天感觉怎么样？</h2><label className="field">我现在的心情<select value={mood} disabled={busy} onChange={e => { setMood(e.target.value); setMoodText(''); }}><option value="">暂不选择 / 清除原判断</option>{Object.entries(moods).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</select></label>
+        {mood === 'custom' && <label className="field">我想自己说<textarea rows={3} aria-label="我想自己说" value={moodText} disabled={busy} aria-describedby="mood-text-hint" aria-invalid={!!moodInput.issue} onChange={e => setMoodText(e.target.value)} /><span id="mood-text-hint">{moodInput.issue || `${moodInput.length} / ${MOOD_TEXT_LIMIT} 个字符`} 只用于当前私人回应设定，不会自动保存为记忆。</span></label>}
+        {settings.mood_source === 'suggested' && <p>这是根据文字提出的候选，你可以纠正。</p>}<label><input type="checkbox" checked={automatic} disabled={busy} onChange={e => setAutomatic(e.target.checked)} />允许从当前文字提出心情候选</label><p>主动选择和纠正优先。心情只用于你的私聊。</p>
+        <label className="field">伙伴的音色<select value={voice} disabled={busy} onChange={e => setVoice(e.target.value)}>{!settings.voices.length && <option value="">暂时没有可用音色</option>}{settings.voices.map(v => <option key={v.id} value={v.id}>{v.label}</option>)}</select></label><div className="hub-actions"><button className="button" disabled={busy || !voice} onClick={() => void play(() => voiceApi.preview(id, voice))}>试听，不发送消息</button><button className="button primary" disabled={busy || (mood === 'custom' && !!moodInput.issue)} onClick={() => void saveSettings()}>保存设置</button></div>
       </section>
       <section className="team-panel"><h2>用声音留下这一刻</h2><p>最长 60 秒；到时自动停止，点击识别时临时上传；点击发送后才保存。已发送原音和回复音频分别保留 7 天，也可主动删除。</p><p role="status">{recording ? `正在录音 · ${seconds} / 60 秒` : finalizing ? '正在整理录音…' : clip ? `录音已停止 · 约 ${seconds} 秒，等待发送` : '麦克风尚未开启'}</p><div className="hub-actions">{!recording ? <button className="button primary" disabled={busy || sendingUnresolved || finalizing} onClick={() => void start()}>{clip ? '重新录制' : '开始录音'}</button> : <button className="button primary" onClick={() => stop()}>停止录音</button>}{(recording || clip || finalizing) && <button className="button" disabled={busy || sendingUnresolved} onClick={() => stop(true)}>取消录音</button>}{clip && <button className="button" disabled={busy || finalizing} onClick={() => void previewRecording()}>试听录音</button>}{clip && clipPlaybackStatus === '正在播放录音' && <button className="button" onClick={() => clipPlayback.current?.pause()}>暂停试听</button>}{clip && clipPlaybackStatus === '录音试听已暂停' && <button className="button" disabled={busy} onClick={() => void work(async () => { const player = clipPlayback.current; if (!player) return; try { await player.play(); if (mounted.current) setClipPlaybackStatus('正在播放录音'); } catch (failure) { if (mounted.current) setClipPlaybackStatus(previewFailure(player, failure)); } })}>继续试听</button>}</div>
         {captureNotice && <p role="status">{captureNotice}</p>}

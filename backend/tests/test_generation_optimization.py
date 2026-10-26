@@ -144,7 +144,7 @@ def test_bundled_api_publishes_only_complete_result_and_logs_safe_timings(client
     assert (Path(get_settings().upload_dir) / result["image_path"]).exists()
     assert client.post("/api/v1/characters", json={"object_id": oid}).status_code == 409
     records = [json.loads(r.message.split("generation_timing ")[1]) for r in caplog.records if "generation_timing " in r.message]
-    assert {r["stage"] for r in records} == {"photo_prepare", "recognition", "profile", "image", "creation_total"}
+    assert {r["stage"] for r in records} == {"photo_prepare", "recognition", "photo_store", "profile", "image", "character_store", "creation_total"}
     assert all(r["elapsed_ms"] >= 0 and r["outcome"] == "succeeded" for r in records)
     assert "private-user-label" not in json.dumps(records) and "private-file" not in json.dumps(records)
 

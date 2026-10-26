@@ -24,7 +24,7 @@ it('rejects private image paths outside the authenticated team endpoint', () => 
 });
 it('fetches team images with auth header, never with token in URL', async () => {
   setToken('test-token');
-  const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(new Blob(['image']), { status: 200 }));
+  const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(new Uint8Array([137, 80, 78, 71]), { status: 200, headers: { 'Content-Type': 'image/png' } }));
   const url = `/api/v1/teams/${id}/submissions/${sid}/image`;
   await teamImage(url, new AbortController().signal);
   expect(fetcher).toHaveBeenCalledWith(url, expect.objectContaining({ headers: { Authorization: 'Bearer test-token' }, cache: 'no-store' }));

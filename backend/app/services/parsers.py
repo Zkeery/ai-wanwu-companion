@@ -34,6 +34,65 @@ class Persona:
     appearance_description: str = ""
 
 
+_FLAT_PROFILE = {
+    "character_name": "name",
+    "character_persona": "persona",
+    "opening_line": "opening_line",
+    "appearance_description": "appearance_description",
+}
+
+
+def _value_kind(value) -> str:
+    if value is None:
+        return "null"
+    if isinstance(value, dict):
+        return "object"
+    if isinstance(value, list):
+        return "array"
+    if isinstance(value, str):
+        return "string"
+    if isinstance(value, bool):
+        return "boolean"
+    return "number" if isinstance(value, (int, float)) else "unknown"
+
+
+def _recognition_concept(item: dict, index: int) -> Persona | None:
+    flat_present = any(key in item for key in ("character_name", "character_persona")) or (
+        "concept" not in item and any(key in item for key in _FLAT_PROFILE)
+    )
+    use_flat = flat_present and (index == 0 or any(item.get(key) is not None for key in _FLAT_PROFILE))
+    legacy_present = "concept" in item
+    legacy = item.get("concept")
+    source, kind = ("flat", "object") if use_flat else ("legacy", _value_kind(legacy))
+    try:
+        concept = None
+        if use_flat:
+            projected = {target: item.get(key) for key, target in _FLAT_PROFILE.items()}
+            concept = parse_character_profile(json.dumps(projected, ensure_ascii=False))
+        # A null legacy field is harmless when a complete canonical flat
+        # profile exists, or when it is only a secondary optional placeholder.
+        if legacy_present and not (legacy is None and (use_flat or index > 0)):
+            source, kind = "legacy", _value_kind(legacy)
+            value = _load_json(legacy) if isinstance(legacy, str) else legacy
+            if isinstance(value, list):
+                if len(value) > 1:
+                    raise ParseError("角色资料包含多个对象")
+                if len(value) == 1:
+                    value = value[0]
+            previous = parse_character_profile(json.dumps(value, ensure_ascii=False))
+            if concept is not None and previous != concept:
+                raise ParseError("角色资料存在冲突")
+            concept = previous
+        if concept is not None and not concept.appearance_description:
+            raise ParseError("角色构思缺少形象设计描述")
+        return concept
+    except ParseError as error:
+        error.candidate_index = index
+        error.profile_contract = source
+        error.profile_input_kind = kind
+        raise
+
+
 def parse_recognize(text: str) -> list[RecognizedObject]:
     """解析识别结果为对象列表；畸形输出、缺字段时抛 ParseError。"""
     data = _load_json(text, reorder_recognition_tail=True)
@@ -45,7 +104,7 @@ def parse_recognize(text: str) -> list[RecognizedObject]:
     if not isinstance(data, list):
         raise ParseError("识别结果应为对象数组")
     objects: list[RecognizedObject] = []
-    for item in data:
+    for index, item in enumerate(data):
         if not isinstance(item, dict):
             raise ParseError("识别数组元素应为对象")
         label = item.get("label") or item.get("name") or item.get("object") or item.get("item")
@@ -54,11 +113,7 @@ def parse_recognize(text: str) -> list[RecognizedObject]:
         features = item.get("visual_features", "")
         if not isinstance(features, str) or len(features.strip()) > 500:
             raise ParseError("照片特征应为不超过500字的文字")
-        concept = None
-        if "concept" in item:
-            concept = parse_character_profile(json.dumps(item["concept"], ensure_ascii=False))
-            if not concept.appearance_description:
-                raise ParseError("角色构思缺少形象设计描述")
+        concept = _recognition_concept(item, index)
         category = item.get("category", "unknown")
         if not isinstance(category, str) or category not in CATEGORIES:
             raise ParseError("识别类别无效")

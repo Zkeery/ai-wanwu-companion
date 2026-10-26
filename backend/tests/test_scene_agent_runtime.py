@@ -113,7 +113,7 @@ def test_invalid_decisions_fail_without_retry(case, decision):
 @pytest.mark.parametrize("scene,action,accepted", [
     ("home", "plant_flower", True), ("home", "light_rain", True),
     ("desert", "plant_tree", True), ("forest", "plant_tree", True),
-    ("desert", "light_rain", False), ("forest", "place_bench", False), ("home", "delete", False),
+    ("desert", "light_rain", False), ("forest", "place_bench", True), ("home", "delete", False),
 ])
 def test_scene_specific_allowlist(case, scene, action, accepted):
     runtime, args = case

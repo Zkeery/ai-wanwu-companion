@@ -12,8 +12,8 @@ const reasons: Record<string, string> = {
   permission_changed: '伙伴、位置或参与许可发生变化，本批已停止。', authorization_closed: '本批授权已结束。',
   failed: '本轮未能完成，本批已停止，不会自动重试。', interrupted: '本轮结果需要核对，本批已停止，不会重发。',
 };
-type Props = { gathering: Gathering; busy: boolean; onState: (enabled: boolean) => void; refresh: () => void };
-export default function GatheringAutomatic({ gathering: g, busy, onState, refresh }: Props) {
+type Props = { gathering: Gathering; busy: boolean; onState: (enabled: boolean) => void; refresh: () => void; compact?: boolean };
+export default function GatheringAutomatic({ gathering: g, busy, onState, refresh, compact = false }: Props) {
   const [status, setStatus] = useState<AutomaticDialogueStatus | null>(null), [error, setError] = useState('');
   const [confirm, setConfirm] = useState(false), [sending, setSending] = useState(false), [reload, setReload] = useState(0);
   const alive = useRef(true), lock = useRef(false), epoch = useRef(0), callbacks = useRef({ onState, refresh });
@@ -116,21 +116,34 @@ export default function GatheringAutomatic({ gathering: g, busy, onState, refres
       if (alive.current && getToken() === token) setError('设置结果需核对，不会自动重发。' + errorText(e));
     } finally { lock.current = false; if (alive.current && getToken() === token) setSending(false); }
   }
-  return <div className="hub-item" aria-label="自动伙伴交流"><h3>自动聊一会儿</h3>
+  const stateMessage = status ? (status.enabled ? (status.available ? '自动交流已开启。' : '自动安排已保存，当前后台未运行。') : (status.stop_reason ? reasons[status.stop_reason] : '自动交流默认关闭。')) : (error ? '自动安排状态暂未核对，请查看下方提示。' : '正在读取自动安排…');
+  const pause = <button className="button" disabled={!status?.enabled || sending || busy} onClick={() => void save(false)}>暂停自动交流</button>;
+  const controls = <>
     <p>有人查看时最多每10分钟聊一轮；无人查看每天最多两轮。离开页面后按已确认次数继续，失败即停。</p>
-    {!status && !error && <p role="status">正在读取自动安排…</p>}
+    {!compact && !status && !error && <p role="status">正在读取自动安排…</p>}
     {status && <>
       {!status.available && <p>后台自动交流尚未开放，已有记录和暂停操作仍可使用。</p>}
-      <p role="status">{status.enabled ? (status.available ? '自动交流已开启。' : '自动安排已保存，当前后台未运行。') : (status.stop_reason ? reasons[status.stop_reason] : '自动交流默认关闭。')}</p>
+      {!compact && <p role="status">{stateMessage}</p>}
       <p>今日无人观看已安排 {status.today_count} / 2 轮。</p>
       {status.enabled && <p>{status.next_at > 0 ? `下一轮最早 ${new Date(status.next_at * 1000).toLocaleTimeString('zh-CN')}` : '即将核对第一轮安排'}；实际执行还需参与许可和剩余额度。</p>}
       {authorization ? <p>本批安排 {pair?.map((c, i) => c?.name ?? `伙伴${authorization.character_ids[i]}`).join('与')}；还可聊 {authorization.max_rounds - authorization.used_rounds} 轮，整批最多预留 ¥{(authorization.cap_micro / 1000000).toFixed(4)}，{new Date(authorization.expires_at * 1000).toLocaleString('zh-CN')} 到期。实际费用以账单为准。</p>
         : <p>你没有可用的自动交流额度；单轮授权不能用于自动安排。</p>}
       <div className="hub-actions"><button className="button primary" disabled={!ready} onClick={() => setConfirm(true)}>开启自动交流</button>
-        <button className="button" disabled={!status.enabled || sending || busy} onClick={() => void save(false)}>暂停自动交流</button></div>
+        {!compact && pause}</div>
     </>}
-    {error && <p role="alert">{error}</p>}
+    {!compact && error && <p role="alert">{error}</p>}
     <button className="button" disabled={sending} onClick={() => setReload(n => n + 1)}>核对自动安排</button>
+  </>;
+  return <div className={`hub-item${compact ? ' hub-automatic-compact' : ''}`} aria-label="自动伙伴交流">
+    {compact ? <>
+      <div className="hub-ai-status-row">
+        <h3>自动聊一会儿</h3>
+        <p className="hub-ai-status-copy" role="status">{status && !status.available && <span className="hub-ai-unavailable">暂未开放 · </span>}<span>{stateMessage}</span></p>
+        {status?.enabled && pause}
+      </div>
+      {error && <p role="alert">{error}</p>}
+      <details className="hub-settings-disclosure"><summary>查看自动交流设置</summary>{controls}</details>
+    </> : <><h3>自动聊一会儿</h3>{controls}</>}
     {confirm && authorization && <Modal title="确认自动交流" close={() => setConfirm(false)}>
       <p>允许指定两位伙伴在本批剩余 {authorization.max_rounds - authorization.used_rounds} 轮内自动交流，整批最多预留 ¥{(authorization.cap_micro / 1000000).toFixed(4)}。离开页面后也可继续；任一成员可暂停，失败或结果未知会停止整个批次，不自动重试。</p>
       <p>模型仅接收两位公开名字、预设性格、当前共同场景及允许引用的共同交流，不带入私人聊天。</p>

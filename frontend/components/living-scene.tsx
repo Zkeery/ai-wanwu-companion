@@ -1,5 +1,7 @@
 'use client';
 import DesertScene from './desert-scene';
+import PrivateLivingWorld from './private-living-world';
+import { hasPersistentLivingWorld } from '@/lib/living';
 import SceneSeasonBackdrop, { SceneSeasonPreview, type SeasonalScene } from './scene-season-backdrop';
 import seasonStyles from './scene-season-backdrop.module.css';
 import SpaceDecorations from './space-decorations';
@@ -26,17 +28,21 @@ function requestId(): string {
   return (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`);
 }
 
-export type Props = { space: LivingSpace; companion?: Character; companions?: Character[]; readOnly?: boolean; visible?: boolean; onChange: (s: LivingSpace) => void };
+export type Props = { space: LivingSpace; companion?: Character; companions?: Character[]; readOnly?: boolean; visible?: boolean; onChange: (s: LivingSpace) => void; onBusyChange?: (busy: boolean) => void; onSeasonChange?: (season: Season | null) => void };
 type Drag = { pointerId: number; item: LivingItem; revision: number; rect: DOMRect; startX: number; startY: number; x: number; y: number; moved: boolean; valid: boolean };
 const INSET_X = 52, INSET_Y = 48;
 const rounded = (n: number) => Math.round(n * 100) / 100;
 const validPosition = (x: number, y: number) => Number.isFinite(x) && Number.isFinite(y) && x >= 0 && x <= 1 && y >= 0 && y <= 1;
 
 export default function LivingScene(props: Props) {
-  return props.space.scene_type === 'desert' ? <DesertScene key={props.space.id} {...props} /> : <SceneEditor key={props.space.id} {...props} />;
+  if (hasPersistentLivingWorld(props.space)) return <PrivateLivingWorld key={`${props.space.id}:${props.space.owner_id}`} space={props.space}
+    companions={props.companions ?? (props.companion ? [props.companion] : [])} visible={props.visible ?? true} readOnly={!!props.readOnly || props.space.resident_here !== true} onChange={props.onChange}
+    renderEditor={options => props.space.scene_type === 'desert' ? <DesertScene {...props} {...options} readOnly={!!props.readOnly || props.space.resident_here !== true} /> : <SceneEditor {...props} {...options} readOnly={!!props.readOnly || props.space.resident_here !== true} />} />;
+  const readOnly = !!props.readOnly || (props.space.mode === 'private' && !!props.space.owner_id && !!props.space.world && typeof props.space.resident_here !== 'boolean');
+  return props.space.scene_type === 'desert' ? <DesertScene key={props.space.id} {...props} readOnly={readOnly} /> : <SceneEditor key={props.space.id} {...props} readOnly={readOnly} />;
 }
 
-function SceneEditor({ space, companion, companions, readOnly = false, visible = true, onChange }: Props) {
+function SceneEditor({ space, companion, companions, readOnly = false, visible = true, onChange, onBusyChange, onSeasonChange }: Props) {
   const present = companions ?? (companion ? [companion] : []);
   const [runtimeView, setRuntimeView] = useState<RuntimeView | null>(null);
   const [runtimeRefresh, setRuntimeRefresh] = useState(0);
@@ -44,6 +50,8 @@ function SceneEditor({ space, companion, companions, readOnly = false, visible =
   const [season, setSeason] = useState<Season | null>(null);
   const palette = seasonPalette(space.scene_type, season);
   const [busy, setBusy] = useState(false), [selected, setSelected] = useState<string | null>(null), [error, setError] = useState('');
+  useEffect(() => { onBusyChange?.(busy); }, [busy, onBusyChange]);
+  useEffect(() => { onSeasonChange?.(season); }, [season, onSeasonChange]);
   const [uncertain, setUncertain] = useState(false);
   const locked = useRef(false);
   const active = useRef(true);
@@ -216,7 +224,7 @@ function SceneEditor({ space, companion, companions, readOnly = false, visible =
     {error && <p className="form-error" role="alert">{error}</p>}
     {uncertain && <p>暂时无法确认场景状态，请先核对。<button className="button" disabled={busy} onClick={() => void refresh()}>核对场景</button></p>}
 
-    {visible && space.mode === 'private' && <SceneNavigation onPlants={() => focusSceneSection(plantPanel.current)} onActivity={runtimeEnabled ? goActivity : undefined} onJournal={journalEnabled ? () => focusSceneSection(journalPanel.current) : undefined} onSeason={() => focusSceneSection(seasonPanel.current)} />}
+    {visible && <SceneNavigation onPlants={() => focusSceneSection(plantPanel.current)} onActivity={runtimeEnabled ? goActivity : undefined} onJournal={journalEnabled ? () => focusSceneSection(journalPanel.current) : undefined} onSeason={() => focusSceneSection(seasonPanel.current)} />}
     {!readOnly && <div className="arrange-controls">
       <button className="button" aria-pressed={arranging} disabled={disabled} onClick={() => { cancelDrag(); setSelected(null); setArranging(!arranging); setMessage(''); }}><Move size={16} />{arranging ? '完成布置' : '布置场景'}</button>
       <p id="arrange-help">{arranging ? '每次调整都会保存；完成布置后，工具就收起来。' : '看看伙伴，点物件也能照料；想换个位置时，再点「布置场景」。'}</p>
@@ -227,7 +235,7 @@ function SceneEditor({ space, companion, companions, readOnly = false, visible =
         {placed.map((item, index) => <option key={item.id} value={item.id}>{index + 1}. {itemLabel(item)}</option>)}
       </select>
     </label>}
-    <div ref={board} tabIndex={-1} style={palette && !raining ? { background: palette.sky } : undefined} data-season={season ?? 'base'} className={`scene-board ${season ? seasonStyles.seasonBoard : ''} scene-${space.scene_type} ${arranging && !readOnly ? 'arranging' : ''} ${raining ? 'scene-raining' : ''}`} role="group" aria-label="场景" aria-describedby={readOnly ? undefined : 'arrange-help'} aria-busy={busy} onClick={boardClick}>
+    <div ref={board} tabIndex={-1} style={palette && !raining ? { background: palette.sky } : undefined} data-season={season ?? 'base'} className={`scene-board ${seasonStyles.seasonBoard} scene-${space.scene_type} ${arranging && !readOnly ? 'arranging' : ''} ${raining ? 'scene-raining' : ''}`} role="group" aria-label="场景" aria-describedby={readOnly ? undefined : 'arrange-help'} aria-busy={busy} onClick={boardClick}>
       <svg className="scene-landscape" viewBox="0 0 780 420" preserveAspectRatio="none" aria-hidden="true">
         <circle cx="650" cy="65" r="29" fill={raining ? '#edf0f7' : '#ffe9ad'} />
         <path d="M65 76c-7-28 35-40 48-17 23-12 40 10 30 22 32 20-93 23-78-5M390 48c-2-22 29-32 40-13 27-4 31 18 16 23-36 9-82 4-56-10" fill="#fffcf2" opacity=".85" />
@@ -284,10 +292,10 @@ function SceneEditor({ space, companion, companions, readOnly = false, visible =
       <div className="tool-row">{kinds.map(kind => <button key={kind} className="tool-chip" disabled={disabled} onClick={() => place(kind)}><span className="item-emoji">{kindMeta[kind]?.emoji ?? '❔'}</span>{kindMeta[kind]?.name ?? kind}</button>)}</div>
       <p className="tool-hint"><Move size={13} />物件会记住自己的位置，下次回来还能接着布置。</p>
     </div>}
-    {visible && space.mode === 'private' && <SceneSection sectionRef={plantPanel} title="植物照料" onBack={backToScene}><TreeOverview key={space.id} space={space} onLocate={readOnly ? undefined : locateActivityItem} onRefresh={() => void refresh()} busy={busy} locatingDisabled={disabled || !!preview} /></SceneSection>}
+    {visible && <SceneSection sectionRef={plantPanel} title="植物照料" onBack={backToScene}><TreeOverview key={space.id} space={space} onLocate={readOnly ? undefined : locateActivityItem} onRefresh={() => void refresh()} busy={busy} locatingDisabled={disabled || !!preview} /></SceneSection>}
     {journalEnabled && <SceneSection sectionRef={journalPanel} title="生活记录" onBack={backToScene}><LifeJournal key={`journal-${space.id}`} spaceId={space.id} revision={space.revision} visible={visible} companionId={Number(space.companion_id)} sceneType={space.scene_type} items={space.items} onLocate={readOnly ? undefined : locateActivityItem} locatingDisabled={disabled || !!preview} /></SceneSection>}
     {runtimeEnabled && <SceneSection sectionRef={activityPanel} title="活动设置" onBack={backToScene}><LifeRuntimePanel key={`runtime-${space.id}`} spaceId={space.id} onSnapshot={setRuntimeView} refreshVersion={runtimeRefresh} historyScene={{ space, companions: present, onLocate: locateActivityItem, locatingDisabled: disabled || !!preview }} /></SceneSection>}
-    {space.mode === 'private' && <SceneSection sectionRef={seasonPanel} title="四季" onBack={backToScene}><SeasonSettingsPanel spaceId={space.id} onSeason={setSeason} readOnly={readOnly} renderPreview={current => <SceneSeasonPreview scene={space.scene_type as SeasonalScene} season={current} />} /></SceneSection>}
+    {<SceneSection sectionRef={seasonPanel} title="四季" onBack={backToScene}><SeasonSettingsPanel spaceId={space.id} onSeason={setSeason} readOnly={readOnly} renderPreview={current => <SceneSeasonPreview scene={space.scene_type as SeasonalScene} season={current} />} /></SceneSection>}
     <SpaceDecorations spaceId={space.id} kind="private" />
     {space.mode === 'private' && !readOnly && process.env.NEXT_PUBLIC_LIFE_SIMULATION === 'true' && <LifeSimulation key={space.id} spaceId={space.id} />}
   </div>;

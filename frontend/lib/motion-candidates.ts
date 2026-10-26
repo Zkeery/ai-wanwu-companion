@@ -1,10 +1,12 @@
 import { checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders, getToken } from './auth';
+import { sha256Hex } from './sha256';
 
 const states = ['reserved', 'attempted', 'unknown', 'needs_review', 'rejected', 'reviewed', 'queued', 'ready'] as const;
 export type CandidateState = typeof states[number];
 export type CandidateActivity = 'rest' | 'walk' | 'observe';
-export type MotionCandidate = { job_id: string; state: CandidateState; candidate_sha256: string | null; image_url: string | null; activity?: CandidateActivity };
+export type MotionCandidate = { job_id: string; state: CandidateState; candidate_sha256: string | null; image_url: string | null; activity?: CandidateActivity; kind?: 'video'; video_url?: string };
 export type CandidatePage = { items: MotionCandidate[]; next_cursor: string | null };
 const sha = (v: unknown): v is string => typeof v === 'string' && /^[a-f0-9]{64}$/.test(v);
 const base = (id: number) => `/api/v1/characters/${id}/motion-candidates`;
@@ -14,11 +16,18 @@ function object(v: unknown): Record<string, unknown> {
 }
 export function parseCandidate(value: unknown, id: number): MotionCandidate {
   const v = object(value);
-  if (!['candidate_sha256,image_url,job_id,state', 'activity,candidate_sha256,image_url,job_id,state'].includes(Object.keys(v).sort().join(',')) || !sha(v.job_id)
+  const video = v.kind === 'video';
+  const keys = Object.keys(v).sort().join(',');
+  const schema = video
+    ? keys === 'activity,candidate_sha256,image_url,job_id,kind,state,video_url'
+    : ['candidate_sha256,image_url,job_id,state', 'activity,candidate_sha256,image_url,job_id,state'].includes(keys);
+  if (!schema || !sha(v.job_id)
       || ('activity' in v && !['rest', 'walk', 'observe'].includes(v.activity as string))
       || !states.includes(v.state as CandidateState)
       || !(v.candidate_sha256 === null || sha(v.candidate_sha256))
-      || v.image_url !== (v.candidate_sha256 ? `${base(id)}/${v.job_id}/image/${v.candidate_sha256}` : null)) {
+      || (video ? (!sha(v.candidate_sha256) || v.image_url !== null
+          || v.video_url !== `${base(id)}/${v.job_id}/video/${v.candidate_sha256}`)
+        : v.image_url !== (v.candidate_sha256 ? `${base(id)}/${v.job_id}/image/${v.candidate_sha256}` : null))) {
     throw new Error('动作候选暂时无法核对');
   }
   return v as MotionCandidate;
@@ -55,21 +64,23 @@ export async function readCandidates(id: number, token: string, signal: AbortSig
 }
 export async function candidateImage(item: MotionCandidate, id: number, token: string, signal: AbortSignal): Promise<Blob> {
   parseCandidate(item, id);
-  if (!item.image_url || !item.candidate_sha256) throw new Error('图片尚未就绪');
-  const response = await send(item.image_url, token, signal);
-  if (response.headers.get('content-type')?.split(';')[0] !== 'image/png') throw new Error('图片格式无法核对');
+  const video = item.kind === 'video', url = video ? item.video_url : item.image_url;
+  if (!url || !item.candidate_sha256) throw new Error('动作素材尚未就绪');
+  const response = await send(url, token, signal);
+  const mime = video ? 'video/mp4' : 'image/png';
+  if (response.headers.get('content-type')?.split(';')[0] !== mime) throw new Error('素材格式无法核对');
   const raw = await response.arrayBuffer();
-  if (!raw.byteLength || raw.byteLength > 20 * 1024 * 1024) throw new Error('图片大小无法核对');
-  const digest = [...new Uint8Array(await crypto.subtle.digest('SHA-256', raw))].map(n => n.toString(16).padStart(2, '0')).join('');
+  if (!raw.byteLength || raw.byteLength > (video ? 10 : 20) * 1024 * 1024) throw new Error('图片大小无法核对');
+  const digest = await sha256Hex(raw, signal);
   if (digest !== item.candidate_sha256 || getToken() !== token) throw new Error('图片已变化，请更新后再看');
   signal.throwIfAborted();
-  return new Blob([raw], { type: 'image/png' });
+  return new Blob([raw], { type: mime });
 }
 export async function reviewCandidate(id: number, item: MotionCandidate, decision: 'accept' | 'reject', token: string, signal: AbortSignal): Promise<MotionCandidate> {
   const response = await send(`${base(id)}/${item.job_id}/review`, token, signal, { method: 'POST',
     body: JSON.stringify({ decision, candidate_sha256: item.candidate_sha256 }) });
   const result = parseCandidate(await response.json(), id);
   if (result.job_id !== item.job_id || result.candidate_sha256 !== item.candidate_sha256
-      || (result.activity ?? 'walk') !== (item.activity ?? 'walk')) throw new Error('确认结果暂时无法核对');
+      || (result.activity ?? 'walk') !== (item.activity ?? 'walk') || result.kind !== item.kind) throw new Error('确认结果暂时无法核对');
   return result;
 }

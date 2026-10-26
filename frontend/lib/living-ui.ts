@@ -22,7 +22,7 @@ export const kindMeta: Record<string, { name: string; emoji: string }> = {
 export const sceneKinds: Record<SceneType, string[]> = {
   home: ['tree', 'bench', 'flower', 'mushroom', 'pond', 'campfire', 'fireflies'],
   desert: ['palm', 'cactus', 'rock', 'pond', 'shade', 'cushion', 'tea_table', 'tent', 'string_lights', 'sign', 'bench', 'flowerpot', 'tree'],
-  forest: ['tree', 'cushion'],
+  forest: ['tree', 'cushion', 'bench'],
 };
 
 export function careLabel(seconds: number | null): string {

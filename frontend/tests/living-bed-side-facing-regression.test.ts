@@ -1,0 +1,31 @@
+import * as T from 'three';
+import {afterEach,expect,it,vi} from 'vitest';
+import {buildAvatar} from '@/lib/living-meshes';
+import {buildHomeWorldEnvironment} from '@/lib/living-home-world-meshes';
+import {computeLivingBedPose} from '@/lib/living-sleep-support';
+import {createLivingContactCollision} from '@/lib/living-contact-collision';
+import {createHomeJourneyController,type JourneyContext,type JourneyPose} from '@/lib/living-home-journey';
+import {parseGathering} from '@/lib/gatherings';
+import current from './fixtures/id5-current-g59-20261025.json';
+const standing:JourneyPose={x:7.675000052452088,y:0,z:-4.439922796648514,yaw:-2.717147753027945,tilt:0,scale:1,area:'bedroom',contact:null};
+const sideYaw=Math.atan2(standing.x-5.65,standing.z-(-4.739922796648514));
+afterEach(()=>vi.restoreAllMocks());
+it('starts the actual bouquet bed path facing out from its long-side sitting edge',()=>{
+ vi.spyOn(T.TextureLoader.prototype,'load').mockImplementation(()=>new T.Texture());vi.spyOn(HTMLCanvasElement.prototype,'getContext').mockReturnValue(null);
+ const c=parseGathering(current.group).companions.find(c=>c.id===5)!,value=buildAvatar(c.avatar3d!),avatar={...value,baseScale:value.root.scale.clone()};
+ const environment=buildHomeWorldEnvironment(null,{resting:0,sleeping:1},{realistic:true,referenceVilla:true});
+ const bp=computeLivingBedPose(avatar.sleepSupport,avatar.baseScale.clone().multiplyScalar(.9),1)!;
+ const lying:JourneyPose={x:5.65,y:.66+bp.rootOffsetY,z:-4.9-3.25*.33+bp.headOffsetZ,yaw:0,tilt:bp.rotationX,scale:.9,area:'bedroom',contact:'sleep'};
+ const path=createLivingContactCollision().sleepPath(avatar,environment,standing,lying,0,1,['room-bed-0']);
+ expect(path.length).toBeGreaterThan(2);expect(path[0].pose.x).toBe(standing.x);expect(path[0].pose.z).toBe(standing.z);expect(path[0].pose.tilt).toBe(0);expect(path[0].blend).toBe(0);
+ expect(path[0].pose.yaw,'ground approach faces the side edge rather than final supine yaw or the incoming route').toBeCloseTo(sideYaw,7);
+ expect(path.at(-1)!.pose.yaw).toBe(0);
+});
+it('turns toward the prepared sleep edge on the ground without the old detour through foot-facing yaw zero',()=>{
+ const controller=createHomeJourneyController(),lying:JourneyPose={x:5.65,y:.66,z:-4.739922796648514,yaw:0,tilt:-1.25,scale:.9,area:'bedroom',contact:'sleep'};
+ controller.reconcile(5,{key:'observe',pose:standing,approach:standing},standing);controller.reconcile(5,{key:'sleep',pose:lying,approach:standing},standing);
+ const context:JourneyContext={coordinateContacts:true,radius:.8,plan:(from,to)=>({points:[from,to],cumulative:[0,Math.hypot(to.x-from.x,to.z-from.z)],length:Math.hypot(to.x-from.x,to.z-from.z),speed:1,seed:5,safeAnchor:from,anchorCorrected:false,blocked:null,diagnostics:{nodeCount:2,componentSize:2,obstacleCount:0,step:.16}}),isClear:()=>true,portalClear:()=>true,doorOpen:()=>true,isContactClear:()=>true,contactPath:()=>[{pose:{...standing,yaw:sideYaw},blend:0},{pose:{...standing,yaw:sideYaw,y:.4,bedSeat:1},blend:0},{pose:lying,blend:1}]};
+ const p=controller.prepare(5,.1,context)!;expect(p.contactTurning).toBe(true);expect(p.position).toEqual({x:standing.x,z:standing.z});expect(p.desired).toEqual(p.position);
+ const actualTurn=Math.atan2(Math.sin(p.yaw-standing.yaw),Math.cos(p.yaw-standing.yaw));
+ expect(actualTurn,'the shortest path to the side faces clockwise here; final yaw zero takes the wrong detour').toBeLessThan(0);expect(Math.abs(actualTurn)).toBeLessThanOrEqual(.36+1e-8);
+});

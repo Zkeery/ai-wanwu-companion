@@ -12,6 +12,14 @@ const fetcher = vi.fn();
 beforeEach(() => { setToken('owner'); vi.stubGlobal('fetch', fetcher); vi.stubGlobal('crypto', webcrypto); fetcher.mockReset(); });
 afterEach(() => { clearToken(); vi.unstubAllGlobals(); });
 
+it('verifies owned candidate bytes on HTTP without dropping the digest check', async () => {
+  vi.stubGlobal('crypto', {});
+  fetcher.mockResolvedValueOnce(new Response(bytes, { headers: { 'Content-Type': 'image/png' } }));
+  expect((await candidateImage(item, 18, 'owner', signal())).size).toBe(bytes.length);
+  fetcher.mockResolvedValueOnce(new Response('changed', { headers: { 'Content-Type': 'image/png' } }));
+  await expect(candidateImage(item, 18, 'owner', signal())).rejects.toThrow();
+});
+
 it('validates exact owned image URLs and rejects unknown states and secret fields', () => {
   expect(parseCandidate(item, 18)).toEqual(item);
   for (const bad of [{ ...item, image_url: 'https://outside.test/image' }, { ...item, state: 'automatic_accept' },
@@ -60,4 +68,20 @@ it('queries only the chosen activity and rejects a response for another category
 it('rejects a review response that changes the activity', async () => {
   fetcher.mockResolvedValue(Response.json({ ...item, activity: 'observe' }));
   await expect(reviewCandidate(18, { ...item, activity: 'rest' }, 'accept', 'owner', signal())).rejects.toThrow();
+});
+
+
+it('validates and fetches private video candidates without external media URLs', async () => {
+  const raw = new Uint8Array([0,0,0,12,102,116,121,112,105,115,111,109]);
+  const hash = createHash('sha256').update(raw).digest('hex');
+  const video: MotionCandidate = { ...item, activity: 'walk', kind: 'video', image_url: null,
+    candidate_sha256: hash, video_url: '/api/v1/characters/18/motion-candidates/' + item.job_id + '/video/' + hash };
+  expect(parseCandidate(video, 18)).toEqual(video);
+  expect(() => parseCandidate({ ...video, video_url: 'https://outside.test/video.mp4' }, 18)).toThrow();
+  expect(() => parseCandidate({ ...video, image_url: item.image_url }, 18)).toThrow();
+  fetcher.mockResolvedValueOnce(new Response(raw, { headers: { 'Content-Type': 'video/mp4' } }));
+  expect((await candidateImage(video, 18, 'owner', signal())).type).toBe('video/mp4');
+  expect(fetcher.mock.calls[0][1]).toMatchObject({ cache: 'no-store', headers: { Authorization: 'Bearer owner' } });
+  fetcher.mockResolvedValueOnce(new Response('changed', { headers: { 'Content-Type': 'video/mp4' } }));
+  await expect(candidateImage(video, 18, 'owner', signal())).rejects.toThrow();
 });

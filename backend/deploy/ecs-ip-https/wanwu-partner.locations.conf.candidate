@@ -1,0 +1,30 @@
+# Public ACME challenge files only; no application data lives here.
+location ^~ /.well-known/acme-challenge/ {
+    root /var/lib/wanwu-partner-acme;
+    default_type text/plain;
+    autoindex off;
+    disable_symlinks on;
+    try_files $uri =404;
+    limit_except GET { deny all; }
+}
+
+# Include inside the existing HTTP server. All routes remain below /partner/.
+location = /partner {
+    proxy_pass http://127.0.0.1:3020;
+    include /etc/nginx/snippets/wanwu-partner.proxy.conf;
+}
+
+location ^~ /partner/api/v1/ {
+    proxy_pass http://127.0.0.1:8020/api/v1/;
+    include /etc/nginx/snippets/wanwu-partner.proxy.conf;
+}
+
+location ^~ /partner/uploads/ {
+    proxy_pass http://127.0.0.1:8020/uploads/;
+    include /etc/nginx/snippets/wanwu-partner.proxy.conf;
+}
+
+location ^~ /partner/ {
+    proxy_pass http://127.0.0.1:3020;
+    include /etc/nginx/snippets/wanwu-partner.proxy.conf;
+}

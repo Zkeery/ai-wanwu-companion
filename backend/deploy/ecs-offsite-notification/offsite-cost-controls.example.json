@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "minimum_remaining_cny": "0.50",
+  "max_balance_age_seconds": 900,
+  "verification_mode": "metadata",
+  "allow_full_download": false
+}

@@ -294,22 +294,22 @@ class AutomaticDialogueStore(DialogueStore):
         return super().check(conn, task)
 
 
-async def consume_once(store, factory, catalog_check=None):
+async def consume_once(store, factory, catalog_check=None, *, task_factory=None):
     task = store.claim_next()
     if task is None:
         return
     kwargs = {} if catalog_check is None else dict(catalog_check=catalog_check)
-    await run_exchange(store, task, factory, **kwargs)
+    await run_exchange(store, task, (lambda: task_factory(task)) if task_factory else factory, **kwargs)
     # Failure/unknown closes the batch before the next scheduling iteration.
     with store.transaction() as conn:
         setting = store._setting(conn, task['group_id'])
         store._settle(conn, setting)
 
 
-async def consume(store, factory):
+async def consume(store, factory, *, task_factory=None):
     while True:
         try:
-            await consume_once(store, factory)
+            await consume_once(store, factory, task_factory=task_factory)
         except asyncio.CancelledError:
             raise
         except Exception:

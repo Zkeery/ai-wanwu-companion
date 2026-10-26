@@ -7,7 +7,7 @@ from __future__ import annotations
 from uuid import UUID, uuid4
 from typing import Literal
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import delete as sa_delete, select, text
@@ -100,6 +100,36 @@ def _owned_character(db: Session, user_id: str, character_id: int) -> Character:
     return ch
 
 
+def _world_out(snapshot: dict, user_id: str, db: Session) -> dict:
+    """Authorized private appearance only; no persona, messages or image paths."""
+    if snapshot.get('mode') != 'private':
+        return snapshot
+    from app.living.avatar3d import resolve_avatar3d
+    from app.living.world_state import projected_world
+    from app.models.models import Object
+    companion = snapshot.get('companion_id')
+    ch = _owned_character(db, user_id, int(companion)) if companion and companion.isdigit() else None
+    avatar = None
+    if ch is not None and ch.status == 'ready':
+        obj = db.get(Object, ch.object_id)
+        if obj is not None:
+            avatar = resolve_avatar3d(ch.id, label=obj.label, category=obj.category,
+                                      visual_features=obj.visual_features)
+    return {**snapshot, 'owner_id': user_id, 'world': projected_world(snapshot.get('world')),
+            'avatar3d': avatar, 'resident_here': _resident_here(db, ch, snapshot)}
+
+
+def _resident_here(db: Session, character: Character | None, space: dict) -> bool:
+    if character is None or character.status != 'ready':
+        return False
+    from app.living.gatherings import visits
+    if db.execute(select(visits.c.character_id).where(visits.c.character_id == character.id,
+            visits.c.owner_id == character.owner_id)).first():
+        return False
+    return character.current_space_id == space['id'] or (
+        character.current_space_id is None and space['scene_type'] == 'home')
+
+
 def _owned_space(user_id: str, space_id: str) -> dict:
     with living_store.engine.connect() as conn:
         row = conn.execute(select(living_spaces).where(
@@ -183,13 +213,13 @@ def create_space(payload: CreateSpaceRequest, user: User = Depends(get_current_u
         row = ensure_home(db, living_store, ch, create=True)
         result = read_snapshot(living_store, row)
         db.commit()
-        return result
+        return _world_out(result, user.id, db)
     try:
         snapshot = living_store.create_space(user.id, str(uuid4()), payload.scene_type,
                                              payload.mode, companion_id)
     except Exception as error:
         _map_living_error(error)
-    return snapshot
+    return _world_out(snapshot, user.id, db)
 
 
 @router.get("/spaces/{space_id}")
@@ -202,7 +232,7 @@ def get_space(space_id: str, user: User = Depends(get_current_user), db: Session
             ch = _owned_character(db, user.id, int(row["companion_id"]))
             ensure_home(db, living_store, ch)
             db.commit()
-        return living_store.read_space(user.id, space_id)
+        return _world_out(living_store.read_space(user.id, space_id), user.id, db)
     except Exception as error:
         _map_living_error(error)
 
@@ -214,6 +244,15 @@ def do_action(space_id: str, payload: ActionRequest, user: User = Depends(get_cu
         db.execute(text("BEGIN IMMEDIATE"))
         row = living_store._row(db.connection(), user.id, space_id)
         _require_private_companion_home(db.connection(), row, user.id)
+        world_action = payload.command.get('action') in ('world_activity', 'world_leisure')
+        if world_action:
+            if row['mode'] != 'private' or not row['companion_id'] or not row['companion_id'].isdigit():
+                raise api_error(409, 'invalid_action', '请在绑定伙伴的私人住处安排活动')
+            ch = _owned_character(db, user.id, int(row['companion_id']))
+            if ch.status != 'ready':
+                raise api_error(409, 'character_not_ready', '伙伴尚未准备好')
+            if not _resident_here(db, ch, row):
+                raise api_error(409, 'conflict', '伙伴不在这处住处，请先带它回到这里')
         if row["mode"] == "private" and row["scene_type"] == "home" and row["companion_id"].isdigit():
             from app.services.scene_bridge import ensure_home
             ch = _owned_character(db, user.id, int(row["companion_id"]))
@@ -223,10 +262,10 @@ def do_action(space_id: str, payload: ActionRequest, user: User = Depends(get_cu
             receipts.c.space_id == space_id, receipts.c.request_id == payload.request_id)).first()
         result = living_store.execute(user.id, space_id, payload.request_id,
                                       payload.expected_revision, payload.command, connection=db.connection())
-        if row['mode'] == 'private' and replay is None:
+        if row['mode'] == 'private' and replay is None and not world_action:
             activity.record(db.connection(), row, payload.command, result, payload.request_id)
         db.commit()
-        return result
+        return _world_out(result, user.id, db)
     except Exception as error:
         db.rollback()
         if isinstance(error, SQLAlchemyError):
@@ -339,3 +378,33 @@ def set_location(character_id: int, payload: LocationRequest,
     ch.current_space_id = payload.space_id
     db.commit()
     return {"character_id": ch.id, "space_id": ch.current_space_id}
+
+
+# Free upstairs persistence; independent of model/life-runtime authorization.
+from app.living.villa_floor import VillaFloorStore
+floor_store = VillaFloorStore(engine)
+
+class FloorMutation(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    request_id: UUID
+    expected_revision: int = Field(ge=0, strict=True)
+    action: Literal['command','claim','checkpoint']
+    actor_id: int | None = Field(default=None,gt=0,strict=True)
+    activity: Literal['observe','rest','sleep'] | None = None
+    viewer: UUID | None = None
+    applied: int | None = Field(default=None,ge=0,strict=True)
+    checkpoint: dict | None = None
+
+@router.get('/floors/{kind}/{space_id}')
+def read_floor(kind: Literal['shared','private'],space_id: UUID,response: Response,viewer: UUID | None = None,user: User = Depends(get_current_user)):
+    response.headers['Cache-Control']='private, no-store'
+    response.headers['Vary']='Authorization'
+    return floor_store.read(user.id,kind,str(space_id),str(viewer) if viewer else None)
+
+@router.post('/floors/{kind}/{space_id}')
+def write_floor(kind: Literal['shared','private'],space_id: UUID,payload: FloorMutation,user: User = Depends(get_current_user)):
+    fields=payload.model_dump(mode='json',exclude={'request_id','expected_revision','action'},exclude_unset=True)
+    expected={'command':{'actor_id','activity'},'claim':{'viewer'},'checkpoint':{'viewer','applied','checkpoint'}}[payload.action]
+    if set(fields)!=expected:
+        raise api_error(422,'invalid_request','楼层操作参数不正确')
+    return floor_store.mutate(user.id,kind,str(space_id),str(payload.request_id),payload.expected_revision,payload.action,**fields)

@@ -8,7 +8,7 @@ import { assertProductionConfig } from '@/lib/production-config';
 
 const image = () => new Response('synthetic image', { headers: { 'Content-Type': 'image/png' } });
 beforeEach(() => {
-  vi.restoreAllMocks(); localStorage.clear();
+  vi.restoreAllMocks(); clearToken(); localStorage.clear();
   URL.createObjectURL = vi.fn(() => 'blob:private-image'); URL.revokeObjectURL = vi.fn();
 });
 
@@ -24,7 +24,7 @@ it('uses auth header and blob URL, revokes on unmount', async () => {
   await waitFor(() => expect(img.tagName === 'IMG' || screen.getByRole('img', { name: '伙伴' }).tagName === 'IMG').toBe(true));
   const loaded = screen.getByRole('img', { name: '伙伴' });
   expect(loaded).toHaveAttribute('src', 'blob:private-image');
-  expect(fetcher).toHaveBeenCalledWith('/uploads/a.png', expect.objectContaining({ headers: { Authorization: 'Bearer session-a' }, cache: 'no-store', redirect: 'error' }));
+  expect(fetcher).toHaveBeenCalledWith('/uploads/a.png?preview=true', expect.objectContaining({ headers: { Authorization: 'Bearer session-a' }, cache: 'no-store', redirect: 'error' }));
   fireEvent.load(loaded); expect(load).toHaveBeenCalledOnce();
   view.unmount(); expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:private-image');
 });
@@ -68,7 +68,7 @@ it('hides old account immediately and ignores late old responses', async () => {
   await waitFor(() => expect(screen.getByRole('img', { name: '伙伴' })).toHaveAttribute('src', 'blob:private-image'));
   await act(async () => first(image()));
   expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
-  expect(fetcher).toHaveBeenLastCalledWith('/uploads/a.png', expect.objectContaining({ headers: { Authorization: 'Bearer new' } }));
+  expect(fetcher).toHaveBeenLastCalledWith('/uploads/a.png?preview=true', expect.objectContaining({ headers: { Authorization: 'Bearer new' } }));
   act(() => clearToken());
   expect(screen.getByText('登录后查看形象')).toBeInTheDocument();
   expect(screen.queryByRole('img', { name: '伙伴' })).not.toHaveAttribute('src');
@@ -123,4 +123,25 @@ it('notifies a stable static-failure callback without looping requests', async (
   await waitFor(()=>expect(unavailable).toHaveBeenCalledOnce());
   expect(fetcher).toHaveBeenCalledOnce();
   expect(screen.getByRole('img')).toHaveTextContent('暂时看不到');
+});
+
+it('records request, headers and complete image bytes without exposing the image URL', async () => {
+  const marks: string[] = [];
+  let finish!: (r: Response) => void;
+  vi.spyOn(globalThis, 'fetch').mockImplementation(() => new Promise(resolve => { finish = resolve; }));
+  const pending = privateImageBlob('/uploads/a.png', 'fake-key', new AbortController().signal, s => marks.push(s));
+  expect(marks).toEqual(['image_request_started']);
+  finish(image()); await pending;
+  expect(marks).toEqual(['image_request_started', 'image_response_headers', 'image_bytes_ready']);
+  expect(marks.join()).not.toContain('/uploads');
+});
+it('stage callback changes do not restart image fetch and broken diagnostics cannot block it', async () => {
+  setToken('session'); const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(image());
+  const first = vi.fn();
+  const view = render(<PrivateImage src="/uploads/a.png" alt="伙伴" onLoadStage={first} />);
+  await waitFor(() => expect(screen.getByAltText('伙伴').tagName).toBe('IMG'));
+  view.rerender(<PrivateImage src="/uploads/a.png" alt="伙伴" onLoadStage={vi.fn()} />);
+  expect(fetcher).toHaveBeenCalledTimes(1);expect(first.mock.calls.map(c => c[0])).toEqual(['image_request_started','image_response_headers','image_bytes_ready']);
+  fetcher.mockResolvedValueOnce(image());
+  await expect(privateImageBlob('/uploads/a.png','session',new AbortController().signal,()=>{throw Error('diagnostic only');})).resolves.toMatchObject({type:'image/png'});
 });

@@ -2,6 +2,10 @@ import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import GatheringWorld from '@/components/gathering-world';
+import SharedLivingWorld3D from '@/components/shared-living-world-3d';
+
+vi.mock('next/dynamic', () => ({ default: () => function World(props: Parameters<typeof SharedLivingWorld3D>[0]) { return <SharedLivingWorld3D {...props} />; } }));
+vi.mock('@/lib/living-world-engine', () => ({ createLivingWorld: () => ({ update: vi.fn(), dispose: vi.fn(), setMotion: vi.fn(), setBubbleReceipts: vi.fn(), setReplay: vi.fn(), setSelectionMenu: vi.fn(), rotate: vi.fn(), zoom: vi.fn(), reset: vi.fn() }) }));
 import { parseGathering } from '@/lib/gatherings';
 import { AUTH_CHANGED, TOKEN_KEY } from '@/lib/auth';
 
@@ -62,4 +66,19 @@ it('unmounts playback on stale state, recall, hiding, reduced motion and logout'
   rerender(<GatheringWorld gathering={g} focusedId={1} onSelect={select} />);
   act(() => { localStorage.removeItem(TOKEN_KEY); window.dispatchEvent(new Event(AUTH_CHANGED)); });
   expect(screen.queryByTestId('playing')).toBeNull();
+});
+
+it('keeps a sleeping partner in the unified bedroom without borrowing a rest motion asset', () => {
+  const g = snapshot('sleep'); g.companions[0].area = 'bedroom';
+  const before = JSON.stringify(g);
+  const { container } = render(<GatheringWorld gathering={g} focusedId={1} onSelect={vi.fn()} />);
+  expect(container.querySelector('[data-presentation="home-world"]')).toHaveAttribute('data-focus-view', 'overview');
+  expect(screen.getByRole('button', { name: '卧室1' })).toBeVisible();
+  fireEvent.click(screen.getByText('查看苹果的原形象'));
+  expect(screen.getByRole('img', { name: '苹果' })).toBeVisible();
+  expect(screen.getByRole('button', { name: '查看杯子的生活近况' })).toBeVisible();
+  expect(screen.queryByTestId('playing')).toBeNull();
+  expect(container.querySelector('[data-room-art]')).toBeNull();
+  expect(container.querySelector('[data-scene-art]')).toBeNull();
+  expect(JSON.stringify(g)).toBe(before);
 });

@@ -124,8 +124,13 @@ async def execute_requested(selected: LifeRuntime, owner: str, space_id: str, ta
     check_live_configuration(selected)
     if selected.origin == 'real_provider':
         settings = get_settings()
+        from app.services.life_dispatch import adapter
+        snapshot = selected.snapshot(owner, space_id)
+        visible = bool(snapshot.automatic and snapshot.automatic.viewing_until > selected._now())
         await run_real_planner(selected, owner, space_id, task_id,
-                               lambda: MaaSLifePlannerAdapter(settings.model_api_key))
+            lambda: adapter('private_life', owner, space_id, task_id,
+                presence='visible' if visible else 'away',
+                fallback=lambda: MaaSLifePlannerAdapter(settings.model_api_key)))
     else:
         selected.run_fixture(owner, space_id, task_id)
 

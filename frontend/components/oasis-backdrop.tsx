@@ -2,10 +2,11 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { seasonNames, type Season } from '@/lib/seasons';
+import { withBasePath } from '@/lib/base-path';
 import styles from './oasis-backdrop.module.css';
 
 export const oasisBackground = (season: Season | null) =>
-  !season ? '/oasis/terrain.png' : `/oasis/terrain-${season}-v2.png`;
+  withBasePath(!season ? '/oasis/terrain.png' : `/oasis/terrain-${season}-v2.png`);
 
 export default function OasisBackdrop({ season }: { season: Season | null }) {
   return <Backdrop key={season ?? 'base'} season={season} />;
@@ -27,7 +28,7 @@ function Backdrop({ season }: { season: Season | null }) {
 
 export function OasisSeasonPreview({ season }: { season: Season }) {
   return <figure className={styles.preview}>
-    <div className={styles.canvas}><OasisBackdrop season={season} /></div>
+    <div className={styles.canvas} style={{ backgroundImage: `url("${withBasePath('/oasis/terrain.png')}")` }}><OasisBackdrop season={season} /></div>
     <figcaption>{seasonNames[season]}的绿洲 · 确认后换上这幅景色，物件仍留在原位。</figcaption>
   </figure>;
 }

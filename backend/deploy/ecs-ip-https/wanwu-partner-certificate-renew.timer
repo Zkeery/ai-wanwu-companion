@@ -1,0 +1,11 @@
+[Unit]
+Description=Wanwu Partner IP certificate renewal checks
+
+[Timer]
+OnCalendar=*-*-* 00,12:00:00 Asia/Shanghai
+RandomizedDelaySec=30min
+Persistent=true
+Unit=wanwu-partner-certificate-renew.service
+
+[Install]
+WantedBy=timers.target

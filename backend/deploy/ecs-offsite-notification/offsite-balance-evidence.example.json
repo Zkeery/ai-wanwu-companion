@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "source": "volcengine_console_readonly",
+  "approval_sha256": "REPLACE_WITH_VERIFIED_CURRENT_AUTHORIZATION_SHA256",
+  "evidence_ref": "REPLACE_WITH_PRIVATE_CONSOLE_AUDIT_REFERENCE",
+  "checked_at": 0,
+  "valid_until": 0,
+  "available_balance_cny": null,
+  "unbilled_reviewed": false,
+  "unbilled_cost_cny": null
+}

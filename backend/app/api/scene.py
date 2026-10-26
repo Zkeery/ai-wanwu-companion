@@ -58,6 +58,8 @@ def _scene_out(state: SceneState, db: Session, feedback: str | None = None) -> S
 
 def _living_out(ch, row, db, feedback=None, snap=None):
     snap = snap or bridge.snapshot(living_store, row)
+    from app.api.living import _world_out
+    snap = _world_out(snap, ch.owner_id, db)
     proposal = db.query(SceneProposal).filter_by(character_id=ch.id).first()
     if proposal and (proposal.space_id != row["id"] or
                      proposal.space_revision != snap["revision"] or

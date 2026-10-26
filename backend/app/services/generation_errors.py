@@ -56,8 +56,25 @@ def record_failure(stage: str, operation_id: str, error: Exception) -> dict:
                 '识别类别无效': 'category_invalid',
                 '识别结果为空': 'empty_candidates',
                 '角色输出超过长度限制': 'profile_length',
+                '人设输出应为对象': 'profile_type',
+                '人设输出缺少有效的 name': 'profile_name_missing',
+                '人设输出缺少有效的 persona': 'profile_persona_missing',
+                '开场白为空': 'profile_opening_empty',
+                '角色输出缺少有效的 opening_line': 'profile_opening_missing',
+                '形象设计描述应为不超过1000字的文字': 'appearance_invalid',
+                '角色资料包含多个对象': 'profile_ambiguous',
+                '角色资料存在冲突': 'profile_conflict',
             }
             parse_diagnostic['parse_code'] = codes.get(str(current), 'schema_invalid')
+            index = getattr(current, 'candidate_index', None)
+            if isinstance(index, int) and not isinstance(index, bool) and 0 <= index <= 1000:
+                parse_diagnostic['candidate_index'] = index
+            contract = getattr(current, 'profile_contract', None)
+            if contract in ('flat', 'legacy'):
+                parse_diagnostic['profile_contract'] = contract
+            kind = getattr(current, 'profile_input_kind', None)
+            if kind in ('null', 'object', 'array', 'string', 'boolean', 'number', 'unknown'):
+                parse_diagnostic['profile_input_kind'] = kind
             if isinstance(current.__cause__, json.JSONDecodeError):
                 parse_diagnostic['json_position'] = current.__cause__.pos
         for cls, label in (
@@ -82,11 +99,25 @@ def record_failure(stage: str, operation_id: str, error: Exception) -> dict:
         **({"transport_type": transport_type} if transport_type else {}),
         **parse_diagnostic,
     }))
-    return details
+    return {**details, **parse_diagnostic}
 
 
-def recognition_failure_message(reason: str) -> str:
+def recognition_failure_message(reason: str, parse_code: str | None = None) -> str:
     """Recognition has not created a character; describe only confirmed facts."""
+    if reason == "invalid_output":
+        issue = {
+            "profile_type": "角色资料结构不正确",
+            "profile_name_missing": "角色名字缺失",
+            "profile_persona_missing": "角色性格缺失",
+            "profile_opening_empty": "开场白为空",
+            "profile_opening_missing": "开场白缺失",
+            "appearance_missing": "形象设计描述缺失",
+            "appearance_invalid": "形象设计描述不符合要求",
+            "profile_length": "角色资料超过长度限制",
+            "profile_ambiguous": "角色资料包含多个对象，无法确认主体",
+            "profile_conflict": "角色资料存在冲突",
+        }.get(parse_code, "结果格式异常")
+        return f"照片已读取，但识别服务返回的{issue}。本次未完成识别，可以手动重试。"
     return {
         "connection_interrupted": "识别服务的连接中断了，本次未完成识别，请稍后重试。",
         "connection_failed": "暂时连接不上识别服务，请稍后重试。",
@@ -95,5 +126,4 @@ def recognition_failure_message(reason: str) -> str:
         "provider_busy": "识别服务暂时繁忙或额度受限，请稍后重试。",
         "provider_unavailable": "识别服务暂时异常，请稍后重试。",
         "provider_rejected": "识别服务未接受这次请求，请联系维护者检查。",
-        "invalid_output": "识别结果格式异常，本次未完成识别，可以手动重试。",
     }.get(reason, "本次识别未完成，可以手动重试。")

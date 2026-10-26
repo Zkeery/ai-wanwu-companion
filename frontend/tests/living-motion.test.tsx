@@ -5,6 +5,7 @@ import LivingScene from '@/components/living-scene';
 import { api } from '@/lib/api';
 import type { Character, LivingSpace } from '@/lib/contracts';
 import { setToken } from '@/lib/auth';
+import { readMotionPreparation } from '@/lib/motion-preparation';
 
 vi.mock('@/lib/motion-preparation', () => ({ readMotionPreparation: vi.fn(async () => null) }));
 
@@ -81,11 +82,12 @@ it('retains chat without an image and offers no motion entry for an empty former
   expect(lifecycle.mount).not.toHaveBeenCalled();
 });
 
-it('previews prepared activity slots without scheduling life and resets selection after close', () => {
+it('previews prepared activity slots without scheduling life and resets selection after close', async () => {
+  vi.mocked(readMotionPreparation).mockResolvedValue({ rest: 'ready', walk: 'ready', observe: 'ready' });
   const change = vi.fn();
   render(<LivingScene space={space} companions={[apple, cup]} onChange={change} />);
   fireEvent.click(screen.getByRole('button', { name: '看看苹果的动作' }));
-  fireEvent.click(screen.getByRole('button', { name: '散步' }));
+  fireEvent.click(await screen.findByRole('button', { name: '散步' }));
   expect(screen.getByText('播放器 1 · walk')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: '散步' })).toHaveAttribute('aria-pressed', 'true');
   fireEvent.click(screen.getByRole('button', { name: '观察' }));

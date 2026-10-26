@@ -19,11 +19,11 @@ function firstDay(value: string) {
 }
 
 export default function CompanionProfileFacts({ character, presence, scene }: {
-  character: Character; presence: CharacterOverview | null; scene: Scene;
+  character: Character; presence: CharacterOverview | null; scene: Scene | null;
 }) {
   const location = presence?.gathering ? `/gatherings?space=${encodeURIComponent(presence.gathering.id)}`
     : presence?.residence ? `/companions/${character.id}/scenes/${presence.residence.scene_type}/${encodeURIComponent(presence.residence.space_id)}` : null;
-  const saved = scene.living;
+  const saved = scene?.living;
   return <div className={styles.facts} aria-label="伙伴资料卡">
     <div className={styles.date}><span>初次见面</span><strong>{firstDay(character.created_at)}</strong><small>按上海时间记录</small></div>
     <div className={styles.place}><span>现在在哪</span><strong>{companionLocation(presence)}</strong>
@@ -31,9 +31,9 @@ export default function CompanionProfileFacts({ character, presence, scene }: {
         : presence ? <Link href={`/companions/${character.id}/scenes`}>安排一个住处 →</Link>
           : <small>点“更新资料”，再看看伙伴的去向。</small>}
     </div>
-    <div className={styles.saved}><span>已保存的小天地</span><strong>{saved ? `${sceneNames[saved.scene_type]} · ${saved.mode === 'private' ? '私人布置' : '同住空间'}` : '还没有保存的小天地'}</strong>
+    <div className={styles.saved}><span>已保存的小天地</span><strong>{saved ? `${sceneNames[saved.scene_type]} · ${saved.mode === 'private' ? '私人布置' : '同住空间'}` : scene ? '还没有保存的小天地' : '小天地暂未核对'}</strong>
       {saved ? <><small>布置留在这里，伙伴现在的去向看上方。</small><Link href={`/companions/${character.id}/scenes/${saved.scene_type}/${encodeURIComponent(saved.id)}`}>看看保存的布置 →</Link></>
-        : <small>安排住处后，这里会留下你们的小天地。</small>}
+        : <small>{scene ? '安排住处后，这里会留下你们的小天地。' : '住处暂时无法读取，已保存的布置不会因此改变。'}</small>}
     </div>
   </div>;
 }

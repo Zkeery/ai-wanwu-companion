@@ -31,20 +31,21 @@ function InviteAuthModal({ onClose, onLoggedIn }: { onClose: () => void; onLogge
     try {
       const result = await api.auth.inviteLogin(code.trim());
       setToken(result.token); setCode(''); onLoggedIn();
-    } catch (e) { setError(errorText(e)); }
+    } catch (e) { setError(e instanceof ApiError && (e.code === 'invite_invalid' || e.status === 401)
+      ? '账号登录码无效或已过期，请核对完整登录码，或联系邀请人。' : errorText(e)); }
     finally { locked.current = false; setBusy(false); }
   }
   return <Modal title="进入我的小世界" close={onClose}>
-    <p className="modal-copy">输入你的专属邀请码，回到自己的伙伴、聊天和花园。</p>
+    <p className="modal-copy">输入你的账号登录码，回到自己的伙伴、聊天和花园。这与加入共同住处的邀请不同。</p>
     <form className="auth-form" onSubmit={e => { e.preventDefault(); void login(); }}>
       <label className="field">
-        <span className="field-label"><Lock size={15} />邀请码</span>
-        <input type="password" autoComplete="current-password" placeholder="粘贴专属邀请码" value={code} maxLength={128} disabled={busy} onChange={e => { setCode(e.target.value); setError(''); }} />
+        <span className="field-label"><Lock size={15} />账号登录码</span>
+        <input type="password" autoComplete="current-password" autoCapitalize="none" autoCorrect="off" spellCheck={false} placeholder="粘贴账号登录码" value={code} maxLength={128} disabled={busy} onChange={e => { setCode(e.target.value); setError(''); }} />
       </label>
       {error && <p className="form-error" role="alert">{error}</p>}
       <button type="submit" className="button primary auth-submit" disabled={busy || !code.trim()}><Lock size={17} />{busy ? '正在登录…' : '登录'}</button>
     </form>
-    <p className="modal-footnote">邀请码可重复登录，请妥善保存，不要分享给他人。没有邀请码时，请联系邀请人。</p>
+    <p className="modal-footnote">账号登录码可重复使用，请妥善保存，不要分享给他人。住处邀请用于登录后加入住处，不能在这里登录。没有账号登录码时，请联系邀请人。</p>
   </Modal>;
 }
 

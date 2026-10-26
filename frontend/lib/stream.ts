@@ -1,4 +1,5 @@
 import { ApiError, checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders, getToken } from './auth';
 import { object, parseMessage, parseProposal, type Message, type Proposal } from './contracts';
 import { reserveChat, clearPendingChat } from './chat-recovery';

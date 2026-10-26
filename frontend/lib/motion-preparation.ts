@@ -1,4 +1,5 @@
 import { checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders } from './auth';
 import type { Activity } from './life-simulation';
 import { loadPrivateMotionShared, type LoadedMotion } from './private-motion';

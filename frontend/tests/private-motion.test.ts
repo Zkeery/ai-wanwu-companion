@@ -41,6 +41,22 @@ beforeEach(async () => {
 });
 afterEach(() => { clearPrivateMotionCache(); vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
+it('verifies a private video on HTTP without Web Crypto and still rejects changed bytes', async () => {
+  const pack = 'a'.repeat(32), base = '/api/v1/characters/7/motion/' + pack;
+  metadata = { state: 'ready', pack_id: pack, source_sha256: 'b'.repeat(64), kind: 'video',
+    video_url: base + '/video', video_sha256: await hash('synthetic-mp4'),
+    width: 480, height: 480, fps: 24, duration_ms: 4000 };
+  vi.stubGlobal('crypto', {});
+  fetcher.mockImplementation(async (url: string) => url.endsWith('/motion') ? json(metadata)
+    : new Response('synthetic-mp4', { headers: { 'Content-Type': 'video/mp4' } }));
+  const result = await loadPrivateMotion(7, 'session', new AbortController().signal);
+  expect(result.asset?.videoUrl).toMatch(/^blob:/);
+  result.dispose();
+  fetcher.mockImplementation(async (url: string) => url.endsWith('/motion') ? json(metadata)
+    : new Response('changed-mp4', { headers: { 'Content-Type': 'video/mp4' } }));
+  await expect(loadPrivateMotion(7, 'session', new AbortController().signal)).rejects.toThrow('动作素材无法核对');
+});
+
 it('hands a verified activity asset from the scene to its detail without a second download', async () => {
   metadata.activity = 'rest';
   fetcher.mockImplementation(async (url: string) => url.includes('/motion?') ? json(metadata)

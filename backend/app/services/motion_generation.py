@@ -90,6 +90,11 @@ def register_request(db, ch: Character):
 
 
 def _existing_candidate(cid: int, owner: str, activity='walk'):
+    from app.services.video_motion_candidates import listing
+    videos = listing(cid, owner, activity)
+    active = next((v for v in videos if v['state'] in ('needs_review', 'reviewed', 'queued', 'ready')), None)
+    if active:
+        return active
     root = flow.DEFAULT_ROOT
     if root.is_symlink():
         raise AtlasProviderError('workflow_path_invalid')
@@ -122,6 +127,11 @@ def status(cid: int, owner: str, *, activity='walk'):
         prepared = preparation_status(db, cid, owner)
         if any(item['activity'] == activity and item['state'] == 'ready' for item in prepared['activities']):
             return {'state': 'ready', 'request_id': row.id if row else None}
+        from app.services.video_motion_candidates import listing
+        videos = listing(cid, owner, activity)
+        if videos:
+            active = next((v for v in reversed(videos) if v['state'] != 'rejected'), videos[-1])
+            return _public(row, active['state']) if row else {'state': active['state'], 'request_id': None}
         if row is not None and row.approval_sha256:
             try:
                 result = flow.status(row.approval_sha256, cid, owner, root=flow.DEFAULT_ROOT)

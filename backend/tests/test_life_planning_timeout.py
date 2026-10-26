@@ -59,7 +59,8 @@ def test_real_execution_uses_life_specific_factory(target, monkeypatch):
     from scripts import review_life_bridge as bridge
     module = api if target == 'production' else bridge
     seen = []
-    selected = SimpleNamespace(origin='real_provider', read_task=lambda *args: seen.append(args))
+    selected = SimpleNamespace(origin='real_provider', read_task=lambda *args: seen.append(args),
+        snapshot=lambda *args: SimpleNamespace(automatic=None), _now=lambda: 0)
     async def run(runtime, owner, sid, tid, factory, *args):
         assert seen == [('owner', 'space', 'task')]
         adapter = factory()

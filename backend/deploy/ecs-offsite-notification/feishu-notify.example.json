@@ -1,0 +1,8 @@
+{
+  "enabled": false,
+  "approved": false,
+  "approval_ref": "",
+  "group_name": "万物伙伴运维通知群",
+  "webhook": "",
+  "signing_secret": ""
+}

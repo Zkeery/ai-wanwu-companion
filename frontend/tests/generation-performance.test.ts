@@ -34,3 +34,12 @@ it('does not block creation or overwrite evidence when storage is corrupt or una
   sessionStorage.clear();vi.spyOn(Storage.prototype,'setItem').mockImplementation(()=>{throw Error('storage blocked');});expect(beginGenerationMeasurement(0)).toBeNull();
 });
 it('does not resurrect a deliberately cleared batch',()=>{const m=beginGenerationMeasurement(0)!;sessionStorage.removeItem(GENERATION_PERFORMANCE_KEY);m.finish('succeeded');expect(sessionStorage.getItem(GENERATION_PERFORMANCE_KEY)).toBeNull();});
+
+it('stores fractional image phase marks under the same anonymous correlation ID',()=>{
+  const m=beginGenerationMeasurement(0)!;
+  for(const [name,value] of [['credits_checked',1.23],['image_request_started',100.125],['image_response_headers',130.375],['image_bytes_ready',140.625],['image_loaded',150.875]] as const){now=value;m.mark(name);}
+  now=170.875;m.finish('succeeded');
+  expect(batch().samples[0].sample_id).toBe(m.id);
+  expect(batch().samples[0].marks.image_bytes_ready-batch().samples[0].marks.image_response_headers).toBe(10.25);
+  expect(batch().samples[0].marks.displayed).toBe(170.875);
+});

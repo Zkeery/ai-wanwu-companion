@@ -15,6 +15,7 @@ else:
 PROJECT = Path(__file__).resolve().parents[2]
 STATE = PROJECT / '.runtime' / 'v12-c13-preview'
 DESTINATION = PROJECT / '.runtime' / 'full-flow-recovery'
+DAILY_QUOTA_DATABASE = 'daily-model-requests.db'
 
 
 def files(root):
@@ -72,13 +73,41 @@ def snapshot_facts(directory, database_name, include_runtime_state=False):
         result.update(schema_version=2, database_name=database_name,
                       runtime_state={'ledger': files(ledger) if ledger.exists() or ledger.is_symlink() else None,
                                      'state_files': state_files(directory, database_name)})
+        quota = directory / DAILY_QUOTA_DATABASE
+        if database_name != DAILY_QUOTA_DATABASE and (quota.exists() or quota.is_symlink()):
+            result['schema_version'] = 3
+            result['runtime_state']['databases'] = {DAILY_QUOTA_DATABASE: facts(quota)}
     return result
+
+
+def extra_databases(manifest):
+    """Validate declared SQLite names before copying or extracting any file."""
+    state = manifest.get('runtime_state')
+    if not isinstance(state, dict):
+        raise ValueError('Invalid runtime state')
+    databases = state.get('databases', {})
+    if not isinstance(databases, dict):
+        raise ValueError('Invalid runtime databases')
+    if manifest.get('schema_version') == 2:
+        if 'databases' in state:
+            raise ValueError('Legacy snapshot cannot declare extra databases')
+    elif manifest.get('schema_version') == 3:
+        if (set(databases) != {DAILY_QUOTA_DATABASE}
+                or manifest.get('database_name') == DAILY_QUOTA_DATABASE
+                or not isinstance(databases[DAILY_QUOTA_DATABASE], dict)):
+            raise ValueError('Invalid daily quota database manifest')
+    else:
+        raise ValueError('Unsupported runtime snapshot schema')
+    return databases
 
 
 def copy_runtime_state(source, target, manifest):
     state = manifest.get('runtime_state')
     if state is None:
         return
+    for name in extra_databases(manifest):
+        # SQLite backup includes committed WAL rows; copying only the .db file does not.
+        copy_database(source / name, target / name)
     if state['ledger'] is not None:
         copy_uploads(source / 'ledger', target / 'ledger')
     for name in state['state_files']:
@@ -96,9 +125,11 @@ def load_snapshot(snapshot, database_name, require_runtime_state=False):
     if not isinstance(manifest, dict) or not isinstance(manifest.get('tables'), dict) or not isinstance(manifest.get('files'), dict):
         raise ValueError('Invalid snapshot manifest')
     extended = 'schema_version' in manifest or 'runtime_state' in manifest
-    if extended and (type(manifest.get('schema_version')) is not int or manifest['schema_version'] != 2
+    if extended and (type(manifest.get('schema_version')) is not int or manifest['schema_version'] not in (2, 3)
                      or manifest.get('database_name') != database_name):
         raise ValueError('Unsupported snapshot manifest or database name')
+    if extended:
+        extra_databases(manifest)
     if require_runtime_state and not extended:
         raise ValueError('Snapshot does not include runtime state')
     if snapshot_facts(snapshot, database_name, extended) != manifest:
@@ -111,6 +142,8 @@ def summary(manifest):
     if 'runtime_state' in manifest:
         result.update(ledger_file_count=len(manifest['runtime_state']['ledger'] or {}),
                       state_file_count=len(manifest['runtime_state']['state_files']))
+        if manifest.get('schema_version') == 3:
+            result['extra_database_count'] = len(extra_databases(manifest))
     return result
 
 

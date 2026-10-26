@@ -1,0 +1,19 @@
+[Unit]
+Description=Wanwu Partner private health and Feishu fault/recovery notifications
+
+[Service]
+Type=oneshot
+User=root
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+WorkingDirectory=/opt/wanwu-partner/app/backend
+ExecStart=/usr/bin/python3 -m scripts.ecs_ops_notify --root /opt/wanwu-partner --config /opt/wanwu-partner/private/feishu-notify.json
+TimeoutStartSec=50
+MemoryMax=128M
+TasksMax=32
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/wanwu-partner/private/ops-notifications
+NoNewPrivileges=yes
+Restart=no

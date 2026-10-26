@@ -104,7 +104,7 @@ def test_auth_and_shared_permissions(client, anon, url):
     shared = client.post('/api/v1/living/spaces',json={"scene_type":"forest","mode":"shared"}).json()['id']
     for method,suffix,body in [('get','',None),('post','/preview',{"settings":VIRTUAL}),('put','',payload())]:
         kwargs = {"json":body} if body else {}
-        assert getattr(client,method)(f'/api/v1/living/spaces/{shared}/season'+suffix,**kwargs).status_code == 409
+        assert getattr(client,method)(f'/api/v1/living/spaces/{shared}/season'+suffix,**kwargs).status_code == 200
     from app.living.store import spaces
     sid=url.split('/')[-2]
     with engine.begin() as conn:
@@ -112,6 +112,31 @@ def test_auth_and_shared_permissions(client, anon, url):
     assert client.get(url).status_code == 404
     assert client.post(url+'/preview',json={"settings":VIRTUAL}).status_code == 404
     assert client.put(url,json=payload()).status_code == 404
+
+
+@pytest.mark.parametrize('scene', ['home', 'desert', 'forest'])
+def test_same_account_shared_seasons_keep_layout_and_owner_boundary(client, anon, scene):
+    from app.living.store import spaces
+    created = client.post('/api/v1/living/spaces', json={'scene_type': scene, 'mode': 'shared'})
+    assert created.status_code == 201
+    sid = created.json()['id']
+    url = f'/api/v1/living/spaces/{sid}/season'
+    with engine.connect() as conn:
+        before = dict(conn.execute(select(spaces).where(spaces.c.id == sid)).mappings().one())
+    assert client.post(url + '/preview', json={'settings': VIRTUAL}).status_code == 200
+    request = payload()
+    saved = client.put(url, json=request)
+    assert saved.status_code == 200
+    assert client.put(url, json=request).json() == saved.json()
+    engine.dispose()
+    assert client.get(url).json()['settings'] == VIRTUAL
+    assert anon.get(url).status_code == 401
+    with engine.begin() as conn:
+        assert dict(conn.execute(select(spaces).where(spaces.c.id == sid)).mappings().one()) == before
+        conn.execute(update(spaces).where(spaces.c.id == sid).values(owner_id='another-user'))
+    assert client.get(url).status_code == 404
+    assert client.post(url + '/preview', json={'settings': VIRTUAL}).status_code == 404
+    assert client.put(url, json=payload(1)).status_code == 404
 
 
 def test_corruption_fails_closed_and_delete_cascades(client,url):

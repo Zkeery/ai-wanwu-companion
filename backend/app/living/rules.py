@@ -17,7 +17,7 @@ LAYOUTS = {
 CATALOG = {
     "home": {"name": "家庭庭院", "items": ("tree", "bench", "flower", "mushroom", "pond", "campfire", "fireflies")},
     "desert": {"name": "沙漠绿洲", "items": ("tree", *DESERT_KINDS)},
-    "forest": {"name": "林间营地", "items": ("tree", "cushion")},
+    "forest": {"name": "林间营地", "items": ("tree", "cushion", "bench")},
 }
 Coordinate = Annotated[float, Field(ge=0, le=1, allow_inf_nan=False)]
 Identifier = Annotated[str, Field(pattern=r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")]
@@ -92,12 +92,36 @@ class AtmosphereUndo(StrictModel):
     previous: Atmosphere
 
 
+WorldActivityKind = Literal['rest', 'sleep', 'walk', 'observe', 'talk']
+LeisureKind = Literal['tea', 'television', 'mahjong', 'bench']
+
+
+class LeisureAssignment(StrictModel):
+    activity: LeisureKind
+    seat_id: str = Field(min_length=1, max_length=160)
+    station_version: Literal[1] = 1
+
+
+class WorldState(StrictModel):
+    activity: WorldActivityKind = 'observe'
+    area: Literal['outdoor', 'indoor', 'bedroom'] = 'outdoor'
+    leisure: LeisureAssignment | None = None
+
+    @model_validator(mode='after')
+    def base_activity_has_its_own_area(self):
+        if self.activity != 'talk' and self.area != {'rest': 'indoor', 'sleep': 'bedroom'}.get(self.activity, 'outdoor'):
+            raise ValueError('activity area mismatch')
+        return self
+
+
 class State(StrictModel):
     schema_version: Literal[2] = 2
     last_write_at: Timestamp
     items: dict[Identifier, Item] = Field(default_factory=dict)
     undo: Undo | AtmosphereUndo | LayoutUndo | TurnUndo | None = None
     atmosphere: Atmosphere = Field(default_factory=Atmosphere)
+    # Absent in legacy saves. Reading projects the default without rewriting it.
+    world: WorldState | None = None
 
     @model_validator(mode="after")
     def consistent_items(self):
@@ -130,6 +154,7 @@ class Snapshot(StrictModel):
     items: list[DisplayItem]
     can_undo: bool
     atmosphere: Atmosphere = Field(default_factory=Atmosphere)
+    world: WorldState | None = None
 
 
 class Place(StrictModel):
@@ -175,7 +200,32 @@ class Layout(StrictModel):
     template: Literal["water", "camp"]
 
 
-Command = TypeAdapter(Annotated[Place | Care | Store | Move | UndoCommand | AtmosphereCommand | Turn | Layout,
+class WorldActivity(StrictModel):
+    action: Literal['world_activity']
+    activity: WorldActivityKind
+
+
+class WorldLeisure(StrictModel):
+    action: Literal['world_leisure']
+    activity: LeisureKind | None
+    seat_id: str | None = Field(default=None, min_length=1, max_length=160)
+    station_version: Literal[1] = 1
+
+    @model_validator(mode='before')
+    @classmethod
+    def exact_station_version(cls, value):
+        if isinstance(value, dict) and 'station_version' in value and type(value['station_version']) is not int:
+            raise ValueError('station version must be an integer')
+        return value
+
+    @model_validator(mode='after')
+    def stop_has_no_seat(self):
+        if self.activity is None and self.seat_id is not None:
+            raise ValueError('stop cannot select a seat')
+        return self
+
+
+Command = TypeAdapter(Annotated[Place | Care | Store | Move | UndoCommand | AtmosphereCommand | Turn | Layout | WorldActivity | WorldLeisure,
                                 Field(discriminator="action")])
 
 
@@ -196,7 +246,19 @@ def settle(state: State, now: int) -> State:
 def apply(state: State, scene_type: str, command: StrictModel, now: int) -> State:
     result = settle(state, now)
     action = command.action
-    if action == "undo":
+    if action == 'world_activity':
+        from app.living.world_state import activity_area, projected_world
+        area = projected_world(result.world.model_dump() if result.world else None)['area'] if command.activity == 'talk' else activity_area(command.activity)
+        result.world = WorldState(activity=command.activity, area=area)
+    elif action == 'world_leisure':
+        from app.living.world_state import choose_leisure
+        world = result.world or WorldState()
+        if command.activity is None:
+            result.world = world.model_copy(update={'leisure': None})
+        else:
+            selected = choose_leisure(scene_type, result.items.values(), command.activity, command.seat_id)
+            result.world = world.model_copy(update={'leisure': LeisureAssignment(**selected)})
+    elif action == "undo":
         undo = result.undo
         if undo is None:
             raise LivingError("invalid_action", "当前没有可撤销的布置操作")
@@ -273,6 +335,10 @@ def apply(state: State, scene_type: str, command: StrictModel, now: int) -> Stat
             if action in ("move", "restore"):
                 item.x, item.y = command.x, command.y
             item.stored = action == "store"
+    if result.world and result.world.leisure:
+        from app.living.world_state import valid_leisure
+        if not valid_leisure(scene_type, result.items.values(), result.world.leisure.model_dump()):
+            result.world.leisure = None
     return State.model_validate(result.model_dump())
 
 

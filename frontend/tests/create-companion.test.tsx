@@ -72,6 +72,18 @@ it('does not recover a saved draft before authentication is checked', async () =
   expect(creationApi.photo).not.toHaveBeenCalled();
 });
 async function selectPhoto() { fireEvent.change(await screen.findByLabelText('选择照片'), { target: { files: [new File(['image'], 'cup.png', { type: 'image/png' })] } }); }
+it('uploads and generates on an HTTP origin without native randomUUID', async () => {
+  const nativeCrypto = globalThis.crypto;
+  vi.stubGlobal('crypto', { getRandomValues: nativeCrypto.getRandomValues.bind(nativeCrypto) });
+  try {
+    render(<CreateCompanion />); await selectPhoto();
+    fireEvent.click(screen.getByRole('button', { name: '上传并生成伙伴' }));
+    expect(await screen.findByText('已加入我的伙伴')).toBeInTheDocument();
+    expect(creationApi.upload).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(creationApi.upload).mock.calls[0][1]).toMatch(/^[0-9a-f-]{36}$/);
+    expect(generateCompanion).toHaveBeenCalledTimes(1);
+  } finally { vi.unstubAllGlobals(); }
+});
 it('shows a confirmed recognition failure, retains the file, and retries only when clicked', async () => {
   vi.mocked(creationApi.upload).mockRejectedValueOnce(new ApiError('识别服务的连接中断了，本次未完成识别，请稍后重试。', 502, 'recognize_failed'));
   render(<CreateCompanion />); await selectPhoto();
@@ -227,7 +239,7 @@ it('automatically generates the primary object exactly once with unchanged photo
   await screen.findByText('已加入我的伙伴');
   expect(creationApi.upload).toHaveBeenCalledTimes(1);
   expect(generateCompanion).toHaveBeenCalledTimes(1);
-  expect(vi.mocked(generateCompanion).mock.calls[0]).toEqual([2, '杯子', expect.any(AbortSignal), expect.any(Function), '粉色圆点', false]);
+  expect(vi.mocked(generateCompanion).mock.calls[0]).toEqual([2, '杯子', expect.any(AbortSignal), expect.any(Function), '粉色圆点', false, undefined]);
   expect(JSON.parse(sessionStorage.getItem(DRAFT_KEY)!)).toMatchObject({ photoId: 1, objectId: 2, visualFeatures: '粉色圆点' });
 });
 
@@ -453,11 +465,11 @@ it('restores a result without motion and keeps rename and navigation independent
   await waitFor(() => expect(screen.getByRole('img', { name: '小杯' }).tagName).toBe('IMG'));
   fireEvent.load(screen.getByAltText('小杯'));
   // Ready walk is auto-selected; without an asset the player keeps the static portrait.
-  expect(await screen.findByText('这类动作还没准备好，先看看静态形象')).toBeInTheDocument();
-  expect(await screen.findByText('已就绪')).toBeInTheDocument();
+  expect(screen.queryByText('这类动作还没准备好，先看看静态形象')).not.toBeInTheDocument();
+  await screen.findByRole('button', { name: '散步' });
   expect(screen.getByRole('button', { name: '散步' })).toHaveAttribute('aria-pressed', 'true');
   expect(readMotionPreparation).toHaveBeenCalledWith(9, expect.any(String), expect.any(AbortSignal));
-  expect(loadPreparedActivityMotion).toHaveBeenCalled();
+  await waitFor(() => expect(loadPreparedActivityMotion).toHaveBeenCalled());
   fireEvent.change(screen.getByLabelText('给伙伴一个喜欢的名字'), { target: { value: '小暖' } });
   fireEvent.click(screen.getByText('保存名字'));
   await screen.findByText('名字已保存');
@@ -477,13 +489,74 @@ it('keeps a saved result accessible after private image fetch failure and recove
   render(<CreateCompanion />);
   expect(await screen.findByText('图片暂时未能加载，请刷新核对，伙伴已保存。')).toBeInTheDocument();
   expect(screen.getByText('开始聊天')).toHaveAttribute('href', '/companions/9');
-  expect(await screen.findByText('重新加载动作')).toBeInTheDocument();
+  expect(await screen.findByText('重新加载形象')).toBeInTheDocument();
   expect(loadPrivateMotion).not.toHaveBeenCalled();
   vi.mocked(privateImageBlob).mockResolvedValue(new Blob(['image'], { type: 'image/png' }));
-  fireEvent.click(screen.getByText('重新加载动作'));
+  fireEvent.click(screen.getByText('重新加载形象'));
   await waitFor(() => expect(screen.getByRole('img', { name: '小杯' }).tagName).toBe('IMG'));
   fireEvent.load(screen.getByAltText('小杯'));
   expect(screen.queryByText('图片暂时未能加载，请刷新核对，伙伴已保存。')).not.toBeInTheDocument();
   expect(generateCompanion).not.toHaveBeenCalled();
   expect(creationApi.upload).not.toHaveBeenCalled();
+});
+
+it.each([[403, 'access_denied'], [429, 'daily_limit'], [503, 'model_service_paused']])('retains a definitive upload refusal instead of reporting a disconnect: %s', async (status, code) => {
+  vi.mocked(creationApi.upload).mockRejectedValueOnce(new ApiError('当前请求不允许执行，请稍后再试', Number(status), String(code)));
+  render(<CreateCompanion />); await selectPhoto();
+  fireEvent.click(screen.getByRole('button', { name: '上传并生成伙伴' }));
+  expect(await screen.findByRole('alert')).toHaveTextContent('当前请求不允许执行');
+  expect(screen.queryByText(/等待识别结果的连接中断/)).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '上传并生成伙伴' })).toBeEnabled();
+  expect(creationApi.upload).toHaveBeenCalledTimes(1);
+  expect(generateCompanion).not.toHaveBeenCalled();
+});
+
+it('checks credits once for the automatic chain and refreshes only after first image display', async () => {
+  vi.stubEnv('NEXT_PUBLIC_GENERATION_DIAGNOSTICS', 'true');
+  vi.mocked(readMotionPreparation).mockResolvedValue({rest:'waiting_source',walk:'waiting_source',observe:'waiting_source'});
+  vi.mocked(privateImageBlob).mockImplementation(async (_url,_token,_signal,stage) => {
+    stage?.('image_request_started'); stage?.('image_response_headers'); stage?.('image_bytes_ready');
+    return new Blob(['synthetic'],{type:'image/png'});
+  });
+  let recognize!: (value: typeof photo) => void;
+  vi.mocked(creationApi.upload).mockImplementation(() => new Promise(resolve=>{recognize=resolve;}));
+  vi.mocked(generateCompanion).mockResolvedValue({...character,image_path:'characters/test.png'});
+  try {
+    render(<CreateCompanion/>);await selectPhoto();
+    await waitFor(()=>expect(api.generationCredits).toHaveBeenCalledTimes(1));
+    fireEvent.click(screen.getByText('上传并生成伙伴'));
+    await waitFor(()=>expect(creationApi.upload).toHaveBeenCalledTimes(1));
+    expect(api.generationCredits).toHaveBeenCalledTimes(2);
+    await act(async()=>recognize(photo));
+    await screen.findByText('已加入我的伙伴');
+    await waitFor(()=>expect(screen.getByAltText('小杯').tagName).toBe('IMG'));
+    expect(api.generationCredits).toHaveBeenCalledTimes(2);
+    const img=screen.getByAltText('小杯');Object.defineProperty(img,'naturalWidth',{value:96});fireEvent.load(img);
+    await waitFor(()=>expect(api.generationCredits).toHaveBeenCalledTimes(3));
+    const sample=JSON.parse(sessionStorage.getItem('companion-generation-performance-v1')!).samples[0];
+    expect(sample.status).toBe('succeeded');
+    expect(Object.keys(sample.marks)).toEqual(expect.arrayContaining(['credits_checked','image_request_started','image_response_headers','image_bytes_ready','image_loaded','displayed']));
+    expect(vi.mocked(creationApi.upload).mock.calls[0][4]).toBe(sample.sample_id);
+    expect(vi.mocked(generateCompanion).mock.calls[0][6]).toBe(sample.sample_id);
+    expect(privateImageBlob).toHaveBeenCalledTimes(1);
+  } finally {vi.unstubAllEnvs();}
+});
+it('rechecks fresh credits for a later manual correction', async () => {
+  render(<CreateCompanion/>);await reachObjects();
+  vi.mocked(api.generationCredits).mockResolvedValue({enabled:true,available:0});
+  fireEvent.click(screen.getByRole('button',{name:'生成伙伴'}));
+  expect(await screen.findByRole('alert')).toHaveTextContent('生成额度已用完');
+  expect(generateCompanion).not.toHaveBeenCalled();
+});
+it('preserves a failed image diagnostic and never counts a late image as a successful sample', async()=>{
+  vi.stubEnv('NEXT_PUBLIC_GENERATION_DIAGNOSTICS','true');
+  vi.mocked(generateCompanion).mockResolvedValue({...character,image_path:'characters/test.png'});
+  vi.mocked(privateImageBlob).mockRejectedValue(new Error('synthetic failure'));
+  try {
+    render(<CreateCompanion/>);await selectPhoto();fireEvent.click(screen.getByText('上传并生成伙伴'));
+    await screen.findByText('图片暂时未能加载，请刷新核对，伙伴已保存。');
+    const sample=JSON.parse(sessionStorage.getItem('companion-generation-performance-v1')!).samples[0];
+    expect(sample.status).toBe('failed');expect(sample.marks.displayed).toBeUndefined();
+    expect(creationApi.upload).toHaveBeenCalledTimes(1);expect(generateCompanion).toHaveBeenCalledTimes(1);
+  }finally{vi.unstubAllEnvs();vi.mocked(privateImageBlob).mockResolvedValue(new Blob(['image'],{type:'image/png'}));}
 });

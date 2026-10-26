@@ -1,0 +1,333 @@
+{
+  "id": "600b7ac0-2164-482d-99e6-f52ba3a7f9a0",
+  "title": "本地合成共同住处-home",
+  "scene_type": "home",
+  "revision": 18,
+  "closed": false,
+  "is_manager": true,
+  "me": "e12b763f-30c3-4ffc-958b-978418c58303",
+  "mahjong_available": true,
+  "members": [
+    {
+      "id": "e12b763f-30c3-4ffc-958b-978418c58303",
+      "name": "合成主人A",
+      "manager": true
+    },
+    {
+      "id": "15f42ae8-6e07-4bc9-b283-235d70dd8dd0",
+      "name": "合成主人B",
+      "manager": false
+    }
+  ],
+  "companions": [
+    {
+      "id": 2,
+      "owner_id": "e12b763f-30c3-4ffc-958b-978418c58303",
+      "name": "隔离合成绿杯",
+      "home_id": "27cc5965-6de2-4d76-9513-1c906dc5e37b",
+      "activity": "arriving",
+      "area": "outdoor",
+      "x": 0.5,
+      "y": 0.65,
+      "avatar3d": {
+        "version": 1,
+        "kind": "cup",
+        "body": "#eee9df",
+        "accent": "#6ca572",
+        "detail": "#4c4544",
+        "seed": 2787687353,
+        "source": "procedural_existing_features"
+      }
+    },
+    {
+      "id": 3,
+      "owner_id": "e12b763f-30c3-4ffc-958b-978418c58303",
+      "name": "隔离合成盆栽",
+      "home_id": "ab3c7909-7992-43d2-9ccd-166c2e027189",
+      "activity": "arriving",
+      "area": "outdoor",
+      "x": 0.5,
+      "y": 0.65,
+      "avatar3d": {
+        "version": 1,
+        "kind": "plant",
+        "body": "#eee9df",
+        "accent": "#6ca572",
+        "detail": "#426c4c",
+        "seed": 1991873407,
+        "source": "procedural_existing_features"
+      }
+    },
+    {
+      "id": 4,
+      "owner_id": "15f42ae8-6e07-4bc9-b283-235d70dd8dd0",
+      "name": "隔离合成花束",
+      "home_id": "e7da7ff0-9cc7-4f71-903f-615047c7da9f",
+      "activity": "walk",
+      "area": "outdoor",
+      "x": 0.65,
+      "y": 0.55,
+      "avatar3d": {
+        "version": 1,
+        "kind": "bouquet",
+        "body": "#eee9df",
+        "accent": "#6ca572",
+        "detail": "#65516f",
+        "seed": 2536437237,
+        "source": "procedural_existing_features"
+      }
+    },
+    {
+      "id": 5,
+      "owner_id": "15f42ae8-6e07-4bc9-b283-235d70dd8dd0",
+      "name": "隔离合成苹果",
+      "home_id": "8fefa1eb-b0d3-4b41-8914-fb5684ee55b1",
+      "activity": "arriving",
+      "area": "outdoor",
+      "x": 0.5,
+      "y": 0.65,
+      "avatar3d": {
+        "version": 1,
+        "kind": "fruit",
+        "body": "#eee9df",
+        "accent": "#6ca572",
+        "detail": "#684b43",
+        "seed": 2414310844,
+        "source": "procedural_existing_features"
+      }
+    }
+  ],
+  "season": {
+    "settings": null,
+    "started_at": null,
+    "revision": 0,
+    "observed_at": 1792768459,
+    "timezone": "Asia/Shanghai",
+    "current_season": null,
+    "next_change_at": null
+  },
+  "items": [
+    {
+      "id": "0b9a3e6f-b59c-4b87-a01b-5b6fabf27f1f",
+      "kind": "tree",
+      "x": 0.12,
+      "y": 0.13,
+      "stored": false,
+      "flipped": false,
+      "growth_seconds": 0,
+      "settled_at": 1792768459,
+      "cared_until": 0,
+      "stage": "planted",
+      "care_remaining_seconds": 0,
+      "growth_status": "needs_care",
+      "contribution": "e12b763f-30c3-4ffc-958b-978418c58303",
+      "contributor_name": "合成主人A",
+      "mine": true
+    },
+    {
+      "id": "da5da6aa-e2b9-458c-90e2-b406a8e14768",
+      "kind": "bench",
+      "x": 0.62375,
+      "y": 0.7596153846153846,
+      "stored": false,
+      "flipped": false,
+      "growth_seconds": 0,
+      "settled_at": 1792768459,
+      "cared_until": 0,
+      "stage": null,
+      "care_remaining_seconds": null,
+      "growth_status": null,
+      "contribution": "e12b763f-30c3-4ffc-958b-978418c58303",
+      "contributor_name": "合成主人A",
+      "mine": true
+    }
+  ],
+  "votes": [],
+  "events": [
+    {
+      "id": "b0b81067-d0f8-4294-bd85-475187fa9e9d",
+      "at": 1792730208,
+      "message": "一起生活的空间建立了。"
+    },
+    {
+      "id": "9927e591-92e0-4385-8a0d-6f48e9c8f8e9",
+      "at": 1792730208,
+      "message": "合成主人B 加入了共同生活。"
+    },
+    {
+      "id": "d89e57ec-76cc-456b-a793-44bb06dd4b1a",
+      "at": 1792730208,
+      "message": "添加了一件共同物件。",
+      "kind": "place"
+    },
+    {
+      "id": "33897a6e-cdb1-4c39-90e0-f7d0b6ff3fe2",
+      "at": 1792730208,
+      "message": "添加了一件共同物件。",
+      "kind": "place"
+    },
+    {
+      "id": "7038f2ce-0855-4bea-8f87-d40f7474e749",
+      "at": 1792730208,
+      "message": "隔离合成绿杯 来相聚了。",
+      "kind": "visit",
+      "characters": [
+        2
+      ],
+      "area": "outdoor"
+    },
+    {
+      "id": "ce652b46-c7bc-4887-b9f8-ee4dad1e2ee3",
+      "at": 1792730208,
+      "message": "隔离合成盆栽 来相聚了。",
+      "kind": "visit",
+      "characters": [
+        3
+      ],
+      "area": "outdoor"
+    },
+    {
+      "id": "ff7bd40a-72fe-49af-8a5f-25fde31162dd",
+      "at": 1792730208,
+      "message": "隔离合成花束 来相聚了。",
+      "kind": "visit",
+      "characters": [
+        4
+      ],
+      "area": "outdoor"
+    },
+    {
+      "id": "b5361446-29b0-4397-9066-2a4ea11af2d3",
+      "at": 1792730208,
+      "message": "隔离合成苹果 来相聚了。",
+      "kind": "visit",
+      "characters": [
+        5
+      ],
+      "area": "outdoor"
+    },
+    {
+      "id": "a4f7db7a-fb36-4b0f-a731-3fe5fee9cd5e",
+      "at": 1792734623,
+      "message": "隔离合成花束在院子散步。",
+      "kind": "activity",
+      "activity": "walk",
+      "characters": [
+        4
+      ],
+      "area": "outdoor",
+      "origin": "offline_rules"
+    },
+    {
+      "id": "5b72ee91-292b-4032-b7b0-9b9827c99eef",
+      "at": 1792737042,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        2
+      ],
+      "leisure": {
+        "activity": "mahjong",
+        "seat_id": "mahjong-0",
+        "station_version": 1
+      },
+      "origin": "offline_rules"
+    },
+    {
+      "id": "86750706-5347-40ca-b6cf-2764399037a6",
+      "at": 1792737089,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        4
+      ],
+      "leisure": {
+        "activity": "mahjong",
+        "seat_id": "mahjong-1",
+        "station_version": 1
+      },
+      "origin": "offline_rules"
+    },
+    {
+      "id": "3a95d7cb-c275-4a29-9f86-2612093afcfb",
+      "at": 1792737189,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        3
+      ],
+      "leisure": {
+        "activity": "mahjong",
+        "seat_id": "mahjong-2",
+        "station_version": 1
+      },
+      "origin": "offline_rules"
+    },
+    {
+      "id": "9a1e1363-a278-4f7f-852b-203e04b58dad",
+      "at": 1792737331,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        5
+      ],
+      "leisure": {
+        "activity": "mahjong",
+        "seat_id": "mahjong-3",
+        "station_version": 1
+      },
+      "origin": "offline_rules"
+    },
+    {
+      "id": "ffb1cd34-38dc-444d-8ba1-3c1da6876403",
+      "at": 1792768081,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        2
+      ],
+      "leisure": null,
+      "origin": "offline_rules"
+    },
+    {
+      "id": "8865ba84-3165-4150-bae5-664038b6f569",
+      "at": 1792768081,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        3
+      ],
+      "leisure": null,
+      "origin": "offline_rules"
+    },
+    {
+      "id": "af156f7a-fcc2-4d14-974f-47b7afbcc6fc",
+      "at": 1792768127,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        4
+      ],
+      "leisure": null,
+      "origin": "offline_rules"
+    },
+    {
+      "id": "40a6a444-962e-46c8-a6ed-6fff10a94afb",
+      "at": 1792768127,
+      "message": "调整了伙伴的休闲活动。",
+      "kind": "leisure",
+      "characters": [
+        5
+      ],
+      "leisure": null,
+      "origin": "offline_rules"
+    }
+  ],
+  "goal": null,
+  "stories": [],
+  "dialogue_enabled": false,
+  "story_enabled": false,
+  "invitation": null,
+  "origin": "offline_rules",
+  "observed_at": 1792768459
+}

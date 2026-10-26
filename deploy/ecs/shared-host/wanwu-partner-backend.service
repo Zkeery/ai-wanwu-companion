@@ -1,0 +1,32 @@
+[Unit]
+Description=Wanwu Partner FastAPI backend
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=wanwu-partner
+Group=wanwu-partner
+WorkingDirectory=/opt/wanwu-partner/app/backend
+EnvironmentFile=/etc/wanwu-partner/.env
+Environment=PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
+Environment=HOME=/opt/wanwu-partner/runtime/home
+ExecStart=/opt/wanwu-partner/app/backend/.venv/bin/python -m uvicorn scripts.ecs_partner_serve:app --host 127.0.0.1 --port 8020 --workers 1 --limit-concurrency 8 --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/opt/wanwu-partner/data /opt/wanwu-partner/runtime /opt/wanwu-partner/logs
+MemoryHigh=768M
+MemoryMax=1024M
+TasksMax=96
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

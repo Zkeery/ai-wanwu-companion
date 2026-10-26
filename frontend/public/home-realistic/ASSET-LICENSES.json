@@ -1,0 +1,146 @@
+{
+  "source": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "resolution": "1k",
+  "model_calls": 0,
+  "paid_asset_purchases": 0,
+  "runtime_external_requests": false,
+  "files": [
+    {
+      "asset": "wood_floor",
+      "map": "diff",
+      "file": "frontend/public/home-realistic/polyhaven/wood_floor/wood_floor_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_floor/wood_floor_diff_1k.jpg",
+      "source_page": "https://polyhaven.com/a/wood_floor",
+      "md5_expected": "b7e927d2bf2f8f103820ff3890c8407c",
+      "size_expected": 734493
+    },
+    {
+      "asset": "wood_floor",
+      "map": "nor_gl",
+      "file": "frontend/public/home-realistic/polyhaven/wood_floor/wood_floor_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_floor/wood_floor_nor_gl_1k.jpg",
+      "source_page": "https://polyhaven.com/a/wood_floor",
+      "md5_expected": "620f174d2c09b579c5d02d37b2106668",
+      "size_expected": 423303
+    },
+    {
+      "asset": "wood_floor",
+      "map": "rough",
+      "file": "frontend/public/home-realistic/polyhaven/wood_floor/wood_floor_rough_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/wood_floor/wood_floor_rough_1k.jpg",
+      "source_page": "https://polyhaven.com/a/wood_floor",
+      "md5_expected": "36146634f1dbd1bc30cd071857584c10",
+      "size_expected": 527754
+    },
+    {
+      "asset": "old_stone_wall",
+      "map": "diff",
+      "file": "frontend/public/home-realistic/polyhaven/old_stone_wall/old_stone_wall_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/old_stone_wall/old_stone_wall_diff_1k.jpg",
+      "source_page": "https://polyhaven.com/a/old_stone_wall",
+      "md5_expected": "6cc7415f446cd7a04d86461ddbac0a28",
+      "size_expected": 880453
+    },
+    {
+      "asset": "old_stone_wall",
+      "map": "nor_gl",
+      "file": "frontend/public/home-realistic/polyhaven/old_stone_wall/old_stone_wall_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/old_stone_wall/old_stone_wall_nor_gl_1k.jpg",
+      "source_page": "https://polyhaven.com/a/old_stone_wall",
+      "md5_expected": "e4f02b4c5956e69719d2dafa002085e5",
+      "size_expected": 1186893
+    },
+    {
+      "asset": "old_stone_wall",
+      "map": "rough",
+      "file": "frontend/public/home-realistic/polyhaven/old_stone_wall/old_stone_wall_rough_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/old_stone_wall/old_stone_wall_rough_1k.jpg",
+      "source_page": "https://polyhaven.com/a/old_stone_wall",
+      "md5_expected": "f707aa4f2052cd6e8523937f85700d88",
+      "size_expected": 233946
+    },
+    {
+      "asset": "clay_roof_tiles_02",
+      "map": "diff",
+      "file": "frontend/public/home-realistic/polyhaven/clay_roof_tiles_02/clay_roof_tiles_02_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_diff_1k.jpg",
+      "source_page": "https://polyhaven.com/a/clay_roof_tiles_02",
+      "md5_expected": "43c45fa3ac4c68ffb28aa813cec32608",
+      "size_expected": 903929
+    },
+    {
+      "asset": "clay_roof_tiles_02",
+      "map": "nor_gl",
+      "file": "frontend/public/home-realistic/polyhaven/clay_roof_tiles_02/clay_roof_tiles_02_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_nor_gl_1k.jpg",
+      "source_page": "https://polyhaven.com/a/clay_roof_tiles_02",
+      "md5_expected": "9e24ddc6fbf048291f8e24bfb1f16e6d",
+      "size_expected": 990101
+    },
+    {
+      "asset": "clay_roof_tiles_02",
+      "map": "rough",
+      "file": "frontend/public/home-realistic/polyhaven/clay_roof_tiles_02/clay_roof_tiles_02_rough_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_roof_tiles_02/clay_roof_tiles_02_rough_1k.jpg",
+      "source_page": "https://polyhaven.com/a/clay_roof_tiles_02",
+      "md5_expected": "f26a67aa20fbdcb7b70b85ccf4153245",
+      "size_expected": 341520
+    },
+    {
+      "asset": "rectangular_paving",
+      "map": "diff",
+      "file": "frontend/public/home-realistic/polyhaven/rectangular_paving/rectangular_paving_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rectangular_paving/rectangular_paving_diff_1k.jpg",
+      "source_page": "https://polyhaven.com/a/rectangular_paving",
+      "md5_expected": "bed8a330f7a03e21be9c719a25bb6a89",
+      "size_expected": 649580
+    },
+    {
+      "asset": "rectangular_paving",
+      "map": "nor_gl",
+      "file": "frontend/public/home-realistic/polyhaven/rectangular_paving/rectangular_paving_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rectangular_paving/rectangular_paving_nor_gl_1k.jpg",
+      "source_page": "https://polyhaven.com/a/rectangular_paving",
+      "md5_expected": "105333249daad1434def654e43830320",
+      "size_expected": 637525
+    },
+    {
+      "asset": "rectangular_paving",
+      "map": "rough",
+      "file": "frontend/public/home-realistic/polyhaven/rectangular_paving/rectangular_paving_rough_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rectangular_paving/rectangular_paving_rough_1k.jpg",
+      "source_page": "https://polyhaven.com/a/rectangular_paving",
+      "md5_expected": "bbdd18934dcd93e077d6d9df1bf0e685",
+      "size_expected": 432381
+    },
+    {
+      "asset": "grass_ground",
+      "map": "diff",
+      "file": "frontend/public/home-realistic/polyhaven/grass_ground/grass_ground_diff_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/grass_ground/grass_ground_diff_1k.jpg",
+      "source_page": "https://polyhaven.com/a/grass_ground",
+      "md5_expected": "299047258586c762735b7284d3c662c3",
+      "size_expected": 876584
+    },
+    {
+      "asset": "grass_ground",
+      "map": "nor_gl",
+      "file": "frontend/public/home-realistic/polyhaven/grass_ground/grass_ground_nor_gl_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/grass_ground/grass_ground_nor_gl_1k.jpg",
+      "source_page": "https://polyhaven.com/a/grass_ground",
+      "md5_expected": "d518c5b2af6f2c0297bc807b351f511f",
+      "size_expected": 1310516
+    },
+    {
+      "asset": "grass_ground",
+      "map": "rough",
+      "file": "frontend/public/home-realistic/polyhaven/grass_ground/grass_ground_rough_1k.jpg",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/grass_ground/grass_ground_rough_1k.jpg",
+      "source_page": "https://polyhaven.com/a/grass_ground",
+      "md5_expected": "2e6afca246cf6b80bdb53f46fe7e5ce5",
+      "size_expected": 328190
+    }
+  ]
+}

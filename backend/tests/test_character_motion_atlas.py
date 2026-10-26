@@ -186,6 +186,8 @@ def test_input_changed_after_review_is_discarded(delivery, which):
 
 def test_recorded_real_atlas_cli_restart_and_backup_restore(ready_character_id, tmp_path, client, record_property):
     """Actual C1.45 pixels, isolated owner/data. No new image/model request."""
+    from io import BytesIO
+    from PIL import Image
     project = Path(__file__).resolve().parents[2]
     evidence = project / "docs/PRD/版本/V1.2/验收证据"
     atlas = evidence / "阶段3/C1.45三活动姿态总图/apple-atlas-v2.png"
@@ -223,7 +225,12 @@ def test_recorded_real_atlas_cli_restart_and_backup_restore(ready_character_id, 
         # C1.51 deliberately fixes the walk order. Rest/observe retain their original bytes.
         version = "C1.51透明能力与步态编排" if activity == "walk" else "C1.45三活动姿态总图"
         expected = evidence / f"阶段3/{version}/packs/{activity}/sprite.png"
-        assert sprite.status_code == 200 and sprite.content == expected.read_bytes()
+        assert sprite.status_code == 200
+        # PNG zlib encoding varies across Pillow/platform versions; the actual
+        # acceptance contract is identical sprite dimensions and RGBA pixels.
+        with Image.open(BytesIO(sprite.content)) as actual, Image.open(expected) as archived:
+            assert actual.size == archived.size
+            assert actual.convert('RGBA').tobytes() == archived.convert('RGBA').tobytes()
         assets.append({"activity": activity, "http_status": sprite.status_code,
                        "sprite_sha256": hashlib.sha256(sprite.content).hexdigest()})
     record_property("atlas_delivery_receipt", json.dumps({

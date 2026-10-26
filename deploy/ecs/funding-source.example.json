@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "vendor": "maas",
+  "account": "REPLACE_WITH_REVIEWED_ACCOUNT_BINDING",
+  "authorization_ref": "REPLACE_WITH_NEW_AUTHORIZATION_REFERENCE",
+  "source_contract": {
+    "approved": false,
+    "transport": "private_snapshot_v1",
+    "scope": "balance_and_full_pending",
+    "query_fee_verified": false,
+    "query_fee_micro": null,
+    "permissions_approved": false,
+    "official_reference": ""
+  }
+}

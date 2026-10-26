@@ -1,0 +1,16 @@
+{
+  "enabled": false,
+  "approved": false,
+  "approval_ref": "",
+  "expires_at": 0,
+  "region": "cn-beijing",
+  "endpoint": "https://tos-cn-beijing.volces.com",
+  "bucket": "",
+  "max_uploads": 7,
+  "max_bytes": 134217728,
+  "max_total_bytes": 939524096,
+  "budget_cny": "1.00",
+  "reserve_cny_per_attempt": "0.14",
+  "cost_reference_verified": false,
+  "retention_reviewed": false
+}

@@ -1,0 +1,17 @@
+[Unit]
+Description=Wanwu Partner private financial proof refresh (not installed)
+
+[Service]
+Type=oneshot
+User=REPLACE_WITH_EXISTING_PROJECT_USER
+WorkingDirectory=/opt/wanwu-partner/app/backend
+ExecStart=/opt/wanwu-partner/app/backend/.venv/bin/python scripts/accounting_proof_refresh.py refresh --directory /opt/wanwu-partner/acceptance-private/REPLACE_WITH_APPROVED_NEW_BATCH
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/wanwu-partner/acceptance-private/REPLACE_WITH_APPROVED_NEW_BATCH
+RestrictAddressFamilies=AF_UNIX
+IPAddressDeny=any
+TimeoutStartSec=30

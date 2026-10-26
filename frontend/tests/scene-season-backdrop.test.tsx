@@ -1,4 +1,4 @@
-import { beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import LivingScene from '@/components/living-scene';
 import SceneSeasonBackdrop, { type SeasonalScene } from '@/components/scene-season-backdrop';
@@ -13,6 +13,7 @@ const empty: SeasonSnapshot = { settings: null, current_season: null, started_at
 const autumn: SeasonSnapshot = { ...empty, settings: { mode: 'virtual', weeks: 2, start_season: 'autumn' }, current_season: 'autumn', started_at: 100, next_change_at: 1209700 };
 const space = (scene: SeasonalScene): LivingSpace => ({ id: scene, scene_type: scene, mode: 'private', companion_id: '6', revision: 3, observed_at: 100, can_undo: true, items: [{ id: 'tree', kind: 'tree', x: .3, y: .4, stored: false, growth_seconds: 40, stage: 'growing', care_remaining_seconds: 100, growth_status: 'growing' }] });
 beforeEach(() => { vi.clearAllMocks(); vi.mocked(seasonApi.read).mockResolvedValue(empty); vi.mocked(seasonApi.preview).mockResolvedValue(autumn); vi.mocked(seasonApi.save).mockResolvedValue({ ...autumn, revision: 1 }); });
+afterEach(() => { vi.unstubAllEnvs(); });
 async function preview() {
   await waitFor(() => expect(screen.getByRole('button', { name: '设置四季' })).toBeEnabled());
   fireEvent.click(screen.getByRole('button', { name: '设置四季' })); fireEvent.click(screen.getByLabelText('虚拟四季'));
@@ -21,7 +22,7 @@ async function preview() {
 }
 it.each(['home', 'forest'] as SeasonalScene[])('previews %s without changing the saved scene, then cancels without writes', async scene => {
   render(<LivingScene space={space(scene)} onChange={vi.fn()} />); await preview();
-  const board = screen.getByRole('group', { name: '场景' }); expect(board).toHaveAttribute('data-season', 'base'); expect(board.querySelector('img')).toBeNull();
+  const board = screen.getByRole('group', { name: '场景' }); expect(board).toHaveAttribute('data-season', 'base'); expect(board.querySelector('[data-scene-art="base"] img')).not.toBeNull();
   expect(document.querySelector('figure img')).toHaveAttribute('src', new URL(`/seasons/${scene}-four-seasons-v1.png`, window.location.href).href);
   fireEvent.click(screen.getByRole('button', { name: '稍后选择' })); expect(document.querySelector('figure')).toBeNull();
   expect(seasonApi.save).not.toHaveBeenCalled(); expect(api.living.action).not.toHaveBeenCalled();
@@ -57,6 +58,35 @@ it('keeps the confirmed main scene after a failed save is reconciled to old sett
   await preview(); fireEvent.click(screen.getByRole('button', { name: '确认设置' })); await screen.findByText(/已核对服务器设置/);
   expect(screen.getByRole('group', { name: '场景' })).toHaveAttribute('data-season', 'base'); expect(seasonApi.save).toHaveBeenCalledTimes(1);
 });
-it('does not request an atlas when no season has been selected', () => {
-  const view = render(<SceneSeasonBackdrop scene="forest" season={null} />); expect(view.container.querySelector('img')).toBeNull();
+it.each(['home', 'forest'] as SeasonalScene[])('shows the default %s without selecting or saving a season, and retries failed artwork', scene => {
+  vi.stubEnv('NEXT_PUBLIC_BASE_PATH', '/partner');
+  const view = render(<SceneSeasonBackdrop scene={scene} season={null} />);
+  expect(view.container.querySelector('[data-scene-art="base"]')).not.toHaveAttribute('data-season-art');
+  expect(view.container.querySelector('img')).toHaveAttribute('src', new URL(`/partner/seasons/${scene}-four-seasons-v1.png`, window.location.href).href);
+  expect(view.container.querySelector('img')).toHaveStyle({ left: '-100%', top: '0%' });
+  fireEvent.error(view.container.querySelector('img')!);
+  expect(screen.getByRole('status')).toHaveTextContent('场景画面暂未加载');
+  fireEvent.click(screen.getByRole('button', { name: '重试场景画面' }));
+  expect(view.container.querySelector('img')?.getAttribute('src')).toContain('?retry=1');
+  expect(seasonApi.save).not.toHaveBeenCalled(); expect(api.living.action).not.toHaveBeenCalled();
+});
+it.each(['home', 'forest'] as SeasonalScene[])('keeps %s artwork and retry inside the mounted application', scene => {
+  vi.stubEnv('NEXT_PUBLIC_BASE_PATH', '/partner');
+  const view = render(<SceneSeasonBackdrop scene={scene} season="autumn" />);
+  expect(view.container.querySelector('img')).toHaveAttribute('src', new URL(`/partner/seasons/${scene}-four-seasons-v1.png`, window.location.href).href);
+  fireEvent.error(view.container.querySelector('img')!);
+  fireEvent.click(screen.getByRole('button', { name: '重试季节画面' }));
+  expect(view.container.querySelector('img')).toHaveAttribute('src', new URL(`/partner/seasons/${scene}-four-seasons-v1.png?retry=1`, window.location.href).href);
+  expect(seasonApi.save).not.toHaveBeenCalled();
+  expect(api.living.action).not.toHaveBeenCalled();
+});
+it.each(['home', 'forest'] as SeasonalScene[])('lets one account manage the season and plants in its shared %s home', async scene => {
+  render(<LivingScene space={{ ...space(scene), mode: 'shared', companion_id: null }} onChange={vi.fn()} />);
+  expect(screen.getByRole('region', { name: '植物照料总览' })).toBeInTheDocument();
+  await preview();
+  fireEvent.click(screen.getByRole('button', { name: '确认设置' }));
+  await screen.findByText('四季已保存，场景现在生效。');
+  expect(screen.getByRole('group', { name: '场景' })).toHaveAttribute('data-season', 'autumn');
+  expect(seasonApi.save).toHaveBeenCalledExactlyOnceWith(scene, autumn.settings, 0, expect.any(String), expect.any(AbortSignal));
+  expect(api.living.action).not.toHaveBeenCalled();
 });

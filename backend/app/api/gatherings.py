@@ -3,16 +3,16 @@ from typing import Annotated, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Response
-from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.api.deps import get_current_user
 from app.core.database import engine
 from app.core.database import get_db
 from app.core.errors import api_error
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.living.gatherings import GatheringStore
-from app.living.rules import Place, Care, Move, Store
+from app.living.rules import Place, Care, Move, Store, WorldLeisure
 from app.living.seasons import Settings
 from app.models.models import User
 from app.living.gathering_dialogue import DialogueStore, MaaSDialogueAdapter, run_exchange
@@ -85,7 +85,12 @@ class Vote(Strict):
 class Activity(Strict):
     action: Literal['activity']
     character_ids: list[Annotated[int, Field(gt=0, strict=True)]] = Field(min_length=1, max_length=2)
-    activity: Literal['rest', 'walk', 'observe', 'talk']
+    activity: Literal['rest', 'sleep', 'walk', 'observe', 'talk']
+
+
+class Leisure(WorldLeisure):
+    action: Literal['leisure']
+    character_id: int = Field(gt=0, strict=True)
 
 
 class Preference(Strict):
@@ -129,7 +134,7 @@ class Restore(Strict):
 class CommandRequest(Strict):
     request_id: UUID
     expected_revision: int = Field(ge=0, strict=True)
-    command: Annotated[Simple | Member | Character | Layout | Season | Vote | Activity | Preference | DialogueSpace | DialogueConsent | Story | Reconcile | Restore,
+    command: Annotated[Simple | Member | Character | Layout | Season | Vote | Activity | Leisure | Preference | DialogueSpace | DialogueConsent | Story | Reconcile | Restore,
                        Field(discriminator='action')]
 
 
@@ -168,6 +173,7 @@ def read(group_id: UUID, user: User = Depends(get_current_user)):
 def image(group_id: UUID, character_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     from app.models.models import Character as CharacterModel
     from app.api.wall import image_file
+    from app.api.private_images import image_response
     g = store.read(user.id, str(group_id))
     if not any(c['id'] == character_id for c in g['companions']):
         raise api_error(404, 'not_found', '伙伴已经回家')
@@ -175,8 +181,7 @@ def image(group_id: UUID, character_id: int, user: User = Depends(get_current_us
     path = image_file(c) if c else None
     if path is None:
         raise api_error(404, 'not_found', '形象暂不可用')
-    return FileResponse(path, headers={'Cache-Control': 'private, no-store', 'Vary': 'Authorization',
-        'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'; sandbox"})
+    return image_response(path, preview=True, edge=256)
 
 
 @router.post('/{group_id}/commands')
@@ -194,6 +199,24 @@ def dialogue_available():
 def dialogue_client():
     from app.core.config import get_settings
     return MaaSDialogueAdapter(get_settings().model_api_key)
+
+
+def dialogue_task_client(task):
+    from app.services.life_dispatch import adapter
+    # Only this owner's live viewing lease grants the visible dispatch rate.
+    from app.living.gathering_automatic import viewers
+    with automatic_store.transaction() as conn:
+        visible = conn.execute(select(viewers.c.viewer_id).where(
+            viewers.c.owner_id == task['owner_id'], viewers.c.group_id == task['group_id'],
+            viewers.c.closed == 0, viewers.c.expires_at > automatic_store.clock())).first() is not None
+    return adapter('shared_life', task['owner_id'], task['group_id'], task['id'],
+                   presence='visible' if visible else 'away', fallback=dialogue_client)
+
+
+def automatic_task_client(task):
+    if not automatic_available():
+        raise api_error(409, 'dialogue_unavailable', '后台自动交流尚未开放')
+    return dialogue_task_client(task)
 
 
 def automatic_available():
@@ -250,7 +273,7 @@ async def dialogue_start(group_id: UUID, payload: DialogueRequest, user: User = 
     task, fresh = dialogue_store.prepare(user.id, str(group_id), str(payload.request_id), payload.expected_revision,
         payload.character_ids, str(payload.grant_id))
     if fresh:
-        await run_exchange(dialogue_store, task, dialogue_client)
+        await run_exchange(dialogue_store, task, lambda: dialogue_task_client(task))
     return dict(**dialogue_store.read(user.id, str(group_id)), available=dialogue_available())
 
 

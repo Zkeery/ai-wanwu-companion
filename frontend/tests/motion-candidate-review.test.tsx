@@ -85,3 +85,46 @@ it('moves to the next page without posting a decision', async () => {
   fireEvent.click(screen.getByText('下一页候选')); await flush();
   expect(read.mock.calls[1][3]).toBe(item.job_id); expect(review).not.toHaveBeenCalled();
 });
+
+
+it('requires full video playback and explicit confirmation, and sends only one review', async () => {
+  const video: MotionCandidate = { ...item, activity: 'walk', kind: 'video', image_url: null, video_url: '/private/video' };
+  read.mockResolvedValue({ items: [video], next_cursor: null });
+  image.mockResolvedValue(new Blob(['mp4'], { type: 'video/mp4' }));
+  review.mockResolvedValue({ ...video, state: 'reviewed' });
+  await open();
+  const player = screen.getByLabelText('伙伴的散步动作视频候选');
+  expect(screen.queryByRole('img')).not.toBeInTheDocument();
+  expect(screen.getByRole('checkbox')).toBeDisabled();
+  fireEvent.loadedData(player);
+  expect(screen.getByText('使用这个动作')).toBeDisabled();
+  fireEvent.ended(player);
+  fireEvent.click(screen.getByRole('checkbox'));
+  fireEvent.click(screen.getByText('使用这个动作'));
+  await flush();
+  expect(review).toHaveBeenCalledOnce();
+  expect(screen.getByText('已确认这一段；三类动作均确认后会一起准备。')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('收起待确认动作'));
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:candidate');
+});
+
+it('keeps a failed local video preparation stopped until the owner explicitly continues', async () => {
+  const video: MotionCandidate = { ...item, state: 'reviewed', activity: 'walk', kind: 'video',
+    image_url: null, video_url: '/private/video' };
+  read.mockResolvedValue({ items: [video], next_cursor: null });
+  image.mockResolvedValue(new Blob(['mp4'], { type: 'video/mp4' }));
+  review.mockResolvedValue({ ...video, state: 'queued' });
+  await open();
+  expect(review).not.toHaveBeenCalled();
+  expect(screen.getByText('继续准备')).toBeDisabled();
+  expect(screen.queryByText('暂不使用')).not.toBeInTheDocument();
+  fireEvent.ended(screen.getByLabelText('伙伴的散步动作视频候选'));
+  fireEvent.click(screen.getByRole('checkbox'));
+  expect(review).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByText('继续准备'));
+  fireEvent.click(screen.getByText('正在保存…'));
+  await flush();
+  expect(review).toHaveBeenCalledOnce();
+  expect(review.mock.calls[0][2]).toBe('accept');
+  expect(screen.getByText('正在准备散步动作')).toBeInTheDocument();
+});

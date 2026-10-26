@@ -1,3 +1,5 @@
+import type { Avatar3D } from './shared-living-3d';
+
 export type Character = { id: number; name: string; persona: string; opening_line: string; image_path: string | null; status: 'ready' | 'generating' | 'failed'; created_at: string; theme_id?: string | null };
 export type Message = { id: number; role: 'user' | 'assistant'; content: string; created_at: string };
 export type Memory = { id: number; content: string; created_at: string; updated_at: string };
@@ -88,7 +90,14 @@ export type LivingSpace = {
   companion_id: string | null; revision: number; observed_at: number;
   items: LivingItem[]; can_undo: boolean;
   atmosphere?: { rain: boolean; sound: boolean };
+  owner_id?: string;
+  resident_here?: boolean;
+  avatar3d?: Avatar3D | null;
+  world?: LivingWorldState;
 };
+export type LivingWorldActivity = 'rest' | 'sleep' | 'walk' | 'observe' | 'talk';
+export type LivingWorldLeisure = { activity: 'tea' | 'television' | 'mahjong' | 'bench'; seat_id: string; station_version: 1 };
+export type LivingWorldState = { activity: LivingWorldActivity; area: 'outdoor' | 'indoor' | 'bedroom'; leisure?: LivingWorldLeisure };
 export type SpaceMember = { companion_id: string; name: string | null };
 export type SpaceSummary = { id: string; scene_type: SceneType; mode: 'private' | 'shared'; companion_id: string | null; revision: number; members?: SpaceMember[] };
 export type AuthUser = { id: string; phone: string };
@@ -121,7 +130,31 @@ export function parseLivingSpace(value: unknown): LivingSpace {
     companion_id: v.companion_id == null ? null : str(v.companion_id), revision: num(v.revision),
     observed_at: num(v.observed_at), items: array(v.items, parseLivingItem), can_undo: bool(v.can_undo),
     atmosphere: v.atmosphere == null ? undefined : { rain: bool(object(v.atmosphere).rain), sound: bool(object(v.atmosphere).sound) },
+    ...(v.owner_id === undefined ? {} : { owner_id: str(v.owner_id) }),
+    ...(v.resident_here === undefined ? {} : { resident_here: bool(v.resident_here) }),
+    ...(v.avatar3d === undefined ? {} : { avatar3d: v.avatar3d === null ? null : parseLivingAvatar(v.avatar3d) }),
+    ...(v.world === undefined ? {} : { world: parseLivingWorld(v.world) }),
   };
+}
+
+function parseLivingAvatar(value: unknown): Avatar3D {
+  const v = object(value);
+  if (v.version !== 1 || !['cup', 'bouquet', 'plant', 'fruit', 'garment', 'creature', 'unavailable'].includes(String(v.kind)) ||
+    v.source !== 'procedural_existing_features' || !Number.isSafeInteger(v.seed) || Number(v.seed) < 0 || Number(v.seed) > 0xffffffff ||
+    !['body', 'accent', 'detail'].every(key => typeof v[key] === 'string' && /^#[a-f0-9]{6}$/i.test(v[key] as string))) throw new Error('伙伴的立体形象暂时无法核对');
+  return { version: 1, kind: v.kind as Avatar3D['kind'], source: 'procedural_existing_features', seed: Number(v.seed), body: str(v.body), accent: str(v.accent), detail: str(v.detail) };
+}
+
+export function parseLivingWorld(value: unknown): LivingWorldState {
+  const v = object(value), activity = str(v.activity), area = str(v.area);
+  if (!['rest', 'sleep', 'walk', 'observe', 'talk'].includes(activity) || !['outdoor', 'indoor', 'bedroom'].includes(area)) throw new Error('伙伴的活动暂时无法核对');
+  let leisure: LivingWorldLeisure | undefined;
+  if (v.leisure !== undefined && v.leisure !== null) {
+    const l = object(v.leisure), kind = str(l.activity), seat = str(l.seat_id);
+    if (!['tea', 'television', 'mahjong', 'bench'].includes(kind) || !seat.trim() || seat.length > 160 || l.station_version !== 1) throw new Error('伙伴的休闲活动暂时无法核对');
+    leisure = { activity: kind as LivingWorldLeisure['activity'], seat_id: seat, station_version: 1 };
+  }
+  return { activity: activity as LivingWorldActivity, area: area as LivingWorldState['area'], ...(leisure ? { leisure } : {}) };
 }
 export function parseSpaceSummary(value: unknown): SpaceSummary {
   const v = object(value);

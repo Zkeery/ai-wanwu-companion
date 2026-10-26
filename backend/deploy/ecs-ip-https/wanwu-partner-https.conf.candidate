@@ -1,0 +1,10 @@
+server {
+    listen 443 ssl;
+    server_name 101.96.210.187;
+    ssl_certificate /opt/wanwu-partner/private/acme/production/config/live/101.96.210.187/fullchain.pem;
+    ssl_certificate_key /opt/wanwu-partner/private/acme/production/config/live/101.96.210.187/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    include /etc/nginx/snippets/wanwu-partner.locations.conf;
+    location = / { return 302 /partner/; }
+    location / { return 404; }
+}

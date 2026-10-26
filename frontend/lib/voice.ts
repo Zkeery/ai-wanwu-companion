@@ -1,10 +1,20 @@
 import { request, checkResponse } from './api';
+import { appFetch as fetch } from './base-path';
 import { authHeaders, getToken } from './auth';
 import { array, object } from './contracts';
 import { text, number, boolean } from './gatherings';
 
-export const moods: Record<string, string> = { happy: '开心', calm: '平静', sad: '低落', tired: '疲惫', anxious: '紧张', unsure: '说不清' };
-export function parseVoiceSettings(value: unknown) { const v = object(value); return { voice: text(v.voice), mood: v.mood == null ? null : text(v.mood), automatic: boolean(v.automatic), mood_source: text(v.mood_source), reply_origin: parseReplyOrigin(v.reply_origin), live_session: parseLiveSession(v.live_session), transcription_status: parseTranscriptionStatus(v.transcription_status), voices: array(v.voices, x => { const v = object(x); return { id: text(v.id), label: text(v.label) }; }) }; }
+export const moods: Record<string, string> = { happy: '开心', calm: '平静', sad: '低落', tired: '疲惫', anxious: '紧张', unsure: '说不清', irritated: '有点烦', custom: '我想自己说' };
+export const MOOD_TEXT_LIMIT = 200;
+export function inspectMoodText(value: string) {
+  const normalized = value.trim(), length = [...normalized].length;
+  return { text: normalized, length, issue: !normalized ? '请写下你现在的感受。' : length > MOOD_TEXT_LIMIT ? `感受最多 ${MOOD_TEXT_LIMIT} 个字符，当前 ${length} 个。` : null };
+}
+export function parseVoiceSettings(value: unknown) {
+  const v = object(value);
+  if (v.mood_text != null && typeof v.mood_text !== 'string') throw new Error('主动心情暂时无法读取');
+  return { voice: text(v.voice), mood: v.mood == null ? null : text(v.mood), mood_text: v.mood_text == null ? null : v.mood_text as string, automatic: boolean(v.automatic), mood_source: text(v.mood_source), reply_origin: parseReplyOrigin(v.reply_origin), live_session: parseLiveSession(v.live_session), transcription_status: parseTranscriptionStatus(v.transcription_status), voices: array(v.voices, x => { const v = object(x); return { id: text(v.id), label: text(v.label) }; }) };
+}
 export const liveSessionLabels: Record<string, string> = { active: '真实连续聊天已开启', exhausted: '本次真实聊天轮数已用完', expired: '本次真实聊天已到期', revoked: '真实聊天已结束', failed: '本次真实聊天遇到问题，已停止后续调用' };
 function parseLiveSession(value: unknown) {
   if (value == null) return null;
@@ -52,7 +62,11 @@ export const voiceApi = {
   },
   settings: async (id: number) => parseVoiceSettings(await request(`/characters/${id}/voice/settings`)),
   endSession: async (id: number) => parseVoiceSettings(await request(`/characters/${id}/voice/session/end`, { method: 'POST' })),
-  save: async (id: number, voice: string, mood: string | null, automatic: boolean) => parseVoiceSettings(await request(`/characters/${id}/voice/settings`, { method: 'PUT', body: JSON.stringify({ voice, mood, automatic }) })),
+  save: async (id: number, voice: string, mood: string | null, automatic: boolean, moodText?: string | null) => {
+    const custom = mood === 'custom' ? inspectMoodText(moodText ?? '') : null;
+    if (custom?.issue) throw new Error(custom.issue);
+    return parseVoiceSettings(await request(`/characters/${id}/voice/settings`, { method: 'PUT', body: JSON.stringify({ voice, mood, automatic, mood_text: custom?.text ?? null }) }));
+  },
   history: async (id: number, signal?: AbortSignal) => array(await request(`/characters/${id}/voice/audio`, { signal }), parseAudio),
   remove: async (id: number, audioId: string) => request(`/characters/${id}/voice/audio/${audioId}`, { method: 'DELETE' }),
   retryAudio: async (id: number, audioId: string) => {

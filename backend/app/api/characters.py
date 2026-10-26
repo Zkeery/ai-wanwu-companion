@@ -7,7 +7,7 @@ from threading import Lock
 from time import perf_counter
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, Request, Response
+from fastapi import APIRouter, Depends, Header, Request, Response
 from sqlalchemy import delete as sa_delete, text, select
 from sqlalchemy.exc import SQLAlchemyError
 from fastapi.responses import StreamingResponse
@@ -26,7 +26,7 @@ from app.schemas.schemas import CharacterCreate, CharacterOut, CharacterOverview
 from app.services.character_overview import character_overviews
 from app.services.model_client import ModelClient
 from app.services.character_generation import finish_character
-from app.services.generation_timing import timed_call, record_timing
+from app.services.generation_timing import timed_call, record_timing, timing_span, diagnostic_operation_id
 from app.services.appearance import generation_brief
 from app.services.generation_errors import record_failure
 from app.services.character_concept import save_concept, matching_concept
@@ -161,8 +161,10 @@ def delete_character(character_id: int, user: User = Depends(get_current_user),
     db.execute(sa_delete(LivingMembership).where(
         LivingMembership.companion_id == str(character_id)))
     quota.refund_character(db, character_id)
-    from app.services.voice import clear_audio, preferences as voice_preferences
+    from app.services.voice import clear_audio, preferences as voice_preferences, current_mood_text
     clear_audio(db, character_id)
+    db.execute(sa_delete(current_mood_text).where(current_mood_text.c.character_id == character_id,
+        current_mood_text.c.owner_id == user.id))
     db.execute(sa_delete(voice_preferences).where(voice_preferences.c.character_id == character_id))
     db.delete(ch)
     db.commit()
@@ -218,14 +220,14 @@ def _reserve_character(payload: CharacterCreate, db: Session, user: User, *, com
 
 @router.post("", dependencies=[Depends(require_model_available)])
 def create_character(payload: CharacterCreate, user: User = Depends(get_current_user),
-                     db: Session = Depends(get_db)):
+                     db: Session = Depends(get_db), x_generation_trace: str | None = Header(default=None)):
     user_id = user.id
     with _creation_lock:
         db.rollback()
         db.execute(text("BEGIN IMMEDIATE"))
         character_id, label, visual_features, concept = _reserve_character(payload, db, user)
         charge_id = quota.active(db, character_id)
-    return _generation_response(character_id, label, visual_features, concept, user_id, charge_id)
+    return _generation_response(character_id, label, visual_features, concept, user_id, charge_id, trace=x_generation_trace)
 
 
 class RecreationRequest(BaseModel):
@@ -269,11 +271,11 @@ def recreate(character_id: int, payload: RecreationRequest, user: User = Depends
     return _generation_response(cid, label, features, concept, owner_id, charge_id, previous)
 
 
-def _generation_response(character_id, label, visual_features, concept, user_id, charge_id=None, previous=None):
+def _generation_response(character_id, label, visual_features, concept, user_id, charge_id=None, previous=None, trace=None):
 
     def gen():
         started = perf_counter()
-        operation_id = f"character:{character_id}"
+        operation_id = diagnostic_operation_id(trace, f"character:{character_id}")
         session = SessionLocal()
         image_path = None
         saved = False
@@ -300,25 +302,26 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
             result, image_path = finish_character(client, label, persona, operation_id, visual_features)
 
             stage = "save"
-            db_ch = session.get(Character, character_id)
-            if db_ch is None or db_ch.owner_id != user_id or not quota.is_reserved(session, charge_id, character_id):
-                raise RuntimeError("角色已删除")
-            db_ch.name = result.name
-            db_ch.persona = result.persona
-            db_ch.opening_line = result.opening_line
-            db_ch.image_path = image_path
-            db_ch.generation_brief_json = json.dumps(generation_brief(label, result.name, result.persona, visual_features, persona.appearance_description), ensure_ascii=False)
-            db_ch.status = "ready"
-            from app.services.motion_preparation import enqueue_preparation
-            enqueue_preparation(session, db_ch)
-            from app.services.motion_generation import register_request
-            register_request(session, db_ch)
-            quota.settle(session, charge_id, success=True)
-            session.commit()
-            saved = True
-            settled = True
-            session.refresh(db_ch)
-            data = CharacterOut.model_validate(db_ch).model_dump(mode="json")
+            with timing_span("character_store", operation_id):
+                db_ch = session.get(Character, character_id)
+                if db_ch is None or db_ch.owner_id != user_id or not quota.is_reserved(session, charge_id, character_id):
+                    raise RuntimeError("角色已删除")
+                db_ch.name = result.name
+                db_ch.persona = result.persona
+                db_ch.opening_line = result.opening_line
+                db_ch.image_path = image_path
+                db_ch.generation_brief_json = json.dumps(generation_brief(label, result.name, result.persona, visual_features, persona.appearance_description), ensure_ascii=False)
+                db_ch.status = "ready"
+                from app.services.motion_preparation import enqueue_preparation
+                enqueue_preparation(session, db_ch)
+                from app.services.motion_generation import register_request
+                register_request(session, db_ch)
+                quota.settle(session, charge_id, success=True)
+                session.commit()
+                saved = True
+                settled = True
+                session.refresh(db_ch)
+                data = CharacterOut.model_validate(db_ch).model_dump(mode="json")
             yield _sse_event("done", data)
         except Exception as exc:
             details = record_failure(stage, operation_id, exc)

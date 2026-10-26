@@ -9,6 +9,7 @@ from __future__ import annotations
 import base64
 import json
 from html import escape
+from time import perf_counter
 from uuid import uuid4
 from dataclasses import dataclass
 from pathlib import Path
@@ -20,7 +21,7 @@ from app.core.config import get_settings
 from app.services import prompts
 from app.services.appearance import image_prompt
 from app.services.model_http import model_http_client
-from app.services.generation_timing import current_operation_id, timed_call
+from app.services.generation_timing import current_operation_id, timed_call, http_trace, record_timing
 from app.services.parsers import (
     Persona,
     RecognizedObject,
@@ -126,50 +127,92 @@ class ModelClient:
             "temperature": 0.8,
             "stream": True,
         }
-        payload.update(self._text_options(settings))
-        for _ in range(settings.model_max_retries + 1):
-            emitted = False
-            try:
-                with httpx.Client(timeout=settings.model_timeout_seconds) as client:
-                    with client.stream("POST", url, headers=headers, json=payload) as resp:
-                        resp.raise_for_status()
-                        for line in resp.iter_lines():
-                            if not line.startswith("data:"):
-                                continue
-                            data = line[5:].strip()
-                            if data == "[DONE]":
-                                return
-                            try:
-                                chunk = json.loads(data)
-                            except json.JSONDecodeError as exc:
-                                raise ModelError("模型流返回格式异常") from exc
-                            if not isinstance(chunk, dict) or chunk.get("error"):
-                                raise ModelError("模型流返回错误")
-                            choices = chunk.get("choices") or []
-                            if not isinstance(choices, list):
-                                raise ModelError("模型流返回格式异常")
-                            choice = choices[0] if choices else {}
-                            if not isinstance(choice, dict):
-                                raise ModelError("模型流返回格式异常")
-                            if choice.get("finish_reason") in ("length", "content_filter"):
-                                raise ModelError("模型回复未完整生成，请重试")
-                            delta = choice.get("delta") or {}
-                            if not isinstance(delta, dict):
-                                raise ModelError("模型流返回格式异常")
-                            content = delta.get("content")
-                            if content:
-                                if not isinstance(content, str):
+        payload.update(self._chat_options(settings))
+        started = perf_counter()
+        operation_id = current_operation_id() or uuid4().hex
+        outcome = "failed"
+        first_content = False
+        first_reasoning = False
+        try:
+            for _ in range(settings.model_max_retries + 1):
+                emitted = False
+                done = False
+                try:
+                    with model_http_client(settings, url, self._request_timeout(settings)) as client:
+                        with client.stream("POST", url, headers=headers, json=payload,
+                                           timeout=self._request_timeout(settings),
+                                           extensions={"trace": http_trace("chat_http", operation_id)}) as resp:
+                            resp.raise_for_status()
+                            for line in resp.iter_lines():
+                                if not line.startswith("data:"):
+                                    continue
+                                data = line[5:].strip()
+                                if data == "[DONE]":
+                                    done = True
+                                    continue
+                                if done:
+                                    continue
+                                try:
+                                    chunk = json.loads(data)
+                                except json.JSONDecodeError as exc:
+                                    raise ModelError("模型流返回格式异常") from exc
+                                if not isinstance(chunk, dict) or chunk.get("error"):
+                                    raise ModelError("模型流返回错误")
+                                choices = chunk.get("choices") or []
+                                if not isinstance(choices, list):
                                     raise ModelError("模型流返回格式异常")
-                                emitted = True
-                                yield content
-                raise ModelError("模型连接提前结束，请重试")
-            except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as exc:
-                if emitted:
-                    raise ModelError("模型连接中断，回复未完成，请重试") from exc
-                if isinstance(exc, httpx.HTTPStatusError) and exc.response.status_code < 500 and exc.response.status_code != 429:
-                    raise ModelError("模型请求被拒绝，请检查配置") from exc
-                continue
-        raise ModelError(f"模型调用失败（已重试 {settings.model_max_retries} 次）")
+                                choice = choices[0] if choices else {}
+                                if not isinstance(choice, dict):
+                                    raise ModelError("模型流返回格式异常")
+                                if choice.get("finish_reason") in ("length", "content_filter"):
+                                    raise ModelError("模型回复未完整生成，请重试")
+                                delta = choice.get("delta") or {}
+                                if not isinstance(delta, dict):
+                                    raise ModelError("模型流返回格式异常")
+                                reasoning = delta.get("reasoning_content")
+                                if isinstance(reasoning, str) and reasoning and not first_reasoning:
+                                    first_reasoning = True
+                                    record_timing("chat_first_reasoning_delta", operation_id, started, "succeeded")
+                                content = delta.get("content")
+                                if content:
+                                    if not isinstance(content, str):
+                                        raise ModelError("模型流返回格式异常")
+                                    if not first_content:
+                                        first_content = True
+                                        record_timing("chat_first_token", operation_id, started, "succeeded")
+                                    emitted = True
+                                    yield content
+                    if done:
+                        outcome = "succeeded"
+                        return
+                    raise ModelError("模型连接提前结束，请重试")
+                except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as exc:
+                    if emitted:
+                        raise ModelError("模型连接中断，回复未完成，请重试") from exc
+                    if isinstance(exc, httpx.HTTPStatusError) and exc.response.status_code < 500 and exc.response.status_code != 429:
+                        raise ModelError("模型请求被拒绝，请检查配置") from exc
+                    continue
+            raise ModelError(f"模型调用失败（已重试 {settings.model_max_retries} 次）")
+        except GeneratorExit:
+            outcome = "cancelled"
+            raise
+        finally:
+            record_timing("chat_stream_total", operation_id, started, outcome)
+
+    @staticmethod
+    def _chat_options(settings) -> dict:
+        options = ModelClient._text_options(settings)
+        thinking = getattr(settings, "chat_enable_thinking", None)
+        if thinking is None:
+            return options
+        # This override has been verified only for this channel and model.
+        url = urlsplit(settings.model_base_url.rstrip("/"))
+        if (settings.chat_model != "qwen3.8-flash"
+                or url.scheme != "https" or url.netloc != "maas-api.antdigital.com"
+                or url.path != "/v1" or url.query or url.fragment):
+            raise ModelError("聊天思考设置尚未验证，不能用于当前模型渠道")
+        options["enable_thinking"] = thinking
+        return options
 
     def generate_image(self, label: str, name: str, *, persona: str = "", visual_features: str = "", appearance_description: str = "") -> str:
         settings = get_settings()
@@ -200,7 +243,8 @@ class ModelClient:
             for _ in range(settings.model_max_retries + 1):
                 try:
                     with model_http_client(settings, url, self._request_timeout(settings)) as client:
-                        resp = client.post(url, headers=headers, json=body, timeout=self._request_timeout(settings))
+                        resp = client.post(url, headers=headers, json=body, timeout=self._request_timeout(settings),
+                                           extensions={"trace": http_trace("image_http", operation_id)})
                         resp.raise_for_status()
                     break
                 except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as exc:
@@ -225,7 +269,8 @@ class ModelClient:
             def download_image():
                 # Model credentials are per POST, never defaults on the pooled client.
                 with model_http_client(settings, first["url"], self._request_timeout(settings)) as client:
-                    downloaded = client.get(first["url"], timeout=self._request_timeout(settings), follow_redirects=True)
+                    downloaded = client.get(first["url"], timeout=self._request_timeout(settings), follow_redirects=True,
+                                            extensions={"trace": http_trace("image_download", operation_id)})
                     downloaded.raise_for_status()
                     return downloaded
 
@@ -314,11 +359,20 @@ class ModelClient:
         url = f"{settings.model_base_url.rstrip('/')}/chat/completions"
         headers = {"Authorization": f"Bearer {settings.model_api_key}"}
         last_error = None
+        operation_id = current_operation_id() or uuid4().hex
+        content = (payload.get("messages") or [{}])[0].get("content")
+        stage = "vision_http" if isinstance(content, list) else "text_http"
+
+        def request_text():
+            with model_http_client(settings, url, self._request_timeout(settings)) as client:
+                response = client.post(url, headers=headers, json=payload, timeout=self._request_timeout(settings),
+                                       extensions={"trace": http_trace(stage, operation_id)})
+                response.raise_for_status()
+                return response
+
         for _ in range(settings.model_max_retries + 1):
             try:
-                with model_http_client(settings, url, self._request_timeout(settings)) as client:
-                    resp = client.post(url, headers=headers, json=payload, timeout=self._request_timeout(settings))
-                    resp.raise_for_status()
+                resp = timed_call(stage, operation_id, request_text)
                 data = resp.json()
                 choice = data["choices"][0]
                 if not isinstance(choice, dict):

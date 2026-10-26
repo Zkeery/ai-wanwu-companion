@@ -2,6 +2,9 @@ import React from 'react';
 import { afterAll, afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import GatheringWorld from '@/components/gathering-world';
+import SharedLivingWorld3D from '@/components/shared-living-world-3d';
+vi.mock('next/dynamic', () => ({ default: () => function World(props: Parameters<typeof SharedLivingWorld3D>[0]) { return <SharedLivingWorld3D {...props} />; } }));
+vi.mock('@/lib/living-world-engine', () => ({ createLivingWorld: () => ({ update: vi.fn(), dispose: vi.fn(), setMotion: vi.fn(), setBubbleReceipts: vi.fn(), setReplay: vi.fn(), setSelectionMenu: vi.fn(), rotate: vi.fn(), zoom: vi.fn(), reset: vi.fn() }) }));
 import Gatherings from '@/components/gatherings';
 import { gatherings, parseGathering, type Gathering } from '@/lib/gatherings';
 import { api } from '@/lib/api';
@@ -43,24 +46,46 @@ it.each(['home', 'forest', 'desert'].flatMap(scene => ['spring', 'summer', 'autu
   const g = snapshot(scene, season), original = JSON.stringify(g);
   const { container } = render(<GatheringWorld gathering={g} focusedId={null} onSelect={vi.fn()} />);
   expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', season);
-  expect(container.querySelector('img')).toHaveAttribute('src', new URL(scene === 'desert' ? `/oasis/terrain-${season}-v2.png` : `/seasons/${scene}-four-seasons-v1.png`, window.location.href).href);
-  expect(container.querySelector('.hub-world-item')).toHaveStyle({ left: '42%', top: '47.5%' });
+  if (scene === 'home') {
+    expect(container.querySelector('[data-presentation="home-world"]')).toHaveAttribute('data-focus-view', 'overview');
+    expect(screen.getByRole('button', { name: '查看小叶的生活近况' })).toBeVisible();
+    expect(g.items[0]).toMatchObject({ x: .4, y: .5, growth_status: 'growing' });
+  } else {
+    expect(container.querySelector('img')).toHaveAttribute('src', new URL(scene === 'desert' ? `/oasis/terrain-${season}-v2.png` : `/seasons/${scene}-four-seasons-v1.png`, window.location.href).href);
+    expect(container.querySelector('.hub-world-item')).toHaveStyle({ left: '42%', top: '47.5%' });
+  }
   expect(JSON.stringify(g)).toBe(original);
   expect(gatherings.command).not.toHaveBeenCalled();
 });
 
 it.each([['home', null], ['forest', 'unexpected'], ['unknown', 'winter']])('retains a base background for %s / %s without loading an arbitrary image', (scene, season) => {
   const { container } = render(<GatheringWorld gathering={snapshot(scene!, season)} focusedId={null} onSelect={vi.fn()} />);
-  expect(container.querySelector('img')).toBeNull();
+  if (scene === 'unknown') expect(container.querySelector('img')).toBeNull();
+  else if (scene === 'home') {
+    expect(container.querySelector('[data-presentation="home-world"]')).toBeVisible();
+    expect(container.querySelector('img')).toBeNull();
+    expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'base');
+  }
+  else {
+    expect(container.querySelector('[data-scene-art="base"] img')).toHaveAttribute('src', new URL(`/seasons/${scene}-four-seasons-v1.png`, window.location.href).href);
+    expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'base');
+  }
 });
 
 it.each(['home', 'forest', 'desert'])('keeps the %s companion usable after image failure and retry', scene => {
   const select = vi.fn(); const { container } = render(<GatheringWorld gathering={snapshot(scene)} focusedId={null} onSelect={select} />);
-  fireEvent.error(container.querySelector('img')!);
-  expect(screen.getByRole('status')).toHaveTextContent('先保留基础景色');
-  fireEvent.click(screen.getByRole('button', { name: '重试季节画面' }));
+  if (scene === 'home') {
+    fireEvent(screen.getByTestId('living3d-canvas'), new Event('living3d-lost'));
+    expect(screen.getByRole('status')).toHaveTextContent('伙伴和住处记录都已保留');
+    fireEvent.click(screen.getByRole('button', { name: '重新打开立体画面' }));
+    expect(screen.queryByRole('status')).toBeNull();
+  } else {
+    fireEvent.error(container.querySelector('img')!);
+    expect(screen.getByRole('status')).toHaveTextContent('先保留基础景色');
+    fireEvent.click(screen.getByRole('button', { name: '重试季节画面' }));
+    expect(container.querySelector('img')?.getAttribute('src')).toContain('?retry=1');
+  }
   expect(select).not.toHaveBeenCalled();
-  expect(container.querySelector('img')?.getAttribute('src')).toContain('?retry=1');
   fireEvent.click(screen.getByRole('button', { name: '查看小叶的生活近况' }));
   expect(select).toHaveBeenCalledWith(1); expect(gatherings.command).not.toHaveBeenCalled();
 });
@@ -70,34 +95,41 @@ it('changes the artwork only when an approved server snapshot arrives', async ()
   vi.mocked(gatherings.read).mockResolvedValueOnce(original).mockResolvedValueOnce({ ...pending, season: 'winter', revision: 6, votes: [{ ...pending.votes[0], status: 'passed', choices: { owner: true, other: true } }] });
   vi.mocked(gatherings.command).mockResolvedValueOnce(pending);
   render(<Gatherings />); await screen.findByLabelText('共同生活场景');
+  fireEvent.click(screen.getByRole('tab', { name: '成员与设置' }));
   fireEvent.click(screen.getByRole('button', { name: '提议调整四季' }));
   fireEvent.change(screen.getByLabelText('四季方式'), { target: { value: 'virtual' } });
   fireEvent.change(screen.getByLabelText('从哪个季节开始'), { target: { value: 'winter' } });
   expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'autumn');
   fireEvent.click(screen.getByRole('button', { name: '提交提议并投同意票' }));
   await screen.findByText(/1 票同意 \/ 需要 2 票/);
+  fireEvent.click(screen.getByRole('tab', { name: '伙伴与活动' }));
   expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'autumn');
   fireEvent.click(screen.getByRole('button', { name: '刷新近况' }));
+  fireEvent.click(screen.getByRole('tab', { name: '成员与设置' }));
   await screen.findByText('已通过', { exact: false });
+  fireEvent.click(screen.getByRole('tab', { name: '伙伴与活动' }));
   expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'winter');
   expect(gatherings.command).toHaveBeenCalledTimes(1);
   expect(gatherings.command).toHaveBeenCalledWith(original, { action: 'propose_season', settings: { mode: 'virtual', weeks: 1, start_season: 'winter' } }, expect.any(String));
   expect(original.items[0].growth_status).toBe('growing');
 });
 
-it('keeps the original season after a failed write and recovers from a read without replaying', async () => {
+it('shows the recovered authoritative season after an unknown write without replaying', async () => {
   vi.mocked(gatherings.read).mockResolvedValueOnce(snapshot()).mockResolvedValueOnce(snapshot('home', 'winter'));
   vi.mocked(gatherings.command).mockRejectedValueOnce(new Error('连接断开'));
   render(<Gatherings />); await screen.findByLabelText('共同生活场景');
+  fireEvent.click(screen.getByRole('tab', { name: '成员与设置' }));
   fireEvent.click(screen.getByRole('button', { name: '提议调整四季' }));
   fireEvent.change(screen.getByLabelText('四季方式'), { target: { value: 'virtual' } });
   fireEvent.click(screen.getByRole('button', { name: '提交提议并投同意票' }));
   await screen.findByText('连接断开');
-  expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'autumn');
-  fireEvent.click(screen.getByRole('button', { name: /重新加载/ }));
+  expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'winter');
   await screen.findByText('家庭庭院 · 冬天');
+  fireEvent.click(screen.getByRole('button', { name: '关闭' }));
+  fireEvent.click(screen.getByRole('tab', { name: '伙伴与活动' }));
   expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'winter');
   expect(gatherings.command).toHaveBeenCalledTimes(1);
+  expect(gatherings.read).toHaveBeenCalledTimes(2);
 });
 
 async function renderSynced() {
@@ -111,7 +143,7 @@ it('accepts equal-revision clock changes, rejects an older revision, and retains
   vi.mocked(gatherings.read).mockResolvedValueOnce(original)
     .mockResolvedValueOnce({ ...snapshot('home', 'winter'), revision: 3 })
     .mockResolvedValueOnce(snapshot('home', 'spring'));
-  await renderSynced(); fireEvent.click(screen.getByRole('checkbox', { name: '参与活动' }));
+  await renderSynced(); fireEvent.click(screen.getByText('伙伴管理与更多活动')); fireEvent.click(screen.getByRole('checkbox', { name: '参与活动' }));
   await advance(15000); expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'autumn');
   await advance(15000); expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'spring');
   expect(screen.getByRole('checkbox', { name: '参与活动' })).toBeChecked();
@@ -119,12 +151,14 @@ it('accepts equal-revision clock changes, rejects an older revision, and retains
 });
 it('preserves the season draft while the modal is open and reads immediately after closing', async () => {
   vi.mocked(gatherings.read).mockResolvedValueOnce(snapshot()).mockResolvedValueOnce(snapshot('home', 'winter'));
-  await renderSynced(); fireEvent.click(screen.getByRole('button', { name: '提议调整四季' }));
+  await renderSynced(); fireEvent.click(screen.getByRole('tab', { name: '成员与设置' }));
+  fireEvent.click(screen.getByRole('button', { name: '提议调整四季' }));
   fireEvent.change(screen.getByLabelText('四季方式'), { target: { value: 'virtual' } });
   fireEvent.change(screen.getByLabelText('从哪个季节开始'), { target: { value: 'summer' } });
   await advance(60000); expect(gatherings.read).toHaveBeenCalledOnce();
   expect(screen.getByLabelText('从哪个季节开始')).toHaveValue('summer');
   fireEvent.click(screen.getByRole('button', { name: '关闭' })); await advance(0);
+  fireEvent.click(screen.getByRole('tab', { name: '伙伴与活动' }));
   expect(screen.getByLabelText('共同生活场景')).toHaveAttribute('data-season', 'winter');
   expect(gatherings.command).not.toHaveBeenCalled();
 });
@@ -139,7 +173,7 @@ it('removes inaccessible content and reloads the list after membership is revoke
 it('prunes a recalled participant without clearing the remaining selection', async () => {
   const original = snapshot(); original.companions.push({ ...original.companions[0], id: 2, name: '小花' });
   vi.mocked(gatherings.read).mockResolvedValueOnce(original).mockResolvedValueOnce({ ...original, revision: 5, companions: [original.companions[1]] });
-  await renderSynced(); screen.getAllByRole('checkbox', { name: '参与活动' }).forEach(c => fireEvent.click(c));
+  await renderSynced(); fireEvent.click(screen.getByText('伙伴管理与更多活动')); screen.getAllByRole('checkbox', { name: '参与活动' }).forEach(c => fireEvent.click(c));
   fireEvent.click(screen.getByRole('button', { name: '查看小叶的生活近况' }));
   await advance(15000); expect(screen.queryByLabelText('小叶的生活近况')).toBeNull();
   expect(screen.getByRole('checkbox', { name: '参与活动' })).toBeChecked();

@@ -18,7 +18,7 @@ from app.schemas.schemas import ObjectOut, PhotoOut
 from app.services.input_limits import MAX_CANDIDATES
 from app.services.model_client import ModelClient
 from app.services.photo_input import normalize_photo
-from app.services.generation_timing import timed_call
+from app.services.generation_timing import timed_call, timing_span, diagnostic_operation_id
 from app.services.character_concept import save_concept
 from app.services.generation_errors import record_failure, recognition_failure_message
 from app.services.themes import validate_theme
@@ -81,10 +81,11 @@ def _validate_image(file: UploadFile) -> bytes:
 def upload_photo(file: UploadFile = File(...), db: Session = Depends(get_db),
                  user: User = Depends(get_current_user),
                  theme_id: str | None = Depends(theme_from_form),
-                 idempotency_key: str | None = Header(default=None)):
+                 idempotency_key: str | None = Header(default=None),
+                 x_generation_trace: str | None = Header(default=None)):
     validate_theme(theme_id)
     data = _validate_image(file)
-    operation_id = f"photo:{uuid4().hex}"
+    operation_id = diagnostic_operation_id(x_generation_trace, f"photo:{uuid4().hex}")
     normalized = timed_call("photo_prepare", operation_id, normalize_photo, data)
     receipt = None
     if idempotency_key:
@@ -121,22 +122,25 @@ def upload_photo(file: UploadFile = File(...), db: Session = Depends(get_db),
         if receipt:
             receipt.status = "failed"
             db.commit()
-        error = api_error(502, "recognize_failed", recognition_failure_message(details["reason"]))
+        error = api_error(502, "recognize_failed", recognition_failure_message(details["reason"], details.get("parse_code")))
         error.detail["error"]["reason"] = details["reason"]
+        if "parse_code" in details:
+            error.detail["error"]["parse_code"] = details["parse_code"]
         raise error
 
-    photo = Photo(filename=_safe_filename(file.filename), status="done", owner_id=user.id, theme_id=theme_id)
-    db.add(photo)
-    db.flush()
-    for obj in objects[:MAX_CANDIDATES]:
-        db.add(Object(photo_id=photo.id, label=obj.label, visual_features=obj.visual_features, category=obj.category,
-                      character_concept_json=save_concept(obj.label, obj.visual_features, obj.concept) if obj.concept else None))
-    if receipt:
-        receipt.status = "ready"
-        receipt.photo_id = photo.id
-    db.commit()
-    db.refresh(photo)
-    return _photo_out(photo)
+    with timing_span("photo_store", operation_id):
+        photo = Photo(filename=_safe_filename(file.filename), status="done", owner_id=user.id, theme_id=theme_id)
+        db.add(photo)
+        db.flush()
+        for obj in objects[:MAX_CANDIDATES]:
+            db.add(Object(photo_id=photo.id, label=obj.label, visual_features=obj.visual_features, category=obj.category,
+                          character_concept_json=save_concept(obj.label, obj.visual_features, obj.concept) if obj.concept else None))
+        if receipt:
+            receipt.status = "ready"
+            receipt.photo_id = photo.id
+        db.commit()
+        db.refresh(photo)
+        return _photo_out(photo)
 
 
 @router.get("/requests/{request_id}")

@@ -20,7 +20,12 @@
 .hub-companion-select { display: grid; gap: 3px; padding: 0; border: 0; background: transparent; font: inherit; color: inherit; cursor: pointer; overflow-wrap: anywhere; }
 .hub-companion-select::after { content: ''; position: absolute; inset: 0; border-radius: 16px; }
 .hub-companion-select:focus-visible { outline: none; }
-.hub-world-companion span { font-size: 28px; }
+.hub-companion-portrait .private-image-placeholder { box-sizing: border-box; min-height: 0; padding: 4px; gap: 2px; font-size: 11px; line-height: 1.35; overflow: hidden; }
+.hub-companion-portrait .private-image-placeholder > span { font-size: inherit; }
+.hub-original-appearance { margin: 12px 0; padding: 12px; border: 1px solid #d4dacb; border-radius: 16px; }
+.hub-original-appearance summary { cursor: pointer; font-size: 14px; }
+.hub-original-portrait { max-width: 280px; aspect-ratio: 1; margin: 12px auto; }
+.hub-original-portrait img { width: 100%; height: 100%; object-fit: contain; border-radius: 18px; }
 .hub-world-companion img { width: 100%; aspect-ratio: 1; height: auto; object-fit: contain; border-radius: 12px; }
 .hub-activity-rest { background: #fff5e4; }
 .hub-activity-talk { border-color: #c45a66; }
@@ -37,3 +42,143 @@
 .hub-world-forest.season-winter { background: linear-gradient(#b5cad0 0 38%, #cdd8ca 38%); }
 .hub-world.season-autumn { background: linear-gradient(#d4ddce 0 38%, #e1c384 38%); }
 .hub-world.season-summer { background: linear-gradient(#9edfe2 0 38%, #acd187 38%); }
+
+/* Shared home: scene first, one task at a time. */
+.hub-home-heading { display:flex; justify-content:space-between; align-items:center; gap:20px; margin:16px 0 8px; }
+.hub-home-heading h1 { font-size:clamp(28px,3.5vw,42px); line-height:1.25; margin:12px 0; }
+.hub-home-heading p { margin:8px 0; color:#536c66; }
+.hub-home-meta { display:flex; gap:8px 20px; flex-wrap:wrap; font-size:15px; }
+.hub-text-button { border:0; background:transparent; padding:8px 0; color:#4b6860; font:inherit; font-size:14px; cursor:pointer; text-decoration:underline; text-underline-offset:4px; min-height:44px; }
+.hub-text-button:disabled { opacity:.55; cursor:default; }
+.hub-text-button:focus-visible, .hub-disclosure summary:focus-visible { outline:3px solid #8f4055; outline-offset:4px; border-radius:4px; }
+.hub-sync { display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:13px; color:#536c66; }
+.hub-sync p { margin:0; }
+.hub-sync p[data-stale=true] { color:#91482d; }
+.hub-task-navigation { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); padding:7px; gap:6px; background:#eaf4ec; border:1px solid #d8e2d5; border-radius:22px; margin:24px 0 0; scroll-margin-top:20px; }
+.hub-task-navigation button { border:1px solid transparent; background:transparent; border-radius:16px; padding:17px 10px; font:inherit; text-align:left; color:#547168; min-width:0; cursor:pointer; display:grid; gap:5px; }
+.hub-task-navigation strong { font-size:18px; }
+.hub-task-navigation span { font-size:12px; line-height:1.5; }
+.hub-task-navigation button[aria-selected=true] { background:#fffcf6; border-color:#e1cdb1; color:#45394d; box-shadow:0 3px 0 #d8d4c4; }
+.hub-task-navigation button:focus-visible { outline:3px solid #9c5365; outline-offset:1px; }
+.hub-task-panel[hidden] { display:none !important; }
+.hub-task-panel > .team-panel:first-child { margin-top:16px; }
+.hub-page .hub-companion-detail { padding:20px 24px; margin-top:12px !important; margin-bottom:16px; border-radius:22px; }
+.hub-section-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.hub-section-heading h2 { margin:0; font-size:22px; display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+.hub-section-heading p { color:#677266; margin:6px 0; font-size:14px; line-height:1.7; }
+.hub-section-heading .hub-actions { margin:0; gap:8px; }
+.hub-activity-chip,.hub-count { display:inline-block; background:#e9eddb; border:1px solid #d0d7be; border-radius:30px; padding:5px 12px; font-size:13px; font-weight:normal; color:#526545; }
+.hub-disclosure { border-top:1px solid #e5dccd; margin-top:14px; padding-top:12px; font-size:14px; }
+.hub-disclosure summary { cursor:pointer; color:#655466; min-height:32px; line-height:32px; }
+.hub-disclosure p { line-height:1.8; }
+.hub-story-disclosure { background:#fffcf7; border:1px solid #e6d5bb; padding:16px 24px; border-radius:20px; }
+.hub-story-disclosure .team-panel { border:0; box-shadow:none; padding:8px 0; margin:0; }
+.hub-activity-picker { padding:16px 20px; background:#f4f3e9; border-radius:18px; margin-top:20px; }
+.hub-activity-picker h3 { margin:0 0 8px; font-size:18px; }
+.hub-activity-picker p { margin:6px 0; color:#677266; font-size:14px; line-height:1.7; }
+.hub-page .hub-task-panel h2 { font-size:23px; }
+.hub-task-panel > .team-panel { padding:28px; border-radius:24px; }
+.hub-start-actions { margin:24px 0; }
+@media(max-width:760px) {
+  .hub-home-heading { display:block; }
+  .hub-home-heading > .hub-actions { margin:16px 0 0; }
+  .hub-home-heading > .hub-actions .button { flex:1; padding:12px 14px; }
+  .hub-task-navigation { grid-template-columns:repeat(2,minmax(0,1fr)); border-radius:18px; margin-top:18px; }
+  .hub-task-navigation button { padding:13px 10px; }
+  .hub-task-navigation strong { font-size:16px; }
+  .hub-task-navigation span { font-size:11px; }
+  .hub-page .hub-companion-detail, .hub-task-panel > .team-panel { padding:20px 18px; }
+  .hub-section-heading > .hub-actions { width:100%; }
+  .hub-section-heading > .hub-actions .button { flex:1; padding:10px; font-size:14px; }
+  .hub-activity-picker { padding:14px; }
+  .hub-activity-picker .button { flex:1 1 35%; padding:10px; }
+  .hub-home-meta { font-size:13px; gap:5px; }
+}
+
+.hub-page .hub-dialogue-compact { padding:20px 28px; background:#f8f7ef; box-shadow:none; }
+.hub-dialogue-compact > h2 { font-size:18px !important; margin:0 0 8px; }
+.hub-dialogue-compact > p,.hub-automatic-compact > p { font-size:14px; color:#687067; margin:7px 0; line-height:1.7; }
+.hub-automatic-compact { margin-top:16px; padding:16px 0 0; }
+.hub-automatic-compact > h3 { font-size:16px; margin:0 0 8px; }
+.hub-settings-disclosure { font-size:14px; margin:8px 0 0; }
+.hub-settings-disclosure > summary { color:#70606b; cursor:pointer; padding:8px 0; min-height:32px; }
+.hub-settings-disclosure[open] > summary { margin-bottom:16px; }
+@media(max-width:760px){.hub-page .hub-dialogue-compact {padding:20px 18px;}}
+
+.hub-scene-workspace[hidden] { display:none !important; }
+.hub-page.teams-page { padding-top:28px; }
+.hub-home-heading .hub-actions { margin:8px 0; }
+.hub-scene-workspace .hub-sync { margin-top:12px; }
+.hub-scene-workspace .hub-original-appearance { background:#f7f6eacc; }
+
+.hub-page.teams-page { margin-top:20px; padding-top:8px; }
+@media(max-width:760px){.hub-page.teams-page {margin-top:12px;}}
+
+/* Clear selection-to-activity flow. */
+.hub-partner-controls > .hub-section-heading { margin-bottom:22px; }
+.hub-own-partners h3, .hub-activity-picker h3 { display:flex; align-items:center; gap:9px; font-size:17px; margin:0 0 12px; }
+.hub-step-number { display:inline-grid; place-items:center; flex:0 0 26px; width:26px; height:26px; border-radius:50%; background:#dcece3; color:#416859; font-size:13px; font-weight:600; }
+.hub-partner-control-row { display:flex; align-items:stretch; gap:10px; margin:10px 0; }
+.hub-partner-choice { display:flex; flex:1; min-width:0; align-items:center; gap:12px; padding:14px 16px; border:2px solid #e4dccd; border-radius:16px; background:#fffcf6; cursor:pointer; transition:background .12s,border-color .12s; }
+.hub-partner-choice:hover { border-color:#a4c1ae; }
+.hub-partner-choice:focus-within { outline:3px solid #9e5668; outline-offset:2px; }
+.hub-partner-choice[data-selected=true] { background:#e4f2e8; border-color:#6d9d84; }
+.hub-partner-choice input { width:20px; height:20px; flex:0 0 20px; margin:0; accent-color:#4e846b; }
+.hub-partner-choice > span { display:grid; gap:4px; min-width:0; }
+.hub-partner-choice strong { font-size:17px; }
+.hub-partner-choice small { color:#6c7b70; font-size:12px; line-height:1.5; }
+.hub-page .hub-recall-button { padding:10px 18px; align-self:center; font-size:14px; min-width:70px; }
+.hub-partner-controls .hub-activity-picker { margin-top:20px; padding:18px; background:#f2f4eb; }
+.hub-activity-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:12px; }
+.hub-activity-button { display:grid; grid-template-columns:auto 1fr; align-content:center; gap:4px 8px; min-width:0; min-height:76px; padding:12px; border:1px solid #d9d8c8; background:#fffdf6; border-radius:14px; color:#514451; font:inherit; text-align:left; cursor:pointer; }
+.hub-activity-button .hub-activity-symbol { grid-row:span 2; align-self:center; font-size:23px; color:#73937d; }
+.hub-activity-button strong { font-size:15px; }
+.hub-activity-button small { font-size:11px; color:#7b8276; line-height:1.5; }
+.hub-activity-button:hover:not(:disabled) { background:#e6f1e5; border-color:#83a78d; }
+.hub-activity-button:focus-visible { outline:3px solid #9e5668; outline-offset:2px; }
+.hub-activity-button:disabled { opacity:.48; cursor:default; }
+.hub-partner-controls .hub-helper { font-size:12px; color:#748073; line-height:1.7; margin:8px 0; }
+.hub-partner-controls .hub-activity-note { margin:12px 0 0; }
+.hub-friend-partners { padding:18px 0 6px; margin-top:12px; border-top:1px solid #e4ddcf; }
+.hub-friend-partners h3 { font-size:14px; color:#6e7b70; margin:0 0 8px; font-weight:500; }
+.hub-friend-list { display:flex; flex-wrap:wrap; gap:8px; }
+.hub-friend-list > div { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:10px; background:#f0f0e7; font-size:13px; }
+.hub-friend-list span { color:#7b8376; font-size:12px; }
+.hub-bring-partner { border-top:1px solid #e4ddcf; padding-top:12px; margin-top:12px; }
+.hub-bring-partner > summary { color:#546e5e; font-size:14px; font-weight:600; }
+.hub-page .hub-dialogue-compact { padding:16px 22px; border-radius:18px; }
+.hub-ai-status-row { display:flex; align-items:center; flex-wrap:wrap; gap:6px 16px; }
+.hub-ai-status-row > h2, .hub-ai-status-row > h3 { margin:0!important; font-size:16px!important; }
+.hub-ai-status-row > .hub-ai-status-copy { margin:0!important; color:#7a8074; font-size:12px; line-height:1.7; }
+.hub-ai-status-row .hub-actions { margin:0; }
+.hub-ai-status-row .button { padding:8px 12px; font-size:12px; }
+.hub-dialogue-compact .hub-settings-disclosure > summary { min-height:26px; font-size:12px; padding:5px 0; }
+.hub-automatic-compact { margin-top:10px; padding-top:10px; }
+@media(max-width:760px){.hub-activity-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}.hub-partner-choice{padding:12px;gap:10px;}.hub-page .hub-recall-button{min-width:60px;padding:10px 12px;}.hub-partner-controls .hub-activity-picker{padding:14px;}.hub-page .hub-dialogue-compact{padding:16px 18px;}.hub-ai-status-row{gap:4px 10px;}}
+
+.hub-area-navigation{margin-top:20px}.hub-area-navigation [role=group]{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.hub-area-navigation button{display:flex;min-width:0;align-items:flex-start;justify-content:center;flex-direction:column;gap:4px;padding:12px 18px;border:1px solid #d1d9c8;border-radius:18px;background:#fffdf5;color:#465344;font:inherit;cursor:pointer}.hub-area-navigation button[aria-pressed=true]{background:#e4ecd9;border-color:#9aa987;box-shadow:inset 0 0 0 1px #9aa987}.hub-area-navigation button span{font-size:12px;color:#64765e}.hub-area-navigation p{font-size:13px!important;line-height:1.7;margin:10px 0!important;color:#617160}.hub-area-navigation .hub-area-presence{font-size:12px!important;overflow-wrap:anywhere}.hub-area-navigation button:focus-visible{outline:3px solid #aa6976;outline-offset:2px}@media(max-width:600px){.hub-area-navigation button{padding:10px 12px;gap:8px;flex-wrap:wrap}.hub-area-navigation button span{font-size:11px}}
+
+/* Shared, opaque colors keep mobile text as readable as the desktop view. */
+.hub-page{color-scheme:light;--muted:#52665a;--line:#c7d0c0;--green:#355c47;color:#273d35}
+.hub-page .team-panel{background:#fffefa;border-color:#c7d0c0}
+.hub-page .hub-helper,.hub-page .hub-activity-button small,.hub-page .hub-ai-status-copy,
+.hub-page .hub-partner-choice small,.hub-page .hub-friend-list span{color:#526052}
+.hub-page .hub-task-navigation{background:#e5eee2;border-color:#aebea9}
+.hub-page .hub-task-navigation button{color:#354f43}
+.hub-page .hub-task-navigation button[aria-selected=true]{background:#fffdf6;border-color:#8e5364;color:#453543;box-shadow:inset 0 -3px #8e5364}
+.hub-page .hub-partner-choice[data-selected=true]{background:#dcecdf;border-color:#527b5f}
+.hub-page .hub-count,.hub-page .hub-activity-chip{background:#e0e9d5;border-color:#a1b291;color:#3f5636}
+.hub-page input:not([type=checkbox]),.hub-page select,.auth-form input{font-size:16px}
+@media(max-width:600px){
+  .hub-page.teams-page{padding-left:12px;padding-right:12px}
+  .hub-page .hub-home-heading{align-items:flex-start;gap:12px}
+  .hub-page .hub-home-heading h1{font-size:25px;line-height:1.35}
+  .hub-page .hub-home-meta{gap:6px 12px;font-size:13px}
+  .hub-page .hub-task-navigation{gap:4px;padding:5px;border-radius:16px;margin-top:16px}
+  .hub-page .hub-task-navigation button{min-height:48px;padding:10px 4px;text-align:center;justify-items:center;gap:4px}
+  .hub-page .hub-task-navigation strong{font-size:14px}
+  .hub-page .hub-task-navigation span{display:none}
+  .hub-page .hub-section-heading h2{font-size:20px}
+  .hub-page .hub-disclosure>summary,.hub-page .hub-settings-disclosure>summary,.hub-page .hub-bring-partner>summary{min-height:44px;line-height:1.5;padding:12px 0;color:#4d4651}
+  .hub-page .hub-text-button{padding:10px 6px;flex-shrink:0}
+}

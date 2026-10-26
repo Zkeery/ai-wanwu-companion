@@ -1,0 +1,11 @@
+[Unit]
+Description=Wanwu Partner daily offsite copy after verified backup
+
+[Timer]
+OnCalendar=*-*-* 03:15:00 Asia/Shanghai
+Persistent=false
+AccuracySec=1s
+Unit=wanwu-partner-offsite-backup.service
+
+[Install]
+WantedBy=timers.target

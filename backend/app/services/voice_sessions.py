@@ -78,18 +78,16 @@ def recover(conn):
 def project_reply(messages):
     """Called only by an injected service after a durable allowance is reserved."""
     import asyncio
-    from pathlib import Path
-    from dotenv import dotenv_values
     from app.core.config import get_settings
     from app.living.life_live_planner import check_current_catalog
     from app.living.life_provider import BASE_URL, MODEL
     from app.services.voice_reply import configured_reply
 
-    values = dotenv_values(Path(__file__).resolve().parents[2] / '.env')
-    if values.get('MODEL_BASE_URL') != BASE_URL or not values.get('MODEL_API_KEY'):
+    project_settings = get_settings()
+    if project_settings.model_base_url != BASE_URL or not project_settings.model_api_key:
         fail('本项目语音模型配置不可用')
     asyncio.run(check_current_catalog())
-    settings = get_settings().model_copy(update=dict(app_env='development', model_base_url=BASE_URL,
-        model_api_key=values['MODEL_API_KEY'], chat_model=MODEL, voice_live_reply_enabled=True,
+    settings = project_settings.model_copy(update=dict(app_env='development', model_base_url=BASE_URL,
+        model_api_key=project_settings.model_api_key, chat_model=MODEL, voice_live_reply_enabled=True,
         model_max_retries=0, model_timeout_seconds=30, model_enable_thinking=False))
     return configured_reply(messages, settings=settings, max_payload_bytes=32768)

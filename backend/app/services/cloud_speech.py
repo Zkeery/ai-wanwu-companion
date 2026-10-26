@@ -1,6 +1,7 @@
 """Owner-scoped Qwen speech: one synthesis per authorized round, download-only recovery."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import time
 
@@ -12,7 +13,7 @@ from app.living.gatherings import GatheringStore, fail
 from app.living.store import metadata
 from app.services import voice_sessions
 from app.services.qwen_tts_candidate import (
-    MAX_TEXT_LENGTH, PRICE_PER_10000_CHARS, VOICES, billed_characters,
+    MODEL, CandidateError, MAX_TEXT_LENGTH, PRICE_PER_10000_CHARS, request_characters,
     download_candidate, synthesize_text,
 )
 
@@ -64,14 +65,29 @@ def interrupt_pending(conn):
     conn.execute(update(requests).where(requests.c.state == 'started').values(state='interrupted'))
 
 
+def project_tts_key():
+    # An explicitly empty environment value disables credentials as well.
+    if 'QWEN_TTS_API_KEY' in os.environ:
+        return os.environ['QWEN_TTS_API_KEY'].strip()
+    return (dotenv_values(Path(__file__).resolve().parents[2] / '.env')
+            .get('QWEN_TTS_API_KEY') or '').strip()
+
+
+def project_tts_model():
+    if 'QWEN_TTS_MODEL' in os.environ:
+        return os.environ['QWEN_TTS_MODEL'].strip()
+    value = dotenv_values(Path(__file__).resolve().parents[2] / '.env').get('QWEN_TTS_MODEL')
+    return MODEL if value is None else value.strip()
+
+
 class QwenSpeech:
-    def __init__(self, engine, clock=None, client_factory=None, key_loader=None):
+    def __init__(self, engine, clock=None, client_factory=None, key_loader=None, model_loader=None):
         self.engine = engine
         self.clock = clock or (lambda: int(time.time()))
         self.store = GatheringStore(engine, self.clock)
         self.client_factory = client_factory or (lambda: httpx.Client(follow_redirects=False))
-        self.key_loader = key_loader or (lambda: dotenv_values(
-            Path(__file__).resolve().parents[2] / '.env').get('QWEN_TTS_API_KEY') or '')
+        self.key_loader = key_loader or project_tts_key
+        self.model_loader = model_loader or project_tts_model
 
     @staticmethod
     def _round(conn, uid, cid, rid):
@@ -92,7 +108,12 @@ class QwenSpeech:
         if not is_cloud_voice(voice) or not isinstance(text, str) or not 0 < len(text) <= MAX_TEXT_LENGTH:
             fail('回复暂时无法朗读，文字已保留', 'audio_unavailable')
         provider_voice = voice.split(':', 1)[1]
-        upper_micro = int(PRICE_PER_10000_CHARS * billed_characters(text + VOICES[provider_voice]) * 100)
+        try:
+            selected_model = self.model_loader()
+            upper_micro = int(PRICE_PER_10000_CHARS * request_characters(
+                text, provider_voice, model=selected_model) * 100)
+        except CandidateError:
+            fail('自然音色模型配置无效，文字已保留', 'audio_unavailable')
         if (upper_micro > SPEECH_RESERVE_MICRO or
                 voice_sessions.RESERVE_MICRO + SPEECH_RESERVE_MICRO > 1_200_000):
             fail('语音合成超出本轮费用上限', 'audio_unavailable')
@@ -124,12 +145,14 @@ class QwenSpeech:
         def save_response(body):
             with self.store.transaction() as conn:
                 self._round(conn, uid, cid, rid)
+                saved = dict(body, _wanwu_tts_model=selected_model)
                 conn.execute(update(requests).where(requests.c.round_id == rid,
-                    requests.c.state == 'started').values(response_json=json.dumps(body, ensure_ascii=False)))
+                    requests.c.state == 'started').values(response_json=json.dumps(saved, ensure_ascii=False)))
 
         try:
             with self.client_factory() as client:
-                result = synthesize_text(key, text, provider_voice, client=client, on_response=save_response)
+                result = synthesize_text(key, text, provider_voice, client=client,
+                    on_response=save_response, model=selected_model)
             with self.store.transaction() as conn:
                 self._round(conn, uid, cid, rid)
                 conn.execute(update(requests).where(requests.c.round_id == rid,
@@ -152,7 +175,7 @@ class QwenSpeech:
             body = json.loads(row['response_json'])
         try:
             with self.client_factory() as client:
-                result = download_candidate(body, client=client)
+                result = download_candidate(body, client=client, model=body.get('_wanwu_tts_model', MODEL))
             with self.store.transaction() as conn:
                 self._round(conn, uid, cid, rid)
                 conn.execute(update(requests).where(requests.c.round_id == rid,

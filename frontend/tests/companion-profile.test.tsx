@@ -100,3 +100,20 @@ it('updates name and effective personality in the same companion without reloadi
   expect(screen.getByRole('heading', { name: '和小芽聊聊' })).toBeVisible();
   expect(screen.getByLabelText('想对伙伴说的话')).toHaveValue('留着下次说');
 });
+
+
+it('opens the action review from the actual profile without conflicting with existing widgets', async () => {
+  const { setToken, clearToken } = await import('@/lib/auth');
+  setToken('profile-synthetic-owner');
+  const errors = vi.spyOn(console, 'error').mockImplementation(() => {});
+  const view = render(<Companion id={1} />);
+  try {
+    await screen.findByLabelText('伙伴资料卡');
+    fireEvent.click(screen.getByRole('button', { name: '伙伴的动作' }));
+    expect(screen.getByRole('dialog', { name: '伙伴的动作' })).toBeInTheDocument();
+    expect(screen.getByText('查看待确认动作')).toBeInTheDocument();
+    expect(errors.mock.calls.some(args => args.some(v => typeof v === 'string' && /same key|unique.*key/.test(v)))).toBe(false);
+  } finally {
+    view.unmount(); errors.mockRestore(); clearToken();
+  }
+});

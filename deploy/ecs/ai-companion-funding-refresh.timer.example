@@ -1,0 +1,10 @@
+[Unit]
+Description=Wanwu Partner private financial proof refresh interval (not installed)
+
+[Timer]
+OnActiveSec=60
+OnUnitActiveSec=60
+Unit=ai-companion-funding-refresh.service
+
+[Install]
+WantedBy=timers.target

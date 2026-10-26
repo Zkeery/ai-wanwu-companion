@@ -1,4 +1,5 @@
 'use client';
+import { randomRequestId } from '@/lib/request-id';
 /* eslint-disable @next/next/no-img-element */
 import CompanionMotionPreview from './companion-motion-preview';
 import CreationDeadline from './creation-deadline';
@@ -12,6 +13,7 @@ import PersonalityEditor from './personality-editor';
 import PublicationDialog from './publication-dialog';
 import { ApiError, api, errorText } from '@/lib/api';
 import { getToken } from '@/lib/auth';
+import type { ImageLoadStage } from '@/lib/private-images';
 import { imageUrl, type Character } from '@/lib/contracts';
 import { MAX_CANDIDATES } from '@/lib/input-limits';
 import { returnHref, type CreationOrigin } from '@/lib/creation-origin';
@@ -58,12 +60,13 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
     return () => { active = false; };
   }, []);
 
+  const awaitingFirstImage = startedAt !== null && step === 'result' && !!character?.image_path && completedMs === null && !resultImageFailed;
   useEffect(() => {
-    if (!authed) return;
+    if (!authed || busy || awaitingFirstImage || step === 'generating' || step === 'recover') return;
     let active = true;
     api.generationCredits().then(value => { if (active) setCredits(value); }).catch(() => { /* Submission checks availability before uploading. */ });
     return () => { active = false; };
-  }, [authed, step]);
+  }, [authed, step, busy, awaitingFirstImage]);
 
   async function checkCredits() {
     const value = await api.generationCredits(); setCredits(value);
@@ -145,19 +148,20 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
     try {
       await checkCredits();
       if (c.signal.aborted) return;
-      const record = { origin, requestId: crypto.randomUUID(), themeId, freeCreation }; saveDraft(record); sent = true;
+      measurement.current?.mark('credits_checked');
+      const record = { origin, requestId: randomRequestId(), themeId, freeCreation }; saveDraft(record); sent = true;
       measurement.current?.mark('upload_started');
-      const result = await creationApi.upload(inputFile, record.requestId, c.signal, freeCreation ? null : themeId);
+      const result = await creationApi.upload(inputFile, record.requestId, c.signal, freeCreation ? null : themeId, measurement.current?.id);
       if (c.signal.aborted) return;
       measurement.current?.mark('recognized');
       saveDraft({ ...record, photoId: result.id, themeId: result.theme_id ?? null }); setPhoto(result);
       const primary = result.objects[0];
       if (!primary) { measurement.current?.finish('needs_review'); setStep('objects'); return; }
       setSelected(primary.id); setLabel(primary.label); setVisualFeatures(primary.visual_features || '');
-      await runGeneration(result, primary.id, primary.label, primary.visual_features || '', c);
+      await runGeneration(result, primary.id, primary.label, primary.visual_features || '', c, true);
     } catch (e) {
       if (!c.signal.aborted) {
-        const rejected = e instanceof ApiError && ([400, 413, 422].includes(e.status) || (e.status === 502 && e.code === 'recognize_failed'));
+        const rejected = e instanceof ApiError && ([400, 401, 403, 413, 422, 429].includes(e.status) || (e.status === 502 && e.code === 'recognize_failed') || (e.status === 503 && e.code === 'model_service_paused'));
         measurement.current?.finish(sent && !rejected ? 'interrupted' : 'failed');
         setError(sent && !rejected ? '等待识别结果的连接中断了，照片可能已经识别完成。' : errorText(e)); setStep(sent && !rejected ? 'recover' : 'upload');
         setStage('点击“核对结果”继续，不需要重新上传照片。');
@@ -173,7 +177,7 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
     try { await runGeneration(photo, selected, label.trim(), visualFeatures.trim(), c); }
     finally { lock.current = false; if (!c.signal.aborted) setBusy(false); }
   }
-  async function runGeneration(source: Photo, objectId: number, objectLabel: string, features: string, c: AbortController) {
+  async function runGeneration(source: Photo, objectId: number, objectLabel: string, features: string, c: AbortController, creditsAlreadyChecked = false) {
     let sent = false;
     try {
       const candidate = source.objects.find(o => o.id === objectId);
@@ -182,13 +186,15 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
         measurement.current?.finish('needs_review');
         setStep('objects'); setError('还不能确认这个对象符合水果主题。可以选择识别到的水果、换张照片，或改为自由创作。'); return;
       }
-      await checkCredits();
+      // The automatic chain already checked immediately before upload. The
+      // backend still checks service availability and reserves quota atomically.
+      if (!creditsAlreadyChecked) await checkCredits();
       if (c.signal.aborted) return;
       if (!draft.current) throw new Error('没有可恢复的创建记录');
       saveDraft({ ...draft.current, photoId: source.id, objectId, label: objectLabel, visualFeatures: features });
       setStep('generating'); setStage('正在为第一次见面做准备…'); sent = true;
       measurement.current?.mark('generation_started');
-      const result = await generateCompanion(objectId, objectLabel, c.signal, text => { if (!c.signal.aborted) setStage(text); }, features, draft.current.freeCreation ?? false);
+      const result = await generateCompanion(objectId, objectLabel, c.signal, text => { if (!c.signal.aborted) setStage(text); }, features, draft.current.freeCreation ?? false, measurement.current?.id);
       if (!c.signal.aborted) { measurement.current?.mark('ready'); showResult(result); }
     } catch (e) { if (!c.signal.aborted) {
       const confirmed = e instanceof GenerationFailedError || (e instanceof ApiError && e.code === 'theme_mismatch');
@@ -204,7 +210,7 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
     lock.current = true; setBusy(true); setError(''); setStartedAt(null); setCompletedMs(null);
     const c = new AbortController(); controller.current = c;
     try {
-      const record = { origin, requestId: crypto.randomUUID(), themeId: photo.theme_id ?? null, freeCreation: character?.theme_id == null };
+      const record = { origin, requestId: randomRequestId(), themeId: photo.theme_id ?? null, freeCreation: character?.theme_id == null };
       setFreeCreation(record.freeCreation);
       saveDraft(record);
       const corrected = await creationApi.correction(photo.id, record.requestId, c.signal);
@@ -215,10 +221,12 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
     } catch (e) { if (!c.signal.aborted) { setError(errorText(e)); setStep('recover'); setStage('请核对纠正草稿，原伙伴已保留在收藏。'); } }
     finally { lock.current = false; if (!c.signal.aborted) setBusy(false); }
   }
-  const imageFailed = useCallback(() => setResultImageFailed(true), []);
+  const imageStage = useCallback((stage: ImageLoadStage) => measurement.current?.mark(stage), []);
+  const imageFailed = useCallback(() => { setResultImageFailed(true); measurement.current?.finish('failed'); }, []);
   function imageLoaded(image: HTMLImageElement) {
     setResultImageFailed(false);
     if (startedAt === null || !image.naturalWidth || completedMs !== null) return;
+    measurement.current?.mark('image_loaded');
     const measuredStart = startedAt, measured = measurement.current;
     requestAnimationFrame(() => requestAnimationFrame(() => {
       if (image.isConnected && measurement.current === measured) { const now = performance.now(); measured?.finish('succeeded', now); setCompletedMs(now - measuredStart); }
@@ -287,7 +295,7 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
           <p id="features-help" className="feature-help">{selected && !photo.objects.find(o => o.id === selected)?.visual_features ? '这张照片没有保存可用的特征，你可以自行补充。' : '请确认这些特征属于你选中的对象；修改对象名称后，也请一起核对。'}伙伴形象会结合这些特征和性格创作，不是原照片的逐像素复刻。</p>
           <div className="theme-choice-help">{themeMismatch && <p id="theme-mismatch-help" role="status">这个对象还不能按水果主题生成。请选择水果对象，或点“改为自由创作”再生成。</p>}{photo.theme_id && !freeCreation && <button disabled={busy} onClick={switchToFree}>改为自由创作</button>}</div><div className="create-actions"><button onClick={startAnother} disabled={busy}>换张照片</button><button className="primary" aria-describedby={themeMismatch ? 'theme-mismatch-help' : undefined} onClick={() => void generate()} disabled={busy || !selected || !label.trim() || themeMismatch}><Sparkles size={16} />生成伙伴</button></div><p className="privacy-note">确认后重新创作并加入收藏，原伙伴仍会保留。修改描述或特征时，会先调整角色构思。</p></div>}
         {(step === 'generating' || step === 'recover') && <div className="generation-state"><div className="generation-leaf"><Leaf size={42} strokeWidth={1.2} /></div><h2>{step === 'generating' ? '一个小小的相遇，正在发生。' : '接着上次的进度。'}</h2><p role="status">{stage}</p>{step === 'generating' && <WaitingClock startedAt={startedAt} />}<p className="privacy-note">离开后可回来核对结果；状态未确认前不会自动重复生成。</p>{step === 'recover' && hasDraft && <button className="primary" disabled={busy} onClick={() => void recover(draft.current!, renameUncertain)}>核对结果</button>}</div>}
-        {step === 'result' && character && <div className="creation-result"><div className="creation-motion"><span className="result-saved"><Check size={14} />已加入我的伙伴</span>{imageUrl(character.image_path) ? <CompanionMotionPreview id={character.id} src={imageUrl(character.image_path)!} name={character.name} onStaticLoad={imageLoaded} onStaticError={imageFailed} /> : <div className="result-portrait"><Leaf size={80} strokeWidth={1} /></div>}{resultImageFailed && <Notice>图片暂时未能加载，请刷新核对，伙伴已保存。</Notice>}</div><div className="result-copy"><span className="create-kicker">很高兴认识你</span><p className="theme-result-label">{themeName(character.theme_id)} · 已加入我的收藏</p>{completedMs !== null && <p className="privacy-note" role="status">本次从上传到图片显示用时 {(completedMs / 1000).toFixed(1)} 秒</p>}<h2>你好，我是{character.name}。</h2><p className="opening-quote">“{character.opening_line}”</p><div className="result-personality"><h3>我的性格</h3><p>{character.persona}</p><button disabled={busy} onClick={() => setPersonality(true)}>调整性格</button></div><label className="text-label" htmlFor="companion-name">给伙伴一个喜欢的名字</label><input id="companion-name" className="name-input" value={name} maxLength={40} disabled={busy} onChange={e => setName(e.target.value)} /><div className="field-hint">1–40 字<span>{name.length}/40</span></div><div className="rename-row"><button disabled={busy || renameUncertain || !name.trim() || name.trim() === character.name} onClick={() => void rename()}>保存名字</button>{renameUncertain && <button disabled={busy} onClick={() => draft.current && void recover(draft.current, true)}>核对名字</button>}<span role="status">{savedNotice}</span></div>{origin && <div className="creation-origin"><Link className="button primary" href={returnHref(origin, character.theme_id === origin.theme ? character.id : undefined)}>{character.theme_id === origin.theme ? origin.kind === 'team' ? '回到小队，预览提交' : '回到主题，预览分享' : origin.kind === 'team' ? '回到原小队' : '回到原主题'}</Link><p>{character.theme_id === origin.theme ? '确认后才会分享；现在只在你的私人收藏里。' : '这位伙伴属于自由创作，不能提交到水果主题，仍保留在你的收藏里。'}</p></div>}<div className="create-actions"><Link className="button primary" href={`/companions/${character.id}`}>开始聊天<ArrowRight size={16} /></Link><Link className="button" href={`/companions/${character.id}/scenes`}>选择生活场景</Link><Link className="text-button" href="/">回到收藏</Link>{character.theme_id && <button className="button" disabled={busy} onClick={() => setSharing(true)}>分享作品</button>}</div>{personality && <PersonalityEditor key={character.id} id={character.id} close={() => setPersonality(false)} onSaved={persona => setCharacter(c => c ? { ...c, persona } : c)} />}{sharing && <PublicationDialog key={character.id} characterId={character.id} close={() => setSharing(false)} />}<div className="row"><button className="text-button" onClick={() => void correctResult()} disabled={busy}>纠正对象或特征</button><button className="text-button" onClick={startAnother} disabled={busy}>再认识一个伙伴</button></div></div></div>}
+        {step === 'result' && character && <div className="creation-result"><div className="creation-motion"><span className="result-saved"><Check size={14} />已加入我的伙伴</span>{imageUrl(character.image_path) ? <CompanionMotionPreview id={character.id} src={imageUrl(character.image_path)!} name={character.name} onStaticLoad={imageLoaded} onStaticStage={imageStage} onStaticError={imageFailed} /> : <div className="result-portrait"><Leaf size={80} strokeWidth={1} /></div>}{resultImageFailed && <Notice>图片暂时未能加载，请刷新核对，伙伴已保存。</Notice>}</div><div className="result-copy"><span className="create-kicker">很高兴认识你</span><p className="theme-result-label">{themeName(character.theme_id)} · 已加入我的收藏</p>{completedMs !== null && <p className="privacy-note" role="status">本次从上传到图片显示用时 {(completedMs / 1000).toFixed(1)} 秒</p>}<h2>你好，我是{character.name}。</h2><p className="opening-quote">“{character.opening_line}”</p><div className="result-personality"><h3>我的性格</h3><p>{character.persona}</p><button disabled={busy} onClick={() => setPersonality(true)}>调整性格</button></div><label className="text-label" htmlFor="companion-name">给伙伴一个喜欢的名字</label><input id="companion-name" className="name-input" value={name} maxLength={40} disabled={busy} onChange={e => setName(e.target.value)} /><div className="field-hint">1–40 字<span>{name.length}/40</span></div><div className="rename-row"><button disabled={busy || renameUncertain || !name.trim() || name.trim() === character.name} onClick={() => void rename()}>保存名字</button>{renameUncertain && <button disabled={busy} onClick={() => draft.current && void recover(draft.current, true)}>核对名字</button>}<span role="status">{savedNotice}</span></div>{origin && <div className="creation-origin"><Link className="button primary" href={returnHref(origin, character.theme_id === origin.theme ? character.id : undefined)}>{character.theme_id === origin.theme ? origin.kind === 'team' ? '回到小队，预览提交' : '回到主题，预览分享' : origin.kind === 'team' ? '回到原小队' : '回到原主题'}</Link><p>{character.theme_id === origin.theme ? '确认后才会分享；现在只在你的私人收藏里。' : '这位伙伴属于自由创作，不能提交到水果主题，仍保留在你的收藏里。'}</p></div>}<div className="create-actions"><Link className="button primary" href={`/companions/${character.id}`}>开始聊天<ArrowRight size={16} /></Link><Link className="button" href={`/companions/${character.id}/scenes`}>选择生活场景</Link><Link className="text-button" href="/">回到收藏</Link>{character.theme_id && <button className="button" disabled={busy} onClick={() => setSharing(true)}>分享作品</button>}</div>{personality && <PersonalityEditor key={character.id} id={character.id} close={() => setPersonality(false)} onSaved={persona => setCharacter(c => c ? { ...c, persona } : c)} />}{sharing && <PublicationDialog key={character.id} characterId={character.id} close={() => setSharing(false)} />}<div className="row"><button className="text-button" onClick={() => void correctResult()} disabled={busy}>纠正对象或特征</button><button className="text-button" onClick={startAnother} disabled={busy}>再认识一个伙伴</button></div></div></div>}
       </section><div className="create-bottom-note"><Leaf size={15} />每个小物，都藏着一个等待被听见的故事。</div>
     </main></div>;
 }

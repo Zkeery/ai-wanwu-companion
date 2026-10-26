@@ -1,4 +1,5 @@
 'use client';
+import { withBasePath } from '@/lib/base-path';
 import InvitationLink from './invitation-link';
 import PrivateImage from './private-image';
 import { useEffect, useRef, useState } from 'react';
@@ -62,7 +63,7 @@ export default function TeamDetailView({ id, initialPreview = null, resume = fal
     <div className="team-heading"><div><span className="create-kicker">🍎 一份水果 · 仅小队成员可见</span><h1>{team.title}</h1></div><button className="button" disabled={busy} onClick={() => void check()}>{uncertain ? '核对小队状态' : '刷新小队'}</button></div>
     {notice && <p role="status" className="team-status">{notice}</p>}
     <section className="team-panel"><h2>一起参与的朋友 · {team.member_count}</h2><ul className="team-members">{team.members.map(m => <li key={m.id}><strong>{m.display_name}</strong><span>{m.is_me ? '我 · ' : ''}{m.is_creator ? '发起人 · ' : ''}{m.submission_count} 份作品</span></li>)}</ul>
-      {team.is_creator && <div className="team-invite"><p>{team.invitation_active ? '邀请已开启。生成新链接会让旧链接失效，已加入的成员会保留。' : '还没有有效邀请。准备好了，就邀请好友一起来玩。'}</p><div className="team-actions"><button className="button" disabled={disabled} onClick={() => { setInvite(''); void act(async () => setInvite(`${window.location.origin}/teams/join#invite=${await teamsApi.invite(id)}`), '邀请已准备好，请自行复制分享。'); }}>{team.invitation_active ? '生成新的邀请链接' : '生成邀请链接'}</button>{team.invitation_active && <button className="button" disabled={disabled} onClick={() => void act(async () => { await teamsApi.revoke(id); setInvite(''); }, '邀请已撤销，已加入的朋友不受影响。')}>撤销邀请</button>}</div>
+      {team.is_creator && <div className="team-invite"><p>{team.invitation_active ? '邀请已开启。生成新链接会让旧链接失效，已加入的成员会保留。' : '还没有有效邀请。准备好了，就邀请好友一起来玩。'}</p><div className="team-actions"><button className="button" disabled={disabled} onClick={() => { setInvite(''); void act(async () => setInvite(`${window.location.origin}${withBasePath('/teams/join')}#invite=${await teamsApi.invite(id)}`), '邀请已准备好，请自行复制分享。'); }}>{team.invitation_active ? '生成新的邀请链接' : '生成邀请链接'}</button>{team.invitation_active && <button className="button" disabled={disabled} onClick={() => void act(async () => { await teamsApi.revoke(id); setInvite(''); }, '邀请已撤销，已加入的朋友不受影响。')}>撤销邀请</button>}</div>
         {invite && <InvitationLink key={invite} link={invite} />}
       </div>}
     </section>
