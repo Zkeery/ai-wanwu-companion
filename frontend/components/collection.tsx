@@ -78,7 +78,7 @@ export default function Collection() {
             <span className="toy-eyebrow">✦ 给日常，加一点不一样</span>
             <h1>平凡小物，<br /><span>不平凡的朋友。</span></h1>
             <p>把身边的喜欢，变成会回应的伙伴。<br />拍下杯子、植物或玩偶，认识一个独一无二的小生命。</p>
-            <button className="button hero-cta" onClick={() => setShowAuth(true)}><LogIn size={21} />手机号登录<ArrowUpRight size={21} /></button>
+            <button className="button hero-cta" onClick={() => setShowAuth(true)}><LogIn size={21} />登录<ArrowUpRight size={21} /></button>
             <span className="hero-note">登录后，你的伙伴会安全地跟着你。</span>
           </div>
           <div className="hero-playground" aria-label="创作流程示意：照片中的杯子变成伙伴"><div className="playground-orbit" /><div className="creation-example"><span className="example-object" aria-hidden="true">☕</span><span className="example-arrow" aria-hidden="true">✦ →</span><div className="toy-mascot" aria-hidden="true"><i /><i /><b /><span>♡</span></div></div><div className="playground-caption">拍下小物 → 创造独特伙伴 → 聊天与生活<small>创作流程示意 · 每次生成都不同</small></div></div>
