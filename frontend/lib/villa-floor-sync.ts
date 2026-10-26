@@ -16,16 +16,19 @@ export function floorApi(kind:'shared'|'private',id:string,viewer:string){
  return{read:async(signal?:AbortSignal)=>parseFloor(await request(url+'?viewer='+encodeURIComponent(viewer),{signal})),
  write:async(snapshot:FloorSnapshot,body:Record<string,unknown>,signal?:AbortSignal)=>parseFloor(await request(url,{method:'POST',body:JSON.stringify({request_id:crypto.randomUUID(),expected_revision:snapshot.revision,...body}),signal}))};
 }
+const IDLE_FLOOR_READ_MS=15_000;
 /** One in-flight transaction. Failed writes stop; reconcile is read-only until explicitly resumed. */
 export function createFloorSync(engine:()=>FloorEngine|null,transport:ReturnType<typeof floorApi>,viewer:string,onStatus:(s:string)=>void,valid:()=>boolean){
- let snapshot:FloorSnapshot|null=null,locked=false,stopped=false,disposed=false,driving=false,ackStamp='',appliedRevision=-1;
+ let snapshot:FloorSnapshot|null=null,locked=false,stopped=false,disposed=false,driving=false,ackStamp='',appliedRevision=-1,nextIdleReadAt=0;
  const abort=new AbortController(),pause=()=>{driving=false;engine()?.setFloorDriver(false);};
  const apply=(next:FloorSnapshot,preserve=false)=>{const world=engine();if(!world||!world.applyServerFloor(next,preserve))throw new Error('二楼路线与当前布置不一致，已停止并保留存档');snapshot=next;appliedRevision=next.revision;};
- async function tick(moving:boolean){
+ const quiet=(world:FloorEngine)=>!!snapshot&&!stopped&&!driving&&snapshot.commands.length===0&&snapshot.checkpoint.active===null&&world.exportServerFloor().checkpoint.active===null;
+ async function tick(moving:boolean,force=false){
   if(disposed||!valid()){pause();return;}if(locked)return;locked=true;
   try{
    if(!moving){pause();return;}
    const world=engine();if(!world)return;
+   if(!force&&quiet(world)&&Date.now()<nextIdleReadAt)return;
    if(driving&&snapshot&&!stopped){
     pause();const current=world.exportServerFloor(),stamp=JSON.stringify(current);
     if(stamp!==ackStamp){const saved=await transport.write(snapshot,{action:'checkpoint',viewer,...current},abort.signal);if(disposed||!valid())return;snapshot=saved;ackStamp=stamp;appliedRevision=saved.revision;}
@@ -34,7 +37,8 @@ export function createFloorSync(engine:()=>FloorEngine|null,transport:ReturnType
    if(latest.revision!==appliedRevision||!snapshot)apply(latest);else snapshot=latest;
    if(stopped){pause();return;}
    const needed=latest.commands.length>0||latest.checkpoint.active!==null||world.exportServerFloor().checkpoint.active!==null;
-   if(!needed){pause();onStatus('二楼进度已保存，双方可查看');return;}
+   if(!needed){pause();nextIdleReadAt=Date.now()+IDLE_FLOOR_READ_MS;onStatus('二楼进度已保存，双方可查看');return;}
+   nextIdleReadAt=0;
    if(!latest.driver){
     try{const claimed=await transport.write(latest,{action:'claim',viewer},abort.signal);if(disposed||!valid())return;apply(claimed);}
     catch(e){if((e as {status?:number}).status===409){pause();onStatus('正在同步另一页面的二楼进度');return;}throw e;}

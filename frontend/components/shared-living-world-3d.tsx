@@ -163,7 +163,7 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
     const token=getToken(),viewer=crypto.randomUUID();let active=true;
     const sync=createFloorSync(()=>world.current,floorApi(floorKind,gathering.id,viewer),viewer,message=>{if(active)setServerFloorStatus(message);},()=>active&&!!token&&getToken()===token);
     floorSync.current=sync;const tick=()=>void sync.tick(floorMoving.current&&!document.hidden);
-    tick();const timer=setInterval(tick,1000),visibility=()=>{if(document.hidden)sync.pause();else tick();};document.addEventListener('visibilitychange',visibility);const auth=()=>{if(getToken()!==token)sync.dispose();};window.addEventListener(AUTH_CHANGED,auth);window.addEventListener('storage',auth);
+    tick();const timer=setInterval(tick,1000),visibility=()=>{if(document.hidden)sync.pause();else void sync.tick(floorMoving.current,true);};document.addEventListener('visibilitychange',visibility);const auth=()=>{if(getToken()!==token)sync.dispose();};window.addEventListener(AUTH_CHANGED,auth);window.addEventListener('storage',auth);
     return()=>{active=false;clearInterval(timer);document.removeEventListener('visibilitychange',visibility);window.removeEventListener(AUTH_CHANGED,auth);window.removeEventListener('storage',auth);sync.dispose();if(floorSync.current===sync)floorSync.current=null;};
   },[persistent,floorKind,referenceVillaEnabled,gathering.id,gathering.me,attempt]);
   function floorUnavailable(activity: VillaActivity | null) {
