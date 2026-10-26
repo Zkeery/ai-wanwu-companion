@@ -26,8 +26,7 @@ import { homePresenceSnapshotKey, type HomePresenceSnapshot } from './living-hom
 import { createHomeDoorAutonomy } from './living-home-door-autonomy';
 import { collectHomeJourneyObstacles, setHomeJourneyDoorOpenness, homeJourneyPortalClearance } from './living-home-journey-geometry';
 import { buildAvatar } from './living-meshes';
-import { getToken } from './auth';
-import { privateImageBlob } from './private-images';
+import { updateCourtyardFigure } from './courtyard-figure';
 import { setLivingSleepSupport, computeLivingBedPose } from './living-sleep-support';
 import { buildRealisticHomeItem } from './living-home-realistic-details';
 import { type RoomRestSeat } from './living-room-seats';
@@ -57,24 +56,6 @@ import { naturalHousePlan, applyNaturalHouseView, setNaturalHouseDoorOpenness } 
 import { naturalHouseAssignments } from './living-natural-occupancy';
 import { collectNaturalLeisureSeats } from './living-natural-leisure-scene';
 import type { HomeMaterialLibrary } from './living-home-materials';
-
-function attachPortrait(root: T.Object3D, portrait?: string) {
-  if (!portrait || !portrait.startsWith('/uploads/') || portrait.includes('..')) return;
-  const token = getToken();
-  if (!token) return;
-  const controller = new AbortController();
-  void privateImageBlob(portrait, token, controller.signal).then(blob => {
-    const url = URL.createObjectURL(blob);
-    new T.TextureLoader().load(url, texture => {
-      texture.colorSpace = T.SRGBColorSpace;
-      const card = new T.Mesh(new T.PlaneGeometry(0.72, 0.96), new T.MeshBasicMaterial({ map: texture, transparent: true, side: T.DoubleSide }));
-      card.name = 'companion-portrait';
-      card.position.set(0, 1.15, 0.42);
-      root.add(card);
-      URL.revokeObjectURL(url);
-    }, undefined, () => URL.revokeObjectURL(url));
-  }).catch(() => undefined);
-}
 
 type WorldRestSeat = ReturnType<typeof homeSofaSeats>[number] & { yaw?: number; approach?: {x:number;z:number}; support?: readonly string[] };
 type WorldSleepingBed = ReturnType<typeof homeSleepingBeds>[number] & { approach?: {x:number;z:number}; support?: readonly string[] };
@@ -1105,7 +1086,7 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
           a.root.userData.homeFloor=p.y>3.4?2:1;a.root.userData.homePresenceArea=p.y>3.4?'upper':'bedroom';a.root.userData.homeRegion='bedroom';a.root.userData.villaStairPhase=stairFrame.phase;
           delete a.root.userData.roomRestSeat;delete a.root.userData.sleepingBed;
         }else{delete a.root.userData.villaStairPhase;a.root.userData.homeFloor=1;}
-        const point=a.root.localToWorld(new T.Vector3(0,bed?1.35:1.65,bed?.4:0)).project(camera);
+        updateCourtyardFigure(a,{id:companion.id,portrait:companion.portrait,courtyard_figure:companion.courtyard_figure==='ready'||companion.courtyard_figure==='pending'||companion.courtyard_figure==='failed'?companion.courtyard_figure:undefined},camera,now,motion,gathering.scene_type);const point=a.root.localToWorld(new T.Vector3(0,bed?1.35:1.65,bed?.4:0)).project(camera);
         a.label.style.transform='translate('+((point.x*.5+.5)*host.clientWidth).toFixed(1)+'px,'+((-point.y*.5+.5)*host.clientHeight).toFixed(1)+'px) translate(-50%,-100%)';
         const shellCovered=!stairActive&&(gathering.scene_type==='home'||canNaturalIndoor())&&houseView==='exterior'&&(canJourney()?a.root.userData.homePresenceArea:a.root.userData.homeRegion)!=='outdoor';
         let bubble=shellCovered?null:livingBubble(gathering,id,now,motion,replayAt,bubbleReceipts);
@@ -1198,7 +1179,7 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
       if(ik!==itemKey){teaCups.restore();activityEffects?.restore();const previousItems=items,nextItems=new T.Group();invalidateNavigation();for(const item of g.items.filter(i=>!i.stored)){const m=canNaturalWorld()?(g.scene_type==='forest'?buildForestItem(item.kind,g.season,decoration!.userData.homeMaterialLibrary as HomeMaterialLibrary):buildDesertItem(item.kind,g.season,decoration!.userData.homeMaterialLibrary as HomeMaterialLibrary)):options?.realistic&&g.scene_type==='home'&&['tree','bench','shade'].includes(item.kind)?buildRealisticHomeItem(item.kind as 'tree'|'bench'|'shade',g.season,decoration?.userData.homeMaterialLibrary):itemMesh(item.kind,g.season),local={x:(item.x-.5)*8,y:0,z:(item.y-.5)*5.2},point=g.scene_type==='home'?homeWorldPoint('outdoor',local):local;m.position.set(point.x,point.y,point.z);if(item.flipped)m.rotation.y+=Math.PI;m.userData.homeItemId=item.id;if(item.kind==='bench'){m.userData.homeLeisure='bench';if(canNaturalLeisure())m.userData.naturalLeisureSupportId='natural-'+g.scene_type+'-bench-'+item.id;}nextItems.add(m)}if(previousItems)disposeLivingObject(previousItems,[...(decoration?[decoration]:[]),nextItems]);items=nextItems;scene.add(items);itemKey=ik;}
       for(const[cid,a]of avatars)if(!g.companions.some(c=>c.id===cid)){villaVisit.remove(cid);teaCups.release(cid);activityEffects?.restore();a.label.remove();disposeLivingObject(a.root);avatars.delete(cid);navStates.delete(cid);walkAnimation.reset(cid);journeys.remove(cid);journeyArrivals.delete(cid)}
       for(const c of g.companions){const spec=parseAvatar3D(c.avatar3d,c.id),signature=JSON.stringify(spec),old=avatars.get(c.id);if(old?.signature===signature){old.nameLabel.textContent=c.name;old.nameLabel.setAttribute('aria-label','选择画面中的'+c.name);continue}if(old){villaVisit.remove(c.id);teaCups.release(c.id);activityEffects?.restore();old.label.remove();disposeLivingObject(old.root);avatars.delete(c.id)}walkAnimation.reset(c.id);journeys.remove(c.id);journeyArrivals.delete(c.id);if(spec.kind==='unavailable'&&!c.portrait)continue;
-        const a=buildAvatar(spec);attachPortrait(a.root,c.portrait);const label=document.createElement('span'),nameLabel=document.createElement('button'),bubble=document.createElement('span'),bubbleText=document.createElement('span');label.className='living3d-marker';nameLabel.type='button';nameLabel.className='living3d-name';nameLabel.textContent=c.name;nameLabel.setAttribute('aria-label','选择画面中的'+c.name);nameLabel.addEventListener('click',()=>{const current=avatars.get(c.id);if(!disposed&&current?.nameLabel===nameLabel&&!((gathering.scene_type==='home'||canNaturalIndoor())&&houseView==='exterior'&&(canJourney()?current.root.userData.homePresenceArea:current.root.userData.homeRegion)!=='outdoor'))select(c.id)});bubble.className='living3d-bubble';bubble.append(bubbleText);label.append(bubble,nameLabel);labelLayer.appendChild(label);a.root.userData.characterId=c.id;a.root.userData.journeyPortalClearance=homeJourneyPortalClearance(a);a.root.userData.navigationClearance=Math.ceil(homeAvatarNavigationClearance(a.root)*20)/20;navStates.delete(c.id);
+        const a=buildAvatar(spec);const label=document.createElement('span'),nameLabel=document.createElement('button'),bubble=document.createElement('span'),bubbleText=document.createElement('span');label.className='living3d-marker';nameLabel.type='button';nameLabel.className='living3d-name';nameLabel.textContent=c.name;nameLabel.setAttribute('aria-label','选择画面中的'+c.name);nameLabel.addEventListener('click',()=>{const current=avatars.get(c.id);if(!disposed&&current?.nameLabel===nameLabel&&!((gathering.scene_type==='home'||canNaturalIndoor())&&houseView==='exterior'&&(canJourney()?current.root.userData.homePresenceArea:current.root.userData.homeRegion)!=='outdoor'))select(c.id)});bubble.className='living3d-bubble';bubble.append(bubbleText);label.append(bubble,nameLabel);labelLayer.appendChild(label);a.root.userData.characterId=c.id;a.root.userData.journeyPortalClearance=homeJourneyPortalClearance(a);a.root.userData.navigationClearance=Math.ceil(homeAvatarNavigationClearance(a.root)*20)/20;navStates.delete(c.id);
         const ring=new T.Mesh(new T.RingGeometry(.48,.53,40),new T.MeshBasicMaterial({color:'#b96c7b',side:T.DoubleSide,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=.03;a.root.add(ring);scene.add(a.root);avatars.set(c.id,{...a,baseScale:a.root.scale.clone(),signature,label,nameLabel,bubble,bubbleText,ring});
       }
       refreshLeisure();

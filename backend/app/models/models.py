@@ -90,6 +90,24 @@ class Character(Base):
     )
 
 
+class CharacterCourtyardMesh(Base):
+    """One Hyper3D model per companion. A failed row is never queued again."""
+
+    __tablename__ = "character_courtyard_meshes"
+
+    character_id: Mapped[int] = mapped_column(ForeignKey("characters.id", ondelete="CASCADE"), primary_key=True)
+    source_image_path: Mapped[str] = mapped_column(String(512))
+    status: Mapped[str] = mapped_column(String(16), default="pending")  # pending | running | ready | failed
+    task_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    file_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    http_status: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    duration_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    error_code: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_utcnow)
+    started_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+
 class CharacterMotionAsset(Base):
     __tablename__ = "character_motion_assets"
 

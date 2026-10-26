@@ -71,6 +71,12 @@ export const api = {
   },
   memories: async (id: number, signal?: AbortSignal) => array(await request(`/characters/${id}/memories`, { signal }), parseMemory),
   scene: async (id: number, signal?: AbortSignal) => parseScene(await request(`/characters/${id}/scene`, { signal })),
+  courtyardFigure: async (id: number, signal?: AbortSignal) => {
+    const body = object(await request(`/characters/${id}/courtyard-figure`, { signal }));
+    const status = body.status;
+    if (status !== 'absent' && status !== 'pending' && status !== 'running' && status !== 'ready' && status !== 'failed') throw new Error('立体形象状态暂时无法核对');
+    return status as 'absent' | 'pending' | 'running' | 'ready' | 'failed';
+  },
   clearHistory: async (id: number) => request(`/characters/${id}/messages`, { method: 'DELETE' }),
   deleteCharacter: async (id: number) => request(`/characters/${id}`, { method: 'DELETE' }),
   renameCharacter: async (id: number, name: string) => parseCharacter(await request(`/characters/${id}`, { method: 'PUT', body: JSON.stringify({ name }) })),

@@ -31,7 +31,13 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
   const active = useRef(false), locked = useRef(false), session = useRef<string | null>(null), shown = useRef(visible);
   const motion = useSyncExternalStore(subscribeView, motionAllowed, () => false);
   const token = useSyncExternalStore(subscribeSession, getToken, () => null);
-  const snapshot = useMemo(() => privateLivingWorld(space, companions, season), [space, companions, season]);
+  const [figures, setFigures] = useState<Record<number, 'pending' | 'ready' | 'failed'>>({});
+  const figureKey = companions.filter(companion => companion.status === 'ready' && companion.image_path).map(companion => companion.id).join(',');
+  const snapshot = useMemo(() => {
+    const world = privateLivingWorld(space, companions, season);
+    if (!world) return null;
+    return { ...world, companions: world.companions.map(companion => figures[companion.id] ? { ...companion, courtyard_figure: figures[companion.id] } : companion) };
+  }, [space, companions, season, figures]);
   const current = useRef({ space, readOnly, onChange, snapshot });
   useEffect(() => { current.current = { space, readOnly, onChange, snapshot }; shown.current = visible; }, [space, readOnly, onChange, snapshot, visible]);
   useEffect(() => {
@@ -40,6 +46,30 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
     window.addEventListener(AUTH_CHANGED, changed); window.addEventListener('storage', changed);
     return () => { active.current = false; window.removeEventListener(AUTH_CHANGED, changed); window.removeEventListener('storage', changed); };
   }, []);
+  useEffect(() => {
+    if (!visible || accountLost) return;
+    const ids = figureKey ? figureKey.split(',').map(Number) : [];
+    if (!ids.length) return;
+    const controller = new AbortController();
+    let timer = 0;
+    const loadFigures = async () => {
+      let waiting = false;
+      for (const id of ids) {
+        try {
+          const status = await api.courtyardFigure(id, controller.signal);
+          if (controller.signal.aborted) return;
+          if (status === 'pending' || status === 'running') waiting = true;
+          const shown = status === 'running' ? 'pending' : status;
+          if (shown === 'pending' || shown === 'ready' || shown === 'failed') {
+            setFigures(current => current[id] === shown ? current : { ...current, [id]: shown });
+          }
+        } catch { /* 立牌先留着，下一轮再核对。 */ }
+      }
+      if (waiting && !controller.signal.aborted) timer = window.setTimeout(() => void loadFigures(), 4000);
+    };
+    void loadFigures();
+    return () => { controller.abort(); window.clearTimeout(timer); };
+  }, [visible, accountLost, figureKey]);
   useEffect(() => {
     if (!visible || accountLost) return;
     const controller = new AbortController();

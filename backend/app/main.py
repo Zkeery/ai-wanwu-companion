@@ -77,6 +77,8 @@ async def lifespan(app: FastAPI):
     motion_worker = asyncio.create_task(consume_motion(stop_cleanup))
     generation_worker = (asyncio.create_task(motion_generation.consume(stop_cleanup))
                          if get_settings().motion_generation_enabled else None)
+    from app.services.courtyard_mesh import consume as consume_courtyard_mesh
+    mesh_worker = None if get_settings().app_env == "test" else asyncio.create_task(consume_courtyard_mesh(stop_cleanup))
     life_worker = None
     shared_worker = None
     if get_settings().life_runtime_active:
@@ -104,6 +106,8 @@ async def lifespan(app: FastAPI):
         await motion_worker
         if generation_worker is not None:
             await generation_worker
+        if mesh_worker is not None:
+            await mesh_worker
         close_model_http_clients()
         close_timing_log()
 

@@ -10,7 +10,7 @@ from uuid import UUID, uuid4
 from fastapi import APIRouter, Depends, Header, Request, Response
 from sqlalchemy import delete as sa_delete, text, select
 from sqlalchemy.exc import SQLAlchemyError
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -121,6 +121,31 @@ def rename_character(character_id: int, payload: CharacterRename,
     db.commit()
     db.refresh(ch)
     return ch
+
+
+@router.get("/{character_id}/courtyard-figure")
+def courtyard_figure(character_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    ch = _owned_character(db, user.id, character_id)
+    from app.services.courtyard_mesh import public_status
+    from app.models.models import CharacterCourtyardMesh
+    row = db.get(CharacterCourtyardMesh, ch.id)
+    return {
+        "status": public_status(db, ch.id),
+        "http_status": None if row is None else row.http_status,
+        "duration_ms": None if row is None else row.duration_ms,
+    }
+
+
+@router.get("/{character_id}/courtyard-mesh")
+def courtyard_mesh(character_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    ch = _owned_character(db, user.id, character_id)
+    from app.services.courtyard_mesh import mesh_file
+    path = mesh_file(db, ch)
+    if path is None:
+        raise api_error(404, "mesh_not_ready", "立体形象还没准备好")
+    return FileResponse(path, media_type="model/gltf-binary", headers={
+        "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff",
+    })
 
 
 @router.get("/{character_id}", response_model=CharacterOut)
@@ -345,6 +370,8 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
                 enqueue_preparation(session, db_ch)
                 from app.services.motion_generation import register_request
                 register_request(session, db_ch)
+                from app.services.courtyard_mesh import enqueue as enqueue_courtyard_mesh
+                enqueue_courtyard_mesh(session, db_ch)
                 quota.settle(session, charge_id, success=True)
                 session.commit()
                 saved = True
