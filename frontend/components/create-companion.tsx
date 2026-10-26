@@ -271,7 +271,7 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
   if (authed === null) return <div className="shell"><header className="site-header"><Brand /></header><main className="create-page"><div className="loading"><span className="loading-leaf"><Leaf /></span>正在把小世界打开…</div></main></div>;
   if (authed === false) {
     return <div className="shell"><header className="site-header"><Brand /><Link href="/" className="back-link"><ArrowLeft size={16} />我的伙伴</Link></header>
-      <main className="create-page auth-welcome"><div className="eyebrow">A NEW FRIEND, FROM YOUR EVERYDAY</div><h1>先登录，<br />再认识你的新伙伴。</h1><p className="create-intro">登录后，生成的伙伴会安全地加入你的收藏。</p><button className="button hero-cta" onClick={() => setShowAuth(true)}><LogIn size={21} />注册 / 登录，开始创造<ArrowRight size={21} /></button></main>
+      <main className="create-page auth-welcome"><div className="eyebrow">A NEW FRIEND, FROM YOUR EVERYDAY</div><h1>先登录，<br />再认识你的新伙伴。</h1><p className="create-intro">登录后，生成的伙伴会安全地加入你的收藏。</p><button className="button hero-cta" onClick={() => setShowAuth(true)}><LogIn size={21} />手机号登录<ArrowRight size={21} /></button></main>
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLoggedIn={() => { setShowAuth(false); setAuthed(true); }} />}
     </div>;
   }
