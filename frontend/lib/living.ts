@@ -1,4 +1,4 @@
-import type { Character, LivingSpace } from './contracts';
+import { imageUrl, type Character, type LivingSpace } from './contracts';
 import { sceneNames } from './contracts';
 import type { Gathering } from './gatherings';
 import type { Season } from './seasons';
@@ -10,6 +10,7 @@ export function hasPersistentLivingWorld(space: LivingSpace): boolean {
 export function privateLivingWorld(space: LivingSpace, present: readonly Character[], season: Season | null): Gathering | null {
   if (!hasPersistentLivingWorld(space)) return null;
   const owner = space.owner_id!, resident = space.resident_here === true ? present.find(c => String(c.id) === space.companion_id && c.status === 'ready') : undefined;
+  const portrait = resident ? imageUrl(resident.image_path) : null;
   return {
     id: space.id, title: sceneNames[space.scene_type], scene_type: space.scene_type, revision: space.revision,
     closed: false, is_manager: true, me: owner, invitation: null, dialogue_enabled: false,
@@ -17,6 +18,7 @@ export function privateLivingWorld(space: LivingSpace, present: readonly Charact
     companions: resident ? [{ id: resident.id, name: resident.name, owner_id: owner, activity: space.world!.activity,
       area: space.world!.area, x: .5, y: .5, dialogue_allowed: false,
       ...(space.avatar3d ? { avatar3d: space.avatar3d } : {}),
+      ...(portrait ? { portrait } : {}),
       ...(space.world!.leisure ? { leisure: { ...space.world!.leisure } } : {}),
     }] : [],
     items: space.items.filter(item => !item.stored).map(item => ({ id: item.id, kind: item.kind, x: item.x, y: item.y,

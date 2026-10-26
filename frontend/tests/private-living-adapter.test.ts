@@ -36,6 +36,11 @@ it('does not infer presence from owner, avatar or supplied character when reside
 it('does not replace an unavailable avatar with an arbitrary generated body', () => {
   expect(privateLivingWorld({ ...base, avatar3d: null }, [person], null)?.companions[0].avatar3d).toBeUndefined();
 });
+it.each(['characters/flash.jpg', 'characters/wan.png'])('passes the stored companion image %s to the courtyard, with or without a 3D body', image_path => {
+  const stored = { ...person, image_path };
+  expect(privateLivingWorld(base, [stored], null)?.companions[0]).toMatchObject({ portrait: `/uploads/${image_path}` });
+  expect(privateLivingWorld({ ...base, avatar3d: null }, [stored], null)?.companions[0]).toMatchObject({ portrait: `/uploads/${image_path}` });
+});
 it('projects a saved leisure overlay and leaves private history and layout untouched', () => {
   const leisure = { activity: 'tea' as const, seat_id: 'natural-tea-0', station_version: 1 as const };
   expect(privateLivingWorld({ ...base, world: { activity: 'observe', area: 'outdoor', leisure } }, [person], null)?.companions[0]).toMatchObject({ leisure });
