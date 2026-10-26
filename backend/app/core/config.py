@@ -33,8 +33,10 @@ class Settings(BaseSettings):
     model_base_url: str = ""
     image_base_url: str = ""
     model_api_key: str = ""
+    ark_api_key: str = ""  # ARK_API_KEY. Seedream only. A missing key or failed call falls back to Wanxiang.
+    ark_base_url: str = "https://ark.cn-beijing.volces.com/api/v3"
     vision_model: str = "qwen-vl-max"
-    image_model: str = "wanx2.1-t2i-turbo"
+    image_model: str = "doubao-seedream-5-0-flash"
     motion_atlas_base_url: str = ""
     motion_atlas_api_key: str = ""
     motion_generation_enabled: bool = False  # Requires a separate one-shot grant for every request.
@@ -55,6 +57,7 @@ class Settings(BaseSettings):
     model_http_pool_enabled: bool = False  # Enable after connection reuse verification.
     generation_timing_log: str = ""  # Optional private append-only JSONL diagnostics.
     character_bundle_enabled: bool = True
+    image_style_prompt: str = "画法：精致的数字手绘卡牌立绘，有光效和小粒子，生动动作，带氛围的渐变背景，不要白底。"
     scene_agent_enabled: bool = False  # Enable only after real-provider acceptance.
     generation_quota_enabled: bool = False
     vision_max_edge: int = 2048  # Recognition copy only; accepted input still <=4096px.

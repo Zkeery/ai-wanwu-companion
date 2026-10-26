@@ -27,7 +27,7 @@ from app.services.character_overview import character_overviews
 from app.services.model_client import ModelClient
 from app.services.character_generation import finish_character
 from app.services.generation_timing import timed_call, record_timing, timing_span, diagnostic_operation_id
-from app.services.appearance import generation_brief
+from app.services.appearance import generation_brief, pick_creature_action, pick_creature_archetype
 from app.services.generation_errors import record_failure
 from app.services.character_concept import save_concept, matching_concept
 from app.services.generation_stream import GenerationStreamResponse
@@ -273,12 +273,34 @@ def recreate(character_id: int, payload: RecreationRequest, user: User = Depends
     return _generation_response(cid, label, features, concept, owner_id, charge_id, previous, guest=user.phone.startswith("g"))
 
 
+def _previous_archetype(previous) -> str | None:
+    if not isinstance(previous, dict):
+        return None
+    raw = previous.get("generation_brief")
+    if isinstance(raw, str) and raw.strip():
+        try:
+            raw = json.loads(raw)
+        except json.JSONDecodeError:
+            return None
+    if not isinstance(raw, dict):
+        return None
+    value = raw.get("creature_archetype")
+    return value.strip() if isinstance(value, str) and value.strip() else None
+
+
 def _generation_response(character_id, label, visual_features, concept, user_id, charge_id=None, previous=None, trace=None, *, guest=False):
     from app.services.daily_model_quota import guest_models
     from app.services.guest_access import release_guest_companion
 
-    def gen():
+    def as_guest(fn, *args, **kwargs):
         token = guest_models.set(True) if guest else None
+        try:
+            return fn(*args, **kwargs)
+        finally:
+            if token is not None:
+                guest_models.reset(token)
+
+    def gen():
         started = perf_counter()
         operation_id = diagnostic_operation_id(trace, f"character:{character_id}")
         session = SessionLocal()
@@ -293,8 +315,8 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
             if persona is None:
                 yield _sse_event("chunk", {"stage": "正在根据确认的特征完善角色构思…"})
                 kwargs = {"previous_character": previous} if previous is not None else {}
-                persona = timed_call("profile", operation_id, client.generate_concept, label, visual_features, **kwargs)
-                # Commit before drawing so a later image failure can reuse the concept.
+                persona = as_guest(timed_call, "profile", operation_id, client.generate_concept, label, visual_features, **kwargs)
+                # Commit before waiting on the picture so a later image failure can reuse the concept.
                 current = session.get(Character, character_id)
                 if current is None or current.owner_id != user_id or not quota.is_reserved(session, charge_id, character_id):
                     raise RuntimeError("角色已删除")
@@ -304,7 +326,9 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
                 yield _sse_event("chunk", {"stage": "照片分析与角色构思已保存，正在准备绘图…"})
             yield _sse_event("chunk", {"stage": "名字与性格已准备好，正在绘制形象…" if persona.opening_line is not None else "正在准备开场白和角色图…"})
             stage = "image" if persona.opening_line is not None else "assets"
-            result, image_path = finish_character(client, label, persona, operation_id, visual_features)
+            archetype = pick_creature_archetype(_previous_archetype(previous))
+            action = pick_creature_action()
+            result, image_path = as_guest(finish_character, client, label, persona, operation_id, visual_features, archetype, action)
 
             stage = "save"
             with timing_span("character_store", operation_id):
@@ -315,7 +339,7 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
                 db_ch.persona = result.persona
                 db_ch.opening_line = result.opening_line
                 db_ch.image_path = image_path
-                db_ch.generation_brief_json = json.dumps(generation_brief(label, result.name, result.persona, visual_features, persona.appearance_description), ensure_ascii=False)
+                db_ch.generation_brief_json = json.dumps(generation_brief(label, result.name, result.persona, visual_features, persona.appearance_description, archetype), ensure_ascii=False)
                 db_ch.status = "ready"
                 from app.services.motion_preparation import enqueue_preparation
                 enqueue_preparation(session, db_ch)
@@ -354,8 +378,6 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
                 quota.settle(session, charge_id, success=False)
                 release_guest_companion(session, user_id)
                 session.commit()
-            if token is not None:
-                guest_models.reset(token)
             if image_path and not saved:
                 _remove_image_file(image_path)
             session.close()

@@ -14,7 +14,9 @@ def save_concept(label: str, visual_features: str, persona: Persona) -> str | No
         'source': {'label': label, 'visual_features': visual_features},
         'concept': {'name': persona.name, 'persona': persona.persona,
                     'opening_line': persona.opening_line,
-                    'appearance_description': persona.appearance_description},
+                    'appearance_description': persona.appearance_description,
+                    'salient_features': persona.salient_features,
+                    'body_parts': persona.body_parts, 'pose': persona.pose},
     }, ensure_ascii=False)
 
 

@@ -32,6 +32,9 @@ class Persona:
     persona: str
     opening_line: str | None = None
     appearance_description: str = ""
+    salient_features: str = ""
+    body_parts: str = ""
+    pose: str = ""
 
 
 _FLAT_PROFILE = {
@@ -117,6 +120,10 @@ def parse_recognize(text: str) -> list[RecognizedObject]:
         category = item.get("category", "unknown")
         if not isinstance(category, str) or category not in CATEGORIES:
             raise ParseError("识别类别无效")
+        if concept is not None and index == 0:
+            concept.salient_features = _clip_text(item.get("salient_features"), 120)
+            concept.body_parts = _clip_text(item.get("body_parts"), 160)
+            concept.pose = _clip_text(item.get("pose"), 80)
         objects.append(RecognizedObject(label=label.strip(), visual_features=features.strip(), concept=concept, category=category))
     if not objects:
         raise ParseError("识别结果为空")
@@ -167,7 +174,18 @@ def parse_character_profile(text: str) -> Persona:
     if not isinstance(appearance, str) or len(appearance.strip()) > 1000:
         raise ParseError("形象设计描述应为不超过1000字的文字")
     persona.appearance_description = appearance.strip()
+    persona.salient_features = _clip_text(data.get("salient_features"), 120)
+    persona.body_parts = _clip_text(data.get("body_parts"), 160)
+    persona.pose = _clip_text(data.get("pose"), 80)
     return persona
+
+
+def _clip_text(value, limit: int) -> str:
+    if isinstance(value, list):
+        value = "、".join(part.strip() for part in value if isinstance(part, str) and part.strip())
+    if not isinstance(value, str):
+        return ""
+    return value.strip()[:limit]
 
 
 def _reorder_trailing_delimiters(text: str) -> str | None:

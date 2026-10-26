@@ -34,6 +34,48 @@ from app.services.parsers import (
 __all__ = ["ModelClient", "ModelError", "CharacterResult", "RecognizedObject"]
 
 
+# Short names are the switch. Ark requires the dated model id.
+SEEDREAM_MODELS = {
+    "doubao-seedream-5-0-flash": ("doubao-seedream-5-0-flash-260915", "1K"),
+    "doubao-seedream-5-0-flash-260915": ("doubao-seedream-5-0-flash-260915", "1K"),
+    "doubao-seedream-5-0-lite": ("doubao-seedream-5-0-260128", "2K"),
+    "doubao-seedream-5-0-lite-260128": ("doubao-seedream-5-0-260128", "2K"),
+    "doubao-seedream-5-0-260128": ("doubao-seedream-5-0-260128", "2K"),
+}
+SEEDREAM_LITE = "doubao-seedream-5-0-260128"
+WAN_FALLBACK_MODEL = "wan2.6-t2i"
+
+
+def _image_request(settings, prompt: str, image_base_url: str, model: str | None = None) -> tuple[str, dict, dict]:
+    model = (settings.image_model if model is None else model).strip()
+    seedream = SEEDREAM_MODELS.get(model)
+    if seedream is not None:
+        key = settings.ark_api_key.strip()
+        base = settings.ark_base_url.strip()
+        if not key or not base:
+            raise ModelError("方舟生图未配置（ARK_API_KEY）")
+        model_id, size = seedream
+        body = {
+            "model": model_id,
+            "prompt": prompt,
+            "size": size,
+            "response_format": "url",
+            "watermark": False,
+        }
+        if model_id == SEEDREAM_LITE:
+            body["sequential_image_generation"] = "disabled"
+        return f"{base.rstrip('/')}/images/generations", {"Authorization": f"Bearer {key}"}, body
+    if not image_base_url or not settings.model_api_key.strip():
+        raise ModelError("文生图模型未配置（IMAGE_BASE_URL / MODEL_API_KEY）")
+    return f"{image_base_url.rstrip('/')}/images/generations", {"Authorization": f"Bearer {settings.model_api_key}"}, {
+        "model": model,
+        "prompt": prompt,
+        "n": 1,
+        "size": "1024x1024",
+        "response_format": "url",
+    }
+
+
 class ModelError(Exception):
     """模型调用失败。"""
 
@@ -214,27 +256,31 @@ class ModelClient:
         options["enable_thinking"] = thinking
         return options
 
-    def generate_image(self, label: str, name: str, *, persona: str = "", visual_features: str = "", appearance_description: str = "") -> str:
+    def generate_image(self, label: str, name: str, *, persona: str = "", visual_features: str = "", appearance_description: str = "",
+                       salient_features: str = "", body_parts: str = "", pose: str = "", archetype: str = "", action: str = "") -> str:
         settings = get_settings()
-        if settings.use_mock:
+        model = settings.image_model.strip()
+        seedream = model in SEEDREAM_MODELS
+        if settings.use_mock and not (seedream and settings.ark_api_key.strip()):
             return self._mock_image(name)
-        return self._call_image_generation(label, name, settings, persona=persona, visual_features=visual_features, appearance_description=appearance_description)
+        fields = dict(persona=persona, visual_features=visual_features, appearance_description=appearance_description,
+                      salient_features=salient_features, body_parts=body_parts, pose=pose, archetype=archetype, action=action)
+        try:
+            return self._call_image_generation(label, name, settings, **fields)
+        except ModelError:
+            wan_ready = bool(settings.model_api_key.strip() and (settings.image_base_url.strip() or settings.model_base_url.strip()))
+            if not seedream or not wan_ready:
+                raise
+            return self._call_image_generation(label, name, settings, model_override=WAN_FALLBACK_MODEL, **fields)
 
-    def _call_image_generation(self, label: str, name: str, settings, *, persona: str = "", visual_features: str = "", appearance_description: str = "") -> str:
-        """OpenAI 兼容文生图（/images/generations），下载图片到本地。"""
+    def _call_image_generation(self, label: str, name: str, settings, *, persona: str = "", visual_features: str = "", appearance_description: str = "",
+                               salient_features: str = "", body_parts: str = "", pose: str = "", archetype: str = "", action: str = "",
+                               model_override: str | None = None) -> str:
+        """文生图。万相走原来的网关；方舟 Seedream 由 IMAGE_MODEL 切换，每次只请求一张。失败时改走万相。"""
         image_base_url = settings.image_base_url.strip() or settings.model_base_url.strip()
-        if not image_base_url or not settings.model_api_key.strip():
-            raise ModelError("文生图模型未配置（IMAGE_BASE_URL / MODEL_API_KEY）")
-        url = f"{image_base_url.rstrip('/')}/images/generations"
-        prompt = image_prompt(label, name, persona, visual_features, appearance_description)
-        headers = {"Authorization": f"Bearer {settings.model_api_key}"}
-        body = {
-            "model": settings.image_model,
-            "prompt": prompt,
-            "n": 1,
-            "size": "1024x1024",
-            "response_format": "url",
-        }
+        prompt = image_prompt(label, name, persona, visual_features, appearance_description,
+                              salient_features=salient_features, body_parts=body_parts, pose=pose, archetype=archetype, action=action)
+        url, headers, body = _image_request(settings, prompt, image_base_url, model_override)
         operation_id = current_operation_id() or uuid4().hex
 
         def request_image():
@@ -291,6 +337,30 @@ class ModelClient:
         return timed_call("image_store", operation_id, store_image)
 
     # ---- 真实调用（OpenAI 兼容） ----
+
+    def warm_chat(self) -> None:
+        """One short call so the first visitor reply does not pay the cold start. No retry loop."""
+        settings = get_settings()
+        if settings.app_env == "test" or settings.use_mock:
+            return
+        if not settings.model_api_key.strip() or not settings.model_base_url.strip():
+            return
+        payload = {
+            "model": settings.chat_model,
+            "messages": [{"role": "user", "content": "你好"}],
+            "max_tokens": 8,
+            "temperature": 0,
+        }
+        payload.update(self._chat_options(settings))
+        url = f"{settings.model_base_url.rstrip('/')}/chat/completions"
+        with model_http_client(settings, url, self._request_timeout(settings)) as client:
+            response = client.post(
+                url,
+                headers={"Authorization": f"Bearer {settings.model_api_key}"},
+                json=payload,
+                timeout=self._request_timeout(settings),
+            )
+            response.raise_for_status()
 
     def _call_chat(self, prompt_text: str, settings) -> str:
         payload = {

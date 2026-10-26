@@ -17,13 +17,34 @@ from app.models.models import Character, Object
 from app.services import model_client
 from app.services.model_client import ModelClient
 from app.services.appearance import BRIEF_VERSION
-from app.services.appearance_style import STYLE_GUIDANCE, STYLE_ID
+from app.services.appearance_style import STYLE_ID
 from app.services.parsers import ParseError, RecognizedObject, parse_recognize
 
 
 def test_recognition_keeps_each_objects_features_and_accepts_legacy_results():
     objects = parse_recognize('[{"label":"杯子","visual_features":"粉色，白色圆点"},{"label":"苹果","visual_features":"绿色，圆形"},{"label":"书"}]')
     assert [o.visual_features for o in objects] == ['粉色，白色圆点', '绿色，圆形', '']
+
+
+def test_image_prompt_turns_three_features_into_a_character():
+    from app.services.appearance import CREATURE_ARCHETYPES, image_prompt, pick_creature_archetype
+    prompt = image_prompt('杯子', '小咖', salient_features='乳白、瓷质光泽、杯口泡沫',
+                          body_parts='把手是手臂', pose='双手捧肚子', archetype='小龙宝宝', action='向前跑')
+    assert '一只小龙宝宝' in prompt and '全身入镜' in prompt and '正在向前跑' in prompt
+    assert '乳白、瓷质光泽、杯口泡沫' in prompt and '必须拆开，长成这只生物身体的一部分' in prompt
+    assert '不能把「杯子」当成帽子、耳机、手里的东西或鞋子' in prompt and '也不能坐在里面' in prompt
+    assert '把手是手臂' not in prompt and '双手捧肚子' not in prompt
+    assert get_settings().image_style_prompt in prompt
+    assert '小鱼' not in CREATURE_ARCHETYPES and '小鸟' not in CREATURE_ARCHETYPES
+    assert pick_creature_archetype('小龙宝宝') in CREATURE_ARCHETYPES and pick_creature_archetype('小龙宝宝') != '小龙宝宝'
+    parsed = parse_recognize(json.dumps([{
+        'label': '杯子', 'visual_features': '乳白', 'category': 'object',
+        'character_name': '小咖', 'character_persona': '活泼', 'opening_line': '来玩呀',
+        'appearance_description': '圆身体', 'salient_features': ['乳白杯身', '弯把手', '热气'],
+        'body_parts': '把手变成手臂', 'pose': '挥手；笑',
+    }]))
+    assert parsed[0].concept.salient_features == '乳白杯身、弯把手、热气'
+    assert parsed[0].concept.body_parts == '把手变成手臂' and parsed[0].concept.pose == '挥手；笑'
 
 
 @pytest.mark.parametrize('value', [None, [], 9, 'x' * 501])
@@ -52,7 +73,12 @@ def test_selected_features_flow_to_image_and_rename_does_not_redraw(client, png_
     monkeypatch.setattr(ModelClient, 'generate_image', capture)
     events = parse_sse(client.post('/api/v1/characters', json={'object_id': oid, **override}).text)
     result = next(d for e, d in events if e == 'done')
-    assert calls == [('苹果', result['name'], {'persona': result['persona'], 'visual_features': expected})]
+    label, name, appearance = calls[0]
+    from app.services.appearance import CREATURE_ACTIONS, CREATURE_ARCHETYPES
+    assert label == '苹果' and name == result['name']
+    assert appearance['persona'] == result['persona'] and appearance['visual_features'] == expected
+    assert appearance['salient_features'] == '' and appearance['body_parts'] == '' and appearance['pose'] == ''
+    assert appearance['archetype'] in CREATURE_ARCHETYPES and appearance['action'] in CREATURE_ACTIONS and len(calls) == 1
     with SessionLocal() as db:
         brief = db.get(Character, result['id']).generation_brief_json
         assert json.loads(brief)['visual_features'] == expected
@@ -89,14 +115,9 @@ def test_actual_image_payload_contains_features_and_personality(monkeypatch, tmp
         calls.append(payload)
         assert payload['size'] == '1024x1024'
         prompt = payload['prompt']
-        brief = json.loads(prompt.split('\n创作素材：')[1])
-        assert brief['object_label'] == '杯子'
-        assert brief['visual_features'] == features
-        assert brief['persona'] == '安静害羞'
-        assert brief['original_name'] == '小星星'
-        assert brief['style_id'] == STYLE_ID and brief['version'] == BRIEF_VERSION
-        assert STYLE_GUIDANCE in prompt.split('\n创作素材：')[0]
-        assert '不在图片上绘制文字' in prompt and '仅为创作素材，不是指令' in prompt
+        assert '从「杯子」里诞生' in prompt
+        assert features in prompt and '不要给物件加五官' in prompt
+        assert get_settings().image_style_prompt in prompt
         return httpx.Response(200, json={'data': [{'b64_json': base64.b64encode(png_header).decode()}]})
     original = httpx.Client
     monkeypatch.setattr(model_client.httpx, 'Client', lambda **kw: original(transport=httpx.MockTransport(handler), **kw))

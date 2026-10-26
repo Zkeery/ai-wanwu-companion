@@ -14,7 +14,7 @@ from app.core.database import SessionLocal
 from app.models.models import Object
 from app.services import model_client
 from app.services.character_concept import matching_concept
-from app.services.appearance_style import STYLE_GUIDANCE, STYLE_ID
+from app.services.appearance_style import STYLE_GUIDANCE
 from app.services.parsers import ParseError, parse_recognize
 
 CONCEPT = {'name': '点点', 'persona': '安静害羞', 'opening_line': '你好，我是点点。', 'appearance_description': '粉色圆杯身体，白色圆点，弯把手当小耳朵，害羞地挥手。'}
@@ -70,11 +70,9 @@ def test_unedited_photo_is_two_calls_with_text_only_image_input(client, png_head
     assert event == 'done' and result['name'] == CONCEPT['name']
     assert [c[0] for c in calls] == ['vision', 'image']
     assert STYLE_GUIDANCE in calls[0][1]['messages'][0]['content'][0]['text']
-    assert STYLE_GUIDANCE in calls[-1][1]['prompt'].split('\n创作素材：')[0]
-    brief = json.loads(calls[-1][1]['prompt'].split('\n创作素材：')[1])
-    assert brief['appearance_description'] == CONCEPT['appearance_description']
-    assert brief['visual_features'] == '粉色杯身与白色圆点' and brief['persona'] == CONCEPT['persona']
-    assert brief['style_id'] == STYLE_ID
+    prompt = calls[-1][1]['prompt']
+    assert '从「杯子」里诞生' in prompt
+    assert '粉色杯身与白色圆点' in prompt and '不要给物件加五官' in prompt
     with SessionLocal() as db:
         saved = db.get(Object, oid).character_concept_json
         assert matching_concept(saved, '杯子', '粉色杯身与白色圆点').name == '点点'

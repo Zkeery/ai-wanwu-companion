@@ -13,6 +13,10 @@ VISION_PROMPT = (
     "物品名简短，不输出解释或代码围栏。"
     "visual_features不超过500字，简要写该对象可见的颜色、形状、材质纹理和显著标记；"
     "只写能看清的特征，不确定时留空，不编造，不混入其他对象和背景，不记录私人信息。"
+    "第一个对象再增加三个字符串字段：salient_features、body_parts、pose。"
+    "salient_features只写最显眼的3个特征，包含颜色、形状、图案，用顿号分开，不超过80字。"
+    "body_parts只写这些特征可以变成的配色、材质、花纹或身上的一个小部件，例如奶白色、瓷质光泽、头顶一小圈泡沫；不要写物种，不要把物件接成四肢，不超过120字。"
+    "pose写成可爱、亲近的「动作；表情」，不要凶猛，不超过80字。不要指定生物物种。"
     "不要识别人脸或真人，不要编造不存在的物品。"
     "每个对象增加category字段，只能为fruit（真实水果）、plant（其他植物）、object（人造物品）、other（其他实体）、unknown（无法确定）。"
     "类别描述照片中的实物，不受创作主题影响；水果图案、玩具水果、苹果电脑不是fruit，不确定用unknown。"
@@ -30,10 +34,11 @@ VISION_CONCEPT_PROMPT = (
     "以下是完整数组结构示例，字段值须根据照片重新填写："
     + json.dumps([{
         "label": "物品名", "visual_features": "照片中可见的主体特征", "category": "object",
+        "salient_features": "主色、材质、图案", "body_parts": "配色、材质、花纹或一个小部件", "pose": "可爱的动作；亲近的表情",
         "character_name": "角色名", "character_persona": "性格一句话", "opening_line": "开场白",
         "appearance_description": "完整形象设计描述",
     }], ensure_ascii=False)
-    + "。输出前检查整个数组为合法JSON，主对象四个角色字段齐全且均为字符串。背景不作为候选物品。"
+    + "。输出前检查整个数组为合法JSON，主对象四个角色字段齐全且均为字符串。pose必须依据character_persona，不要另起一次构思。背景不作为候选物品。"
     + STYLE_GUIDANCE
 )
 
@@ -53,6 +58,7 @@ CHARACTER_PROFILE_PROMPT = (
     "一次生成名字、性格和它对用户说的第一句话；三者必须一致并体现物品特征。"
     "只输出 JSON：{{\"name\":\"角色名\",\"persona\":\"性格一句话\",\"opening_line\":\"开场白\"}}。"
     "同时增加appearance_description字段，写出拟人化身体、表情、姿态与材质的完整形象设计描述（1000字内）。"
+    "再增加salient_features、body_parts、pose三个字符串：分别是最显眼的3个特征、它们对应的配色材质花纹或一个小部件、以及可爱亲近的「动作；表情」。不要指定生物物种。"
     "名字不超过40字，性格不超过300字，开场白不超过200字；保持简洁，不输出解释。"
     + STYLE_GUIDANCE
 )

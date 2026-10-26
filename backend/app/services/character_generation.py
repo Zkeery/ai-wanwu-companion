@@ -9,10 +9,13 @@ from app.services.parsers import Persona
 from app.services.generation_timing import timed_call
 
 
-def finish_character(client: ModelClient, label: str, persona: Persona, operation_id: str = "standalone", visual_features: str = "") -> tuple[CharacterResult, str]:
+def finish_character(client: ModelClient, label: str, persona: Persona, operation_id: str = "standalone", visual_features: str = "",
+                     archetype: str = "", action: str = "") -> tuple[CharacterResult, str]:
     appearance = {"appearance_description": persona.appearance_description} if persona.appearance_description else {}
     make_image = partial(client.generate_image, label, persona.name,
-                         persona=persona.persona, visual_features=visual_features, **appearance)
+                         persona=persona.persona, visual_features=visual_features,
+                         salient_features=persona.salient_features, body_parts=persona.body_parts, pose=persona.pose,
+                         archetype=archetype, action=action, **appearance)
     if persona.opening_line is not None:
         image_path = timed_call("image", operation_id, make_image)
         return CharacterResult(persona.name, persona.persona, persona.opening_line), image_path
