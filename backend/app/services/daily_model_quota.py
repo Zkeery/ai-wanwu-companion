@@ -16,6 +16,7 @@ import httpx
 
 DAILY_LIMIT_MESSAGE = '今天的 AI 调用次数已用完，明天再来吧。已有伙伴和聊天记录仍可查看。'
 _trial_dispatch_quota = ContextVar('trial_dispatch_quota', default=None)
+guest_models = ContextVar('guest_models', default=False)
 
 
 @contextmanager
@@ -103,7 +104,7 @@ def install_httpx_quota(quota: DailyModelQuota, endpoints: list[str]):
     sync_send, async_send = httpx.Client.send, httpx.AsyncClient.send
 
     def send(client, request, *args, **kwargs):
-        if not billable(request) or _trial_dispatch_quota.get() is quota:
+        if not billable(request) or _trial_dispatch_quota.get() is quota or guest_models.get():
             return sync_send(client, request, *args, **kwargs)
         attempt = quota.reserve()
         try:
@@ -115,7 +116,7 @@ def install_httpx_quota(quota: DailyModelQuota, endpoints: list[str]):
         return response
 
     async def send_async(client, request, *args, **kwargs):
-        if not billable(request) or _trial_dispatch_quota.get() is quota:
+        if not billable(request) or _trial_dispatch_quota.get() is quota or guest_models.get():
             return await async_send(client, request, *args, **kwargs)
         attempt = quota.reserve()
         try:

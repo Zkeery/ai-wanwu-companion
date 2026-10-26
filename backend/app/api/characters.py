@@ -86,7 +86,7 @@ def get_character_by_object(object_id: int, user: User = Depends(get_current_use
 
 @router.get("/generation-credits")
 def generation_credits(request: Request, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    availability = model_availability(request) if getattr(request.app.state, 'model_budget', None) is not None else {}
+    availability = model_availability(request, user) if getattr(request.app.state, 'model_budget', None) is not None else {}
     if not get_settings().generation_quota_enabled:
         return {"enabled": False, "available": None, **availability}
     available = quota.balance(db, user.id)
@@ -192,6 +192,8 @@ def _reserve_character(payload: CharacterCreate, db: Session, user: User, *, com
         obj.label = payload.label
     if payload.visual_features is not None:
         obj.visual_features = payload.visual_features
+    from app.services.guest_access import reserve_guest_companion
+    reserve_guest_companion(db, user)
     if existing is not None and existing.status == "failed":
         # 允许对失败记录重试：重置为生成中
         ch = existing
@@ -227,7 +229,7 @@ def create_character(payload: CharacterCreate, user: User = Depends(get_current_
         db.execute(text("BEGIN IMMEDIATE"))
         character_id, label, visual_features, concept = _reserve_character(payload, db, user)
         charge_id = quota.active(db, character_id)
-    return _generation_response(character_id, label, visual_features, concept, user_id, charge_id, trace=x_generation_trace)
+    return _generation_response(character_id, label, visual_features, concept, user_id, charge_id, trace=x_generation_trace, guest=user.phone.startswith("g"))
 
 
 class RecreationRequest(BaseModel):
@@ -268,12 +270,15 @@ def recreate(character_id: int, payload: RecreationRequest, user: User = Depends
         db.add(Recreation(id=creation_id, owner_id=owner_id, request_id=request_id,
                           source_id=original.id, character_id=cid, charge_id=charge_id))
         db.commit()
-    return _generation_response(cid, label, features, concept, owner_id, charge_id, previous)
+    return _generation_response(cid, label, features, concept, owner_id, charge_id, previous, guest=user.phone.startswith("g"))
 
 
-def _generation_response(character_id, label, visual_features, concept, user_id, charge_id=None, previous=None, trace=None):
+def _generation_response(character_id, label, visual_features, concept, user_id, charge_id=None, previous=None, trace=None, *, guest=False):
+    from app.services.daily_model_quota import guest_models
+    from app.services.guest_access import release_guest_companion
 
     def gen():
+        token = guest_models.set(True) if guest else None
         started = perf_counter()
         operation_id = diagnostic_operation_id(trace, f"character:{character_id}")
         session = SessionLocal()
@@ -331,6 +336,7 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
                 db_ch.status = "failed"
             if not saved:
                 quota.settle(session, charge_id, success=False)
+                release_guest_companion(session, user_id)
             session.commit()
             settled = True
             yield _sse_event(
@@ -346,7 +352,10 @@ def _generation_response(character_id, label, visual_features, concept, user_id,
                     and db_ch.status == "generating" and quota.is_reserved(session, charge_id, character_id):
                 db_ch.status = "failed"
                 quota.settle(session, charge_id, success=False)
+                release_guest_companion(session, user_id)
                 session.commit()
+            if token is not None:
+                guest_models.reset(token)
             if image_path and not saved:
                 _remove_image_file(image_path)
             session.close()

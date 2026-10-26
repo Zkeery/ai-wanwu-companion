@@ -68,6 +68,12 @@ class Settings(BaseSettings):
 
     # 账号与会话
     auth_mode: Literal["sms", "invite"] = "sms"
+    guest_companions_per_user: int = 2
+    guest_messages_per_user: int = 30
+    guest_companions_per_day: int = 8
+    guest_messages_per_day: int = 4000
+    guest_accounts_per_ip_per_hour: int = 3
+    guest_recognitions_per_day: int = 12
     session_ttl_seconds: int = 30 * 86400  # 30 天滑动续期
     code_ttl_seconds: int = 300  # 验证码有效期 5 分钟
     code_resend_seconds: int = 60  # 同号 60 秒限发

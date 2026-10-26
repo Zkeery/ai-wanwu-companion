@@ -85,6 +85,8 @@ def upload_photo(file: UploadFile = File(...), db: Session = Depends(get_db),
                  x_generation_trace: str | None = Header(default=None)):
     validate_theme(theme_id)
     data = _validate_image(file)
+    from app.services.guest_access import ensure_guest_recognition_room
+    ensure_guest_recognition_room(db, user)
     operation_id = diagnostic_operation_id(x_generation_trace, f"photo:{uuid4().hex}")
     normalized = timed_call("photo_prepare", operation_id, normalize_photo, data)
     receipt = None
@@ -115,32 +117,40 @@ def upload_photo(file: UploadFile = File(...), db: Session = Depends(get_db),
                 return _photo_out(db.get(Photo, receipt.photo_id))
             raise api_error(409, "recognition_" + receipt.status, "请先核对原识别结果")
         receipt = db.get(PhotoRequest, key)
+    from app.services.daily_model_quota import guest_models
+    from app.services.guest_access import is_guest, note_guest_recognition
+    note_guest_recognition(db, user)
+    token = guest_models.set(True) if is_guest(user) else None
     try:
-        objects = timed_call("recognition", operation_id, ModelClient().recognize, normalized)
-    except Exception as exc:
-        details = record_failure("recognition_concept", operation_id, exc)
-        if receipt:
-            receipt.status = "failed"
-            db.commit()
-        error = api_error(502, "recognize_failed", recognition_failure_message(details["reason"], details.get("parse_code")))
-        error.detail["error"]["reason"] = details["reason"]
-        if "parse_code" in details:
-            error.detail["error"]["parse_code"] = details["parse_code"]
-        raise error
+        try:
+            objects = timed_call("recognition", operation_id, ModelClient().recognize, normalized)
+        except Exception as exc:
+            details = record_failure("recognition_concept", operation_id, exc)
+            if receipt:
+                receipt.status = "failed"
+                db.commit()
+            error = api_error(502, "recognize_failed", recognition_failure_message(details["reason"], details.get("parse_code")))
+            error.detail["error"]["reason"] = details["reason"]
+            if "parse_code" in details:
+                error.detail["error"]["parse_code"] = details["parse_code"]
+            raise error
 
-    with timing_span("photo_store", operation_id):
-        photo = Photo(filename=_safe_filename(file.filename), status="done", owner_id=user.id, theme_id=theme_id)
-        db.add(photo)
-        db.flush()
-        for obj in objects[:MAX_CANDIDATES]:
-            db.add(Object(photo_id=photo.id, label=obj.label, visual_features=obj.visual_features, category=obj.category,
-                          character_concept_json=save_concept(obj.label, obj.visual_features, obj.concept) if obj.concept else None))
-        if receipt:
-            receipt.status = "ready"
-            receipt.photo_id = photo.id
-        db.commit()
-        db.refresh(photo)
-        return _photo_out(photo)
+        with timing_span("photo_store", operation_id):
+            photo = Photo(filename=_safe_filename(file.filename), status="done", owner_id=user.id, theme_id=theme_id)
+            db.add(photo)
+            db.flush()
+            for obj in objects[:MAX_CANDIDATES]:
+                db.add(Object(photo_id=photo.id, label=obj.label, visual_features=obj.visual_features, category=obj.category,
+                              character_concept_json=save_concept(obj.label, obj.visual_features, obj.concept) if obj.concept else None))
+            if receipt:
+                receipt.status = "ready"
+                receipt.photo_id = photo.id
+            db.commit()
+            db.refresh(photo)
+            return _photo_out(photo)
+    finally:
+        if token is not None:
+            guest_models.reset(token)
 
 
 @router.get("/requests/{request_id}")

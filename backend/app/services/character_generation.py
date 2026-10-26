@@ -1,5 +1,6 @@
 """Complete the independent opening/image branches after persona validation."""
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from functools import partial
 
 from app.services.character_images import remove_image_file
@@ -17,8 +18,8 @@ def finish_character(client: ModelClient, label: str, persona: Persona, operatio
         return CharacterResult(persona.name, persona.persona, persona.opening_line), image_path
     # Both branches own their HTTP clients; no database session crosses threads.
     with ThreadPoolExecutor(max_workers=2, thread_name_prefix="character-assets") as pool:
-        image_future = pool.submit(timed_call, "image", operation_id, make_image)
-        opening_future = pool.submit(timed_call, "opening", operation_id, client.generate_opening, persona)
+        image_future = pool.submit(copy_context().run, timed_call, "image", operation_id, make_image)
+        opening_future = pool.submit(copy_context().run, timed_call, "opening", operation_id, client.generate_opening, persona)
         try:
             opening = opening_future.result()
             image_path = image_future.result()

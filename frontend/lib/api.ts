@@ -26,6 +26,11 @@ export const api = {
   themes: async (signal?: AbortSignal) => parseThemes(await request('/themes', { signal })),
   // 账号
   auth: {
+    guest: async () => {
+      const r = object(await request('/auth/guest', { method: 'POST', body: '{}' }));
+      if (typeof r.token !== 'string') throw new Error('体验账号没有创建成功');
+      return { token: r.token, user: parseAuthUser(r.user) };
+    },
     inviteLogin: async (code: string) => {
       const r = object(await request('/auth/invite', { method: 'POST', body: JSON.stringify({ code }) }));
       if (typeof r.token !== 'string') throw new Error('登录结果格式不正确');

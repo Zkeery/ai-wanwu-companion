@@ -7,9 +7,10 @@ from app.core.errors import api_error
 PAUSED_MESSAGE = 'AI服务已暂停，暂时无法识别、生成或发送新对话。已有伙伴和记录仍可查看，请联系维护者恢复服务。'
 
 
-def model_availability(request: Request) -> dict:
+def model_availability(request: Request, user=None) -> dict:
+    from app.services.guest_access import is_guest
     daily = getattr(request.app.state, 'daily_model_quota', None)
-    if daily is not None and daily.status()['remaining'] == 0:
+    if not is_guest(user) and daily is not None and daily.status()['remaining'] == 0:
         from app.services.daily_model_quota import DAILY_LIMIT_MESSAGE
         return {'model_available': False, 'unavailable_message': DAILY_LIMIT_MESSAGE}
     budget = getattr(request.app.state, 'model_budget', None)
@@ -24,10 +25,11 @@ def model_availability(request: Request) -> dict:
 
 
 def require_model_available(request: Request, _user=Depends(get_current_user)):
+    from app.services.guest_access import is_guest
     daily = getattr(request.app.state, 'daily_model_quota', None)
-    if daily is not None and daily.status()['remaining'] == 0:
+    if not is_guest(_user) and daily is not None and daily.status()['remaining'] == 0:
         from app.services.daily_model_quota import DAILY_LIMIT_MESSAGE
         raise api_error(429, 'daily_model_limit', DAILY_LIMIT_MESSAGE)
-    state = model_availability(request)
+    state = model_availability(request, _user)
     if not state['model_available']:
         raise api_error(503, 'model_service_paused', PAUSED_MESSAGE)

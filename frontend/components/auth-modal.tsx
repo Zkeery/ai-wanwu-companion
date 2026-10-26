@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Lock, MessageSquareText, Phone } from 'lucide-react';
+import { Lock, MessageSquareText, Phone, Sparkles } from 'lucide-react';
 import { api, ApiError, errorText } from '@/lib/api';
 import { setToken } from '@/lib/auth';
 import { Modal } from './common';
@@ -15,6 +15,14 @@ function startCooldown(phone: string) {
   const until = Date.now() + 60000;
   cooldowns.set(phone, until);
   try { sessionStorage.setItem(`sms-cooldown:${phone}`, String(until)); } catch { /* In-page fallback remains. */ }
+}
+
+export function GuestEntry({ onGuest, onLogin, busy = false }: { onGuest: () => void; onLogin: () => void; busy?: boolean }) {
+  const invite = process.env.NEXT_PUBLIC_AUTH_MODE === 'invite';
+  return <>
+    <button className="button hero-cta" type="button" disabled={busy} onClick={onGuest}><Sparkles size={21} />立即体验</button>
+    <button className="guest-login" type="button" disabled={busy} onClick={onLogin}>{invite ? '已有账号？用邀请码登录' : '已有账号？登录'}</button>
+  </>;
 }
 
 export default function AuthModal({ onClose, onLoggedIn }: { onClose: () => void; onLoggedIn: () => void }) {

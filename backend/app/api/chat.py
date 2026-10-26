@@ -7,7 +7,7 @@ from uuid import uuid4
 from fastapi import APIRouter, Depends
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
-from sqlalchemy import delete, exists, insert, literal, select
+from sqlalchemy import delete, exists, insert, literal, select, text
 
 from app.api.deps import get_current_user
 from app.api.model_availability import require_model_available
@@ -53,14 +53,25 @@ def _get_character(character_id: int, db: Session, user_id: str) -> Character:
 def chat(character_id: int, payload: ChatRequest, user: User = Depends(get_current_user),
          db: Session = Depends(get_db)):
     character = _get_character(character_id, db, user.id)
-    text = validate_text(payload.message, "message")
+    message_text = validate_text(payload.message, "message")
+    from app.services.daily_model_quota import guest_models
+    from app.services.guest_access import accept_guest_message, is_guest
+    guest = is_guest(user)
+    if guest:
+        db.rollback()
+        db.execute(text("BEGIN IMMEDIATE"))
+        accept_guest_message(db, user)
+        character = _get_character(character_id, db, user.id)
     if get_settings().scene_agent_enabled:
         owner_id = user.id
-        db.rollback()
-        return agent_chat.prepare(owner_id, character_id, text, payload.request_id)
+        if guest:
+            db.commit()
+        else:
+            db.rollback()
+        return agent_chat.prepare(owner_id, character_id, message_text, payload.request_id)
 
     # 先保存用户消息：即使客户端中途断开，已发送的消息也不丢失。
-    user_msg = Message(character_id=character_id, role="user", content=text)
+    user_msg = Message(character_id=character_id, role="user", content=message_text)
     db.add(user_msg)
     db.execute(delete(SceneProposal).where(SceneProposal.character_id == character_id))
     db.commit()
@@ -83,7 +94,7 @@ def chat(character_id: int, payload: ChatRequest, user: User = Depends(get_curre
     else:
         scene = db.query(SceneState).filter(SceneState.character_id == character_id).first()
         elements, _ = scene_service.deserialize(scene.state_json if scene else None)
-    messages = build_messages(character, memories, history, text, elements,
+    messages = build_messages(character, memories, history, message_text, elements,
                               set(bridge.allowed_actions(row["scene_type"])) if row else None)
     from app.services.voice import append_mood_context
     append_mood_context(db, user.id, character_id, messages)
@@ -92,7 +103,7 @@ def chat(character_id: int, payload: ChatRequest, user: User = Depends(get_curre
     if row:
         from app.living.rules import CATALOG
         messages[0]["content"] += f"\n伙伴当前生活场景：{CATALOG[row['scene_type']]['name']}。可提议的操作：{', '.join(bridge.allowed_actions(row['scene_type']))}。不支持的操作请解释当前场景限制。"
-    action = detect_scene_action(text)
+    action = detect_scene_action(message_text)
     if visiting:
         action = None
     if row and action not in bridge.allowed_actions(row["scene_type"]):
@@ -103,6 +114,7 @@ def chat(character_id: int, payload: ChatRequest, user: User = Depends(get_curre
     db.commit()
 
     def gen():
+        token = guest_models.set(True) if guest else None
         session = SessionLocal()
         try:
             client = ModelClient()
@@ -158,6 +170,8 @@ def chat(character_id: int, payload: ChatRequest, user: User = Depends(get_curre
                 {"error": {"code": "chat_failed", "message": "聊天失败，请重试"}},
             )
         finally:
+            if token is not None:
+                guest_models.reset(token)
             session.close()
 
     return StreamingResponse(gen(), media_type="text/event-stream", headers={

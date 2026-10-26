@@ -303,6 +303,33 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=_utcnow)
 
 
+class GuestAccount(Base):
+    """Durable guest allowances. Deleting a companion or clearing chat does not refund them."""
+    __tablename__ = "guest_accounts"
+
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    companions: Mapped[int] = mapped_column(Integer, default=0)
+    messages: Mapped[int] = mapped_column(Integer, default=0)
+    recognitions: Mapped[int] = mapped_column(Integer, default=0)
+    recognition_day: Mapped[str] = mapped_column(String(10), default="")
+
+
+class GuestDaily(Base):
+    __tablename__ = "guest_daily"
+
+    day: Mapped[str] = mapped_column(String(10), primary_key=True)
+    companions: Mapped[int] = mapped_column(Integer, default=0)
+    messages: Mapped[int] = mapped_column(Integer, default=0)
+
+
+class GuestSignup(Base):
+    __tablename__ = "guest_signups"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    source_hash: Mapped[str] = mapped_column(String(64), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_utcnow, index=True)
+
+
 class LoginInvite(Base):
     """Private reusable login credentials; only the SHA256 digest is stored."""
     __tablename__ = "login_invites"

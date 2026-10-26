@@ -33,12 +33,19 @@ class InviteRequest(BaseModel):
 
 
 def _user_out(user: User) -> dict:
-    return {"id": user.id, "phone": "" if user.phone.startswith("i") else user.phone}
+    return {"id": user.id, "phone": "" if user.phone[:1] in ("i", "g") else user.phone}
 
 
 def require_sms_mode() -> None:
     if get_settings().auth_mode != "sms":
         raise api_error(403, "sms_disabled", "当前使用邀请码登录")
+
+
+@router.post("/guest")
+def guest_login(request: Request, db: Session = Depends(get_db)):
+    from app.services.guest_access import create_guest, request_source
+    user = create_guest(db, request_source(request))
+    return {"token": create_session(db, user), "user": _user_out(user)}
 
 
 @router.post("/invite")

@@ -6,13 +6,13 @@ import CreationDeadline from './creation-deadline';
 import { beginGenerationMeasurement, type GenerationMeasurement } from '@/lib/generation-performance';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Check, ImagePlus, Leaf, LogIn, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ImagePlus, Leaf, Sparkles } from 'lucide-react';
 import { Brand, Notice } from './common';
-import AuthModal from './auth-modal';
+import AuthModal, { GuestEntry } from './auth-modal';
 import PersonalityEditor from './personality-editor';
 import PublicationDialog from './publication-dialog';
 import { ApiError, api, errorText } from '@/lib/api';
-import { getToken } from '@/lib/auth';
+import { getToken, setToken } from '@/lib/auth';
 import type { ImageLoadStage } from '@/lib/private-images';
 import { imageUrl, type Character } from '@/lib/contracts';
 import { MAX_CANDIDATES } from '@/lib/input-limits';
@@ -30,7 +30,8 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
   const [restoredTheme, setRestoredTheme] = useState(false);
   const validTheme = themeId === null || themeId === 'fruit';
   const [hasDraft, setHasDraft] = useState(false);
-  const [authed, setAuthed] = useState<boolean | null>(null), [showAuth, setShowAuth] = useState(false);
+  const [authed, setAuthed] = useState<boolean | null>(null), [showAuth, setShowAuth] = useState(false), [guestError, setGuestError] = useState('');
+  const guestLock = useRef(false);
   const [step, setStep] = useState<Step>('recover'), [busy, setBusy] = useState(false), [error, setError] = useState('');
   const [file, setFile] = useState<File | null>(null), [preview, setPreview] = useState(''), [previewFailed, setPreviewFailed] = useState(false);
   const [photo, setPhoto] = useState<Photo | null>(null), [selected, setSelected] = useState<number | null>(null), [label, setLabel] = useState('');
@@ -268,10 +269,17 @@ export default function CreateCompanion({ initialTheme = null, initialOrigin = n
   const selectedObject = photo?.objects.find(item => item.id === selected);
   const themeMismatch = Boolean(photo?.theme_id && !freeCreation && selectedObject && (selectedObject.category !== 'fruit' || selectedObject.label !== label.trim()));
   const progress = step === 'recover' ? -1 : step === 'upload' ? 0 : step === 'objects' ? 1 : 2;
+  async function startGuest() {
+    if (guestLock.current) return;
+    guestLock.current = true; setGuestError('');
+    try { const result = await api.auth.guest(); setToken(result.token); setAuthed(true); }
+    catch (e) { setGuestError(errorText(e)); }
+    finally { guestLock.current = false; }
+  }
   if (authed === null) return <div className="shell"><header className="site-header"><Brand /></header><main className="create-page"><div className="loading"><span className="loading-leaf"><Leaf /></span>正在把小世界打开…</div></main></div>;
   if (authed === false) {
     return <div className="shell"><header className="site-header"><Brand /><Link href="/" className="back-link"><ArrowLeft size={16} />我的伙伴</Link></header>
-      <main className="create-page auth-welcome"><div className="eyebrow">A NEW FRIEND, FROM YOUR EVERYDAY</div><h1>先登录，<br />再认识你的新伙伴。</h1><p className="create-intro">登录后，生成的伙伴会安全地加入你的收藏。</p><button className="button hero-cta" onClick={() => setShowAuth(true)}><LogIn size={21} />登录<ArrowRight size={21} /></button></main>
+      <main className="create-page auth-welcome"><div className="eyebrow">A NEW FRIEND, FROM YOUR EVERYDAY</div><h1>先登录，<br />再认识你的新伙伴。</h1><p className="create-intro">可以先体验，生成的伙伴只属于这个账号。</p><GuestEntry onGuest={() => void startGuest()} onLogin={() => setShowAuth(true)} />{guestError && <p className="form-error" role="alert">{guestError}</p>}</main>
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLoggedIn={() => { setShowAuth(false); setAuthed(true); }} />}
     </div>;
   }

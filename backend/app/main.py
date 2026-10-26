@@ -61,6 +61,8 @@ async def lifespan(app: FastAPI):
     motion_generation.recover_interrupted()
     # 当前 MVP 采用单进程。上次进程退出时未完成的任务允许重新生成。
     with SessionLocal() as session:
+        from app.services.guest_access import release_interrupted_guest_companions
+        release_interrupted_guest_companions(session)
         session.query(Character).filter(Character.status == "generating").update(
             {Character.status: "failed"}, synchronize_session=False
         )

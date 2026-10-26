@@ -19,3 +19,5 @@
 .space-decorations { padding: 20px; margin: 18px 0; border: 1px solid #d6c7af; border-radius: 22px; background: #fff9ef; }
 .decoration-display { display: inline-flex; align-items: center; gap: 8px; padding: 12px; }
 .decoration-display > span { font-size: 32px; }
+.guest-login { display: block; width: fit-content; margin-top: 12px; padding: 4px 0; border: 0; background: transparent; box-shadow: none; color: #6d5c66; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
+.guest-login:hover { background: transparent; }
