@@ -249,8 +249,8 @@ function Player({ staticSrc, name, asset: suppliedAsset, privateStatic, loadAsse
   const canPlay = phase === 'ready' && !reduced && !staticFailed && inView;
   const classifiedActivity = activity ?? asset?.activity;
   const activityLabel = classifiedActivity ? { rest: '休息', walk: '散步', observe: '观察' }[classifiedActivity] : null;
-  const status = staticFailed ? '静态形象暂时看不到' : phase === 'missing' ? activityLabel ? '这类动作还没准备好，先看看静态形象' : '动作还没准备好，先看看静态形象'
-    : phase === 'failed' ? '动作没加载好，静态形象仍保留' : phase === 'waiting' ? '正在准备动作…'
+  const status = staticFailed ? '静态形象暂时看不到' : phase === 'missing' ? activityLabel ? '这类动作还没准备好，先看看静态形象' : '动作还没准备好，先看看静态形象。这不是加载失败。'
+    : phase === 'failed' ? '动作没加载好，静态形象仍保留' : phase === 'waiting' ? (compact && !activated ? '先看静态形象。滑到这张卡片后才检查动作，现在不是在生成。' : '正在准备动作…')
     : reduced ? '已按系统偏好保持静态' : requested && !visible ? '正在开始动作…'
     : visible ? activityLabel ? `正在播放${activityLabel}动作` : '正在跳舞' : '动作已就绪，移入形象或点按钮';
   const staticPortrait = privateStatic

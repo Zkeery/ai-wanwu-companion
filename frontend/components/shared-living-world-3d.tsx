@@ -256,6 +256,7 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
     {leisureEnabled&&gathering.companions.some(c=>c.activity==='talk')&&<p className={styles.note}>相聚闲聊采用免费预设对白；真实 AI 交流需另行开启。请选择相聚加入伙伴所在区域，抵达后开始闲聊。</p>}
     <div className={styles.companions} aria-label="在场伙伴">
       {gathering.companions.map(c => <button key={c.id} type="button" aria-label={`查看${c.name}的生活近况`} aria-pressed={c.id === focusedId} onClick={() => select.current(c.id)}><strong>{c.name}</strong><span>{home && !floorLives.some(v=>v.id===c.id&&v.floor===2) && `${areaNames[currentArea(c)]} · `}{activityLabel(c)}</span>{c.id === focusedId && <span className={styles.selection}>已选中</span>}{parseAvatar3D(c.avatar3d, c.id).kind === 'unavailable' && <small>立体形象待准备</small>}</button>)}
+      {gathering.companions.some(c => parseAvatar3D(c.avatar3d, c.id).kind === 'unavailable') && <p className={styles.note} role="status">标了「立体形象待准备」的伙伴，院子和房间里暂时没有身体。位置还在，资料也还在，不是走丢了。</p>}
     </div>
     <p className={styles.note}>{!animate || paused ? '画面已保持静态，仍可点选伙伴查看近况。' : home ? houseView === 'exterior' ? leisureEnabled?'点入户门开门进屋；可拖动旋转、缩放查看整个小院。':'外观模式可看完整房屋；点击客厅、卧室或屋内伙伴，即可查看室内。' : '近侧墙为半透明，方便看清室内；点门开关，点自己的伙伴安排免费活动。' : '伙伴按已保存的活动走动；气泡中的台词来自实际共同交流记录。'}</p>
   </section>;
