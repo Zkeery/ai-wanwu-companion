@@ -404,13 +404,21 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
 
     let journeyGeometryKey='',journeyObstacles:HomeNavigationObstacle[]=[];
     const journeyGraphs=new Map<string,LivingNavigation>();
+    function journeyBounds(area:'indoor'|'bedroom'|'outdoor'){
+      const bounds=boundsFor(area),physical=decoration?.getObjectByName('home-courtyard-enclosure')?.userData.bounds;
+      // Roaming uses an inset region. A purposeful journey may use the real
+      // courtyard strip beside the facade; all wall/furniture solids and the
+      // full body radius still constrain every segment.
+      return gathering.scene_type==='home'&&area==='outdoor'&&!housePlan()&&Number.isFinite(physical?.minZ)
+        ?{...bounds,minZ:Math.min(bounds.minZ,physical.minZ)}:bounds;
+    }
     function refreshJourneyGeometry(){
       const key=navRevision+'/'+doorIds.map(id=>doors[id].progress.toFixed(3)).join('/');
       if(key!==journeyGeometryKey){journeyGeometryKey=key;journeyObstacles=canNaturalIndoor()?collectNaturalNavigationObstacles(decoration,items):collectHomeJourneyObstacles(decoration,items);journeyGraphs.clear();}
     }
     function journeyGraph(area:'indoor'|'bedroom'|'outdoor',radius:number){
       const key=area+'/'+radius;let graph=journeyGraphs.get(key);
-      if(!graph){graph=createLivingNavigation({bounds:boundsFor(area),blocked:areaObstacles(area,journeyObstacles),clearance:radius,step:.16});journeyGraphs.set(key,graph);}return graph;
+      if(!graph){graph=createLivingNavigation({bounds:journeyBounds(area),blocked:areaObstacles(area,journeyObstacles),clearance:radius,step:.16});journeyGraphs.set(key,graph);}return graph;
     }
     function socialEyeLineClear(leftId:number,rightId:number,leftPoint?:{x:number;z:number},rightPoint?:{x:number;z:number}){
       const a=avatars.get(leftId),b=avatars.get(rightId);if(!a||!b)return false;
@@ -424,9 +432,9 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
       const ray=new T.Raycaster(from,to.clone().sub(from).normalize(),.01,length-.01),roots=[decoration,items].filter((root):root is T.Group=>!!root);roots.forEach(root=>root.updateWorldMatrix(true,true));
       const clear=ray.intersectObjects(roots,true).length===0;socialSightCache.set(pair,{geometry,clear});return clear;
     }
-    function idleYieldGraph(area:'indoor'|'bedroom'|'outdoor',radius:number){
-      const key='idle-yield/'+area+'/'+radius;let graph=journeyGraphs.get(key);
-      if(!graph){graph=createLivingNavigation({bounds:boundsFor(area),blocked:areaObstacles(area,journeyObstacles),clearance:radius,step:.08});journeyGraphs.set(key,graph);}return graph;
+    function idleYieldGraph(area:'indoor'|'bedroom'|'outdoor',radius:number,support:readonly string[]=[]){
+      const key='idle-yield/'+area+'/'+radius+'/'+support.join(',');let graph=journeyGraphs.get(key);
+      if(!graph){graph=createLivingNavigation({bounds:journeyBounds(area),blocked:areaObstacles(area,journeyObstacles).filter(o=>!support.includes(o.source)),clearance:radius,step:.08});journeyGraphs.set(key,graph);}return graph;
     }
     function journeyPortalGraph(id:number,door:HomeWorldDoorId,from:{x:number;z:number},to:{x:number;z:number},turn=false){
       const avatar=avatars.get(id)!;const c=avatar.root.userData.journeyPortalClearance as {x:number;z:number;height:number};
@@ -461,13 +469,14 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
       let result=Infinity;for(let index=1;index<path.length;index++){const a=path[index-1],b=path[index],dx=b.x-a.x,dz=b.z-a.z,t=Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.z-a.z)*dz)/Math.max(1e-12,dx*dx+dz*dz)));result=Math.min(result,Math.hypot(p.x-a.x-dx*t,p.z-a.z-dz*t));}return result;
     };
     const canHoldCourtesy=(c:Gathering['companions'][number])=>['observe','arriving','walk'].includes(c.activity)||c.activity==='talk'&&!socialPlan.has(c.id);
-    function prepareIdleYields(delta:number,seated:Map<number,WorldRestSeat>,sleeping:Map<number,WorldSleepingBed>,localSeats:Map<number,{x:number;y:number;z:number;area:'indoor'|'bedroom'|'outdoor'}>){
+    function prepareIdleYields(delta:number,seated:Map<number,WorldRestSeat>,sleeping:Map<number,WorldSleepingBed>,localSeats:Map<number,{x:number;y:number;z:number;area:'indoor'|'bedroom'|'outdoor';station?:string;support?:readonly string[]}>){
       for(const [id,held]of idleYields){
-        const c=gathering.companions.find(c=>c.id===id),a=avatars.get(id);if(!c||!a||!canHoldCourtesy(c)||idleYieldSource(c)!==held.sourceKey||seated.has(id)||sleeping.has(id)||localSeats.has(id)){idleYields.delete(id);if(a)delete a.root.userData.homeIdleYield;continue;}
+        const c=gathering.companions.find(c=>c.id===id),a=avatars.get(id),benchCourtesy=held.requester!==0&&localSeats.get(id)?.station==='bench';if(!c||!a||!canHoldCourtesy(c)||idleYieldSource(c)!==held.sourceKey||seated.has(id)||sleeping.has(id)||localSeats.has(id)&&!benchCourtesy){idleYields.delete(id);if(a)delete a.root.userData.homeIdleYield;continue;}
         const requested=gathering.companions.some(c=>c.id===held.requester)&&(localSeats.has(held.requester)||seated.has(held.requester)||sleeping.has(held.requester)||villaVisit.snapshot(held.requester)?.phase==='approach');
         const cancelled=!requested||journeys.diagnostics(held.requester)?.target.key!==held.requestKey;
         const completed=!cancelled&&!journeys.get(held.requester)?.active;
         if(held.requester&&(cancelled||completed)){
+          if(benchCourtesy){idleYields.delete(id);delete a.root.userData.homeIdleYield;continue;}
           // Release only the request lease; the observer keeps its actual floor
           // position. A later request may ask it to yield again without a reset.
           idleYieldChecks.delete(held.requester);
@@ -522,11 +531,13 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
         }
         // Two floor bodies can seal each other's only escape. Prove both
         // sequential routes plus the requester's onward route before moving either.
-        const tea=localSeats.get(requester.id);
-        if(tea&&'activity'in tea&&tea.activity==='tea'&&area==='outdoor'&&waitingAtBay&&![...idleYields.values()].some(held=>held.requester===requester.id)){
+        // Keep the existing tea recovery and use the same planner at the stair bay.
+        const tea=localSeats.get(requester.id),teaRequester=tea&&'activity'in tea&&tea.activity==='tea'&&area==='outdoor';
+        const stairRequester=area==='outdoor'&&details.target.key==='villa-stair-boarding';
+        if((teaRequester||stairRequester)&&waitingAtBay&&![...idleYields.values()].some(held=>held.requester===requester.id)){
           const bodies=[...avatars].filter(([id,a])=>id!==requester.id&&Math.abs(a.root.position.y-avatar.root.position.y)<2.3).map(([id,a])=>({id,position:{x:a.root.position.x,z:a.root.position.z},radius:Number(a.root.userData.navigationClearance)}));
-          const eligibleIds=gathering.companions.filter(c=>c.id!==requester.id&&canHoldCourtesy(c)&&!floorBusy(c.id)&&!seated.has(c.id)&&!sleeping.has(c.id)&&!localSeats.has(c.id)&&!journeys.get(c.id)?.active&&(!idleYields.has(c.id)||idleYields.get(c.id)!.requester===0)&&avatars.get(c.id)?.root.userData.homeRegion===area).map(c=>c.id);
-          const input={requester:{id:requester.id,position:{x:frame.pose.x,z:frame.pose.z},radius:requestRadius},goal:requestedGoal,bodies,eligibleIds,keepFree,graph:(id:number)=>idleYieldGraph(area,Number(avatars.get(id)!.root.userData.navigationClearance))};
+          const eligibleIds=gathering.companions.filter(c=>c.id!==requester.id&&canHoldCourtesy(c)&&!floorBusy(c.id)&&!seated.has(c.id)&&!sleeping.has(c.id)&&(!localSeats.has(c.id)||localSeats.get(c.id)?.station==='bench')&&!journeys.get(c.id)?.active&&(!idleYields.has(c.id)||idleYields.get(c.id)!.requester===0)&&avatars.get(c.id)?.root.userData.homeRegion===area).map(c=>c.id);
+          const input={requester:{id:requester.id,position:{x:frame.pose.x,z:frame.pose.z},radius:requestRadius},goal:requestedGoal,bodies,eligibleIds,keepFree,graph:(id:number)=>{const local=localSeats.get(id),support=local?.station==='bench'?local.support??[]:[];return idleYieldGraph(area,Number(avatars.get(id)!.root.userData.navigationClearance),support);}};
           const jobKey=JSON.stringify([journeyGeometryKey,details.target.key,gathering.companions.map(c=>[c.id,c.activity,c.leisure??null]),eligibleIds]);
           const attempt=jobKey+'/'+JSON.stringify([input.requester,...bodies].map(body=>[body.id,Math.round(body.position.x*10),Math.round(body.position.z*10),body.radius]));
           let job=pairedCourtesyJobs.get(requester.id);
@@ -568,7 +579,7 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
         }
       }
     }
-    function prepareHomeJourneys(delta:number,seated:Map<number,WorldRestSeat>,sleeping:Map<number,WorldSleepingBed>,localSeats:Map<number,{x:number;y:number;z:number;area:'indoor'|'bedroom'|'outdoor'}>){
+    function prepareHomeJourneys(delta:number,seated:Map<number,WorldRestSeat>,sleeping:Map<number,WorldSleepingBed>,localSeats:Map<number,{x:number;y:number;z:number;area:'indoor'|'bedroom'|'outdoor';station?:string;support?:readonly string[]}>){
       const proposals=new Map<number,NonNullable<ReturnType<typeof journeys.prepare>>>();
       if(!canJourney()){journeys.reset();idleYields.clear();pairedCourtesyJobs.clear();pairedCourtesyFailures.clear();idleYieldChecks.clear();socialPlan.clear();socialPlanKey='';host.dataset.socialParticipants='0';return proposals;}refreshJourneyGeometry();prepareIdleYields(delta,seated,sleeping,localSeats);
       const socialActors=gathering.companions.flatMap(c=>{const a=avatars.get(c.id);return c.activity==='talk'&&!c.leisure&&!floorBusy(c.id)&&!localSeats.has(c.id)&&a?[{id:c.id,area:areaFor(c),radius:Number(a.root.userData.navigationClearance)}]:[];});
@@ -684,7 +695,7 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
           target={key:'floor/'+c.activity+'/'+area+'/'+safe.x+'/'+safe.z,pose:{x:safe.x,y:0,z:safe.z,yaw:0,tilt:0,scale:1,area,contact:null},approach:safe};
         }
         if(goingUp)target={key:'villa-stair-boarding',pose:{...VILLA_STAIR_BOTTOM,yaw:Math.PI,tilt:0,scale:1,area:'bedroom',contact:null},approach:VILLA_STAIR_BOTTOM};
-        const courtesy=goingUp?undefined:idleYields.get(c.id);if(courtesy&&!seat&&!bed)target={key:'courtesy/'+courtesy.sourceKey+'/'+courtesy.requester+'/'+courtesy.requestKey+'/'+courtesy.target.x+'/'+courtesy.target.z,pose:{...courtesy.target,y:0,yaw:Math.atan2(courtesy.target.x-a.root.position.x,courtesy.target.z-a.root.position.z),tilt:0,scale:1,area:courtesy.area,contact:null},approach:courtesy.target};
+        const courtesy=goingUp?undefined:idleYields.get(c.id);if(courtesy&&(!seat&&!bed||local?.station==='bench'))target={key:'courtesy/'+courtesy.sourceKey+'/'+courtesy.requester+'/'+courtesy.requestKey+'/'+courtesy.target.x+'/'+courtesy.target.z,pose:{...courtesy.target,y:0,yaw:Math.atan2(courtesy.target.x-a.root.position.x,courtesy.target.z-a.root.position.z),tilt:0,scale:1,area:courtesy.area,contact:null},approach:courtesy.target};
         const fineRoute=!!courtesy||[...idleYields.values()].some(held=>held.requester===c.id&&held.requestKey===target.key),routeGraph=(region:'indoor'|'bedroom'|'outdoor')=>fineRoute?idleYieldGraph(region,radius):journeyGraph(region,radius);
         const support=goingUp?[]:bed?[...(bed.support??['room-bed-'+bed.id])]:seat&&'support'in seat&&seat.support?[...seat.support]:seat?journeyObstacles.filter(o=>/sofa|chair|bench/i.test(o.source)&&target.pose.x>=o.minX-.03&&target.pose.x<=o.maxX+.03&&target.pose.z>=o.minZ-.03&&target.pose.z<=o.maxZ+.03).map(o=>o.source):[];
         if(a.root.userData.journeyTargetKey!==target.key){
@@ -721,7 +732,10 @@ export function createLivingWorld(host: HTMLElement, labelLayer: HTMLElement, in
         const contactMode=savedContactMode==='sleep'?'sleep':savedContactMode==='television'?'television':'mahjong';
         const exactContact=exactMahjongContact||contactMode==='sleep'||contactMode==='television'&&!!contactSupport?.some(name=>/^sofa-/.test(name));
         const contactRadius=exactContact&&journeys.get(c.id)?.pose.contact==='rest'?contactCollision.radius(a,contactMode):null;
-const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rotation.y,recoverYieldingRoute:canLocalLeisure(),coordinateContacts:canLocalLeisure(),radius:contactRadius??(canNaturalLeisure()&&!journeys.get(c.id)?.active?radius*a.root.scale.x/a.baseScale.x:radius),plan:(from,to,region,avoid)=>routeGraph(region).planTo({from,to,id:c.id,avoid:courtesy?[...(avoid??[]),...[...avatars].filter(([id])=>id!==c.id).map(([,a])=>({position:{x:a.root.position.x,z:a.root.position.z},radius:Number(a.root.userData.navigationClearance)}))]:avoid}),yieldPlan:(from,region,avoid,keepFree)=>{
+const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rotation.y,recoverYieldingRoute:canLocalLeisure(),coordinateContacts:canLocalLeisure(),radius:contactRadius??(canNaturalLeisure()&&!journeys.get(c.id)?.active?radius*a.root.scale.x/a.baseScale.x:radius),plan:(from,to,region,avoid)=>{
+          const fixed=goingUp?[...avatars].filter(([id,peer])=>id!==c.id&&peer.root.userData.homeRegion===region&&(localSeats.has(id)||seated.has(id)||sleeping.has(id))&&idleYields.get(id)?.requester!==c.id).map(([,peer])=>({position:{x:peer.root.position.x,z:peer.root.position.z},radius:Number(peer.root.userData.navigationClearance)})):[];
+          return routeGraph(region).planTo({from,to,id:c.id,avoid:courtesy?[...(avoid??[]),...[...avatars].filter(([id])=>id!==c.id).map(([,a])=>({position:{x:a.root.position.x,z:a.root.position.z},radius:Number(a.root.userData.navigationClearance)}))]:[...(avoid??[]),...fixed]});
+        },yieldPlan:(from,region,avoid,keepFree)=>{
           const graph=journeyGraph(region,radius),occupied=[...avoid,...keepFree],candidates=new Map<string,{x:number;z:number}>();
           for(const distance of [0,1.2,2.4,3.6,4.8])for(let direction=0;direction<(distance?8:1);direction++){
             const angle=direction*Math.PI/4,point=graph.findSafePoint({x:from.x+Math.sin(angle)*distance,z:from.z+Math.cos(angle)*distance},occupied);
@@ -1100,7 +1114,7 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
       }
       for(const p of layoutLivingLabels(visibleLabels,host.clientWidth,host.clientHeight))avatars.get(p.id)!.label.style.transform=`translate(${p.x.toFixed(1)}px,${p.y.toFixed(1)}px) translate(-50%,-100%)`;
       host.dataset.navigationBlocked=String(navBlocked);host.dataset.navigationCorrected=String(navCorrected);host.dataset.navigationRevision=String(navRevision);navNotice.hidden=navBlocked===0;navNotice.textContent=navBlocked?'散步空间不足，伙伴暂时停下。可调整布置后再试。':'';
-      if(canJourney()){const all=gathering.companions.map(c=>journeys.get(c.id)).filter(f=>f?.active),waiting=all.filter(f=>f?.phase==='wait-door'),blocked=all.filter(f=>f?.phase==='blocked');host.dataset.journeyActive=String(all.length);host.dataset.journeyWaiting=String(waiting.length);if(waiting.length){navNotice.hidden=false;navNotice.textContent=waiting.some(frame=>frame?.waitingFor&&doors[frame.waitingFor].open&&doors[frame.waitingFor].progress>=.999)?'门边的通道暂时被挡住，伙伴正在安全等候。请留出通行空间。':'伙伴在门前等候，门打开后会继续走。';}else if(blocked.length){navNotice.hidden=false;navNotice.textContent='前面的空间暂时走不过去，伙伴已停在安全位置。';}}
+      if(canJourney()){const all=gathering.companions.map(c=>journeys.get(c.id)).filter(f=>f?.active),waiting=all.filter(f=>f?.phase==='wait-door'),blocked=all.filter(f=>f?.phase==='blocked'),trafficWaiting=[...avatars.values()].some(a=>a.root.userData.homeJourney?.waitingForClearance);host.dataset.journeyActive=String(all.length);host.dataset.journeyWaiting=String(waiting.length);if(waiting.length){navNotice.hidden=false;navNotice.textContent=waiting.some(frame=>frame?.waitingFor&&doors[frame.waitingFor].open&&doors[frame.waitingFor].progress>=.999)?'门边的通道暂时被挡住，伙伴正在安全等候。请留出通行空间。':'伙伴在门前等候，门打开后会继续走。';}else if(blocked.length||trafficWaiting){navNotice.hidden=false;navNotice.textContent='前面的空间暂时走不过去，伙伴已停在安全位置。';}}
       if(selectionMenu&&selectionMenuPlacement==='panel')selectionMenu.hidden=false;
       if(selectionMenu&&selectionMenuPlacement==='anchor'){
         const avatar=menuCharacter===null?undefined:avatars.get(menuCharacter);
