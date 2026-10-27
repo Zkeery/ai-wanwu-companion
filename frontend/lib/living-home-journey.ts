@@ -55,7 +55,7 @@ export const HOME_JOURNEY_PORTALS = Object.freeze({
 });
 // The reference villa keeps the original planted tree; its low crown needs a wider entry turn.
 export const VILLA_JOURNEY_PORTALS:JourneyPortalConfiguration=Object.freeze({...HOME_JOURNEY_PORTALS,main:Object.freeze({...HOME_JOURNEY_PORTALS.main,before:Object.freeze({x:0,z:1.25}),elbow:Object.freeze({x:-2.4,z:.8})})});
-const EPS = 1e-6, CONTACT_SECONDS = 1.2, TURN_SPEED = 3.6;
+const EPS = 1e-6, CONTACT_SECONDS = 1.2, TURN_SPEED = 3.6, CONTACT_HOLD = .03;
 export const CONTACT_SPEED = 1.4;
 const finite = Number.isFinite;
 const validPoint = (p: NavPoint) => !!p && finite(p.x) && finite(p.z);
@@ -122,8 +122,12 @@ function sampleContact(tween: Tween, fraction: number, contact: JourneyPose['con
   const t = span > EPS ? Math.max(0, Math.min(1, (distance - tween.distances[index - 1]) / span)) : 1;
   // The physical path already contains its support height; the generic seat arc
   // must not be added to a sleeping body's piecewise contact transfer.
+  // Support heights are solved only at path points; a lerped height between
+  // two of them can sink a moving limb into the quilt, so lean towards the
+  // higher one by at most a few centimetres (a visible pop is worse).
   const mix = (a: number, b: number) => a + (b - a) * t;
-  return { pose: { ...a.pose, x: mix(a.pose.x, b.pose.x), y: mix(a.pose.y, b.pose.y), z: mix(a.pose.z, b.pose.z),
+  const y = t <= 0 ? a.pose.y : t >= 1 ? b.pose.y : Math.min(Math.max(a.pose.y, b.pose.y), mix(a.pose.y, b.pose.y) + CONTACT_HOLD);
+  return { pose: { ...a.pose, x: mix(a.pose.x, b.pose.x), y, z: mix(a.pose.z, b.pose.z),
     yaw: a.pose.yaw + angle(a.pose.yaw, b.pose.yaw) * t, tilt: mix(a.pose.tilt, b.pose.tilt), scale: mix(a.pose.scale, b.pose.scale), bedSeat: mix(a.pose.bedSeat ?? 0, b.pose.bedSeat ?? 0), bedBreathing: mix(a.pose.bedBreathing ?? 1, b.pose.bedBreathing ?? 1), bedLegLift: mix(a.pose.bedLegLift ?? 0, b.pose.bedLegLift ?? 0), contact }, blend: mix(a.blend, b.blend) };
 }
 
@@ -403,8 +407,14 @@ export function createHomeJourneyController(configuration: JourneyPortalConfigur
           if (!(validPoint(from) && validPoint(to) && dist(from, start) < EPS && t >= -EPS && t <= 1 + EPS && dist(to, projection) < EPS)) return false;
           if (!ctx.isContactClear) return safeCall(() => ctx.isClear(from, to, area));
           const acceptedProgress = tween.progress + (progress - tween.progress) * Math.max(0, Math.min(1, t));
-          const accepted = sampleContact(tween, acceptedProgress, s.frame.pose.contact);
-          return safeCall(() => ctx.isContactClear!(s.frame.pose, accepted.pose, s.frame.contactBlend, accepted.blend));
+          const accepted = sampleContact(tween, acceptedProgress, s.frame.pose.contact), here = s.frame.pose;
+          if (!tween.path || Math.abs(accepted.pose.y - here.y) <= EPS) return safeCall(() => ctx.isContactClear!(here, accepted.pose, s.frame.contactBlend, accepted.blend));
+          // Path heights are solved per point. Rise before moving and move
+          // before settling, so a lerped height never cuts the bed's edge.
+          const rising = accepted.pose.y > here.y;
+          const middle = rising ? { pose: { ...here, y: accepted.pose.y }, blend: s.frame.contactBlend } : { pose: { ...accepted.pose, y: here.y }, blend: accepted.blend };
+          return safeCall(() => ctx.isContactClear!(here, middle.pose, s.frame.contactBlend, middle.blend))
+            && safeCall(() => ctx.isContactClear!(middle.pose, accepted.pose, middle.blend, accepted.blend));
         };
         return proposal(desired, desired.yaw, CONTACT_SPEED, canTraverse, { contactTransition: s.frame.phase }, progress);
       }

@@ -640,6 +640,14 @@ it('villa stair visit rejects production and another owners actor',()=>{
  const persisted=setup();expect(persisted.world.requestFloorVisit(OWN,true)).toBe(false);
  const group=snapshot('home');group.id='synthetic-stair-owner';const local=setup(group,{persistentWorld:false});expect(local.world.requestFloorVisit(OTHER,true)).toBe(false);expect(local.world.getFloorVisit()).toBeNull();
 });
+it.each([11.11,16.67,20,40])('a garment companion gets out of the villa bed at a steady %s ms display frame',frame=>{
+ const group=snapshot('home');group.items=[];group.companions=group.companions.filter(c=>c.id===OWN).map(c=>({...c,activity:'sleep',area:'bedroom',avatar3d:{...c.avatar3d!,kind:'garment',body:'#efa3b8',accent:'#e3c56a',detail:'#5b5964',seed:533402354}}));
+ const f=setup(group,{strictLeisureContacts:true});f.world.setHouseView('exterior');f.world.setMotion(true);for(let n=0;n<1200;n++)step(f,frame);
+ expect(actor(f).userData.sleepingBed).toBeDefined();f.world.update({...group,revision:2,companions:group.companions.map(c=>({...c,activity:'observe',area:'outdoor'}))},OWN);
+ let up=false;for(let n=0;n<1200&&!up;n++){const before=actor(f).position.clone();step(f,frame);expect(actor(f).position.distanceTo(before)).toBeLessThan(.2);up=actor(f).userData.homeJourney?.phase==='walk';}
+ expect(up,'getting up must not depend on the display refresh rate '+JSON.stringify({journey:actor(f).userData.homeJourney,collision:actor(f).userData.contactCollision})).toBe(true);expect(actor(f).userData.sleepingBed).toBeUndefined();
+},60000);
+
 it('villa stair visit undocks from the original bed before climbing',()=>{
  const group=snapshot('home');group.id='synthetic-stair-visit';group.items=group.items.map(i=>i.id==='existing-tree'?{...i,x:.95,y:.95}:i);group.companions=group.companions.filter(c=>c.id===OWN).map(c=>({...c,activity:'sleep',area:'bedroom'}));const original=JSON.stringify(group);
  const f=setup(group,{persistentWorld:false}),unchanged=existingItems(f);expect(f.world.requestFloorVisit(OWN,true),JSON.stringify({radius:actor(f).userData.navigationClearance,bounds:homeNavigationBounds('outdoor'),obstacles:collectHomeJourneyObstacles(f.scene,null).filter(o=>o.minX<4.5&&o.maxX>2.3&&o.minZ<8.0&&o.maxZ>5.9)})).toBe(true);f.world.setMotion(true);
