@@ -20,5 +20,5 @@ export default function MobileNav() {
     { href: '/companions/new', label: '创作', Icon: Camera, current: path === '/companions/new' },
     { href: '/discover', label: '发现', Icon: Compass, current: /^\/(discover|themes|teams)(?:\/|$)/.test(path) },
   ];
-  return <><div className="global-nav-spacer" aria-hidden="true" /><nav className="global-nav" aria-label="全局导航"><span className="global-nav-caption" aria-hidden="true">LITTLE<br />COMPANIONS ✦</span>{entries.map(({ href, label, Icon, current }) => <Link key={href} href={href} aria-current={current ? 'page' : undefined}><Icon size={23} aria-hidden="true" /><span>{label}</span></Link>)}</nav></>;
+  return <><div className="global-nav-spacer" aria-hidden="true" /><nav className="global-nav" aria-label="全局导航">{entries.map(({ href, label, Icon, current }) => <Link key={href} href={href} aria-current={current ? 'page' : undefined}><Icon size={23} aria-hidden="true" /><span>{label}</span></Link>)}</nav></>;
 }

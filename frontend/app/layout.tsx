@@ -5,6 +5,7 @@ import './globals.css';
 import './toy-theme.css';
 import './warm-theme.css';
 import './v12-theme.css';
+import './card-theme.css';
 
 export const metadata: Metadata = { title: '万物伙伴 · 把日常，过成有回应的日子', description: '和你珍藏的伙伴聊聊天，一起照顾小花园。' };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

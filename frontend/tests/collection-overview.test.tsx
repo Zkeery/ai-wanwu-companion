@@ -7,6 +7,9 @@ import { readCollectionPosition, rememberCollectionPosition } from '@/lib/collec
 import { setToken } from '@/lib/auth';
 import { parseCharacterOverview } from '@/lib/contracts';
 
+const push = vi.fn();
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
+
 const character = { id: 1, name: '小叶', persona: '安静', opening_line: '你好', image_path: null, status: 'ready', created_at: '2026-09-22T00:00:00Z' };
 const overview = { character, residence: { space_id: 'home-1', scene_type: 'home', mode: 'private' }, last_interaction_at: '2026-09-22T02:30:00Z' };
 const facts = [3, 2, 1].map(revision => ({ revision, occurred_at: '2026-09-22T02:30:00Z', source: 'user', text: ['放置了小树', '开启了小雨', '撤销了上一步布置'][revision - 1] }));
@@ -24,6 +27,9 @@ it('shows saved residence and chat time with distinct chat and life links', asyn
   expect(card.querySelector('time')).toHaveAttribute('dateTime', overview.last_interaction_at);
   expect(within(card).getByRole('link', { name: '聊聊天' })).toHaveAttribute('href', '/companions/1?tab=chat');
   expect(within(card).getByRole('link', { name: '去住处' })).toHaveAttribute('href', '/companions/1?tab=life');
+  expect(screen.getByRole('heading', { level: 1, name: '今天，和谁一起度过？' })).toBeVisible();
+  expect(screen.getByRole('heading', { level: 2, name: '我的伙伴 1' })).toBeVisible();
+  expect(screen.queryByText('YOUR LITTLE CREW')).not.toBeInTheDocument();
   expect(api.characterOverview).toHaveBeenCalledTimes(1); expect(legacy).not.toHaveBeenCalled();
 });
 it('does not fabricate activity or residence for a new companion', async () => {
@@ -38,7 +44,24 @@ it('shows retry instead of empty collection after failure, and recovers', async 
   const alert = await screen.findByRole('alert');
   expect(screen.queryByText('第一位朋友，会是谁呢？')).not.toBeInTheDocument();
   fireEvent.click(within(alert).getByRole('button'));
-  expect(await screen.findByRole('link', { name: /创建第一个伙伴/ })).toBeVisible();
+  expect(await screen.findByRole('link', { name: '拍一样东西' })).toHaveAttribute('href', '/companions/new');
+});
+it('shows a new account the example cards instead of an empty list', async () => {
+  vi.spyOn(api, 'characterOverview').mockResolvedValue([]);
+  render(<Collection />);
+  expect(await screen.findByRole('heading', { level: 1, name: /拍一下身边的东西/ })).toBeVisible();
+  expect(within(screen.getByRole('list', { name: /示例/ })).getAllByRole('listitem')).toHaveLength(4);
+  expect(screen.queryByText(/欢迎回到/)).not.toBeInTheDocument();
+  expect(screen.queryByText(/我的伙伴/)).not.toBeInTheDocument();
+});
+it('starts a guest visit straight into taking a photo', async () => {
+  localStorage.clear();
+  const guest = vi.spyOn(api.auth, 'guest').mockResolvedValue({ token: 'guest-session', user: { id: 'g', phone: '' } });
+  render(<Collection />);
+  expect(screen.queryByText(/我的伙伴/)).not.toBeInTheDocument();
+  fireEvent.click(await screen.findByRole('button', { name: '拍一样东西' }));
+  await waitFor(() => expect(push).toHaveBeenCalledWith('/companions/new'));
+  expect(guest).toHaveBeenCalledOnce();
 });
 it.each([
   { ...overview, residence: undefined },

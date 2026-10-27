@@ -175,6 +175,13 @@ describe('offline motion resource lifecycle', () => {
     expect(screen.getByRole('status')).toHaveTextContent('动作还没准备好');
     expect(screen.queryByRole('button', { name: '跳个舞' })).not.toBeInTheDocument();
   });
+  it('tells a collection card owner the companion is still learning motion, without a check button', async () => {
+    const loader = vi.fn().mockResolvedValue({ asset: null, dispose: vi.fn() });
+    render(<MotionPlayer name="示意" staticSrc="/motion-preview-assets/static.png" loadAsset={loader} compact />);
+    loadStatic(); await act(async () => {});
+    expect(screen.getByRole('status')).toHaveTextContent('它还在学动作，稍后再来看');
+    expect(screen.queryByRole('button', { name: '检查动作是否就绪' })).not.toBeInTheDocument();
+  });
   it('draws a fixed background and changing sprite frames then stops on exit', () => {
     const view = mount(); expect(requests).toHaveLength(0);
     loadStatic(); loadAssets();

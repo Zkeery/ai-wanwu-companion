@@ -5,6 +5,7 @@ import Collection from '@/components/collection';
 import { api, checkResponse } from '@/lib/api';
 import { getToken, setToken } from '@/lib/auth';
 import SessionRecovery from '@/components/session-recovery';
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock('@/components/auth-modal', () => ({ default: ({ onLoggedIn }: { onLoggedIn: () => void }) => <button onClick={onLoggedIn}>完成重新登录</button> }));
 
 beforeEach(() => { vi.clearAllMocks(); localStorage.clear(); setToken('test-session'); });
@@ -16,7 +17,7 @@ it('revokes the server session when signing out', async () => {
   fireEvent.click(await screen.findByRole('button', { name: '退出' }));
   await waitFor(() => expect(logout).toHaveBeenCalledTimes(1));
   expect(getToken()).toBeNull();
-  expect(await screen.findByRole('button', { name: /注册 \/ 登录/ })).toBeInTheDocument();
+  expect(await screen.findByRole('button', { name: /已有账号？/ })).toBeInTheDocument();
 });
 it('keeps a valid session when the identity service has a temporary network failure', async () => {
   vi.spyOn(api.auth, 'me').mockRejectedValue(new Error('连接失败'));

@@ -1,0 +1,24 @@
+/* First meeting on the home page: example cards in the original cream card style. */
+.first-meeting { padding: 18px 0 12px; text-align: center; }
+.first-meeting h1 { margin: 4px 0 20px; font-size: clamp(27px, 7.3vw, 44px); line-height: 1.32; color: var(--ink); }
+.example-cards { list-style: none; display: flex; gap: 14px; margin: 0 -20px; padding: 4px 24px 26px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 24px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.example-cards::-webkit-scrollbar { display: none; }
+.example-card { position: relative; display: flex; flex-direction: column; flex: 0 0 62%; max-width: 250px; padding: 8px; scroll-snap-align: center; border: 1px solid #e5d5c2; border-radius: 24px; background: #fffdfa; box-shadow: 0 5px 0 #eedfc7; }
+.example-portrait { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 18px; background: #f5e8d7; }
+.example-source { position: absolute; top: 16px; left: 16px; display: flex; align-items: center; gap: 4px; padding: 3px 9px 3px 3px; border: 1px solid #e5d5c2; border-radius: 999px; background: #fffdfaee; }
+.example-source img { display: block; width: 42px; height: 42px; object-fit: cover; border-radius: 50%; background: #fff; }
+.example-source::after { content: '→'; color: #d2746d; font-size: 17px; font-weight: 900; }
+.example-name { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 10px 6px 4px; text-align: left; }
+.example-name strong { font-size: 19px; color: var(--ink); }
+.example-name small { font-size: 12px; color: #ad657a; }
+.first-meeting-cta { display: flex; width: 100%; max-width: 420px; min-height: 60px; margin: 0 auto; gap: 10px; border-radius: 18px; font-size: 19px; font-weight: 800; }
+.first-meeting .guest-login { margin: 16px auto 0; font-size: 14px; }
+.first-meeting .form-error { margin: 12px auto 0; max-width: 420px; font-size: 13px; line-height: 1.6; }
+
+.overview-card .collection-motion > div:last-child:not(:has(button)) { min-height: 0; padding-bottom: 0; }
+.overview-card .collection-motion > div:last-child:not(:has(button)) p { min-height: 0; margin: 0; }
+
+@media (min-width: 761px) {
+  .example-cards { justify-content: center; flex-wrap: wrap; margin: 0; overflow: visible; }
+  .example-card { flex: 0 0 210px; }
+}
