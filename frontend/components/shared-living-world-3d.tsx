@@ -179,7 +179,7 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
     const unavailable = floorUnavailable(activity); if (unavailable) { setMenuError(unavailable); setMenuNotice(''); return; }
     menuLock.current=true;setMenuSending(true);setMenuError('');setMenuNotice('');
     try{if(persistent){if(!floorSync.current)throw new Error('二楼同步尚未就绪');await floorSync.current.command(menuCompanion.id,activity);}else{const ok=activity===null||activity==='observe'?world.current?.requestFloorVisit(menuCompanion.id,activity==='observe'):world.current?.requestFloorActivity(menuCompanion.id,activity);if(!ok)throw new Error('这个位置已有人，或伙伴还在途中。请稍后再试。');}setMenuNotice(activity === null ? '已安排下楼，伙伴会沿楼梯返回。' : '安排已保存，伙伴会依次通过楼梯。');}
-    catch(e){setMenuError(e instanceof Error?e.message:'二楼安排尚未确认');}finally{menuLock.current=false;setMenuSending(false);}
+    catch(e){setMenuError(e instanceof Error?errorText(e):'二楼安排尚未确认');}finally{menuLock.current=false;setMenuSending(false);}
   }
   function chooseView(next: HomeWorldView) {
     setUpperFloor({scope:upperScope,enabled:false});

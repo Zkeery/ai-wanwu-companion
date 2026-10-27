@@ -1,4 +1,4 @@
-import {request} from './api';
+import {errorText, request} from './api';
 import {object,array} from './contracts';
 import {text,number,boolean} from './gatherings';
 import type {VillaActivity,createVillaFloorLife} from './living-villa-floor-life';
@@ -44,7 +44,7 @@ export function createFloorSync(engine:()=>FloorEngine|null,transport:ReturnType
     catch(e){if((e as {status?:number}).status===409){pause();onStatus('正在同步另一页面的二楼进度');return;}throw e;}
    }
    driving=true;world.setFloorDriver(true);onStatus('二楼进度自动保存中');
-  }catch(e){pause();stopped=true;onStatus(e instanceof Error?e.message:'二楼保存尚未确认，已暂停，请核对进度');}
+  }catch(e){pause();stopped=true;onStatus(e instanceof Error?errorText(e):'二楼保存尚未确认，已暂停，请核对进度');}
   finally{locked=false;}
  }
  return{tick,pause,async command(id:number,activity:VillaActivity|null){
@@ -52,5 +52,5 @@ export function createFloorSync(engine:()=>FloorEngine|null,transport:ReturnType
   try{const latest=await transport.read(abort.signal);if(disposed||!valid())return;apply(latest);if(!world.canRequestServerFloor(id,activity)){rejected=true;throw new Error('该二楼位置已被使用，或伙伴尚未结束当前活动，请核对近况后选择其他活动');}const next=await transport.write(latest,{action:'command',actor_id:id,activity},abort.signal);if(disposed||!valid())return;apply(next);onStatus('安排已保存，等待通道');}
   catch(e){if(!rejected){stopped=true;onStatus('保存结果待核对，已停止自动写入');}throw e;}
   finally{locked=false;}
- },async reconcile(){if(locked||disposed||!valid())return;locked=true;pause();try{const next=await transport.read(abort.signal);if(disposed||!valid())return;apply(next);stopped=false;ackStamp=JSON.stringify({checkpoint:next.checkpoint,applied:next.applied});onStatus('已核对服务器进度');}catch(e){stopped=true;onStatus(e instanceof Error?e.message:'暂时无法核对');}finally{locked=false;}},dispose(){disposed=true;pause();abort.abort();}};
+ },async reconcile(){if(locked||disposed||!valid())return;locked=true;pause();try{const next=await transport.read(abort.signal);if(disposed||!valid())return;apply(next);stopped=false;ackStamp=JSON.stringify({checkpoint:next.checkpoint,applied:next.applied});onStatus('已核对服务器进度');}catch(e){stopped=true;onStatus(e instanceof Error?errorText(e):'暂时无法核对');}finally{locked=false;}},dispose(){disposed=true;pause();abort.abort();}};
 }

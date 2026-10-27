@@ -101,6 +101,12 @@ export const api = {
   },
 };
 export function errorText(error: unknown): string {
-  if (error instanceof Error && error.name === 'TimeoutError') return '等待时间有点久，请刷新查看结果后再试';
-  return error instanceof Error ? error.message : '没有完成，请稍后再试';
+  const readable = error instanceof Error || (typeof DOMException !== 'undefined' && error instanceof DOMException) ? error : null;
+  if (!readable) return '没有完成，请稍后再试';
+  const message = readable.message;
+  if (readable.name === 'TimeoutError' || /signal timed out|operation timed out|aborted due to timeout/i.test(message)) return '网络有点慢，稍后再试';
+  if (/^(?:failed to fetch|load failed)\.?$/i.test(message) || /networkerror when attempting to fetch resource/i.test(message)) return '网络好像断了，检查后再试';
+  if (/unexpected token/i.test(message) && /is not valid json/i.test(message)) return '服务有点忙，稍后再试';
+  if (/[\u3400-\u9fff]/.test(message)) return message;
+  return '出了点问题，稍后再试';
 }
