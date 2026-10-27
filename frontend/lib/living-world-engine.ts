@@ -1004,7 +1004,7 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
         const ambience=sampleHomeAmbience(bed?'sleep':leisure?.activity??'observe',leisureElapsed,id);const breathing=1+(motion&&(seat||bed)?(bed?ambience.sleep.breath:Math.sin(leisureElapsed*1.6+id))*.008:0),bedPose=bed?computeLivingBedPose(a.sleepSupport,a.root.scale,breathing):null;setLivingSleepSupport(a.sleepSupport,!!bed,bedPose);
         a.root.rotation.set(0,pose.yaw,0);a.root.position.set(pose.x,pose.y,pose.z);
         if(seat){a.root.position.set(seat.x,seat.y-a.seatHeight*a.root.scale.y,seat.z);a.root.rotation.y=leisure?.yaw??seat.yaw??0;a.root.userData.roomRestSeat=seat;}else delete a.root.userData.roomRestSeat;
-        if(bed&&bedPose){a.root.rotation.set(bedPose.rotationX,0,0);a.root.position.set(bed.x,bed.y+bedPose.rootOffsetY,bed.z-bed.length*.33+bedPose.headOffsetZ+Number(a.root.userData.sleepContactOffset??0));a.root.userData.sleepingBed=bed;}else delete a.root.userData.sleepingBed;
+        if(bed&&bedPose){a.root.rotation.set(bedPose.rotationX,0,0);a.root.position.set(bed.x,bed.y+bedPose.rootOffsetY,bed.z-bed.length*.33+bedPose.headOffsetZ+Number(a.root.userData.sleepContactOffset??0));a.root.userData.sleepingBed=bed;a.root.userData.sleepMattressY=bed.y;}else{delete a.root.userData.sleepingBed;delete a.root.userData.sleepMattressY;}
         const companion=gathering.companions.find(c=>c.id===id)!;if(canNaturalIndoor()&&!seat&&!bed){pose.rest=false;pose.lean=0;}
         const calmObserver=companion.activity==='observe'&&!journey&&!seat&&!bed&&(gathering.scene_type==='home'||canNaturalWorld());
         if(calmObserver){

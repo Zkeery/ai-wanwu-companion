@@ -71,6 +71,25 @@ def test_a_failed_model_is_recorded_and_not_submitted_again(ready_character_id, 
     assert len(_Client.calls) == 1
 
 
+def test_a_ready_model_is_cached_by_the_browser_and_revalidated(client, ready_character_id):
+    root = Path(get_settings().upload_dir)
+    model = root / "meshes" / f"{ready_character_id}.glb"
+    model.parent.mkdir(parents=True, exist_ok=True)
+    model.write_bytes(b"glTF" + b"\x00" * 64)
+    with SessionLocal() as db:
+        db.add(CharacterCourtyardMesh(character_id=ready_character_id, source_image_path="characters/cup.png",
+                                      status="ready", file_path=f"meshes/{ready_character_id}.glb"))
+        db.commit()
+    first = client.get(f"/api/v1/characters/{ready_character_id}/courtyard-mesh")
+    assert first.status_code == 200 and first.content.startswith(b"glTF")
+    assert first.headers["cache-control"] == "private, max-age=86400"
+    assert first.headers["etag"]
+    again = client.get(f"/api/v1/characters/{ready_character_id}/courtyard-mesh",
+                       headers={"If-None-Match": first.headers["etag"]})
+    assert again.status_code == 304 and again.content == b""
+    assert again.headers["etag"] == first.headers["etag"]
+
+
 def test_guest_companion_cap_still_limits_new_models():
     from app.core.config import get_settings as settings
     assert settings().guest_companions_per_user == 2

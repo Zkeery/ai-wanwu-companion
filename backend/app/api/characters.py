@@ -137,15 +137,19 @@ def courtyard_figure(character_id: int, user: User = Depends(get_current_user), 
 
 
 @router.get("/{character_id}/courtyard-mesh")
-def courtyard_mesh(character_id: int, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+def courtyard_mesh(character_id: int, request: Request, user: User = Depends(get_current_user),
+                   db: Session = Depends(get_db)):
     ch = _owned_character(db, user.id, character_id)
     from app.services.courtyard_mesh import mesh_file
     path = mesh_file(db, ch)
     if path is None:
         raise api_error(404, "mesh_not_ready", "立体形象还没准备好")
-    return FileResponse(path, media_type="model/gltf-binary", headers={
-        "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff",
-    })
+    headers = {"Cache-Control": "private, max-age=86400", "X-Content-Type-Options": "nosniff", "Vary": "Authorization"}
+    response = FileResponse(path, media_type="model/gltf-binary", headers=headers, stat_result=path.stat())
+    tags = {tag.strip() for tag in request.headers.get("if-none-match", "").split(",")}
+    if response.headers.get("etag") in tags:
+        return Response(status_code=304, headers={**headers, "ETag": response.headers["etag"]})
+    return response
 
 
 @router.get("/{character_id}", response_model=CharacterOut)

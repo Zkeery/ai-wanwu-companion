@@ -111,7 +111,7 @@ function showStandee(group: THREE.Group, texture: THREE.Texture) {
   const width = Math.min(1.15, height * aspect);
   const board = new THREE.Mesh(
     new THREE.PlaneGeometry(width, height),
-    new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide, depthWrite: false }),
+    new THREE.MeshBasicMaterial({ map: texture, transparent: true, alphaTest: 0.04, side: THREE.DoubleSide, depthWrite: false }),
   );
   board.position.y = height / 2;
   board.name = 'courtyard-standee';
@@ -119,18 +119,60 @@ function showStandee(group: THREE.Group, texture: THREE.Texture) {
   shadow(group, width);
 }
 
+function sleepMark() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128; canvas.height = 64;
+  const context = canvas.getContext('2d');
+  if (context) {
+    context.fillStyle = 'rgba(255,253,247,0.94)';
+    context.beginPath();
+    if (typeof context.roundRect === 'function') context.roundRect(4, 4, 120, 56, 18);
+    else context.rect(4, 4, 120, 56);
+    context.fill();
+    context.fillStyle = '#5c4a58';
+    context.font = '700 36px sans-serif';
+    context.fillText('Zzz', 28, 44);
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false }));
+  sprite.scale.set(0.5, 0.25, 1);
+  sprite.position.set(0.22, 1.15, 0.42);
+  sprite.name = 'courtyard-zzz';
+  return sprite;
+}
+
 function showMesh(group: THREE.Group, root: THREE.Object3D) {
   clear(group);
   const box = new THREE.Box3().setFromObject(root);
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
-  root.position.sub(center);
   const height = Math.max(size.y, 0.001);
-  root.scale.setScalar(1.7 / height);
+  const scale = 1.7 / height;
+  root.scale.setScalar(scale);
+  root.position.copy(center).multiplyScalar(-scale);
   root.position.y += 0.85;
   root.name = 'courtyard-mesh';
+  reveal(root);
   group.add(root);
   shadow(group, size.x * (1.7 / height));
+}
+
+function reveal(root: THREE.Object3D) {
+  root.traverse(object => {
+    if (!(object instanceof THREE.Mesh)) return;
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    for (const material of materials) {
+      if (!('color' in material) || !('emissive' in material) || !('emissiveMap' in material)) continue;
+      const colored = material.color.r + material.color.g + material.color.b;
+      if (colored < 0.05 && material.emissiveMap) {
+        material.color.set('#ffffff');
+        material.map = material.emissiveMap;
+        material.emissive.set('#ffffff');
+        material.emissiveIntensity = 1;
+        material.needsUpdate = true;
+      }
+    }
+  });
 }
 
 export function updateCourtyardFigure(
@@ -138,45 +180,78 @@ export function updateCourtyardFigure(
   now: number, motion: boolean, sceneType: string,
 ) {
   const figure = stateOf(avatar.root);
-  const area = String(avatar.root.userData.homePresenceArea ?? avatar.root.userData.homeRegion ?? 'outdoor');
   const portrait = companion.portrait && companion.portrait.startsWith('/uploads/') ? companion.portrait : '';
   const ready = companion.courtyard_figure === 'ready';
-  const courtyard = sceneType === 'home' && area === 'outdoor' && (!!portrait || ready);
-  for (const part of parts(avatar)) part.visible = !courtyard;
-  figure.group.visible = courtyard;
-  if (!courtyard) return;
+  const sameFigure = sceneType === 'home' && (!!portrait || ready);
+  for (const part of parts(avatar)) part.visible = !sameFigure;
+  figure.group.visible = sameFigure;
+  if (!sameFigure) return;
   const key = ready ? `mesh:${companion.id}` : `standee:${portrait}`;
+  const showPortrait = (token: number, tokenValue: string) => {
+    const controller = new AbortController();
+    void privateImageBlob(portrait, tokenValue, controller.signal).then(async blob => {
+      if (token !== figure.token) return;
+      const source = await softenBackground(blob);
+      if (token !== figure.token) return;
+      const texture = new THREE.Texture(source);
+      texture.needsUpdate = true;
+      if (figure.group.getObjectByName('courtyard-mesh')) return;
+      figure.mode = 'standee';
+      showStandee(figure.group, texture);
+    }).catch(() => undefined);
+  };
   if (figure.key !== key) {
     figure.key = key; figure.mode = ready ? 'mesh' : 'standee';
     const token = ++figure.token;
     const tokenValue = getToken();
+    if (portrait && tokenValue) showPortrait(token, tokenValue);
     if (ready && tokenValue) {
-      void fetch(`/api/v1/characters/${companion.id}/courtyard-mesh`, { headers: authHeaders(tokenValue), cache: 'no-store' })
+      void fetch(`/api/v1/characters/${companion.id}/courtyard-mesh`, { headers: authHeaders(tokenValue) })
         .then(response => { if (!response.ok) throw new Error('mesh'); return response.arrayBuffer(); })
-        .then(buffer => {
-          if (token !== figure.token) return;
-          const loader = new GLTFLoader();
-          loader.parse(buffer, '', gltf => {
-            if (token !== figure.token) return;
+        .then(buffer => new Promise<void>((resolve, reject) => {
+          if (token !== figure.token) return resolve();
+          new GLTFLoader().parse(buffer, '', gltf => {
+            if (token !== figure.token) return resolve();
+            figure.mode = 'mesh';
             showMesh(figure.group, gltf.scene);
-          }, () => undefined);
-        }).catch(() => undefined);
-    } else if (portrait && tokenValue) {
-      const controller = new AbortController();
-      void privateImageBlob(portrait, tokenValue, controller.signal).then(async blob => {
-        if (token !== figure.token) return;
-        const source = await softenBackground(blob);
-        if (token !== figure.token) return;
-        const texture = new THREE.Texture(source);
-        texture.needsUpdate = true;
-        showStandee(figure.group, texture);
-      }).catch(() => undefined);
+            resolve();
+          }, () => reject(new Error('mesh')));
+        })).catch(() => { if (token === figure.token && portrait && tokenValue) showPortrait(token, tokenValue); });
     }
   }
+  const lying = Math.abs(avatar.root.rotation.x) > 0.35;
+  const mark = figure.group.getObjectByName('courtyard-zzz');
+  if (lying) {
+    if (!mark) figure.group.add(sleepMark());
+    else mark.visible = true;
+  } else if (mark) mark.visible = false;
+  const groundShadow = figure.group.getObjectByName('courtyard-shadow');
+  if (groundShadow) groundShadow.visible = !lying;
+  if (lying) {
+    const prone = figure.mode === 'mesh';
+    figure.group.position.set(0, 0, 0);
+    figure.group.rotation.set(0, prone ? Math.PI : 0, 0);
+    figure.group.scale.set(1, 1, 1);
+    const zzz = figure.group.getObjectByName('courtyard-zzz');
+    if (zzz) zzz.position.set(prone ? -0.22 : 0.22, 1.15, prone ? -0.42 : 0.42);
+    const mattress = avatar.root.userData.sleepMattressY;
+    const body = figure.group.getObjectByName('courtyard-mesh') ?? figure.group.getObjectByName('courtyard-standee');
+    if (body && typeof mattress === 'number' && Number.isFinite(mattress)) {
+      figure.group.updateWorldMatrix(true, true);
+      const bounds = new THREE.Box3().setFromObject(body);
+      if (Number.isFinite(bounds.min.y)) {
+        const surface = avatar.root.parent
+          ? avatar.root.parent.localToWorld(new THREE.Vector3(0, mattress, 0)).y
+          : mattress;
+        const from = figure.group.getWorldPosition(new THREE.Vector3());
+        const to = from.clone().add(new THREE.Vector3(0, surface + 0.02 - bounds.min.y, 0));
+        figure.group.position.add(avatar.root.worldToLocal(to).sub(avatar.root.worldToLocal(from)));
+      }
+    }
+    return;
+  }
   const place = courtyardHop(figure.hop, now, avatar.root.position.x, avatar.root.position.z);
-  avatar.root.updateMatrixWorld(true);
-  const landed = avatar.root.worldToLocal(new THREE.Vector3(place.x, avatar.root.position.y + place.y, place.z));
-  figure.group.position.copy(landed);
+  figure.group.position.set(0, place.y, 0);
   const world = avatar.root.getWorldPosition(new THREE.Vector3());
   const facingCamera = Math.atan2(camera.position.x - world.x, camera.position.z - world.z);
   const desired = figure.mode === 'standee' ? facingCamera : avatar.root.rotation.y;

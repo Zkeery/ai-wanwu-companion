@@ -122,6 +122,8 @@ async def private_api_no_cache(request: Request, call_next):
         cache_control = response.headers.get("Cache-Control", "")
         if not cache_control:
             response.headers["Cache-Control"] = "private, no-store"
+        elif request.url.path.endswith("/courtyard-mesh") and cache_control.startswith("private, max-age="):
+            pass
         elif "no-store" not in (part.strip().lower() for part in cache_control.split(",")):
             response.headers["Cache-Control"] = f"{cache_control}, no-store"
         vary = [part.strip() for part in response.headers.get("Vary", "").split(",") if part.strip()]
