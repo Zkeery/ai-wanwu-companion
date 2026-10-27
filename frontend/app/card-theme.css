@@ -19,6 +19,7 @@
 .overview-card .collection-motion > div:last-child:not(:has(button)) p { min-height: 0; margin: 0; }
 
 @media (min-width: 761px) {
-  .example-cards { justify-content: center; flex-wrap: wrap; margin: 0; overflow: visible; }
-  .example-card { flex: 0 0 210px; }
+  .example-cards { flex-wrap: nowrap; justify-content: flex-start; margin: 0 -8px; padding: 4px 8px 18px; overflow-x: auto; scrollbar-width: thin; }
+  .example-cards::-webkit-scrollbar { display: block; height: 8px; }
+  .example-card { flex: 0 0 232px; max-width: none; }
 }

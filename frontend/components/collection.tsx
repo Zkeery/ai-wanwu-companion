@@ -20,6 +20,10 @@ const examples = [
   { id: 'pot', name: '陶陶', object: '陶土花盆' },
   { id: 'headphones', name: '听听', object: '头戴耳机' },
   { id: 'book', name: '页页', object: '一本旧书' },
+  { id: 'dragon', name: '小龙', object: '彩色铅笔' },
+  { id: 'flower', name: '朵朵', object: '非洲菊' },
+  { id: 'cream', name: '沫沫', object: '咖啡杯' },
+  { id: 'cup', name: '小杯', object: '咖啡杯' },
 ] as const;
 
 function FirstMeeting({ children }: { children: ReactNode }) {

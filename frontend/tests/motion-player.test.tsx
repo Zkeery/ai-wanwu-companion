@@ -84,7 +84,7 @@ it('lets missing private motion be checked again without reloading the page', as
     .mockResolvedValueOnce({ asset, dispose: vi.fn() });
   render(<MotionPlayer name="等待素材" staticSrc="/motion-preview-assets/static.png" loadAsset={loader} />);
   loadStatic(); await act(async () => {});
-  expect(screen.getByRole('status')).toHaveTextContent('还没准备好');
+  expect(screen.getByRole('status')).toHaveTextContent('它还在学动作，稍后再来看');
   fireEvent.click(screen.getByRole('button', { name: '检查动作是否就绪' }));
   loadStatic(); await act(async () => {}); loadAssets();
   expect(loader).toHaveBeenCalledTimes(2);
@@ -172,7 +172,7 @@ describe('offline motion resource lifecycle', () => {
   it('starts preparation after static image paint and keeps missing assets honest', () => {
     render(<MotionPlayer name="示意" staticSrc="/motion-preview-assets/static.png" />);
     loadStatic(); expect(requests).toHaveLength(0);
-    expect(screen.getByRole('status')).toHaveTextContent('动作还没准备好');
+    expect(screen.getByRole('status')).toHaveTextContent('它还在学动作，稍后再来看');
     expect(screen.queryByRole('button', { name: '跳个舞' })).not.toBeInTheDocument();
   });
   it('tells a collection card owner the companion is still learning motion, without a check button', async () => {
@@ -216,7 +216,7 @@ describe('offline motion resource lifecycle', () => {
     Object.defineProperty(document, 'hidden', { value: true, configurable: true }); fireEvent(document, new Event('visibilitychange'));
     expect(frames.size).toBe(0);
     const stale = requests[0].onload; view.rerender(<MotionPlayer name="下一位" staticSrc="/motion-preview-assets/other.png" />);
-    act(() => stale?.()); expect(screen.getByRole('status')).toHaveTextContent('还没准备好'); view.unmount(); expect(frames.size).toBe(0);
+    act(() => stale?.()); expect(screen.getByRole('status')).toHaveTextContent('它还在学动作，稍后再来看'); view.unmount(); expect(frames.size).toBe(0);
   });
   it('respects reduced motion changes and stops its frame loop', () => {
     mount(); loadStatic(); loadAssets(); fireEvent.click(screen.getByRole('button', { name: '跳个舞' }));

@@ -50,7 +50,7 @@ it('shows a new account the example cards instead of an empty list', async () =>
   vi.spyOn(api, 'characterOverview').mockResolvedValue([]);
   render(<Collection />);
   expect(await screen.findByRole('heading', { level: 1, name: /拍一下身边的东西/ })).toBeVisible();
-  expect(within(screen.getByRole('list', { name: /示例/ })).getAllByRole('listitem')).toHaveLength(4);
+  expect(within(screen.getByRole('list', { name: /示例/ })).getAllByRole('listitem')).toHaveLength(8);
   expect(screen.queryByText(/欢迎回到/)).not.toBeInTheDocument();
   expect(screen.queryByText(/我的伙伴/)).not.toBeInTheDocument();
 });
