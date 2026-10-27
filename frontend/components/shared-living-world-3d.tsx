@@ -239,7 +239,7 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
       </div>}
 
     </div>
-    {persistent&&floorKind&&referenceVillaEnabled&&<div role="status"><span>{serverFloorStatus}</span><button type="button" disabled={busy} onClick={()=>void floorSync.current?.reconcile()}>核对二楼进度</button></div>}
+    {persistent&&floorKind&&referenceVillaEnabled&&<div role="status"><span>{serverFloorStatus === 'signal timed out' ? '网络有点慢，稍后再试' : serverFloorStatus}</span><button type="button" disabled={busy} onClick={()=>void floorSync.current?.reconcile()}>核对二楼进度</button></div>}
     <div className={styles.tools} aria-label="场景视角">
       <span>{mobileControls ? '单指上下滑动页面 · 双指转动和缩放画面' : '拖动画面旋转 · 双指缩放'}</span>
       <button type="button" aria-label="向左看" onClick={() => world.current?.rotate(.32)}>↶</button>
