@@ -6,6 +6,8 @@ type AssetId = 'wood_floor' | 'old_stone_wall' | 'clay_roof_tiles_02' | 'rectang
 type Maps = { map: THREE.Texture; normalMap: THREE.Texture; roughnessMap: THREE.Texture };
 export type HomeTextureStatus = { pending: number; loaded: number; failed: number; unavailable: number };
 export type HomeMaterialLibrary = {
+  toon?: boolean;
+  softToon?: boolean;
   ownerId: string;
   status: HomeTextureStatus;
   material(role: HomeMaterialRole, color: THREE.ColorRepresentation, scope?: string, emissive?: boolean): THREE.MeshStandardMaterial;
@@ -20,7 +22,7 @@ const repeatSize: Record<HomeMaterialRole, number> = {
 };
 
 /** One environment owns the library, including textures not yet ready to render. */
-export function createHomeMaterials(options: { onTextureLoaded?: () => void } = {}): HomeMaterialLibrary {
+export function createHomeMaterials(options: { onTextureLoaded?: () => void; toon?: boolean; softToon?: boolean } = {}): HomeMaterialLibrary {
   const ownerId = THREE.MathUtils.generateUUID();
   const status: HomeTextureStatus = { pending: 0, loaded: 0, failed: 0, unavailable: 0 };
   const textures = new Map<AssetId, Maps | undefined>();
@@ -90,10 +92,12 @@ export function createHomeMaterials(options: { onTextureLoaded?: () => void } = 
   }
 
   return {
+    toon: options.toon,
+    softToon: options.softToon,
     ownerId,
     status,
     material(role, color, scope = 'shared', emissive = false) {
-      const asset = assets[role];
+      const asset = options.toon ? undefined : assets[role];
       const key = `${scope}:${role}:${asset ? 'mapped' : String(color)}:${emissive}`;
       let value = materials.get(key);
       if (value) return value;
@@ -104,7 +108,7 @@ export function createHomeMaterials(options: { onTextureLoaded?: () => void } = 
         metalness: role === 'metal' ? .62 : 0,
         ...(loaded ? { map: loaded.map.userData.homeTextureState === 'loaded' ? loaded.map : null, normalMap: loaded.normalMap.userData.homeTextureState === 'loaded' ? loaded.normalMap : null, roughnessMap: loaded.roughnessMap.userData.homeTextureState === 'loaded' ? loaded.roughnessMap : null, normalScale: new THREE.Vector2(role === 'stone' ? .3 : role === 'roof' ? .38 : .22, role === 'stone' ? .3 : role === 'roof' ? .38 : .22) } : {}),
         ...(role === 'glass' ? { color: '#dce9e6', transparent: true, opacity: .28, depthWrite: false } : {}),
-        ...(role === 'fabric' || role === 'plaster' ? { bumpMap: bump(role), bumpScale: role === 'fabric' ? .004 : .009 } : {}),
+        ...(!options.toon && (role === 'fabric' || role === 'plaster') ? { bumpMap: bump(role), bumpScale: role === 'fabric' ? .004 : .009 } : {}),
         ...(emissive ? { emissive: color, emissiveIntensity: .28 } : {}),
       });
       // Keep pending/failed textures owned without sampling an empty GPU texture.
@@ -118,6 +122,7 @@ export function createHomeMaterials(options: { onTextureLoaded?: () => void } = 
       return value;
     },
     uv(geometry, role) {
+      if (options.toon) return;
       const positions = geometry.getAttribute('position'), normals = geometry.getAttribute('normal');
       if (!positions || !normals) return;
       const values = new Float32Array(positions.count * 2), size = repeatSize[role];

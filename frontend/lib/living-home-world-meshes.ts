@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { sceneRoundedBox } from './living-scene-shapes';
+import { SCENE_SCALE } from './living-scene-scale';
 import { applyReferenceCourtyardVilla } from './living-home-reference-villa';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { buildHomeEnvironment } from './living-home-meshes';
@@ -9,7 +11,7 @@ type Counts = { resting: number; sleeping: number };
 type Slab = [number, number, number, number, number, number, number?];
 export type HomeWorldArchitectureMode = 'interior' | 'exterior';
 export type HomeWorldDoorId = 'home-main-entry-door' | 'home-room-connection-door' | 'home-courtyard-gate';
-export type HomeWorldEnvironmentOptions = { realistic?: boolean; referenceVilla?: boolean; onTextureLoaded?: () => void };
+export type HomeWorldEnvironmentOptions = { realistic?: boolean; referenceVilla?: boolean; toon?: boolean; onTextureLoaded?: () => void };
 const HOME_DOOR_OPEN_ANGLE = -68 * Math.PI / 180;
 
 /** Rotate the existing hinge; frames, room layout and owned resources stay fixed. */
@@ -66,7 +68,7 @@ export function buildHomeWorldEnvironment(season: string | null, counts: Counts,
   world.name = 'home-world-environment';
   world.userData.modelling = 'original-procedural-volumetric';
   world.userData.continuousHome = true;
-  const surfaces = options.realistic ? createHomeMaterials({ onTextureLoaded: options.onTextureLoaded }) : undefined;
+  const surfaces = options.realistic ? createHomeMaterials({ onTextureLoaded: options.onTextureLoaded, toon: options.toon, softToon: options.toon }) : undefined;
   world.userData.homeMaterialMode = surfaces ? 'realistic' : 'classic';
   if (surfaces) {
     world.userData.homeTextureStatus = surfaces.status;
@@ -118,13 +120,13 @@ export function buildHomeWorldEnvironment(season: string | null, counts: Counts,
     return value;
   }
   function box(parent: THREE.Object3D, color: string, x: number, y: number, z: number, width: number, height: number, depth: number, role = surfaceRole(parent)) {
-    const shape = new THREE.BoxGeometry(width, height, depth); surfaces?.uv(shape, role);
+    const shape = surfaces?.softToon ? sceneRoundedBox(width, height, depth) : new THREE.BoxGeometry(width, height, depth); surfaces?.uv(shape, role);
     const value = finish(new THREE.Mesh(shape, material(color, parent, role)), role);
     value.position.set(x, y, z); parent.add(value); return value;
   }
   function slabs(color: string, pieces: Slab[], role: HomeMaterialRole = 'paving') {
     const fragments = pieces.map(([x, y, z, width, height, depth, yaw = 0]) => {
-      const value = new THREE.BoxGeometry(width, height, depth); value.rotateY(yaw); value.translate(x, y, z); return value;
+      const value = surfaces?.softToon ? sceneRoundedBox(width, height, depth) : new THREE.BoxGeometry(width, height, depth); value.rotateY(yaw); value.translate(x, y, z); return value;
     });
     const geometry = mergeGeometries(fragments, false);
     fragments.forEach(fragment => fragment.dispose());
@@ -148,13 +150,13 @@ export function buildHomeWorldEnvironment(season: string | null, counts: Counts,
   function volumes(parent: THREE.Object3D, color: string, name: string, pieces: Slab[], exposedFaces?: number[], role = surfaceRole(parent)) {
     if (!pieces.length) return;
     const fragments = pieces.map(([x, y, z, width, height, depth, yaw = 0]) => {
-      const part = new THREE.BoxGeometry(width, height, depth);
+      const part = surfaces?.softToon && !exposedFaces ? sceneRoundedBox(width, height, depth) : new THREE.BoxGeometry(width, height, depth);
       if (exposedFaces) {
         const indices = part.index!;
         part.setIndex(exposedFaces.flatMap(face => Array.from({ length: 6 }, (_, i) => indices.getX(face * 6 + i))));
         part.clearGroups();
       }
-      part.rotateY(yaw); part.translate(x, y, z); return part;
+      part.rotateY(yaw); part.translate(x, y, z); return surfaces?.softToon && part.index ? part.toNonIndexed() : part;
     });
     const shape = mergeGeometries(fragments, false);
     fragments.forEach(fragment => fragment.dispose());
@@ -262,7 +264,7 @@ export function buildHomeWorldEnvironment(season: string | null, counts: Counts,
     }
   }
   const entryX = -2.4;
-  const entry: Opening = { id: 'main-entry', center: entryX, width: 1.8, bottom: 0, top: 2.35, kind: 'door' };
+  const entry: Opening = { id: 'main-entry', center: entryX, width: 1.8, bottom: 0, top: SCENE_SCALE.doorHeight, kind: 'door' };
   const win = (id: string, center: number, width = 1.8): Opening => ({ id, center, width, bottom: 1.25, top: 2.55, kind: 'window' });
   exteriorWall('front', 'x', -.15, -11.3, 11.3, [0, 1], [entry, win('living-front', -9.05, 1.7), win('bedroom-front', 5.65, 2.5)]);
   exteriorWall('back', 'x', -8.3, -11.3, 11.3, [0, -1], [win('living-back', -9.3), win('bedroom-back', 2)]);
@@ -480,7 +482,8 @@ export function buildHomeWorldEnvironment(season: string | null, counts: Counts,
     for (let segment = 0; segment < points.length - 1; segment++) {
       const [ax, az] = points[segment], [bx, bz] = points[segment + 1];
       const length = Math.hypot(bx - ax, bz - az), count = Math.ceil(length / .45), yaw = Math.atan2(bx - ax, bz - az);
-      const underlay = box(connection, '#b9a180', (ax + bx) / 2, -.006, (az + bz) / 2, .82, .018, length + .03);
+        const underlay = box(connection, '#b9a180', (ax + bx) / 2, -.006, (az + bz) / 2, .82, .018, length + .03);
+        underlay.name = 'home-entry-path-underlay';
       underlay.rotation.y = yaw;
       for (let i = 0; i < count; i++) {
         const t = (i + .5) / count;
@@ -488,7 +491,7 @@ export function buildHomeWorldEnvironment(season: string | null, counts: Counts,
       }
     }
   }
-  ['#d9c7a5', '#ceb894', '#dfcfb1'].forEach((color, index) => slabs(color, path[index]));
+  ['#d9c7a5', '#ceb894', '#dfcfb1'].forEach((color, index) => { const part = slabs(color, path[index]); if (part) part.name = 'home-entry-path-stones-' + index; });
   if (surfaces) {
     const backdrop = new THREE.Group(); backdrop.name = 'home-realistic-backdrop';
     backdrop.userData.homeBackdrop = true; world.add(backdrop);

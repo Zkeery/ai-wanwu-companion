@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { sceneRoundedBox, sceneFoliage } from './living-scene-shapes';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { HomeMaterialLibrary, HomeMaterialRole } from './living-home-materials';
 
@@ -39,6 +40,27 @@ export function homeLeafCluster(parent: THREE.Object3D, name: string, leaves: Ho
   const group = new THREE.Group(); group.name = name;
   if (obstacle) group.userData.homeNavObstacle = true;
   group.userData.homeDetail = 'layered-foliage'; parent.add(group);
+  if (library?.toon) {
+    if (!leaves.length || /litter|grass/.test(name)) return group;
+    const bounds = new THREE.Box3();
+    for (const leaf of leaves) bounds.expandByPoint(new THREE.Vector3(leaf.x, leaf.y, leaf.z));
+    const center = bounds.getCenter(new THREE.Vector3()), size = bounds.getSize(new THREE.Vector3());
+    for (let palette = 0; palette < 2; palette++) {
+      const fragments: THREE.BufferGeometry[] = [];
+      for (let lobe = palette; lobe < (library.softToon ? 3 : 5); lobe += 2) {
+        const angle = lobe * 2.399, shape = library.softToon ? sceneFoliage() : new THREE.IcosahedronGeometry(1, 0);
+        shape.scale(Math.max(.18, size.x * .34), Math.max(.2, size.y * .45), Math.max(.18, size.z * .34));
+        shape.translate(center.x + Math.sin(angle) * size.x * .22, center.y + Math.sin(lobe * 1.7) * size.y * .12, center.z + Math.cos(angle) * size.z * .22);
+        fragments.push(shape);
+      }
+      const geometry = mergeGeometries(fragments, false); fragments.forEach(shape => shape.dispose());
+      if (!geometry) continue;
+      const mesh = new THREE.Mesh(geometry, library.material('foliage', colors[palette % colors.length], name + palette));
+      mesh.name = `${name}-leaves-${palette}`; mesh.castShadow = mesh.receiveShadow = true;
+      mesh.userData.homeMaterialRole = 'foliage'; group.add(mesh);
+    }
+    return group;
+  }
   for (let palette = 0; palette < Math.min(2, colors.length); palette++) {
     const fragments = leaves.filter((_, i) => i % 2 === palette).map(leaf => {
       const shape = homeLeafGeometry(leaf.length, leaf.width);
@@ -174,6 +196,7 @@ export function buildRealisticHomeItem(kind: 'tree' | 'bench' | 'shade', season:
     root.userData.homeRestSeats = [{ id: 'bench-seat-0', x: 0, y: .605, z: 0, yaw: 0 }];
     const fragments: THREE.BufferGeometry[] = [];
     function plank(x: number, y: number, z: number, w: number, h: number, d: number, radius = .015) {
+      if (library?.softToon) { const shape = sceneRoundedBox(w, h, d); shape.translate(x, y, z); fragments.push(shape); return; }
       const section = new THREE.Shape(), a = d / 2, b = h / 2, r = Math.min(radius, a * .4, b * .4);
       section.moveTo(-a + r, -b); section.lineTo(a - r, -b); section.lineTo(a, -b + r);
       section.lineTo(a, b - r); section.lineTo(a - r, b); section.lineTo(-a + r, b);

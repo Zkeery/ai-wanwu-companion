@@ -1,6 +1,7 @@
 import { buildVillaIndoorStair } from './living-villa-stair-mesh';
 import { buildVillaUpperInterior } from './living-villa-upper-floor';
 import * as THREE from 'three';
+import { sceneRoundedBox } from './living-scene-shapes';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { HomeMaterialLibrary, HomeMaterialRole } from './living-home-materials';
 
@@ -46,7 +47,8 @@ export function applyReferenceCourtyardVilla(world: THREE.Group): void {
     value.userData.referenceVillaVisual = true; value.userData.baseCastShadow = true; parent.add(value); return value;
   }
   function slabs(parent: THREE.Object3D, name: string, pieces: Slab[], color: string, role: HomeMaterialRole = 'plaster') {
-    const parts = pieces.map(([x,y,z,w,h,d]) => { const geometry = new THREE.BoxGeometry(w,h,d); geometry.translate(x,y,z); return geometry; });
+    if (!pieces.length) return;
+    const parts = pieces.map(([x,y,z,w,h,d]) => { const geometry = library?.softToon ? sceneRoundedBox(w,h,d) : new THREE.BoxGeometry(w,h,d); geometry.translate(x,y,z); return geometry; });
     const geometry = mergeGeometries(parts, false); parts.forEach(value => value.dispose());
     if (!geometry) return;
     return mesh(parent, name, geometry, color, role);
@@ -111,7 +113,7 @@ export function applyReferenceCourtyardVilla(world: THREE.Group): void {
   // Black steel railings are thin and regularly spaced, rather than solid toy-like panels.
   const rails:Slab[]=[];
   rails.push([0,3.48,-.27,17.1,.18,2.5],[0,4.53,.89,17.1,.065,.065],[0,3.67,.89,17.1,.065,.065]);
-  for(let x=-8.45;x<=8.45;x+=.39)rails.push([x,4.1,.89,.035,.89,.035]);
+  for(let x=-8.45;x<=8.45;x+=library?.softToon ? .85 : .39)rails.push([x,4.1,.89,library?.softToon ? .085 : .035,.89,library?.softToon ? .085 : .035]);
   for(const x of [-8.5,8.5]){rails.push([x,4.53,-.27,.065,.065,2.35],[x,3.67,-.27,.065,.065,2.35]);for(let z=-1.35;z<.9;z+=.36)rails.push([x,4.1,z,.035,.89,.035]);}
   slabs(exterior,'home-reference-villa-black-balcony-railings',rails,'#303839','metal');
   slabs(exterior,'home-reference-villa-balcony-white-edge',[[0,3.48,.94,17.2,.16,.17]],'#e8e6dd');
@@ -126,7 +128,7 @@ export function applyReferenceCourtyardVilla(world: THREE.Group): void {
   roof.material.side=THREE.DoubleSide;roof.userData.roofForm='four-slope-hip';
   const slope=(peak-eave)/half;
   const tiles:THREE.Matrix4[]=[];const transform=new THREE.Object3D();
-  for(let x=minX+.16;x<maxX;x+=.31)for(let z=minZ+.2;z<maxZ;z+=.39){
+  for(let x=minX+.16;!library?.softToon&&x<maxX;x+=.31)for(let z=minZ+.2;z<maxZ;z+=.39){
     const ds=[z-minZ,maxZ-z,x-minX,maxX-x], d=Math.min(...ds),face=ds.indexOf(d),y=eave+d*slope+.035;
     transform.position.set(x,y,z); transform.rotation.set(0,0,0);
     const direction=face===0?new THREE.Vector3(0,slope,1):face===1?new THREE.Vector3(0,-slope,1):face===2?new THREE.Vector3(1,slope,0):new THREE.Vector3(1,-slope,0);
@@ -143,7 +145,7 @@ export function applyReferenceCourtyardVilla(world: THREE.Group): void {
     const shape=new THREE.BufferGeometry();const a=side*8.5,b=side*11.7;
     shape.setAttribute('position',new THREE.Float32BufferAttribute([a,4.28,-8.6,a,4.28,.12,b,3.43,.12,b,3.43,-8.6],3));shape.setIndex([0,1,2,0,2,3]);shape.computeVertexNormals();
     const slopeRoof=mesh(wing,wing.name+'-slate',shape,'#596d7d','roof');slopeRoof.material.side=THREE.DoubleSide;
-    const strips:Slab[]=[];for(let z=-8.5;z<.12;z+=.3)strips.push([(a+b)/2,3.86,z,3.38,.055,.035]);
+    const strips:Slab[]=[];for(let z=-8.5;!library?.softToon&&z<.12;z+=.3)strips.push([(a+b)/2,3.86,z,3.38,.055,.035]);
     const ribs=slabs(wing,wing.name+'-tile-ribs',strips,'#6b8090','roof');if(ribs){ribs.geometry.translate(-(a+b)/2,-3.86,0);ribs.rotation.z=-side*Math.atan2(.85,3.2);ribs.position.set((a+b)/2,3.86,0);}
   }
   // The front gatehouse is strictly beyond the original courtyard walk boundary (z <= 7.88).
@@ -183,7 +185,7 @@ export function applyReferenceCourtyardVilla(world: THREE.Group): void {
   }
   const noise=(seed:number)=>{const v=Math.sin(seed*12.9898+78.233)*43758.5453;return v-Math.floor(v);};
   type Pose={x:number;y:number;z:number;sx:number;sy:number;sz:number;rx?:number;ry?:number;rz?:number};const stems:Pose[]=[],leaves:Pose[]=[],flowers:Pose[][]=[[],[],[],[]],centers:Pose[]=[];
-  for(let b=0;b<beds.length;b++){
+  for(let b=0;!library?.softToon&&b<beds.length;b++){
     const[x,,z,w,,d]=beds[b],columns=Math.max(2,Math.floor(w/.24)),rows=Math.max(2,Math.floor(d/.24));
     for(let row=0;row<rows;row++)for(let col=0;col<columns;col++){
       const seed=b*10007+row*131+col*17,cellW=w/columns,cellD=d/rows;

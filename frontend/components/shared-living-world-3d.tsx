@@ -1,6 +1,6 @@
 'use client';
 import type { PublicSharedMahjongSnapshot } from '../lib/shared-mahjong';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { gatheringAreaNames, gatheringCompanionArea, type Gathering } from '@/lib/gatherings';
 import { parseAvatar3D } from '@/lib/shared-living-3d';
 import { createLivingWorld } from '@/lib/living-world-engine';
@@ -13,6 +13,8 @@ import { persistentLivingScope, type LivingLeisureRequest } from '@/lib/living-p
 import type { HomeLeisureActivity, HomeLeisureSnapshot } from '@/lib/living-home-leisure';
 import {createFloorSync,floorApi} from '@/lib/villa-floor-sync';
 import {getToken,AUTH_CHANGED} from '@/lib/auth';
+import PrivateImage from './private-image';
+import { operatorTools } from '@/lib/operator-tools';
 import {errorText} from '@/lib/api';
 import { describeCompanionPresence, type GatheringCompanionPresence } from '@/lib/gathering-presence';
 import type {VillaActivity} from '@/lib/living-villa-floor-life';
@@ -22,6 +24,20 @@ const activities: Record<string, string> = { arriving: '刚刚到达', rest: '�
 const mahjongPhases:Record<string,string>={waiting:'等待四位伙伴入座',exchange:'正在换三张',dingque:'正在定缺',draw:'正在摸牌',hold:'正在选牌',discard:'正在出牌',claim:'正在应牌',win:'胡牌，其他伙伴继续',ended:'本局结束'};
 type LocalMahjongSummary={scope:string;rules:'basic'|'sichuan';status:string;phase:string;wallRemaining:number;players:{actorId:number;won:boolean;missingSuit:'万'|'筒'|'条'|null;score:number}[]};
 type ManualActivity = 'rest' | 'sleep' | 'walk' | 'observe' | 'talk';
+/** Renderer creation is synchronous; publish its result in the same commit as the camera UI. */
+function createWorldReadiness() {
+  let ready = false;
+  const listeners = new Set<() => void>();
+  return {
+    getSnapshot: () => ready,
+    getServerSnapshot: () => false,
+    subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener); }; },
+    set(value: boolean) {
+      if (ready === value) return;
+      ready = value; listeners.forEach(listener => listener());
+    },
+  };
+}
 type Props = { gathering: Gathering; focusedId: number | null; onSelect: (id: number) => void; animate: boolean; room?: boolean; bedroom?: boolean;
   onFloorOccupancyChange?: (ids: readonly number[]) => void; onCompanionPresenceChange?: (values: readonly GatheringCompanionPresence[]) => void; floorKind?:'shared'|'private'; sharedMahjongSnapshot?: PublicSharedMahjongSnapshot | null; emptyMessage?: string; persistentWorld?: boolean; onLeisureAction?: (request: LivingLeisureRequest) => Promise<void> | void; visualStyle?: 'classic' | 'realistic'; localLeisurePreview?: boolean; localRoomTransitions?: boolean; localCompanionDoors?: boolean; localReferenceVilla?: boolean; localNaturalWorld?:boolean; localNaturalLeisure?:boolean; localSpeechClips?:Readonly<Record<string,string>>; localQuietAudio?:boolean; localMahjongGame?:boolean; localMahjongRules?:'basic'|'sichuan'; initialLeisure?: readonly {activity:HomeLeisureActivity;actorIds:number[]}[]; view?: HomeWorldView; onFocusView?: (view: HomeWorldView) => void; onPausedChange?: (paused: boolean) => void; busy?: boolean; onActivity?: (id: number, activity: ManualActivity) => Promise<void> | void };
 export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, animate, room = false, bedroom = false, view, onFocusView, onPausedChange, busy = false, onActivity, onFloorOccupancyChange, onCompanionPresenceChange, floorKind, sharedMahjongSnapshot, emptyMessage, persistentWorld = false, onLeisureAction, visualStyle: requestedVisualStyle = 'classic', localLeisurePreview: previewLeisure = false, localRoomTransitions: previewTransitions = false, localCompanionDoors: previewDoors = false, localReferenceVilla: previewVilla = false, localNaturalWorld: previewNatural = false, localNaturalLeisure: previewNaturalLeisure = false, localSpeechClips, localQuietAudio: previewQuietAudio = false, localMahjongGame = false, localMahjongRules = 'basic', initialLeisure }: Props) {
@@ -106,6 +122,9 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
   const setDoors=(change:(previous:Record<HomeWorldDoorId,boolean>)=>Record<HomeWorldDoorId,boolean>)=>setDoorSnapshot(previous=>previous.scope===doorScope?{scope:doorScope,values:change(previous.values)}:previous);
   const cameraView = dwelling && houseView === 'exterior' && (!(leisureEnabled||naturalIndoor) || focusView === 'indoor' || focusView === 'bedroom') ? 'overview' : focusView;
   const [failed, setFailed] = useState(false), [paused, setPaused] = useState(false), [attempt, setAttempt] = useState(0);
+  const [readiness] = useState(createWorldReadiness);
+  const ready = useSyncExternalStore(readiness.subscribe, readiness.getSnapshot, readiness.getServerSnapshot);
+  const showControls = mobileControls || (!failed && (!persistent || ready));
   useEffect(()=>{floorMoving.current=animate&&!busy&&!paused&&!failed;},[animate,busy,paused,failed]);
   useEffect(()=>{leisureNavigate.current=kind=>{const next=kind==='television'?'indoor':'outdoor';if(kind==='television'&&architecture.mode==='exterior')return;setLocalView(next);onFocusView?.(next);setArchitecture(previous=>({...previous,mode:kind==='television'?'interior':naturalLeisureEnabled?'exterior':previous.mode}));setLeisureFocus(previous=>({kind,sequence:(previous?.sequence??0)+1}));};},[onFocusView,architecture.mode,naturalLeisureEnabled]);
   useEffect(() => { select.current = id => {
@@ -118,15 +137,21 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
     }
     if (!leisureEnabled && home && companion && currentArea(companion) !== 'outdoor') setArchitecture(previous => ({ ...previous, mode: 'interior' }));
     setMenuId(id); setMenuError(''); setMenuNotice(''); onSelect(id);
-  }; }, [onSelect, gathering, home,currentArea,leisureEnabled,floorLives,referenceVillaEnabled,upperScope]);
+    // The existing solo-yard zoom already targets the companion without moving its saved position.
+    if (home && persistent && !mobileControls && architecture.mode === 'exterior' && readiness.getSnapshot()
+      && gathering.companions.length === 1 && companion && currentArea(companion) === 'outdoor') {
+      world.current?.reset(); world.current?.zoom(.55);
+    }
+  }; }, [onSelect, gathering, home,currentArea,leisureEnabled,floorLives,referenceVillaEnabled,upperScope,persistent,mobileControls,architecture.mode,readiness]);
   useEffect(() => {
     const element = host.current; if (!element || !labels.current) return;
-    let active = true;doorWrites.current={scope:doorScope,values:{}};
-    const lost = () => setFailed(true); element.addEventListener('living3d-lost', lost);
-    try { const changed = (id: HomeWorldDoorId, open: boolean, source?:'manual'|'companion') => {if(!active)return;if(doorWrites.current.scope===doorScope)doorWrites.current.values[id]=open;setDoors(previous => previous[id] === open ? previous : { ...previous, [id]: open });if(source!=='companion'&&(leisureEnabled||naturalIndoor)&&id==='home-main-entry-door'&&open){setLeisureFocus(null);setArchitecture(previous=>({...previous,mode:'interior'}));setLocalView('indoor');onFocusView?.('indoor');}}; world.current = visualStyle === 'realistic' ? createLivingWorld(element, labels.current, gathering, id => select.current(id), changed, { strictLeisureContacts:leisureEnabled,persistentWorld:persistent,onLeisureRequest:request=>{if(active)leisureRequest.current(request);},realistic: true, localNaturalWorld:naturalEnabled, localNaturalLeisure:naturalLeisureEnabled, localLeisurePreview: leisureEnabled, localRoomTransitions, localCompanionDoors:companionDoorsEnabled, localReferenceVilla:referenceVillaEnabled, localSpeechClips:leisureEnabled?localSpeechClips:undefined, localQuietAudio, localMahjongGame, localMahjongRules, onLocalMahjongChange:state=>{if(active)setLocalMahjongInfo(state?{scope:gathering.id,rules:state.rules??localMahjongRules,status:state.status,phase:state.phase,wallRemaining:state.wallRemaining,players:state.players.map(player=>({actorId:player.actorId,won:player.won===true,missingSuit:player.missingSuit??null,score:Number.isInteger(player.score)?player.score??0:0}))}:null);}, onSpeechChange:state=>{if(active)setSpeechStatus(state.status);}, localFloorStorage:!persistent,onFloorSaveChange:status=>{if(active)setFloorSave(status);},onFloorLifeChange:state=>{if(active)setFloorLives(state);}, onJourneyChange:state=>{if(active)setPresence(state);}, initialLeisure, onLeisureChange: (state,kind,error)=>{setLeisureState(state);setLeisureError(error?({insufficient_actors:'空闲伙伴不够，请先带伙伴来，或点选一位伙伴。',insufficient_seats:'这里没有足够的空座位。',seat_blocked:'这里的座位或通道被布置挡住了，调整布置后再试。',seat_busy:'座位已被使用，请先结束原活动。',actor_busy:'这位伙伴正在另一项休闲中，请先结束。',actor_unavailable:'这位伙伴暂时不能参与。',forbidden:'这位伙伴的活动由它的主人安排。'}[error]??'这项活动暂时无法安排。'):'');if(kind)leisureNavigate.current(kind);} }) : createLivingWorld(element, labels.current, gathering, id => select.current(id), changed); }
-    catch { queueMicrotask(() => { if (active) setFailed(true); }); }
-    queueMicrotask(()=>{if(active){setLeisureFocus(null);setLifeSound(false);if(!presenceEnabled)setPresence(null);}});
-    return () => { active = false; element.removeEventListener('living3d-lost', lost); world.current?.dispose(); world.current = null; };
+    let active = true, broken = false;doorWrites.current={scope:doorScope,values:{}};
+    const lost = () => { broken = true; readiness.set(false); setFailed(true); }; element.addEventListener('living3d-lost', lost);
+    try { const changed = (id: HomeWorldDoorId, open: boolean, source?:'manual'|'companion') => {if(!active)return;if(doorWrites.current.scope===doorScope)doorWrites.current.values[id]=open;setDoors(previous => previous[id] === open ? previous : { ...previous, [id]: open });if(source!=='companion'&&(leisureEnabled||naturalIndoor)&&id==='home-main-entry-door'&&open){setLeisureFocus(null);setArchitecture(previous=>({...previous,mode:'interior'}));setLocalView('indoor');onFocusView?.('indoor');}}; world.current = visualStyle === 'realistic' ? createLivingWorld(element, labels.current, gathering, id => select.current(id), changed, { cartoonScene: persistent && (window.matchMedia ? !window.matchMedia('(max-width: 600px), (pointer: coarse)').matches : window.innerWidth > 600), strictLeisureContacts:leisureEnabled,persistentWorld:persistent,onLeisureRequest:request=>{if(active)leisureRequest.current(request);},realistic: true, localNaturalWorld:naturalEnabled, localNaturalLeisure:naturalLeisureEnabled, localLeisurePreview: leisureEnabled, localRoomTransitions, localCompanionDoors:companionDoorsEnabled, localReferenceVilla:referenceVillaEnabled, localSpeechClips:leisureEnabled?localSpeechClips:undefined, localQuietAudio, localMahjongGame, localMahjongRules, onLocalMahjongChange:state=>{if(active)setLocalMahjongInfo(state?{scope:gathering.id,rules:state.rules??localMahjongRules,status:state.status,phase:state.phase,wallRemaining:state.wallRemaining,players:state.players.map(player=>({actorId:player.actorId,won:player.won===true,missingSuit:player.missingSuit??null,score:Number.isInteger(player.score)?player.score??0:0}))}:null);}, onSpeechChange:state=>{if(active)setSpeechStatus(state.status);}, localFloorStorage:!persistent,onFloorSaveChange:status=>{if(active)setFloorSave(status);},onFloorLifeChange:state=>{if(active)setFloorLives(state);}, onJourneyChange:state=>{if(active)setPresence(state);}, initialLeisure, onLeisureChange: (state,kind,error)=>{setLeisureState(state);setLeisureError(error?({insufficient_actors:'空闲伙伴不够，请先带伙伴来，或点选一位伙伴。',insufficient_seats:'这里没有足够的空座位。',seat_blocked:'这里的座位或通道被布置挡住了，调整布置后再试。',seat_busy:'座位已被使用，请先结束原活动。',actor_busy:'这位伙伴正在另一项休闲中，请先结束。',actor_unavailable:'这位伙伴暂时不能参与。',forbidden:'这位伙伴的活动由它的主人安排。'}[error]??'这项活动暂时无法安排。'):'');if(kind)leisureNavigate.current(kind);} }) : createLivingWorld(element, labels.current, gathering, id => select.current(id), changed); }
+    catch { broken = true; }
+    readiness.set(!broken && world.current !== null);
+    queueMicrotask(()=>{if(active){setFailed(broken);setLeisureFocus(null);setLifeSound(false);if(!presenceEnabled)setPresence(null);}});
+    return () => { active = false; readiness.set(false); element.removeEventListener('living3d-lost', lost); world.current?.dispose(); world.current = null; };
     // The parent remounts for a different account or space; snapshots update below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attempt, persistent, visualStyle, leisureEnabled, naturalEnabled, naturalLeisureEnabled, localRoomTransitions, companionDoorsEnabled, referenceVillaEnabled, localSpeechClips, localQuietAudio, localMahjongGame, localMahjongRules, gathering.id, gathering.me, gathering.scene_type]);
@@ -186,6 +211,7 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
     setLeisureFocus(null);
     if (next === 'indoor' || next === 'bedroom') setArchitecture({ ...houseContext, stamp: houseStamp, mode: 'interior' });
     setLocalView(next); onFocusView?.(next);
+    if (home && persistent && !mobileControls && next === 'overview') world.current?.reset();
   }
   function chooseArchitecture(mode: 'interior' | 'exterior') {
     setUpperFloor({scope:upperScope,enabled:false});
@@ -215,19 +241,21 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
     <div className={styles.viewport+' '+styles.spatial} data-presentation={home ? 'home-world' : 'world-3d'} data-focus-view={dwelling ? cameraView : 'outdoor'} data-house-view={dwelling ? houseView : undefined} data-visual-style={visualStyle}>
       <div ref={host} className={styles.canvas} data-testid="living3d-canvas" />
       <div ref={labels} className={styles.labels} aria-live="polite" />
-      {failed && <div className={styles.failure} role="status"><p>立体画面暂时无法显示，伙伴和住处记录都已保留。</p><button className="button" onClick={() => { setFailed(false); setAttempt(n => n + 1); }}>重新打开立体画面</button></div>}
+      {failed && <div className={styles.failure + (!mobileControls ? ' ' + styles.portraitFallback : '')}>
+        {!mobileControls && <><span className={styles.fallbackLabel}>伙伴的住处 · 图片预览</span><div className={styles.standees}>{gathering.companions.map(companion => <figure key={companion.id} className={styles.standee}>{companion.portrait ? <PrivateImage src={companion.portrait} alt={`${companion.name}的图片立牌`} /> : <span className={styles.standeePlaceholder}>{companion.name.slice(0, 1)}</span>}<figcaption>{companion.name}</figcaption></figure>)}</div></>}
+        <p role="status">{mobileControls ? '立体画面暂时无法显示，伙伴和住处记录都已保留。' : '当前无法打开立体画面，先用图片陪你。伙伴和住处记录都已保留。'}</p><button className="button" onClick={() => { readiness.set(false); setFailed(false); setAttempt(n => n + 1); }}>重新打开立体画面</button></div>}
       {!gathering.companions.length && <p className={styles.empty}>{emptyMessage ?? '家园已准备好，从下方带一位已有伙伴来相聚。'}</p>}
     </div>
-    <div className={styles.worldControls} role="group" aria-label="家园查看与房门">
+    {showControls && <div className={styles.worldControls} role="group" aria-label="家园查看与房门">
       {dwelling && !upperFloorView ? <div className={styles.regions} role="group" aria-label="家园镜头"><button type="button" aria-pressed={cameraView === 'overview'} onClick={() => chooseView('overview')}>看全景</button>{(['outdoor', 'indoor', 'bedroom'] as const).filter(area=>!(leisureEnabled||naturalIndoor)||houseView==='interior'||area==='outdoor').map(area => <button key={area} type="button" aria-pressed={cameraView === area} onClick={() => chooseView(area)}>{areaNames[area]}<span>{gathering.companions.filter(c => currentArea(c) === area && !floorLives.some(v=>v.id===c.id&&v.floor===2)).length}</span></button>)}</div>
         : upperFloorView?null:<div className={styles.badge}>{gathering.companions.length} 位伙伴在这里</div>}
       {referenceVillaEnabled&&houseView==='interior'?<div className={styles.regions} role="group" aria-label="楼层查看" style={{top:upperFloorView?undefined:'4.8rem'}}><button type="button" aria-pressed={upperFloorView} onClick={()=>{setLeisureFocus(null);setUpperFloor({scope:upperScope,enabled:!upperFloorView});}}>{upperFloorView?'返回一楼':'查看二楼'}</button>{upperFloorView?<><button type="button" onClick={()=>world.current?.toggleUpperDoor?.()}>开关二楼卧室门</button><span>二楼查看 · 点伙伴可上下楼</span></>:null}</div>:null}
       {homeLeisureEnabled&&!upperFloorView&&<div className={styles.soundControl}><button type="button" aria-pressed={lifeSound} disabled={soundBusy||failed} onClick={async()=>{setSoundBusy(true);try{const on=await world.current?.setLifeAudio?.(!lifeSound);setLifeSound(!!on);if(!lifeSound&&!on)setLeisureError('浏览器暂时无法播放音效，请点按钮再开启。');}finally{setSoundBusy(false);}}}>{lifeSound?(localQuietAudio?'关闭伙伴声音':'关闭生活音效'):(localQuietAudio?'打开伙伴声音':'打开生活音效')}</button>{lifeSound&&<small role="status">{speechStatus==='unavailable'?'此浏览器暂无本地中文音色':speechStatus==='speaking'?'伙伴正在说话':'本地中文朗读'}</small>}</div>}
       {dwelling && <div className={styles.houseControls}>
         {leisureEnabled||naturalIndoor ? houseView==='interior'?<button type="button" onClick={()=>chooseArchitecture('exterior')}>{naturalIndoor?'回到室外':'回到院子'}</button>:<span>点入户门，开门进屋</span>:<div className={styles.houseViews} role="group" aria-label="房屋展示">{(['interior', 'exterior'] as const).map(mode => <button type="button" key={mode} aria-pressed={houseView === mode} onClick={() => chooseArchitecture(mode)}>{mode === 'interior' ? '看室内' : '看外观'}</button>)}</div>}
-        <div className={styles.doorViews} role="group" aria-label="房门开关" hidden={upperFloorView} style={upperFloorView?{display:"none"}:undefined}>{([{ id: 'home-main-entry-door', label: '入户门' }, { id: 'home-room-connection-door', label: '卧室门' }, { id: 'home-courtyard-gate', label: '院门' }] as const).filter(door=>!naturalIndoor||door.id!=='home-courtyard-gate').map(door => <button type="button" key={door.id} aria-label={companionDoorsEnabled&&houseView==='exterior'&&door.id==='home-main-entry-door'&&doors[door.id]?'进入客厅':(doors[door.id] ? '关闭' : '打开') + door.label} aria-pressed={doors[door.id]} disabled={failed || (door.id === 'home-room-connection-door' && houseView === 'exterior')} title={door.id === 'home-room-connection-door' && houseView === 'exterior' ? (leisureEnabled||naturalIndoor?'先开门进屋，再开关卧室门':'先看室内，再开关卧室门') : undefined} onClick={() => {if((leisureEnabled||naturalIndoor)&&houseView==='exterior'&&door.id==='home-main-entry-door'){world.current?.setDoorOpen?.(door.id,true);if(companionDoorsEnabled)chooseView('indoor');}else world.current?.toggleDoor?.(door.id);}}>{(leisureEnabled||naturalIndoor)&&houseView==='exterior'&&door.id==='home-main-entry-door'?'开门进屋':(doors[door.id] ? '关' : '开')+door.label}</button>)}</div>
+        <div className={styles.doorViews} role="group" aria-label="房门开关" hidden={upperFloorView} style={upperFloorView?{display:"none"}:undefined}>{([{ id: 'home-main-entry-door', label: '入户门' }, { id: 'home-room-connection-door', label: '卧室门' }, { id: 'home-courtyard-gate', label: '院门' }] as const).filter(door=>!naturalIndoor||door.id!=='home-courtyard-gate').map(door => <button type="button" key={door.id} aria-label={companionDoorsEnabled&&houseView==='exterior'&&door.id==='home-main-entry-door'&&doors[door.id]?'进入客厅':(doors[door.id] ? '关闭' : '打开') + door.label} aria-pressed={!mobileControls && door.id === 'home-courtyard-gate' ? undefined : doors[door.id]} disabled={failed || (door.id === 'home-room-connection-door' && houseView === 'exterior')} title={door.id === 'home-room-connection-door' && houseView === 'exterior' ? (leisureEnabled||naturalIndoor?'先开门进屋，再开关卧室门':'先看室内，再开关卧室门') : undefined} onClick={() => {if((leisureEnabled||naturalIndoor)&&houseView==='exterior'&&door.id==='home-main-entry-door'){world.current?.setDoorOpen?.(door.id,true);if(companionDoorsEnabled)chooseView('indoor');}else world.current?.toggleDoor?.(door.id);}}>{(leisureEnabled||naturalIndoor)&&houseView==='exterior'&&door.id==='home-main-entry-door'?'开门进屋':(doors[door.id] ? '关' : '开')+door.label}</button>)}</div>
       </div>}
-    </div>
+    </div>}
       {menuCompanion && !failed && <div ref={menu} data-menu-placement={mobileControls ? 'panel' : 'anchor'} className={styles.actionMenu} role="group" aria-label={`${menuCompanion.name}的活动`}>
         <div className={styles.menuHeading}><strong>{menuCompanion.name}</strong><button type="button" aria-label="关闭活动菜单" onClick={() => { setMenuId(null); host.current?.querySelector('canvas')?.focus(); }}>×</button></div>
         <p>{home && !floorLives.some(v=>v.id===menuCompanion.id&&v.floor===2) && `${areaNames[currentArea(menuCompanion)]} · `}{activityLabel(menuCompanion)}</p>
@@ -239,8 +267,8 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
       </div>}
 
     </div>
-    {persistent&&floorKind&&referenceVillaEnabled&&<div role="status"><span>{serverFloorStatus === 'signal timed out' ? '网络有点慢，稍后再试' : serverFloorStatus}</span><button type="button" disabled={busy} onClick={()=>void floorSync.current?.reconcile()}>核对二楼进度</button></div>}
-    <div className={styles.tools} aria-label="场景视角">
+    {mobileControls&&persistent&&floorKind&&referenceVillaEnabled&&<div className={styles.floorSync} role="status"><span>{serverFloorStatus === 'signal timed out' ? '网络有点慢，稍后再试' : serverFloorStatus}</span>{operatorTools&&<button type="button" disabled={busy} onClick={()=>void floorSync.current?.reconcile()}>核对二楼进度</button>}</div>}
+    {showControls && <div className={styles.tools} aria-label="场景视角">
       <span>{mobileControls ? '单指上下滑动页面 · 双指转动和缩放画面' : '拖动画面旋转 · 双指缩放'}</span>
       <button type="button" aria-label="向左看" onClick={() => world.current?.rotate(.32)}>↶</button>
       <button type="button" aria-label="向右看" onClick={() => world.current?.rotate(-.32)}>↷</button>
@@ -249,8 +277,8 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
       <button type="button" onClick={() => world.current?.reset()}>恢复视角</button>
       <button type="button" aria-pressed={paused} onClick={() => { const next = !paused; setPaused(next); onPausedChange?.(next); }}>{paused ? '继续画面' : '暂停画面'}</button>
       {gathering.events.some(e => e.kind === 'dialogue' && e.origin === 'real_provider' && e.lines?.length) && <button type="button" aria-pressed={replay} onClick={() => setReplay(v => !v)}>{replay ? '收起交流气泡' : '回看最近交流'}</button>}
-    </div>
-    {leisureEnabled&&!persistent&&<div className={styles.tools} aria-label="本地休闲预览">{leisureKinds.map(kind=><button type="button" key={kind} aria-pressed={localAssignments.some(a=>a.activity===kind)} onClick={()=>world.current?.startLocalLeisure(kind)}>{activities[kind]}</button>)}{homeLeisureEnabled&&<button type="button" aria-pressed={leisureState?.television.powered??false} onClick={()=>world.current?.toggleLocalLeisure('television')}>{leisureState?.television.powered?'关闭电视':'打开电视'}</button>}<button type="button" disabled={!localAssignments.length} onClick={()=>world.current?.stopLocalLeisure()}>结束休闲，恢复原活动</button>{homeLeisureEnabled&&localMahjongGame&&<button type="button" onClick={()=>world.current?.restartLocalMahjong()}>新一局麻将</button>}<span>{naturalLeisureEnabled?'点伙伴、茶桌或长椅安排活动；伙伴走过去坐稳后再喝茶。仅本地合成预览，不保存到线上。':'点人物选择活动，或点茶桌、电视、麻将桌和长椅。仅本地合成演示，不保存到线上。声音为本地环境与动作音效，可在画面中开启。'}</span>{leisureError&&<p role="alert">{leisureError}</p>}</div>}
+    </div>}
+    {leisureEnabled&&!persistent&&showControls&&<div className={styles.tools} aria-label="本地休闲预览">{leisureKinds.map(kind=><button type="button" key={kind} aria-pressed={localAssignments.some(a=>a.activity===kind)} onClick={()=>world.current?.startLocalLeisure(kind)}>{activities[kind]}</button>)}{homeLeisureEnabled&&<button type="button" aria-pressed={leisureState?.television.powered??false} onClick={()=>world.current?.toggleLocalLeisure('television')}>{leisureState?.television.powered?'关闭电视':'打开电视'}</button>}<button type="button" disabled={!localAssignments.length} onClick={()=>world.current?.stopLocalLeisure()}>结束休闲，恢复原活动</button>{homeLeisureEnabled&&localMahjongGame&&<button type="button" onClick={()=>world.current?.restartLocalMahjong()}>新一局麻将</button>}<span>{naturalLeisureEnabled?'点伙伴、茶桌或长椅安排活动；伙伴走过去坐稳后再喝茶。仅本地合成预览，不保存到线上。':'点人物选择活动，或点茶桌、电视、麻将桌和长椅。仅本地合成演示，不保存到线上。声音为本地环境与动作音效，可在画面中开启。'}</span>{leisureError&&<p role="alert">{leisureError}</p>}</div>}
     {persistent&&leisureError&&<p role="alert">{leisureError}</p>}
     {homeLeisureEnabled&&localMahjongGame&&localMahjongRules==='sichuan'&&<details className={styles.note} aria-label="四川麻将规则与本局积分"><summary>四川麻将 · 规则与本局积分</summary><p>血战到底：108 张万、筒、条，先换三张、再定缺，不吃牌。胡牌后其余伙伴继续，三家胡牌或牌墙摸完结束。</p><p>本桌四番封顶，0 番计 1 分。这里只记录本局积分，不涉及现金。</p>{localMahjongInfo?.scope===gathering.id&&localMahjongInfo.rules==='sichuan'?<><p role="status">{localMahjongInfo.status==='won'?'本局结束':localMahjongInfo.status==='exhausted'?'牌墙已摸完':(mahjongPhases[localMahjongInfo.phase]??'本局进行中')} · 剩余 {localMahjongInfo.wallRemaining} 张</p><ul>{localMahjongInfo.players.map(player=><li key={player.actorId}>{gathering.companions.find(companion=>companion.id===player.actorId)?.name??'在座伙伴'} · {player.missingSuit?'定缺'+player.missingSuit:'尚未定缺'}{player.won?' · 已胡牌':''} · {player.score>0?'+':''}{player.score} 分</li>)}</ul></>:<p>四位伙伴入座后显示本局积分。</p>}</details>}
     {leisureEnabled&&gathering.companions.some(c=>c.activity==='talk')&&<p className={styles.note}>相聚闲聊采用免费预设对白；真实 AI 交流需另行开启。请选择相聚加入伙伴所在区域，抵达后开始闲聊。</p>}
@@ -258,6 +286,6 @@ export default function SharedLivingWorld3D({ gathering, focusedId, onSelect, an
       {gathering.companions.map(c => <button key={c.id} type="button" aria-label={`查看${c.name}的生活近况`} aria-pressed={c.id === focusedId} onClick={() => select.current(c.id)}><strong>{c.name}</strong><span>{home && !floorLives.some(v=>v.id===c.id&&v.floor===2) && `${areaNames[currentArea(c)]} · `}{activityLabel(c)}</span>{c.id === focusedId && <span className={styles.selection}>已选中</span>}{parseAvatar3D(c.avatar3d, c.id).kind === 'unavailable' && <small>立体形象待准备</small>}</button>)}
       {gathering.companions.some(c => parseAvatar3D(c.avatar3d, c.id).kind === 'unavailable') && <p className={styles.note} role="status">标了「立体形象待准备」的伙伴，院子和房间里暂时没有身体。位置还在，资料也还在，不是走丢了。</p>}
     </div>
-    <p className={styles.note}>{!animate || paused ? '画面已保持静态，仍可点选伙伴查看近况。' : home ? houseView === 'exterior' ? leisureEnabled?'点入户门开门进屋；可拖动旋转、缩放查看整个小院。':'外观模式可看完整房屋；点击客厅、卧室或屋内伙伴，即可查看室内。' : '近侧墙为半透明，方便看清室内；点门开关，点自己的伙伴安排免费活动。' : '伙伴按已保存的活动走动；气泡中的台词来自实际共同交流记录。'}</p>
+    <p className={styles.note}>{failed && !mobileControls ? '图片预览仅用于查看伙伴。恢复立体画面后，可继续开门、转动视角和安排活动。' : !animate || paused ? '画面已保持静态，仍可点选伙伴查看近况。' : home ? houseView === 'exterior' ? leisureEnabled?'点入户门开门进屋；可拖动旋转、缩放查看整个小院。':'外观模式可看完整房屋；点击客厅、卧室或屋内伙伴，即可查看室内。' : '近侧墙为半透明，方便看清室内；点门开关，点自己的伙伴安排免费活动。' : '伙伴按已保存的活动走动；气泡中的台词来自实际共同交流记录。'}</p>
   </section>;
 }

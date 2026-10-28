@@ -117,11 +117,11 @@ export function buildForestItem(kind:string,season:string|null,surfaces:HomeMate
   root.updateMatrixWorld(true);return root;
 }
 /** A metre-scale woodland clearing, using already bundled same-origin surfaces only. */
-export function buildForestEnvironment(season:string|null,options:{onTextureLoaded?:()=>void;indoor?:boolean;leisure?:boolean}={}):THREE.Group{
+export function buildForestEnvironment(season:string|null,options:{onTextureLoaded?:()=>void;indoor?:boolean;leisure?:boolean;toon?:boolean}={}):THREE.Group{
   const root=new THREE.Group();root.name='natural-forest-world';const surfaces=createHomeMaterials(options),b=builder(surfaces);root.userData.homeMaterialLibrary=surfaces;root.userData.homeMaterialOwnerId=surfaces.ownerId;root.userData.homeTextureStatus=surfaces.status;root.userData.homeMaterialMode='pbr-local';root.userData.naturalScene='forest';root.userData.naturalNavigationBounds={minX:-5.35,maxX:5.35,minZ:-3.9,maxZ:4.6};
   const ground=b.mesh(root,'forest-ground',new THREE.CylinderGeometry(10.2,10.3,.16,80),'grass','#6f765c',0,-.08,0);ground.castShadow=false;ground.visible=false;ground.userData.naturalLegacyBase=true;
   const extent=new THREE.PlaneGeometry(64,64);extent.rotateX(-Math.PI/2);const continuous=b.mesh(root,'forest-ground-continuation',extent,'grass','#6f765c');continuous.castShadow=false;continuous.userData.naturalContinuousGround=true;root.userData.naturalGroundExtent=64;
-  forestFloor(root,surfaces,season);
+  if (!options.toon) forestFloor(root,surfaces,season);
   if(options.indoor){root.add(buildNaturalHouse('forest',surfaces));root.userData.naturalHouse=true;}else cabin(root,b);const canvas=tent(root,b);canvas.position.set(3.6,0,-5.9);
   const locations=[[-7,-4.8],[-7.8,-.8],[-7.1,4.5],[-3.7,7.3],[1,8],[6.7,5.2],[7.7,.8],[7.1,-4.8],[0,-8.4]];
   locations.forEach(([x,z],i)=>forestTree(root,b,surfaces,season,i,options.indoor&&i===0?-7.5:options.indoor&&i===8?.8:x,z));

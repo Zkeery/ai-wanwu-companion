@@ -5,8 +5,10 @@ import { api, errorText } from '@/lib/api';
 import { AUTH_CHANGED, getToken } from '@/lib/auth';
 import type { Character, LivingSpace, LivingWorldActivity } from '@/lib/contracts';
 import { privateLivingWorld, sameLivingWorld } from '@/lib/living';
+import { operatorTools } from '@/lib/operator-tools';
 import type { HomeLeisureActivity } from '@/lib/living-home-leisure';
 import { seasonApi, type Season } from '@/lib/seasons';
+import styles from './shared-living-world-3d.module.css';
 
 const SharedLivingWorld3D = dynamic(() => import('./shared-living-world-3d'), { ssr: false, loading: () => <p role="status">正在打开伙伴的住处…</p> });
 type EditorOptions = { visible: boolean; onBusyChange: (value: boolean) => void; onSeasonChange: (value: Season | null) => void };
@@ -118,13 +120,13 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
   if (accountLost) return <p role="status">登录状态已改变，请刷新页面后继续查看自己的住处。</p>;
   if (!token) return <p role="status">请先登录，再查看自己的住处。</p>;
   if (!snapshot) return null;
-  return <section aria-label="伙伴的立体住处">
+  return <section className={styles.privateWorld} aria-label="伙伴的立体住处">
     <div className="scene-heading-actions">
       <button className="button" aria-pressed={editing} disabled={busy || editorBusy || uncertain || !visible} onClick={() => { setEditing(value => !value); setFocusedId(null); }}>{editing ? '回到立体生活' : readOnly ? '查看布置与照料' : '布置与照料'}</button>
-      <button className="button ghost" disabled={busy || editorBusy || !visible} onClick={() => void refresh()}>核对住处</button>
+      {operatorTools && <button className="button ghost" disabled={busy || editorBusy || !visible} onClick={() => void refresh()}>核对住处</button>}
     </div>
     {error && <p role="alert" className="form-error">{error}</p>}
-    {uncertain && <p role="status">保存结果尚未确认，已暂停新操作；请先点“核对住处”。</p>}
+    {uncertain && <p role="status">保存结果尚未确认，已暂停新操作。请刷新页面后再继续。</p>}
     {message && <p role="status">{message}</p>}
     {readOnly && <p>原布置仍保留，当前只能查看；伙伴回来后再安排活动。</p>}
     {editing ? renderEditor({ visible, onBusyChange: setEditorBusy, onSeasonChange: setSeason }) : visible && <SharedLivingWorld3D
@@ -132,7 +134,7 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
       visualStyle="realistic" persistentWorld floorKind="private" localLeisurePreview localRoomTransitions localCompanionDoors localReferenceVilla localNaturalWorld localNaturalLeisure
       emptyMessage={space.resident_here === false ? '伙伴在外面相聚，这里保留原布置。' : undefined}
       busy={busy || uncertain || readOnly || space.resident_here !== true} onActivity={readOnly || space.resident_here !== true ? undefined : arrange} onLeisureAction={readOnly || space.resident_here !== true ? undefined : leisure} />}
-    {!editing && <p>点伙伴安排休息、睡觉或散步；点门进入住处。布置、照料和四季设置在“布置与照料”中。</p>}
+    {!editing && <p className={styles.help}>点伙伴安排休息、睡觉或散步；点门进入住处。布置、照料和四季设置在“布置与照料”中。</p>}
     {seasonError && <p role="status">四季暂时无法核对，先保留基础画面。可在布置与照料中重新读取。</p>}
   </section>;
 }

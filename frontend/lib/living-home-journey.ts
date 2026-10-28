@@ -529,6 +529,24 @@ export function createHomeJourneyController(configuration: JourneyPortalConfigur
             if (!route || route.blocked || !route.points.length || !route.points.every(validPoint) || dist(route.points[0], s.frame.pose) > EPS || dist(route.points.at(-1)!, goal) > EPS) continue;
             s.holding = { door: stage.door, goal, route, waypoint: 1, fingerprint }; break;
           }
+          // A furnished room need not have a bay on one of the three coarse
+          // axes. Use the same physical bay planner as walking retreats, leaving
+          // the current owner's remaining portal corridor completely free.
+          if (!s.holding && ctx.yieldPlan && ctx.recoverYieldingRoute) {
+            const peers = [...states.values()].filter(other => other.id !== s.id);
+            const avoid = peers.map(other => ({ position: point(peerPose(other)), radius: other.radius }));
+            const corridor = peerCorridor(peers.filter(other => other.id === owner));
+            let route: LivingNavigationRoute | null = null;
+            try { route = ctx.yieldPlan(point(s.frame.pose), stage.fromArea, avoid, corridor.samples); } catch { /* Keep waiting without moving through a body. */ }
+            const end = route?.points.at(-1);
+            if (route && !route.blocked && route.points.length >= 2 && route.points.every(validPoint) && end
+              && dist(route.points[0], s.frame.pose) <= EPS && dist(end, s.frame.pose) > .15
+              && corridor.clear(end, s.radius)
+              && route.points.slice(1).every((to, index) => safeCall(() => ctx.isClear(route!.points[index], to, stage.fromArea))
+                && avoid.every(peer => pointSegmentDistance(peer.position, route!.points[index], to) >= s.radius + peer.radius + .035 - EPS))) {
+              s.holding = { door: stage.door, goal: point(end), route, waypoint: 1, fingerprint };
+            }
+          }
           if (!s.holding && staleHolding) {
             // Keep the fact that this actor left the doorway even if a revision
             // removes all waiting bays. It must later walk back to the exact entry.

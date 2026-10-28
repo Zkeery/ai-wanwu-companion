@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { sceneRoundedBox, sceneFoliage } from './living-scene-shapes';
+import { SCENE_SCALE } from './living-scene-scale';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { homeBedSlots } from './living-home-layout';
@@ -62,7 +64,7 @@ export function buildHomeEnvironment(area: HomeArea, season: string | null, coun
   }
   function box(parent: THREE.Object3D, color: Color, x: number, y: number, z: number, w: number, h: number, d: number, radius = 0, role = surfaceRole(parent)) {
     return mesh(parent, geometry(`box:${w}:${h}:${d}:${radius}${surfaces ? ':' + role : ''}`, () => {
-      const shape = radius > 0 ? new RoundedBoxGeometry(w, h, d, 1, radius) : new THREE.BoxGeometry(w, h, d);
+      const shape = surfaces?.softToon ? sceneRoundedBox(w, h, d, Math.max(radius, SCENE_SCALE.bevel)) : radius > 0 ? new RoundedBoxGeometry(w, h, d, 1, radius) : new THREE.BoxGeometry(w, h, d);
       surfaces?.uv(shape, role); return shape;
     }), color, x, y, z, false, role);
   }
@@ -72,7 +74,7 @@ export function buildHomeEnvironment(area: HomeArea, season: string | null, coun
     }), color, x, y, z, emissive, role);
   }
   function orb(parent: THREE.Object3D, color: Color, x: number, y: number, z: number, sx: number, sy = sx, sz = sx) {
-    const value = mesh(parent, geometry('foliage', () => new THREE.IcosahedronGeometry(1, 1)), color, x, y, z, false, 'foliage');
+    const value = mesh(parent, geometry('foliage', () => surfaces?.softToon ? sceneFoliage() : new THREE.IcosahedronGeometry(1, 1)), color, x, y, z, false, 'foliage');
     value.scale.set(sx, sy, sz); return value;
   }
   function rod(parent: THREE.Object3D, color: Color, a: number[], b: number[], radius: number) {
@@ -86,7 +88,7 @@ export function buildHomeEnvironment(area: HomeArea, season: string | null, coun
   function boxes(parent: THREE.Object3D, color: Color, parts: BoxPart[], role = surfaceRole(parent)) {
     if (!parts.length) return;
     const fragments = parts.map(([x, y, z, w, h, d, angle = 0]) => {
-      const fragment = new THREE.BoxGeometry(w, h, d);
+      const fragment = surfaces?.softToon ? sceneRoundedBox(w, h, d) : new THREE.BoxGeometry(w, h, d);
       fragment.rotateZ(angle); fragment.translate(x, y, z); return fragment;
     });
     const merged = mergeGeometries(fragments, false);
@@ -645,7 +647,7 @@ export function buildHomeEnvironment(area: HomeArea, season: string | null, coun
       const shrub = new THREE.Group(); shrub.name = `courtyard-border-shrub-${side}-${i}`;
       shrub.userData.homeNavObstacle = true; border.add(shrub);
       if (surfaces) {
-        const core = mesh(shrub, geometry('realistic-shrub-core', () => new THREE.IcosahedronGeometry(1, 0)), leafColors[(i + 1) % 3], side * 5.03, .49, z, false, 'foliage');
+      const core = mesh(shrub, geometry('realistic-shrub-core', () => surfaces?.softToon ? sceneFoliage() : new THREE.IcosahedronGeometry(1, 0)), leafColors[(i + 1) % 3], side * 5.03, .49, z, false, 'foliage');
         core.scale.set(.23, .32 + i % 2 * .07, .37);
         const leaves: HomeLeaf[] = [];
         for (let j = 0; j < 3; j++) {
