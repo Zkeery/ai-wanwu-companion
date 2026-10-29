@@ -33,6 +33,7 @@ from app.services.character_concept import save_concept, matching_concept
 from app.services.generation_stream import GenerationStreamResponse
 from app.services.character_images import remove_image_file as _remove_image_file
 from app.services import generation_quota as quota
+from app.services.guest_access import companion_room, is_guest
 from app.services.themes import require_match
 
 router = APIRouter(prefix="/characters", tags=["characters"])
@@ -87,6 +88,12 @@ def get_character_by_object(object_id: int, user: User = Depends(get_current_use
 @router.get("/generation-credits")
 def generation_credits(request: Request, user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     availability = model_availability(request, user) if getattr(request.app.state, 'model_budget', None) is not None else {}
+    if is_guest(user):
+        remaining, limit = companion_room(db, user)
+        if get_settings().generation_quota_enabled:
+            remaining = min(remaining, quota.balance(db, user.id))
+        db.commit()
+        return {"enabled": True, "available": remaining, "scope": "guest", "limit": limit, **availability}
     if not get_settings().generation_quota_enabled:
         return {"enabled": False, "available": None, **availability}
     available = quota.balance(db, user.id)

@@ -73,6 +73,12 @@ def _daily(db: Session, day: str | None = None) -> GuestDaily:
     return row
 
 
+def companion_room(db: Session, user: User) -> tuple[int, int]:
+    """Use the same reserved/used slots as the guest creation gate."""
+    limit = get_settings().guest_companions_per_user
+    return max(0, limit - _account(db, user.id).companions), limit
+
+
 def create_guest(db: Session, source: str) -> User:
     settings = get_settings()
     source_hash = hash_token("guest-ip:" + source[:128])

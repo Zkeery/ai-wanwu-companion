@@ -33,12 +33,15 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
   const active = useRef(false), locked = useRef(false), session = useRef<string | null>(null), shown = useRef(visible);
   const motion = useSyncExternalStore(subscribeView, motionAllowed, () => false);
   const token = useSyncExternalStore(subscribeSession, getToken, () => null);
-  const [figures, setFigures] = useState<Record<number, 'pending' | 'ready' | 'failed'>>({});
+  const [figures, setFigures] = useState<Record<number, 'pending' | 'ready' | 'failed' | 'absent' | 'unavailable'>>({});
   const figureKey = companions.filter(companion => companion.status === 'ready' && companion.image_path).map(companion => companion.id).join(',');
   const snapshot = useMemo(() => {
     const world = privateLivingWorld(space, companions, season);
     if (!world) return null;
-    return { ...world, companions: world.companions.map(companion => figures[companion.id] ? { ...companion, courtyard_figure: figures[companion.id] } : companion) };
+    return { ...world, companions: world.companions.map(companion => {
+      const state = figures[companion.id];
+      return state === 'pending' || state === 'ready' || state === 'failed' ? { ...companion, courtyard_figure: state } : companion;
+    }) };
   }, [space, companions, season, figures]);
   const current = useRef({ space, readOnly, onChange, snapshot });
   useEffect(() => { current.current = { space, readOnly, onChange, snapshot }; shown.current = visible; }, [space, readOnly, onChange, snapshot, visible]);
@@ -62,10 +65,13 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
           if (controller.signal.aborted) return;
           if (status === 'pending' || status === 'running') waiting = true;
           const shown = status === 'running' ? 'pending' : status;
-          if (shown === 'pending' || shown === 'ready' || shown === 'failed') {
+          if (shown === 'pending' || shown === 'ready' || shown === 'failed' || shown === 'absent') {
             setFigures(current => current[id] === shown ? current : { ...current, [id]: shown });
           }
-        } catch { /* 立牌先留着，下一轮再核对。 */ }
+        } catch {
+          if (controller.signal.aborted) return;
+          setFigures(current => ({ ...current, [id]: 'unavailable' }));
+        }
       }
       if (waiting && !controller.signal.aborted) timer = window.setTimeout(() => void loadFigures(), 4000);
     };
@@ -129,6 +135,14 @@ export default function PrivateLivingWorld({ space, companions, visible, readOnl
     {uncertain && <p role="status">保存结果尚未确认，已暂停新操作。请刷新页面后再继续。</p>}
     {message && <p role="status">{message}</p>}
     {readOnly && <p>原布置仍保留，当前只能查看；伙伴回来后再安排活动。</p>}
+    {!editing && visible && snapshot.companions.map(companion => {
+      const state = figures[companion.id];
+      const detail = state === 'pending' ? '立体形象准备中，先用图片立牌陪你；准备好后会自动换成立体伙伴。'
+        : state === 'failed' ? '立体形象暂未生成成功，先保留图片立牌，伙伴和住处仍可继续使用。'
+        : state === 'absent' ? '暂时没有立体形象，先用图片立牌显示伙伴。'
+        : state === 'unavailable' ? '暂时无法核对立体形象状态，先保留图片立牌；刷新页面可重新核对。' : '';
+      return detail ? <p role="status" key={companion.id}>{companion.name}：{detail}</p> : null;
+    })}
     {editing ? renderEditor({ visible, onBusyChange: setEditorBusy, onSeasonChange: setSeason }) : visible && <SharedLivingWorld3D
       gathering={snapshot} focusedId={focusedId} onSelect={setFocusedId} animate={motion && !busy && !uncertain}
       visualStyle="realistic" persistentWorld floorKind="private" localLeisurePreview localRoomTransitions localCompanionDoors localReferenceVilla localNaturalWorld localNaturalLeisure

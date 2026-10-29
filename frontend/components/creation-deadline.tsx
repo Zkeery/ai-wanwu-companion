@@ -45,11 +45,10 @@ export default function CreationDeadline({ startedAt, completedMs, active, getRe
       if (controller.current === c) { controller.current = null; setChecking(false); }
     }
   }
-  if (!active) return null;
-  if (completedMs !== null) return completedMs > GENERATION_BUDGET_MS ? <p className="privacy-note" role="status">伙伴已显示，但本次超过了8秒目标。</p> : null;
+  if (!active || completedMs !== null) return null;
   if (!overdue) return null;
   return <div className="creation-origin" aria-label="生成等待状态">
-    <div><p role="status">这次等待已超过8秒，伙伴还没完整显示。</p><p>原请求可能仍在处理，不用重复上传或生成。你可以核对进度，也可以稍后回来。</p></div>
+    <div><p role="status">伙伴还在准备，再等一会儿就好。</p><p>原请求可能仍在处理，不用重复上传或生成。你可以核对进度，也可以稍后回来。</p></div>
     <div className="create-actions"><button className="button" disabled={!canQuery || checking} onClick={() => void checkSaved()}>{checking ? '正在核对…' : '核对已保存状态'}</button><Link className="text-button" href="/">先回收藏</Link>{readyId && <Link className="button" href={`/companions/${readyId}`}>查看已保存的伙伴</Link>}</div>
     {notice && <p role="status">{notice}</p>}
   </div>;

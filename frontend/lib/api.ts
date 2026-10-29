@@ -53,8 +53,11 @@ export const api = {
   character: async (id: number, signal?: AbortSignal) => parseCharacter(await request(`/characters/${id}`, { signal })),
   generationCredits: async () => {
     const r = object(await request('/characters/generation-credits'));
-    if (typeof r.enabled !== 'boolean' || (r.enabled && (!Number.isInteger(r.available) || Number(r.available) < 0 || Number(r.available) > 5))) throw new Error('生成额度暂时无法核对');
-    return { enabled: r.enabled, available: r.enabled ? Number(r.available) : null,
+    const scope = r.scope === 'guest' ? 'guest' as const : 'account' as const;
+    const ceiling = scope === 'guest' ? 2 : 5;
+    if (typeof r.enabled !== 'boolean' || (r.enabled && (!Number.isInteger(r.available) || Number(r.available) < 0 || Number(r.available) > ceiling))) throw new Error('生成额度暂时无法核对');
+    return { enabled: r.enabled, available: r.enabled ? Number(r.available) : null, scope,
+      ...(scope === 'guest' && Number.isInteger(r.limit) ? { limit: Number(r.limit) } : {}),
       ...(typeof r.model_available === 'boolean' ? { model_available: r.model_available } : {}),
       ...(typeof r.unavailable_message === 'string' ? { unavailable_message: r.unavailable_message } : {}) };
   },
