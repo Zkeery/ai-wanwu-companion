@@ -3,6 +3,13 @@ import { authHeaders, expireSession, getToken } from './auth';
 import { appFetch as fetch } from './base-path';
 import { parseThemes } from './themes';
 
+type GenerationCredits = {
+  enabled: boolean; available: number | null;
+  // Existing account responses use the original contract without a scope field.
+  scope?: 'guest' | 'account'; limit?: number;
+  model_available?: boolean; unavailable_message?: string;
+};
+
 export class ApiError extends Error {
   constructor(message: string, public status: number, public code: string) { super(message); this.name = 'ApiError'; }
 }
@@ -51,7 +58,7 @@ export const api = {
     signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(3000)]) : AbortSignal.timeout(3000),
   }), parseCharacterOverview),
   character: async (id: number, signal?: AbortSignal) => parseCharacter(await request(`/characters/${id}`, { signal })),
-  generationCredits: async () => {
+  generationCredits: async (): Promise<GenerationCredits> => {
     const r = object(await request('/characters/generation-credits'));
     const scope = r.scope === 'guest' ? 'guest' as const : 'account' as const;
     const ceiling = scope === 'guest' ? 2 : 5;
