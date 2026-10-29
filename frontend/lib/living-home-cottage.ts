@@ -55,6 +55,10 @@ export function applySoftCottageView(world:THREE.Object3D,exterior:boolean,upper
     const object=world.getObjectByName(name);if(!object)continue;
     if(name==='home-reference-villa-upper-and-roof'||name==='home-villa-upper-interior')object.visible=upper;
     else if(exterior&&!upper)object.visible=false;
-    else if(!object.userData.referenceVillaSuperseded)object.visible=true;
+    else if(!object.userData.referenceVillaSuperseded)object.visible=!object.userData.homeWallGhost;
+  }
+  const stair=world.getObjectByName('villa-indoor-stair');
+  for(const part of stair?.children??[]){
+    if(part.name==='villa-stair-handrail-front'||part.name.startsWith('villa-stair-handrail-upper-')||part.name.startsWith('villa-stair-post-upper-'))part.visible=upper;
   }
 }

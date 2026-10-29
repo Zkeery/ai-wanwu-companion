@@ -25,7 +25,7 @@ export function setHomeWorldDoorOpenness(environment: THREE.Group, id: HomeWorld
   leaf.updateWorldMatrix(true, true);
 }
 
-/** Keep the full wall outline while making only the near upper walls see-through. */
+/** The soft cottage uses an open cutaway; legacy homes retain their wall fade. */
 export function applyHomeWorldArchitectureView(
   environment: THREE.Object3D,
   mode: HomeWorldArchitectureMode,
@@ -41,7 +41,8 @@ export function applyHomeWorldArchitectureView(
       const [nx, nz] = object.userData.wallNormal as [number, number];
       const origin = object.userData.wallOrigin as { x: number; z: number };
       const ghost = mode === 'interior' && (camera.x - origin.x) * nx + (camera.z - origin.z) * nz > 0;
-      object.visible = true;
+      const fade = ghost && !environment.userData.softCottage;
+      object.visible = !ghost || !environment.userData.softCottage;
       object.userData.homeWallGhost = ghost;
       object.traverse(child => {
         if (!(child instanceof THREE.Mesh)) return;
@@ -49,11 +50,11 @@ export function applyHomeWorldArchitectureView(
         const owned = Array.isArray(child.material) ? child.material : [child.material];
         for (const value of owned) {
           const opacity = value.userData.baseOpacity ?? 1;
-          const transparent = ghost || (value.userData.baseTransparent ?? false);
+          const transparent = fade || (value.userData.baseTransparent ?? false);
           const changed = value.transparent !== transparent;
-          value.opacity = ghost ? Math.min(opacity, contour ? .4 : .22) : opacity;
+          value.opacity = fade ? Math.min(opacity, contour ? .4 : .22) : opacity;
           value.transparent = transparent;
-          value.depthWrite = ghost ? false : value.userData.baseDepthWrite ?? true;
+          value.depthWrite = fade ? false : value.userData.baseDepthWrite ?? true;
           if (changed) value.needsUpdate = true;
         }
         child.castShadow = ghost ? false : child.userData.baseCastShadow ?? true;

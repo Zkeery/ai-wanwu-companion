@@ -199,7 +199,7 @@ export function applySoftHomeScene(root: THREE.Group): void {
       : /flower-petals|flower-centers|home-soft-garden-/.test(name)?'wall'
       : role==='foliage'?'foliage':role==='wood'||role==='wood-floor'?'wood'
       :role==='stone'||role==='paving'?'stone':role==='fabric'?'fabric':role==='glass'?'glass':'wall';
-    if(/balcony-railings|eave-fascia/.test(name))palette='wood';
+    if(/balcony-railings|eave-fascia|^villa-stair-(?:tread|handrail|post)/.test(name))palette='wood';
     gradientAndAO(object.geometry);
     const convert=(old:THREE.Material)=>{
       const color=name.startsWith('home-soft-garden-')&&'color'in old?(old.color as THREE.Color).getStyle():PALETTE[palette][stableIndex(name)];

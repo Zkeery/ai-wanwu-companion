@@ -30,6 +30,7 @@ import { createHomeDoorAutonomy } from './living-home-door-autonomy';
 import { collectHomeJourneyObstacles, setHomeJourneyDoorOpenness, homeJourneyPortalClearance } from './living-home-journey-geometry';
 import { buildAvatar } from './living-meshes';
 import { updateCourtyardFigure } from './courtyard-figure';
+import { homeFloorCovered, setHomeActorCutaway } from './living-home-cutaway';
 import { setLivingSleepSupport, computeLivingBedPose } from './living-sleep-support';
 import { buildRealisticHomeItem } from './living-home-realistic-details';
 import { type RoomRestSeat } from './living-room-seats';
@@ -990,6 +991,8 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
       const stairSummary=villaVisit.snapshot();host.dataset.stairVisit=stairSummary?.phase??'idle';host.dataset.stairActor=stairSummary?String(stairSummary.id):'';const floorPresence=stairSummary?{id:stairSummary.id,phase:stairSummary.phase,floor:stairSummary.pose.y>3.4?2:1}:null,floorLife=villaVisit.snapshots().map(s=>({id:s.id,phase:s.phase,floor:s.pose.y>3.4?2:1,activity:s.activity})),fs=JSON.stringify(floorLife);if(fs!==floorVisitStamp){floorVisitStamp=fs;options?.onFloorVisitChange?.(floorPresence);options?.onFloorLifeChange?.(floorLife);}
       if(canNaturalIndoor()&&decoration)applyNaturalHouseView(decoration,houseView,camera.position);
       if(gathering.scene_type==='home'&&decoration){applyHomeWorldArchitectureView(decoration,houseView,camera.position);applyVillaUpperView(decoration,upperFloorView,camera.position,houseView==='exterior');if(softHome)applySoftCottageView(decoration,houseView==='exterior',upperFloorView);}
+      // Paused view changes still need the current camera transform before projecting labels.
+      if(softHome)camera.updateMatrixWorld(true);
       let architectureQuery:ReturnType<typeof prepareArchitectureOcclusion>|undefined;
       const architectureBlocks=(to:T.Vector3)=>(architectureQuery??=prepareArchitectureOcclusion(camera.position,architectureOccluders))(to);
       const socialReady=(slot:NonNullable<ReturnType<SocialPlan['get']>>)=>socialGroupReady(slot,socialPlan,id=>{const a=avatars.get(id);return a?{x:a.root.position.x,z:a.root.position.z,area:String(a.root.userData.homePresenceArea??a.root.userData.homeRegion??''),moving:!!journeys.get(id)?.active,upstairs:floorBusy(id)}:null;})&&(!(slot.stationary||slot.sightRequired)||socialEyeLineClear(slot.members[0],slot.members[1]));
@@ -1098,6 +1101,8 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
         updateCourtyardFigure(a,{id:companion.id,portrait:companion.portrait,courtyard_figure:companion.courtyard_figure==='ready'||companion.courtyard_figure==='pending'||companion.courtyard_figure==='failed'?companion.courtyard_figure:undefined},camera,now,motion,gathering.scene_type,draw,toon);const point=a.root.localToWorld(new T.Vector3(0,bed?1.35:softHome?(SCENE_SCALE.companionHeight+.15)/Math.max(.001,a.root.scale.y):toon && !['indoor','bedroom'].includes(String(a.root.userData.homeRegion))?1.65*TOON_SCENE.companionScale:1.65,bed?.4:0)).project(camera);
         a.label.style.transform='translate('+((point.x*.5+.5)*host.clientWidth).toFixed(1)+'px,'+((-point.y*.5+.5)*host.clientHeight).toFixed(1)+'px) translate(-50%,-100%)';
         const shellCovered=!stairActive&&(gathering.scene_type==='home'||canNaturalIndoor())&&houseView==='exterior'&&(canJourney()?a.root.userData.homePresenceArea:a.root.userData.homeRegion)!=='outdoor';
+        const floorCovered=softHome&&homeFloorCovered(a.root.userData.homeFloor,upperFloorView);
+        if(softHome)setHomeActorCutaway(a.root,shellCovered||floorCovered);
         let bubble=shellCovered?null:livingBubble(gathering,id,now,motion,replayAt,bubbleReceipts);
         const preset=!shellCovered&&motion&&!document.hidden&&!realSocialSpeaking&&socialArrived&&socialSlot?socialGatheringTurn(gathering,socialSlot,now):null;
         if(!bubble&&preset?.actorId===id)bubble={kind:'preset',text:preset.text};
@@ -1106,7 +1111,7 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
         const needsCaption=captionActor===id||mahjongCaption?.actorId===id&&leisureElapsed<mahjongCaption.until;
         const occluded=!shellCovered&&(wantsName||!!bubble||needsCaption||menuCharacter===id)&&architectureBlocks(a.body.getWorldPosition(new T.Vector3()));
         a.label.dataset.occluded=String(occluded);
-        const covered=shellCovered||occluded;if(covered)bubble=null;const nameVisible=!covered&&wantsName;
+        const covered=shellCovered||floorCovered||occluded;if(covered)bubble=null;const nameVisible=!covered&&wantsName;
         const speechArea=canJourney()?(a.root.userData.homePresenceArea??a.root.userData.homeRegion):gatheringCompanionArea(gathering,gathering.companions.find(c=>c.id===id)!);const hearingArea=houseView==='exterior'?'outdoor':view==='overview'?'indoor':view;
         if(canPreviewLeisure()&&motion&&!document.hidden&&!upperFloorView&&!covered&&speechArea===hearingArea){
           if(bubble?.kind==='preset'&&preset&&point.z<=1&&point.z>=-1)lifeSpeech.say({key:preset.key,text:preset.text,actorId:id});
@@ -1176,7 +1181,9 @@ const proposal=journeys.prepare(c.id,delta,{revision:navRevision,yaw:a.root.rota
       if(g.id!==gathering.id||g.me!==gathering.me||g.scene_type!==gathering.scene_type){upperFloorView=false;upperReturnCamera=null;villaVisit.reset();floorDriver=false;serverFloorApplied=0;floorStorageChecked=false;floorStorageStamp='';teaCups.restore();activityEffects?.restore();if(options?.persistentWorld){for(const a of avatars.values()){a.label.remove();disposeLivingObject(a.root);}avatars.clear();environmentKey='';itemKey='';}selectionMenu=null;menuCharacter=null;leisure.reset();leisureInputKey='';leisureSeeded=false;persistentLeisureStamp='';leisureElapsed=0;leisureLast=Date.now()/1000;naturalPoseEpoch=leisureLast;televisionPrograms.reset();televisionChannels.reset();clearTelevisionData();mahjongGame.reset();mahjongGameView.reset();mahjongCaption=null;sharedMahjong=null;sharedMahjongEventStamp='';sharedMahjongReceivedAt=0;lifeAudio.setEnabled(false);lifeSpeech.off();audioPositions.clear();pedestrianTraffic.reset();walkAnimation.reset();navStates.clear();journeys.reset();journeyArrivals.clear();idleYields.clear();pairedCourtesyJobs.clear();pairedCourtesyFailures.clear();idleYieldChecks.clear();idleYieldElapsed=0;journeyGraphs.clear();journeyGeometryKey='';socialPlanKey='';socialPlan.clear();pendingDoorClosures.clear();pendingDoorOpenings.clear();companionDoors.reset();doorSweepCache.clear();for(const a of avatars.values()){delete a.root.userData.homeRegion;delete a.root.userData.homePresenceArea;delete a.root.userData.homeJourney;delete a.root.userData.journeyPortal;delete a.root.userData.visualGroundLift;delete a.root.userData.homeIdleYield;delete a.root.userData.homeIdleYieldAttempt;}}
       const resetAutonomousDoors=!!options?.localCompanionDoors&&(g.id!==gathering.id||g.me!==gathering.me||g.scene_type!==gathering.scene_type);
       const changedJourneyScope=g.id!==gathering.id||g.me!==gathering.me||g.scene_type!==gathering.scene_type;gathering=g;if(changedJourneyScope){journeys=createHomeJourneyController(journeyPortals());benchApproaches.clear();benchEgress.clear();benchReturns.clear();}focused=id;view=nextView;configureCamera();
-      softHome=toon&&g.scene_type==='home';
+      const nextSoftHome=toon&&g.scene_type==='home';
+      if(softHome&&!nextSoftHome)for(const actor of avatars.values())setHomeActorCutaway(actor.root,false);
+      softHome=nextSoftHome;
       if(toon){renderer.toneMappingExposure=softHome?.98:1.05;light.color.set('#fff3d6');light.intensity=softHome?1.9:1.6;fillLight.intensity=softHome?1.25:1.1;fillLight.color.set('#fff9e8');fillLight.groundColor.set('#b3cda1');}else if(options?.realistic){const reference=canReferenceVilla();renderer.toneMappingExposure=reference?1:.96;light.color.set(reference?'#fffaf2':'#fff3dc');light.intensity=reference?2.6:3.1;fillLight.intensity=reference?1:.75;fillLight.color.set(reference?'#e7eced':'#e1efff');fillLight.groundColor.set(reference?'#7b7b70':'#766e5a');}
       if(resetAutonomousDoors){
         const enabled=canCompanionDoors();doors['home-main-entry-door']={open:!(options?.localLeisurePreview||canNaturalIndoor()),progress:options?.localLeisurePreview||canNaturalIndoor()?0:1};

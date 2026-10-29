@@ -64,7 +64,12 @@ export function applyVillaUpperView(world:THREE.Object3D,enabled:boolean,camera:
     if(/hip-roof|individual-tile-ribs|roof-ridge|eave-fascia|upper-cornice/.test(o.name))o.visible=!enabled;
     if(!(o instanceof THREE.Mesh))return;
     const fade=enabled&&(/upper-front/.test(o.name)&&camera.z>-1.45||/upper-back/.test(o.name)&&camera.z<-8.3||/upper-side-walls/.test(o.name));
-    for(const m of Array.isArray(o.material)?o.material:[o.material])if(m.userData.upperBaseOpacity!==undefined){m.opacity=fade?.18:m.userData.upperBaseOpacity;m.transparent=fade||m.userData.upperBaseTransparent;m.depthWrite=fade?false:m.userData.upperBaseDepthWrite;}
+    const solidCutaway=!!world.userData.softCottage;
+    for(const m of Array.isArray(o.material)?o.material:[o.material])if(m.userData.upperBaseOpacity!==undefined){
+      if(solidCutaway)o.visible=!fade;
+      const translucent=fade&&!solidCutaway;
+      m.opacity=translucent?.18:m.userData.upperBaseOpacity;m.transparent=translucent||m.userData.upperBaseTransparent;m.depthWrite=translucent?false:m.userData.upperBaseDepthWrite;
+    }
     o.castShadow=fade?false:o.userData.baseCastShadow??true;o.userData.homeWallGhost=fade;
   });
 }
